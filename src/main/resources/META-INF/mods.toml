@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+# issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
+[[mods]]
+modId="cerulean_vines"
+version="${file.jarVersion}"
+displayName="Cerulean Vines"
+# logoFile="cerulean_vines.png"
+authors="AbraXator"
+displayTest="MATCH_VERSION"
+description='''Lorem Ipsum'''
+
+[[dependencies.cerulean_vines]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47.0.19,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.cerulean_vines]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
