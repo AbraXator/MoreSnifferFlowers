@@ -23,7 +23,7 @@ public class CeruleanVinePatchItem extends Item {
     public InteractionResult useOn(UseOnContext pContext) {
         if(pContext.getLevel().isClientSide()) return InteractionResult.FAIL;
         else {
-            //if(ModBlocks.CERULEAN_VINE.isPresent()) pContext.getLevel().setBlock(pContext.getClickedPos(), ModBlocks.CERULEAN_VINE.get().defaultBlockState(), 3);
+            if(ModBlocks.CERULEAN_VINE.isPresent()) pContext.getLevel().setBlock(pContext.getClickedPos(), ModBlocks.CERULEAN_VINE.get().defaultBlockState(), 3);
             return InteractionResult.sidedSuccess(pContext.getLevel().isClientSide());
         }
     }

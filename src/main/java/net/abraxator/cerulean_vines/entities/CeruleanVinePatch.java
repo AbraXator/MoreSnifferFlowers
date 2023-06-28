@@ -2,9 +2,11 @@ package net.abraxator.cerulean_vines.entities;
 
 import net.abraxator.cerulean_vines.init.ModEntities;
 import net.abraxator.cerulean_vines.init.ModItems;
+import net.abraxator.cerulean_vines.init.ModMobEffects;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,7 +50,7 @@ public class CeruleanVinePatch extends ThrowableItemProjectile {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if(entity instanceof LivingEntity livingEntity){
-            //livingEntity.addEffect(new MobEffectInstance(ModMobEffects.CERULEANLY_VINED.get(), 60));
+            livingEntity.addEffect(new MobEffectInstance(ModMobEffects.CERULEANLY_VINED.get(), 60));
         }
     }
 
