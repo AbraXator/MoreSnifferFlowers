@@ -1,7 +1,7 @@
-package net.abraxator.cerulean_vines.init;
+package net.abraxator.ceruleanvines.init;
 
-import net.abraxator.cerulean_vines.CeruleanVines;
-import net.abraxator.cerulean_vines.items.CeruleanVinePatchItem;
+import net.abraxator.ceruleanvines.CeruleanVines;
+import net.abraxator.ceruleanvines.items.CeruleanVinePatchItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

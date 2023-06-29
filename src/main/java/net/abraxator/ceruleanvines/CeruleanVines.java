@@ -1,7 +1,7 @@
-package net.abraxator.cerulean_vines;
+package net.abraxator.ceruleanvines;
 
 import com.mojang.logging.LogUtils;
-import net.abraxator.cerulean_vines.init.*;
+import net.abraxator.ceruleanvines.init.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;

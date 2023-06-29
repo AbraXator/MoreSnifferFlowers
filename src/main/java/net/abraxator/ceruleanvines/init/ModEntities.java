@@ -1,7 +1,7 @@
-package net.abraxator.cerulean_vines.init;
+package net.abraxator.ceruleanvines.init;
 
-import net.abraxator.cerulean_vines.CeruleanVines;
-import net.abraxator.cerulean_vines.entities.CeruleanVinePatch;
+import net.abraxator.ceruleanvines.CeruleanVines;
+import net.abraxator.ceruleanvines.entities.CeruleanVinePatch;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

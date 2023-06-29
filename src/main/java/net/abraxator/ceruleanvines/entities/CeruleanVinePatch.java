@@ -1,8 +1,11 @@
-package net.abraxator.cerulean_vines.entities;
+package net.abraxator.ceruleanvines.entities;
 
-import net.abraxator.cerulean_vines.init.ModEntities;
-import net.abraxator.cerulean_vines.init.ModItems;
-import net.abraxator.cerulean_vines.init.ModMobEffects;
+import net.abraxator.ceruleanvines.init.ModBlocks;
+import net.abraxator.ceruleanvines.init.ModEntities;
+import net.abraxator.ceruleanvines.init.ModItems;
+import net.abraxator.ceruleanvines.init.ModMobEffects;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,6 +17,9 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -31,16 +37,11 @@ public class CeruleanVinePatch extends ThrowableItemProjectile {
         return ModItems.CERULEAN_VINE_PATCH.get();
     }
 
-    private ParticleOptions getParticle() {
-        ItemStack itemstack = this.getItemRaw();
-        return itemstack.isEmpty() ? null : new ItemParticleOption(ParticleTypes.ITEM, itemstack);
-    }
-
     @Override
     public void handleEntityEvent(byte pId) {
         if(pId == 3){
             for (int i = 0; i < 8; i++) {
-                this.level().addParticle(getParticle(), this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
     }

@@ -1,6 +1,5 @@
-package net.abraxator.cerulean_vines.blocks;
+package net.abraxator.ceruleanvines.blocks;
 
-import com.mojang.datafixers.types.Type;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -13,21 +12,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.checkerframework.checker.units.qual.C;
+import org.checkerframework.checker.units.qual.A;
 
 public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlock{
     public static final int MAX_AGE = 3;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
-    private final CropBlock cropBlock;
 
     public CeruleanVineBlock(Properties pProperties) {
         super(pProperties);
-        this.cropBlock = new CropBlock(pProperties);
+        this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        super.createBlockStateDefinition(pBuilder);
         pBuilder.add(AGE);
     }
 
@@ -44,7 +43,7 @@ public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlo
     }
 
     public final boolean isMaxAge(BlockState pState) {
-        return this.getAge(pState) >= this.getMaxAge();
+        return this.getAge(pState) >= this.getMaxAge() || (pState.getValue(AGE) + 1 == this.getMaxAge());
     }
 
     @Override
@@ -52,21 +51,21 @@ public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlo
         return !this.isMaxAge(pState);
     }
 
-    public BlockState getStateForAge(int pAge) {
-        return this.defaultBlockState().setValue(this.getAgeProperty(), Integer.valueOf(pAge));
+    protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
+        if (!this.isMaxAge(pState)) {
+            float f = getGrowthSpeed(this, pLevel, pPos);
+            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
+                pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 3);
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, pPos, pState);
+            }
+        }
     }
 
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         if (!pLevel.isAreaLoaded(pPos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
         if (pLevel.getRawBrightness(pPos, 0) >= 9) {
-            if (!this.isMaxAge(pState)) {
-                float f = getGrowthSpeed(this, pLevel, pPos);
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
-                    pLevel.setBlock(pPos, this.getStateForAge(getAge(pState) + 1), 2);
-                    net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, pPos, pState);
-                }
-            }
+            grow(pState, pLevel, pPos, pRandom);
         }
     }
 
@@ -83,12 +82,6 @@ public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlo
             for(int j = -1; j <= 1; ++j) {
                 float f1 = 0.0F;
                 BlockState blockstate = pLevel.getBlockState(blockpos.offset(i, 0, j));
-                if (blockstate.canSustainPlant(pLevel, blockpos.offset(i, 0, j), net.minecraft.core.Direction.UP, (net.minecraftforge.common.IPlantable) pBlock)) {
-                    f1 = 1.0F;
-                    if (blockstate.isFertile(pLevel, pPos.offset(i, 0, j))) {
-                        f1 = 3.0F;
-                    }
-                }
 
                 if (i != 0 || j != 0) {
                     f1 /= 4.0F;
@@ -128,15 +121,7 @@ public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlo
 
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+        grow(pState, pLevel, pPos, pRandom);
         this.spreader.spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
-        if (pLevel.getRawBrightness(pPos, 0) >= 9) {
-            if (!this.isMaxAge(pState)) {
-                float f = getGrowthSpeed(this, pLevel, pPos);
-                if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int) (25.0F / f) + 1) == 0)) {
-                    pLevel.setBlock(pPos, this.getStateForAge(getAge(pState) + 1), 2);
-                    net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, pPos, pState);
-                }
-            }
-        }
     }
 }

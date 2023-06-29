@@ -1,7 +1,7 @@
-package net.abraxator.cerulean_vines.init;
+package net.abraxator.ceruleanvines.init;
 
-import net.abraxator.cerulean_vines.CeruleanVines;
-import net.abraxator.cerulean_vines.effects.CeruleanlyVinedEffect;
+import net.abraxator.ceruleanvines.CeruleanVines;
+import net.abraxator.ceruleanvines.effects.CeruleanlyVinedEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.registries.DeferredRegister;

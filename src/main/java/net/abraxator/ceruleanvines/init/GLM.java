@@ -1,21 +1,4 @@
-package net.abraxator.cerulean_vines.init;
-
-import com.google.common.base.Suppliers;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.abraxator.cerulean_vines.CeruleanVines;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
-import org.lwjgl.system.SharedLibrary;
-
-import java.util.function.Supplier;
+package net.abraxator.ceruleanvines.init;
 
 public class GLM {
     /*public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> GLM = DeferredRegister.create(

@@ -1,4 +1,4 @@
-package net.abraxator.cerulean_vines.effects;
+package net.abraxator.ceruleanvines.effects;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

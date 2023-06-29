@@ -1,10 +1,10 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "block",
+	"render_type": "cutout",
+	"ambientocclusion": false,
 	"textures": {
-		"0": "chakral:block/cerulean_vines:cerulean_vine_stage_2",
-		"1": "chakral:block/cerulean_vines:cerulean_vine_stage_3",
-		"particle": "chakral:block/cerulean_vines:cerulean_vine_stage_3"
+		"0": "cerulean_vines:block/cerulean_vine_stage_2",
+		"1": "cerulean_vines:block/cerulean_vine_stage_3",
+		"particle": "cerulean_vines:block/cerulean_vine_stage_3"
 	},
 	"elements": [
 		{

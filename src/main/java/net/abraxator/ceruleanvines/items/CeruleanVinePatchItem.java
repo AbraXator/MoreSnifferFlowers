@@ -1,7 +1,9 @@
-package net.abraxator.cerulean_vines.items;
+package net.abraxator.ceruleanvines.items;
 
-import net.abraxator.cerulean_vines.entities.CeruleanVinePatch;
-import net.abraxator.cerulean_vines.init.ModBlocks;
+import net.abraxator.ceruleanvines.entities.CeruleanVinePatch;
+import net.abraxator.ceruleanvines.init.ModBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -13,6 +15,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class CeruleanVinePatchItem extends Item {
     public CeruleanVinePatchItem(Properties pProperties) {
@@ -20,10 +27,15 @@ public class CeruleanVinePatchItem extends Item {
     }
 
     @Override
+    @NotNull
     public InteractionResult useOn(UseOnContext pContext) {
         if(pContext.getLevel().isClientSide()) return InteractionResult.FAIL;
         else {
-            if(ModBlocks.CERULEAN_VINE.isPresent()) pContext.getLevel().setBlock(pContext.getClickedPos(), ModBlocks.CERULEAN_VINE.get().defaultBlockState(), 3);
+            Level level = pContext.getLevel();
+            Direction direction = pContext.getClickedFace();
+            BlockPos pos = pContext.getClickedPos().relative(direction);
+            BlockState state = ModBlocks.CERULEAN_VINE.get().defaultBlockState().setValue(MultifaceBlock.getFaceProperty(direction.getOpposite()), Boolean.TRUE);
+            level.setBlock(pos, state, 3);
             return InteractionResult.sidedSuccess(pContext.getLevel().isClientSide());
         }
     }
