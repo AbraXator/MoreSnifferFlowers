@@ -25,7 +25,6 @@ public class GLM {
 
         @Override
         public Codec<? extends IGlobalLootModifier> codec() {
-            return null;
         }
     }*/
 }

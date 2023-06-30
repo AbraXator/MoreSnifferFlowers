@@ -1,9 +1,17 @@
 package net.abraxator.ceruleanvines.blocks;
 
+import net.abraxator.ceruleanvines.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -12,17 +20,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.checkerframework.checker.units.qual.A;
 
-public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlock{
-    public static final int MAX_AGE = 3;
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
+public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock{
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
-    public CeruleanVineBlock(Properties pProperties) {
+    public DawnberryVineBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0));
     }
@@ -42,11 +51,15 @@ public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlo
     }
 
     public int getMaxAge() {
-        return MAX_AGE;
+        return AGE.getPossibleValues().stream().toList().get(AGE.getPossibleValues().size() - 1);
     }
 
     public final boolean isMaxAge(BlockState pState) {
-        return this.getAge(pState) >= this.getMaxAge() || (pState.getValue(AGE) + 1 == this.getMaxAge());
+        return this.getAge(pState) >= this.getMaxAge();
+    }
+
+    private boolean canGrow(BlockState pState){
+        return pState.getValue(AGE) + 1 == this.getMaxAge() && !isMaxAge(pState);
     }
 
     @Override
@@ -54,11 +67,28 @@ public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlo
         return !this.isMaxAge(pState);
     }
 
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if(this.isMaxAge(pState)) {
+            RandomSource randomSource = pLevel.getRandom();
+            final ItemStack DAWNBERRY = new ItemStack(ModItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 4));
+            final ItemStack SEEDS = new ItemStack(ModItems.DAWNBERRY_VINE_SEEDS.get(), randomSource.nextIntBetweenInclusive(0, 1));
+            popResource(pLevel, pPos, DAWNBERRY);
+            popResource(pLevel, pPos, SEEDS);
+            pLevel.playSound(null, pPos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
+            pLevel.setBlock(pPos, pState.setValue(AGE, 2), 2);
+            pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, pState));
+            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+        }else {
+            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        }
+    }
+
     protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
-        if (!this.isMaxAge(pState)) {
+        if (canGrow(pState)) {
             float f = getGrowthSpeed(this, pLevel, pPos);
             if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
-                pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 3);
+                pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, pPos, pState);
             }
         }
@@ -125,7 +155,9 @@ public class CeruleanVineBlock extends MultifaceBlock implements BonemealableBlo
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
         grow(pState, pLevel, pPos, pRandom);
-        this.spreader.spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
+        if(pRandom.nextFloat() >= 0.3F) {
+            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
+        }
     }
 
     @Override

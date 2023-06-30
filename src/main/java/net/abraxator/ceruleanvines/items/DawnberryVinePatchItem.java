@@ -15,14 +15,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.MultifaceBlock;
-import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class CeruleanVinePatchItem extends Item {
-    public CeruleanVinePatchItem(Properties pProperties) {
+public class DawnberryVinePatchItem extends Item {
+    public DawnberryVinePatchItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -34,7 +32,7 @@ public class CeruleanVinePatchItem extends Item {
             Level level = pContext.getLevel();
             Direction direction = pContext.getClickedFace();
             BlockPos pos = pContext.getClickedPos().relative(direction);
-            BlockState state = ModBlocks.CERULEAN_VINE.get().defaultBlockState().setValue(MultifaceBlock.getFaceProperty(direction.getOpposite()), Boolean.TRUE);
+            BlockState state = ModBlocks.DAWNBERRY_VINE.get().defaultBlockState().setValue(MultifaceBlock.getFaceProperty(direction.getOpposite()), Boolean.TRUE);
             level.setBlock(pos, state, 3);
             return InteractionResult.sidedSuccess(pContext.getLevel().isClientSide());
         }

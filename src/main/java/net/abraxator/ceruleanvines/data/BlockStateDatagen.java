@@ -1,7 +1,7 @@
 package net.abraxator.ceruleanvines.data;
 
 import net.abraxator.ceruleanvines.CeruleanVines;
-import net.abraxator.ceruleanvines.blocks.CeruleanVineBlock;
+import net.abraxator.ceruleanvines.blocks.DawnberryVineBlock;
 import net.abraxator.ceruleanvines.init.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -22,10 +22,10 @@ public class BlockStateDatagen extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        MultiPartBlockStateBuilder builder = getMultipartBuilder(ModBlocks.CERULEAN_VINE.get());
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(ModBlocks.DAWNBERRY_VINE.get());
         PipeBlock.PROPERTY_BY_DIRECTION.entrySet().forEach(e -> {
             Direction dir = e.getKey();
-            CeruleanVineBlock.AGE.getAllValues().forEach(integerValue -> {
+            DawnberryVineBlock.AGE.getAllValues().forEach(integerValue -> {
                 int age = integerValue.value();
                 builder.part().modelFile(getModelFile(age)).addModel().condition(e.getValue(), true).end();
             });

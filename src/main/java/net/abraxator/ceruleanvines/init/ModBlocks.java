@@ -1,7 +1,7 @@
 package net.abraxator.ceruleanvines.init;
 
 import net.abraxator.ceruleanvines.CeruleanVines;
-import net.abraxator.ceruleanvines.blocks.CeruleanVineBlock;
+import net.abraxator.ceruleanvines.blocks.DawnberryVineBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +16,7 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, CeruleanVines.MOD_ID);
 
-    public static final RegistryObject<Block> CERULEAN_VINE = registerBlock("cerulean_vine", () -> new CeruleanVineBlock(BlockBehaviour.Properties.of().randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> DAWNBERRY_VINE = registerBlock("dawnberry_vine", () -> new DawnberryVineBlock(BlockBehaviour.Properties.of().randomTicks().noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
