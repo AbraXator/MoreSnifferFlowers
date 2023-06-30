@@ -16,7 +16,7 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, CeruleanVines.MOD_ID);
 
-    public static final RegistryObject<Block> CERULEAN_VINE = registerBlock("cerulean_vine", () -> new CeruleanVineBlock(BlockBehaviour.Properties.of().randomTicks()));
+    public static final RegistryObject<Block> CERULEAN_VINE = registerBlock("cerulean_vine", () -> new CeruleanVineBlock(BlockBehaviour.Properties.of().randomTicks().noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

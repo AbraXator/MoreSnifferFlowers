@@ -4,6 +4,7 @@ import net.abraxator.ceruleanvines.CeruleanVines;
 import net.abraxator.ceruleanvines.client.overlay.CeruleanlyVinedOverlay;
 import net.abraxator.ceruleanvines.init.ModEntities;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -19,6 +20,6 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerGUIOverlays(RegisterGuiOverlaysEvent event){
-        event.registerAboveAll("ceruleanly_vined_overlay", new CeruleanlyVinedOverlay());
+        //event.registerBelow(new ResourceLocation("frostbite"),"ceruleanly_vined_overlay", new CeruleanlyVinedOverlay());
     }
 }
