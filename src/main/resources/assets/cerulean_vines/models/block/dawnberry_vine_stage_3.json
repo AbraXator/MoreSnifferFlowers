@@ -2,8 +2,8 @@
 	"ambientocclusion": false,
 	"render_type": "cutout",
 	"textures": {
-		"particle": "cerulean_vines:block/cerulean_vine_stage_1",
-		"cerulean_vine": "cerulean_vines:block/cerulean_vine_stage_1"
+		"particle": "cerulean_vines:block/dawnberry_vine_stage_3",
+		"cerulean_vine": "cerulean_vines:block/dawnberry_vine_stage_3"
 	},
 	"elements": [
 		{   "from": [ 0, 0, 0.1 ],
