@@ -58,10 +58,6 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         return this.getAge(pState) >= this.getMaxAge();
     }
 
-    private boolean canGrow(BlockState pState){
-        return pState.getValue(AGE) + 1 == this.getMaxAge() && !isMaxAge(pState);
-    }
-
     @Override
     public boolean isRandomlyTicking(BlockState pState) {
         return !this.isMaxAge(pState);
@@ -85,7 +81,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     }
 
     protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
-        if (canGrow(pState)) {
+        if (!isMaxAge(pState)) {
             float f = getGrowthSpeed(this, pLevel, pPos);
             if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
                 pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
@@ -142,9 +138,13 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         return f;
     }
 
+    private void canSpread(){
+
+    }
+
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
-        return Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
+        return !isMaxAge(pState);
     }
 
     @Override
@@ -154,8 +154,9 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        grow(pState, pLevel, pPos, pRandom);
-        if(pRandom.nextFloat() >= 0.3F) {
+        pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
+        boolean canSpread = Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
+        if(pRandom.nextFloat() >= 0.3F && canSpread) {
             this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
         }
     }

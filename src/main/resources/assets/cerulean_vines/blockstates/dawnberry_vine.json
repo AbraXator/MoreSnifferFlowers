@@ -1,9 +1,8 @@
 {
   "multipart": [
-
     {
       "apply": {
-        "model": "cerulean_vines:block/dawnberry_vine_stage_0"
+        "model": "cerulean_vines:block/dawnberry_vine_stage_2"
       },
       "when": {
         "north": "true",
@@ -12,7 +11,7 @@
     },
     {
       "apply": {
-        "model": "cerulean_vines:block/dawnberry_vine_stage_0"
+        "model": "cerulean_vines:block/dawnberry_vine_stage_2"
       },
       "when": {
         "down": "false",
@@ -82,7 +81,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_0",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "west": "true",
@@ -93,7 +92,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_0",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "down": "false",
@@ -109,7 +108,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_0",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "up": "true",
@@ -120,7 +119,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_0",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "down": "false",
@@ -159,10 +158,9 @@
         "age": 0
       }
     },
-
     {
       "apply": {
-        "model": "cerulean_vines:block/dawnberry_vine_stage_1"
+        "model": "cerulean_vines:block/dawnberry_vine_stage_2"
       },
       "when": {
         "north": "true",
@@ -171,7 +169,7 @@
     },
     {
       "apply": {
-        "model": "cerulean_vines:block/dawnberry_vine_stage_1"
+        "model": "cerulean_vines:block/dawnberry_vine_stage_2"
       },
       "when": {
         "down": "false",
@@ -241,7 +239,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_1",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "west": "true",
@@ -252,7 +250,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_1",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "down": "false",
@@ -268,7 +266,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_1",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "up": "true",
@@ -279,7 +277,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_1",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "down": "false",
@@ -318,7 +316,6 @@
         "age": 1
       }
     },
-
     {
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_2"
@@ -373,7 +370,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_2",
         "uvlock": true,
-        "y": 280
+        "y": 180
       },
       "when": {
         "south": "true",
@@ -384,7 +381,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_2",
         "uvlock": true,
-        "y": 280
+        "y": 180
       },
       "when": {
         "down": "false",
@@ -400,7 +397,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_2",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "west": "true",
@@ -411,7 +408,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_2",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "down": "false",
@@ -427,7 +424,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_2",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "up": "true",
@@ -438,7 +435,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_2",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "down": "false",
@@ -477,7 +474,6 @@
         "age": 2
       }
     },
-
     {
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_3"
@@ -532,7 +528,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_3",
         "uvlock": true,
-        "y": 280
+        "y": 180
       },
       "when": {
         "south": "true",
@@ -543,7 +539,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_3",
         "uvlock": true,
-        "y": 280
+        "y": 180
       },
       "when": {
         "down": "false",
@@ -559,7 +555,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_3",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "west": "true",
@@ -570,7 +566,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_3",
         "uvlock": true,
-        "y": 470
+        "y": 270
       },
       "when": {
         "down": "false",
@@ -586,7 +582,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_3",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "up": "true",
@@ -597,7 +593,7 @@
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_3",
         "uvlock": true,
-        "x": 470
+        "x": 270
       },
       "when": {
         "down": "false",
@@ -636,7 +632,6 @@
         "age": 3
       }
     },
-
     {
       "apply": {
         "model": "cerulean_vines:block/dawnberry_vine_stage_4_north"
