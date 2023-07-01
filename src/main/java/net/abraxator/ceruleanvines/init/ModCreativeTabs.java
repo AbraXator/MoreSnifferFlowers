@@ -14,7 +14,7 @@ public class ModCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> CERULEAN_VINES_TAB = TABS.register("cerulean_vines_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("cerulean_vines.creative_tab"))
-            .icon(() -> new ItemStack(ModItems.CERULEAN_VINE_PATCH.get()))
+            .icon(() -> new ItemStack(ModItems.DAWNBERRY.get()))
             .displayItems((parameters, output) -> ModItems.ITEMS.getEntries().forEach(itemRegistryObject -> output.accept(itemRegistryObject.get())))
             .build());
 }

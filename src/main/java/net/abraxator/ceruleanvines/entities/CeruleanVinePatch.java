@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-
+/*
 public class CeruleanVinePatch extends ThrowableItemProjectile {
     public CeruleanVinePatch(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -63,4 +63,4 @@ public class CeruleanVinePatch extends ThrowableItemProjectile {
             this.discard();
         }
     }
-}
+}*/

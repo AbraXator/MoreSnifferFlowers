@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -26,6 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.checkerframework.checker.units.qual.A;
+import org.jetbrains.annotations.Nullable;
 
 public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock{
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
@@ -42,6 +44,17 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         pBuilder.add(AGE);
     }
 
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        return super.getStateForPlacement(pContext);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        return super.canSurvive(pState, pLevel, pPos);
+    }
+
     protected IntegerProperty getAgeProperty() {
         return AGE;
     }
@@ -56,10 +69,6 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     public final boolean isMaxAge(BlockState pState) {
         return this.getAge(pState) >= this.getMaxAge();
-    }
-
-    private boolean canGrow(BlockState pState){
-        return pState.getValue(AGE) + 1 == this.getMaxAge() && !isMaxAge(pState);
     }
 
     @Override
@@ -85,7 +94,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     }
 
     protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
-        if (canGrow(pState)) {
+        if (!isMaxAge(pState)) {
             float f = getGrowthSpeed(this, pLevel, pPos);
             if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
                 pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
@@ -144,7 +153,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
-        return Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
+        return !isMaxAge(pState);
     }
 
     @Override
@@ -155,8 +164,13 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
         grow(pState, pLevel, pPos, pRandom);
+        pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
         if(pRandom.nextFloat() >= 0.3F) {
-            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
+            boolean canSpread = Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
+            if(pRandom.nextFloat() >= 0.3F && canSpread) {
+                this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
+                this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
+            }
         }
     }
 

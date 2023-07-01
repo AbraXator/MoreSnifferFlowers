@@ -5,6 +5,7 @@ import net.abraxator.ceruleanvines.blocks.DawnberryVineBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -16,7 +17,7 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, CeruleanVines.MOD_ID);
 
-    public static final RegistryObject<Block> DAWNBERRY_VINE = registerBlock("dawnberry_vine", () -> new DawnberryVineBlock(BlockBehaviour.Properties.of().randomTicks().noOcclusion()));
+    public static final RegistryObject<Block> DAWNBERRY_VINE = BLOCKS.register("dawnberry_vine", () -> new DawnberryVineBlock(BlockBehaviour.Properties.copy(Blocks.GLOW_LICHEN).randomTicks().noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

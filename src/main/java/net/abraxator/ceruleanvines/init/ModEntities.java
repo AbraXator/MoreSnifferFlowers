@@ -1,7 +1,6 @@
 package net.abraxator.ceruleanvines.init;
 
 import net.abraxator.ceruleanvines.CeruleanVines;
-import net.abraxator.ceruleanvines.entities.CeruleanVinePatch;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, CeruleanVines.MOD_ID);
 
-    public static final RegistryObject<EntityType<CeruleanVinePatch>> CERULEAN_VINE_PATCH = buildNoEgg("cerulean_vine_patch", makeCastedBuilder(CeruleanVinePatch.class, CeruleanVinePatch::new, 0.25F, 0.25F, 4, 10), false);
+    //public static final RegistryObject<EntityType<CeruleanVinePatch>> CERULEAN_VINE_PATCH = buildNoEgg("cerulean_vine_patch", makeCastedBuilder(CeruleanVinePatch.class, CeruleanVinePatch::new, 0.25F, 0.25F, 4, 10), false);
 
     private static <E extends Entity> RegistryObject<EntityType<E>> buildNoEgg(String name, EntityType.Builder<E> builder, boolean fireproof) {
         if (fireproof) builder.fireImmune();
