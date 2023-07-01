@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvents {
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntities.CERULEAN_VINE_PATCH.get(), pContext -> new ThrownItemRenderer<>(pContext, 2.0F, false));
+        //event.registerEntityRenderer(ModEntities.CERULEAN_VINE_PATCH.get(), pContext -> new ThrownItemRenderer<>(pContext, 2.0F, false));
     }
 
     @SubscribeEvent

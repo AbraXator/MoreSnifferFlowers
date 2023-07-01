@@ -1,6 +1,5 @@
 package net.abraxator.ceruleanvines.items;
 
-import net.abraxator.ceruleanvines.entities.CeruleanVinePatch;
 import net.abraxator.ceruleanvines.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,10 +42,10 @@ public class DawnberryVinePatchItem extends Item {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         if(!pLevel.isClientSide){
-            CeruleanVinePatch ceruleanVinePatch = new CeruleanVinePatch(pPlayer, pLevel);
+            /*CeruleanVinePatch ceruleanVinePatch = new CeruleanVinePatch(pPlayer, pLevel);
             ceruleanVinePatch.setItem(itemStack);
             ceruleanVinePatch.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.5F, 1.0F);
-            pLevel.addFreshEntity(ceruleanVinePatch);
+            pLevel.addFreshEntity(ceruleanVinePatch);*/
         }
 
         pPlayer.awardStat(Stats.ITEM_USED.get(this));
