@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 
 @Mod(CeruleanVines.MOD_ID)
 public class CeruleanVines {
-    public static final String MOD_ID = "cerulean_vines";
+    public static final String MOD_ID = "moresnifferflowers";
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public CeruleanVines() {
@@ -35,9 +35,6 @@ public class CeruleanVines {
 
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        FireBlock fireBlock = ((FireBlock) Blocks.FIRE);
-        fireBlock.setFlammable()
-
         ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ModBlocks.DAWNBERRY_VINE.get(), 0.85F);

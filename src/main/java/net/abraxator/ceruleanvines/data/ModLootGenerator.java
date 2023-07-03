@@ -17,7 +17,7 @@ import java.util.Set;
 public class ModLootGenerator extends LootTableProvider {
     public ModLootGenerator(PackOutput pOutput) {
         super(pOutput, Set.of(), List.of(
-                new LootTableProvider.SubProviderEntry(ModBlockLoottables::new, LootContextParamSets.BLOCK)
+                new LootTableProvider.SubProviderEntry(ModBlockLoottableProvider::new, LootContextParamSets.BLOCK)
         ));
     }
 

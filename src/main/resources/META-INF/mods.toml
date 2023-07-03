@@ -3,22 +3,22 @@ loaderVersion="[47,)"
 license="MIT"
 # issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
 [[mods]]
-modId="cerulean_vines"
+modId="moresnifferflowers"
 version="${file.jarVersion}"
-displayName="Cerulean Vines"
-# logoFile="cerulean_vines.png"
-authors="AbraXator"
+displayName="More Sniffer Flowers"
+# logoFile="moresnifferflowers.png"
+authors="AbraXator, Nikdo53"
 displayTest="MATCH_VERSION"
 description='''Lorem Ipsum'''
 
-[[dependencies.cerulean_vines]]
+[[dependencies.moresnifferflowers]]
     modId="forge"
     mandatory=true
     versionRange="[47.0.19,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.cerulean_vines]]
+[[dependencies.moresnifferflowers]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.20.1,1.21)"

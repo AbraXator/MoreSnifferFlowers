@@ -4,8 +4,8 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-group = 'nikdo53'
-archivesBaseName = 'more_sniffer_flowers'
+group = 'net.abraxator.moresnifferflowers'
+archivesBaseName = 'moresnifferflowers'
 
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -22,7 +22,7 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'more_sniffer_flowers'
+            property 'forge.enabledGameTestNamespaces', 'moresnifferflowers'
             mods {
                 more_sniffer_flowers {
                     source sourceSets.main
@@ -37,7 +37,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-            args '--mod', 'more_sniffer_flowers', '--all',
+            args '--mod', 'moresnifferflowers', '--all',
                     '--output', file('src/generated/resources/'),
                     '--existing', file('src/main/resources/') 
         }
@@ -52,12 +52,12 @@ dependencies {
 }
 
 final manifestAttributes = [
-        'Specification-Title'   : 'more_sniffer_flowers',
-        'Specification-Vendor'  : 'nikdo53',
+        'Specification-Title'   : 'moresnifferflowers',
+        'Specification-Vendor'  : 'AbraXator',
         'Specification-Version' : '1',
         'Implementation-Title'  : project.name,
         'Implementation-Version': project.jar.archiveVersion,
-        'Implementation-Vendor' : 'nikdo53'
+        'Implementation-Vendor' : 'AbraXator'
 ]
 
 jar {

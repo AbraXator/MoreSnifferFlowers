@@ -1,6 +1,6 @@
 
 {
-  "type": "cerulean_vines:sniffer",
+  "type": "moresnifferflowers:sniffer",
   "conditions": [
     {
       "condition": "forge:loot_table_id",
