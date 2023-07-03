@@ -1,9 +1,11 @@
 package net.abraxator.ceruleanvines.blocks;
 
 import net.abraxator.ceruleanvines.init.ModItems;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -12,6 +14,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,39 +23,31 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.Tags;
 import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.Nullable;
 
-public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock{
+public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
+    public static final BooleanProperty IS_SHEARED = BooleanProperty.create("is_sheared");
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     public DawnberryVineBlock(Properties pProperties) {
         super(pProperties);
-        this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0));
+        this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0).setValue(IS_SHEARED, Boolean.FALSE));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(AGE);
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return super.getStateForPlacement(pContext);
-    }
-
-    @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return super.canSurvive(pState, pLevel, pPos);
+        pBuilder.add(AGE, IS_SHEARED);
     }
 
     protected IntegerProperty getAgeProperty() {
@@ -73,11 +68,26 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     @Override
     public boolean isRandomlyTicking(BlockState pState) {
-        return !this.isMaxAge(pState);
+        return !this.isMaxAge(pState) && !pState.getValue(IS_SHEARED);
     }
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+        if(itemStack.is(Items.SHEARS)) {
+            if(!(pState.getValue(AGE) >= 4)) {
+                if(pPlayer instanceof ServerPlayer serverPlayer) {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pPos, itemStack);
+                }
+
+                pLevel.playSound(pPlayer, pPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS);
+                BlockState state = pState.setValue(IS_SHEARED, !pState.getValue(IS_SHEARED));
+                pLevel.setBlockAndUpdate(pPos, state);
+                pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, state));
+                itemStack.hurtAndBreak(1, pPlayer, player -> player.broadcastBreakEvent(pHand));
+                return InteractionResult.sidedSuccess(pLevel.isClientSide);
+            }
+        }
         if(this.isMaxAge(pState)) {
             RandomSource randomSource = pLevel.getRandom();
             final ItemStack DAWNBERRY = new ItemStack(ModItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 4));
@@ -85,8 +95,9 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
             popResource(pLevel, pPos, DAWNBERRY);
             popResource(pLevel, pPos, SEEDS);
             pLevel.playSound(null, pPos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
-            pLevel.setBlock(pPos, pState.setValue(AGE, 2), 2);
-            pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, pState));
+            BlockState state = pState.setValue(AGE, 2);
+            pLevel.setBlock(pPos, state, 2);
+            pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, state));
             return InteractionResult.sidedSuccess(pLevel.isClientSide);
         }else {
             return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
