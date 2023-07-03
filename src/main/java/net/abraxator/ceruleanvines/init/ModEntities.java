@@ -1,6 +1,6 @@
 package net.abraxator.ceruleanvines.init;
 
-import net.abraxator.ceruleanvines.CeruleanVines;
+import net.abraxator.ceruleanvines.MoreSnifferFlowers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -10,13 +10,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModEntities {
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, CeruleanVines.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MoreSnifferFlowers.MOD_ID);
 
     //public static final RegistryObject<EntityType<CeruleanVinePatch>> CERULEAN_VINE_PATCH = buildNoEgg("cerulean_vine_patch", makeCastedBuilder(CeruleanVinePatch.class, CeruleanVinePatch::new, 0.25F, 0.25F, 4, 10), false);
 
     private static <E extends Entity> RegistryObject<EntityType<E>> buildNoEgg(String name, EntityType.Builder<E> builder, boolean fireproof) {
         if (fireproof) builder.fireImmune();
-        ResourceLocation id = new ResourceLocation(CeruleanVines.MOD_ID, name);
+        ResourceLocation id = new ResourceLocation(MoreSnifferFlowers.MOD_ID, name);
         return ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
     }
 

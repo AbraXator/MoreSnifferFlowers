@@ -1,18 +1,17 @@
 package net.abraxator.ceruleanvines.client.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.abraxator.ceruleanvines.CeruleanVines;
+import net.abraxator.ceruleanvines.MoreSnifferFlowers;
 import net.abraxator.ceruleanvines.init.ModMobEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public class CeruleanlyVinedOverlay implements IGuiOverlay {
-    public static final ResourceLocation CERULEAN_VINED_EFFECTS = new ResourceLocation(CeruleanVines.MOD_ID, "textures/misc/cerulean_vine_outline.png");
+    public static final ResourceLocation CERULEAN_VINED_EFFECTS = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "textures/misc/cerulean_vine_outline.png");
 
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {

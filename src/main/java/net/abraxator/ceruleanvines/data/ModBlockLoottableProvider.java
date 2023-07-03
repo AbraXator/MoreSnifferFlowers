@@ -1,16 +1,13 @@
 package net.abraxator.ceruleanvines.data;
 
-import net.abraxator.ceruleanvines.CeruleanVines;
+import net.abraxator.ceruleanvines.MoreSnifferFlowers;
 import net.abraxator.ceruleanvines.blocks.DawnberryVineBlock;
 import net.abraxator.ceruleanvines.init.ModBlocks;
 import net.abraxator.ceruleanvines.init.ModItems;
-import net.abraxator.ceruleanvines.items.DawnberryVinePatchItem;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -18,7 +15,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -52,7 +48,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
     protected Iterable<Block> getKnownBlocks() {
         return ForgeRegistries.BLOCKS.getValues()
                 .stream()
-                .filter(block -> ForgeRegistries.BLOCKS.getKey(block).getNamespace().equals(CeruleanVines.MOD_ID))
+                .filter(block -> ForgeRegistries.BLOCKS.getKey(block).getNamespace().equals(MoreSnifferFlowers.MOD_ID))
                 .collect(Collectors.toSet());
     }
 }

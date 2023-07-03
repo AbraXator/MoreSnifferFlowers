@@ -1,6 +1,6 @@
 package net.abraxator.ceruleanvines.data;
 
-import net.abraxator.ceruleanvines.CeruleanVines;
+import net.abraxator.ceruleanvines.MoreSnifferFlowers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(modid = CeruleanVines.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModDatagen{
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event){
@@ -21,7 +21,7 @@ public class ModDatagen{
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> completableFuture = event.getLookupProvider();
-        TagsProvider<Block> blockTagsProvider = new ModBlockTagsProvider(packOutput, completableFuture, CeruleanVines.MOD_ID, existingFileHelper);
+        TagsProvider<Block> blockTagsProvider = new ModBlockTagsProvider(packOutput, completableFuture, MoreSnifferFlowers.MOD_ID, existingFileHelper);
         generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, completableFuture, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new ModLoottableProvider(packOutput));
