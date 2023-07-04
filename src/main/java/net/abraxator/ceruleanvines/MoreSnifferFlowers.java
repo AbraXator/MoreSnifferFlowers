@@ -23,7 +23,7 @@ public class MoreSnifferFlowers {
         ModEntities.ENTITIES.register(modEventBus);
         ModMobEffects.EFFECTS.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
-
+        ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -33,8 +33,10 @@ public class MoreSnifferFlowers {
 
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ModBlocks.DAWNBERRY_VINE.get(), 0.85F);
+        event.enqueueWork(() -> {
+            ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
+            ComposterBlock.COMPOSTABLES.put(ModBlocks.DAWNBERRY_VINE.get(), 0.85F);
+        });
     }
 }

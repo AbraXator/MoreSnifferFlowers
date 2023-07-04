@@ -119,7 +119,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "moresnifferflowers:dawnberry_vine_seeds"
         }
       ],
       "rolls": 1.0

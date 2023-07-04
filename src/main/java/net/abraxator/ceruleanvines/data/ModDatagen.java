@@ -21,9 +21,10 @@ public class ModDatagen{
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> completableFuture = event.getLookupProvider();
-        TagsProvider<Block> blockTagsProvider = new ModBlockTagsProvider(packOutput, completableFuture, MoreSnifferFlowers.MOD_ID, existingFileHelper);
+        TagsProvider<Block> blockTagsProvider = new ModBlockTagsProvider(packOutput, completableFuture, existingFileHelper);
         generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, completableFuture, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new ModLoottableProvider(packOutput));
+        generator.addProvider(event.includeClient(), new ModLootModifierProvider(packOutput));
     }
 }

@@ -1,10 +1,12 @@
-
 {
-  "type": "moresnifferflowers:sniffer",
+  "type": "moresnifferflowers:add_items",
   "conditions": [
     {
       "condition": "forge:loot_table_id",
       "loot_table_id": "minecraft:gameplay/sniffer_digging"
     }
+  ],
+  "item": [
+    "moresnifferflowers:dawnberry_vine_seeds"
   ]
 }
