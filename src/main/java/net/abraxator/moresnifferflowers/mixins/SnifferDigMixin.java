@@ -30,6 +30,7 @@ public abstract class SnifferDigMixin extends Animal {
         ServerLevel serverLevel = ((ServerLevel) level());
         LootTable loottable = serverLevel.getServer().getLootData().getLootTable(BuiltInLootTables.SNIFFER_DIGGING);
         LootParams lootparams = (new LootParams.Builder(serverLevel)).withParameter(LootContextParams.ORIGIN, this.position().add(this.getForward().scale(2.25D))).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.GIFT);
+        System.out.println("MIXIN FIRED");
         level().setBlock(BlockPos.containing(this.position().add(this.getForward().scale(2.25D))), ModBlocks.BOBLING_HEAD.get().defaultBlockState(), 3);
         if(this.level().getRandom().nextFloat() < 1 / loottable.getRandomItems(lootparams).size()) {
         }

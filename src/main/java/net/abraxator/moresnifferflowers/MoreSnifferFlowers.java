@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers;
 
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.init.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,7 +21,7 @@ public class MoreSnifferFlowers {
 
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
-        ModEntities.ENTITIES.register(modEventBus);
+        ModEntityTypes.ENTITIES.register(modEventBus);
         ModMobEffects.EFFECTS.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
@@ -38,5 +39,9 @@ public class MoreSnifferFlowers {
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
             ComposterBlock.COMPOSTABLES.put(ModBlocks.DAWNBERRY_VINE.get(), 0.85F);
         });
+    }
+
+    public static ResourceLocation loc(String path) {
+        return new ResourceLocation(MOD_ID, path);
     }
 }
