@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "half=upper": {
+      "model": "moresnifferflowers:block/ambush_top"
+    }
+  }
+}

@@ -1,8 +1,10 @@
 {
 	"item.moresnifferflowers.dawnberry": "Dawnberry",
 	"item.moresnifferflowers.dawnberry_vine_seeds": "Dawnberry Vine Seeds",
-	
+	"item.moresnifferflowers.ambush_seeds": "Ambush Seeds",
+		
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
+	"block.moresnifferflowers.ambush": "Ambush",
 	
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers"
 }
