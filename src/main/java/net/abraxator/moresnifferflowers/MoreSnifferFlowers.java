@@ -21,6 +21,7 @@ public class MoreSnifferFlowers {
 
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntityTypes.ENTITIES.register(modEventBus);
         ModMobEffects.EFFECTS.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);

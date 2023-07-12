@@ -1,39 +1,28 @@
 package net.abraxator.moresnifferflowers.blocks;
 
+import net.abraxator.moresnifferflowers.blocks.blockentities.AmbushBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModItems;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.BushFoliagePlacer;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock {
-    public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
+public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, EntityBlock {
+    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 7);
     public static final BooleanProperty IS_SHEARED = BooleanProperty.create("is_sheared");
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
@@ -47,17 +36,23 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock {
 
     public AmbushBlock(Properties pProperties) {
         super(pProperties);
+        registerDefaultState(this.defaultBlockState().setValue(IS_SHEARED, false));
     }
+
+    @Override
     protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         return pState.is(Blocks.FARMLAND);
     }
+
     protected ItemLike getBaseSeedId() {
-        return Items.WHEAT_SEEDS;
+        return ModItems.AMBUSH_SEEDS.get();
     }
 
+    @Override
     public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
         return new ItemStack(this.getBaseSeedId());
     }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
@@ -85,37 +80,9 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock {
         return !this.isMaxAge(pState) && !pState.getValue(IS_SHEARED);
     }
 
-    @Override
-    @SuppressWarnings("deprecated")
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
-        if(itemStack.is(Items.SHEARS)) {
-            if(!(pState.getValue(AGE) >= 4)) {
-                if(pPlayer instanceof ServerPlayer serverPlayer) {
-                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pPos, itemStack);
-                }
-
-                pLevel.playSound(pPlayer, pPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS);
-                BlockState state = pState.setValue(IS_SHEARED, !pState.getValue(IS_SHEARED));
-                pLevel.setBlockAndUpdate(pPos, state);
-                pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, state));
-                itemStack.hurtAndBreak(1, pPlayer, player -> player.broadcastBreakEvent(pHand));
-                return InteractionResult.sidedSuccess(pLevel.isClientSide);
-            }
-        }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-    }
-
-    protected static float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {
-        float f = 1.0F;
-        BlockPos blockpos = pPos.below();
-        return f;
-    }
-
     protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
         if (!isMaxAge(pState)) {
-            float f = getGrowthSpeed(this, pLevel, pPos);
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
+            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F) + 1) == 0)) {
                 pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
                 net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, pPos, pState);
             }
@@ -150,5 +117,11 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock {
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return Shapes.empty();
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new AmbushBlockEntity(pPos, pState);
     }
 }
