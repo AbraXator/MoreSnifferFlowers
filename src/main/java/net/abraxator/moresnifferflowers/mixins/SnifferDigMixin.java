@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Sniffer.class)
-public abstract class SnifferDigMixin extends Animal {
+public abstract class SnifferDigMixin extends Animal{
     protected SnifferDigMixin(EntityType<? extends Animal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
