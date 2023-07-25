@@ -5,12 +5,18 @@ import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -25,9 +31,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.Nullable;
 
 public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEntityBlock {
@@ -45,6 +54,14 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
         return lower;
     }
 
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        if(pState.getValue(AGE) >= 4 && !pLevel.getBlockState(pCurrentPos.above()).is(ModBlocks.AMBUSH_UPPER.get()) && isLower() && !pLevel.getBlockState(pCurrentPos.below()).is(Blocks.FARMLAND)) {
+            return Blocks.AIR.defaultBlockState();
+        } else {
+            return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+        }
+    }
+
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         return isLower() ? super.canSurvive(pState, pLevel, pPos) : pLevel.getBlockState(pPos.below()).is(ModBlocks.AMBUSH_LOWER.get());
@@ -57,7 +74,7 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
 
     @Override
     public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
-        return isLower() ? new ItemStack(ModItems.AMBUSH_SEEDS.get()) : ItemStack.EMPTY;
+        return new ItemStack(ModItems.AMBUSH_SEEDS.get());
     }
 
     @Override
@@ -74,14 +91,24 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
         return !this.isMaxAge(pState);
     }
 
-    protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if(pLevel.getBlockEntity(pPos) instanceof  AmbushBlockEntity entity) {
+            entity.resetProgress(isLower() ? pPos.above() : pPos, pState, pLevel);
+            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+        } else {
+            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        }
+    }
+
+    protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom, boolean isBonemeal){
         if (!isMaxAge(pState)) {
             float f = getGrowthSpeed(this, pLevel, pPos);
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
+            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0) || isBonemeal) {
                 pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
                 BlockPos blockPos = pPos.above();
                 if(pLevel.getBlockState(blockPos).getBlock() instanceof AmbushBlock ambushBlock) {
-                    ambushBlock.grow( pLevel.getBlockState(blockPos), pLevel, blockPos, pRandom);
+                    ambushBlock.grow(pLevel.getBlockState(blockPos), pLevel, blockPos, pRandom, isBonemeal);
                 }
                 if(isLower() && pState.getValue(AGE) == 3) {
                     pLevel.setBlock(pPos.above(), ModBlocks.AMBUSH_UPPER.get().defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(AGE, 4), 3);
@@ -91,6 +118,11 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
         }
         if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && pState.getValue(AGE) == 6) {
         }
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     protected static float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {
@@ -136,9 +168,9 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
 
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (!pLevel.isAreaLoaded(pPos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
+        if (!pLevel.isAreaLoaded(pPos, 1)) return;
         if (pLevel.getRawBrightness(pPos, 0) >= 9) {
-            grow(pState, pLevel, pPos, pRandom);
+            grow(pState, pLevel, pPos, pRandom, false);
         }
     }
 
@@ -159,7 +191,7 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
 
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        grow(pState, pLevel, pPos, pRandom);
+        grow(pState, pLevel, pPos, pRandom, true);
     }
 
     @Override

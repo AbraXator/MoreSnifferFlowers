@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.antlr.v4.runtime.tree.xpath.XPathLexer;
 
 public class AmbushBlockEntity extends BlockEntity {
     public float growProgress;
@@ -25,12 +26,23 @@ public class AmbushBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AmbushBlockEntity entity) {
-        while (canGrow(pState, entity.growProgress, entity.hasAmber)) {
-            entity.growProgress += 1 / (30 * 20);
+        if(canGrow(pState, entity.growProgress, entity.hasAmber)) {
+            entity.growProgress += 0.01;
+            if(entity.growProgress == 1) {
+                entity.onGrow(pPos, pState, pLevel);
+            }
         }
+    }
 
-        if(entity.growProgress == 1) {
-            pLevel.setBlock(pPos.above(2), ModBlocks.AMBER.get().defaultBlockState(), 3);
+    public void onGrow(BlockPos blockPos, BlockState state, Level level) {
+        this.hasAmber = true;
+        level.setBlock(blockPos, ModBlocks.AMBER.get().defaultBlockState(), 3);
+    }
+
+    public void resetProgress(BlockPos blockPos, BlockState state, Level level) {
+        if(this.hasAmber) {
+            this.growProgress = 0;
+            level.setBlock(blockPos, state.setValue(AmbushBlock.AGE, 7), 3);
         }
     }
 

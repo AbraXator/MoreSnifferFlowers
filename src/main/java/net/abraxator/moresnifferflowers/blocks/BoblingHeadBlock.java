@@ -13,9 +13,4 @@ public class BoblingHeadBlock extends Block {
     public BoblingHeadBlock(Properties pProperties) {
         super(pProperties);
     }
-
-    @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-    }
 }

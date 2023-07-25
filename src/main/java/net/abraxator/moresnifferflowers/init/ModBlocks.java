@@ -23,7 +23,7 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, MoreSnifferFlowers.MOD_ID);
 
     public static final RegistryObject<Block> DAWNBERRY_VINE = BLOCKS.register("dawnberry_vine", () -> new DawnberryVineBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GLOW_LICHEN).replaceable().noCollission().strength(0.2F).sound(SoundType.GLOW_LICHEN).ignitedByLava().pushReaction(PushReaction.DESTROY).randomTicks().noOcclusion()));
-    public static final RegistryObject<Block> BOBLING_HEAD = BLOCKS.register("bobling_head", () -> new BoblingHeadBlock(BlockBehaviour.Properties.copy(Blocks.MOSS_BLOCK)));
+    public static final RegistryObject<Block> BOBLING_HEAD = BLOCKS.register("bobling_head", () -> new BoblingHeadBlock(BlockBehaviour.Properties.copy(Blocks.MOSS_BLOCK).noOcclusion()));
     public static final RegistryObject<Block> AMBUSH_UPPER = BLOCKS.register("ambush_upper", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT), false));
     public static final RegistryObject<Block> AMBUSH_LOWER = BLOCKS.register("ambush_lower", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT), true));
     public static final RegistryObject<Block> AMBER = BLOCKS.register("amber", () ->  new GlassBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(30.0F, 600.0F)));
