@@ -29,9 +29,11 @@ public class AmbushBlockEntityRenderer implements BlockEntityRenderer<AmbushBloc
         if(pBlockEntity.getBlockState().getValue(AmbushBlock.HALF) == DoubleBlockHalf.UPPER) {
             BlockState state = ModBlocks.AMBER.get().defaultBlockState();
             pPoseStack.pushPose();
-            float s = pBlockEntity.growProgress;
-            pPoseStack.scale(s, s, s);
-            this.blockRenderer.renderSingleBlock(state, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, ModelData.EMPTY, RenderType.solid());
+            float progress = pBlockEntity.growProgress;
+            float translate = (float) (0.5 -( progress  * 0.5));
+            pPoseStack.translate(translate, 0, translate);
+            pPoseStack.scale(progress, progress, progress);
+            this.blockRenderer.renderSingleBlock(state, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, ModelData.EMPTY, RenderType.translucent());
             pPoseStack.popPose();
         }
     }

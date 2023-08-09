@@ -1,70 +1,75 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blocks.blockentities.AmbushBlockEntity;
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.Nullable;
 
-public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEntityBlock {
+public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, ModEntityBlock, ModCropBlock {
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 8);
-    public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
-    public boolean lower;
+    public static final int MAX_AGE = 7;
+    public static final int AGE_TO_GROW_UP = 4;
 
-    public AmbushBlock(Properties pProperties, boolean lower) {
-        super(() -> MobEffects.LUCK, 20, pProperties);
-        registerDefaultState(this.defaultBlockState().setValue(AGE, 0).setValue(HALF, DoubleBlockHalf.LOWER));
-        this.lower = lower;
+    public AmbushBlock(Properties pProperties) {
+        super(pProperties);
+        registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
-    public boolean isLower() {
-        return lower;
+    private boolean isMaxAge(BlockState state) {
+        return state.getValue(AGE) >= MAX_AGE;
     }
 
+    @Override
+    public boolean isRandomlyTicking(BlockState pState) {
+        return !isMaxAge(pState);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        return this.defaultBlockState();
+    }
+
+    @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        if(pState.getValue(AGE) >= 4 && !pLevel.getBlockState(pCurrentPos.above()).is(ModBlocks.AMBUSH_UPPER.get()) && isLower() && !pLevel.getBlockState(pCurrentPos.below()).is(Blocks.FARMLAND)) {
-            return Blocks.AIR.defaultBlockState();
-        } else {
-            return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
-        }
+        return !pState.canSurvive(pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : pState;
     }
 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return isLower() ? super.canSurvive(pState, pLevel, pPos) : pLevel.getBlockState(pPos.below()).is(ModBlocks.AMBUSH_LOWER.get());
+        if(this.isHalf(pState, DoubleBlockHalf.UPPER)) {
+            BlockState blockState = pLevel.getBlockState(pPos.below());
+            boolean b = blockState.is(this);
+            return b && isHalf(blockState, DoubleBlockHalf.LOWER);
+        } else {
+            return this.mayPlaceOn(pLevel.getBlockState(pPos.below()), pLevel, pPos.below()) && sufficientLight(pLevel, pPos) && pState.getValue(AGE) < AGE_TO_GROW_UP || isHalf(pLevel.getBlockState(pPos.above()), DoubleBlockHalf.UPPER);
+        }
     }
 
     @Override
@@ -73,115 +78,102 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
-        return new ItemStack(ModItems.AMBUSH_SEEDS.get());
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(AGE, HALF);
-    }
-
-    public final boolean isMaxAge(BlockState pState) {
-        return pState.getValue(AGE) >= 8;
+        pBuilder.add(AGE);
+        super.createBlockStateDefinition(pBuilder);
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
-        return !this.isMaxAge(pState);
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+        if(pEntity instanceof Ravager && pLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            pLevel.destroyBlock(pPos, true, pEntity);
+        }
+
+        super.entityInside(pState, pLevel, pPos, pEntity);
+    }
+
+    @Override
+    public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
+        return false;
+    }
+
+
+    @Override
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+        float f = getGrowthSpeed(this, pLevel, pPos);
+        if(pRandom.nextInt((int) ((25.0F / f) + 1)) == 0) {
+            this.grow(pLevel, pState, pPos, 1);
+        }
+    }
+
+    private void grow(ServerLevel pLevel, BlockState pState, BlockPos pPos, int i) {
+        int k = Math.min(pState.getValue(AGE) + i, MAX_AGE);
+        if(this.canGrow(pLevel, pPos, pState, k)) {
+            pLevel.setBlock(pPos, pState.setValue(AGE, k), 2);
+            if(k >= AGE_TO_GROW_UP) {
+                pLevel.setBlock(pPos.above(), this.defaultBlockState().setValue(AGE, k).setValue(HALF, DoubleBlockHalf.UPPER), 3);
+            }
+
+            if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity) {
+                entity.growProgress = 0;
+            }
+        }
     }
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.getBlockEntity(pPos) instanceof  AmbushBlockEntity entity) {
-            entity.resetProgress(isLower() ? pPos.above() : pPos, pState, pLevel);
-            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+        ItemStack usedStack = pPlayer.getItemInHand(pHand);
+        if(usedStack.is(Items.BONE_MEAL)) {
+            return InteractionResult.PASS;
+        } else if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasAmber) {
+            dropResources(ModBlocks.AMBER.get().defaultBlockState(), pLevel, isHalf(pState, DoubleBlockHalf.LOWER) ? pPos.above() : pPos, entity, pPlayer, usedStack);
+
+            BlockPos lowerPos = isHalf(pState, DoubleBlockHalf.LOWER) ? pPos : pPos.below();
+            BlockPos upperPos = isHalf(pState, DoubleBlockHalf.UPPER) ? pPos : pPos.above();
+            BlockState lowerState = pLevel.getBlockState(lowerPos);
+            BlockState upperState = pLevel.getBlockState(upperPos);
+            pLevel.setBlock(lowerPos, lowerState, 3);
+            pLevel.setBlock(upperPos, upperState, 3);
+            pLevel.gameEvent(GameEvent.BLOCK_CHANGE, lowerPos, GameEvent.Context.of(pPlayer, lowerState));
+            pLevel.gameEvent(GameEvent.BLOCK_CHANGE, upperPos, GameEvent.Context.of(pPlayer, upperState));
+
+            entity.reset(pPos, pState, pLevel);
+            return InteractionResult.sidedSuccess(pLevel.isClientSide());
         } else {
             return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
         }
     }
 
-    protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom, boolean isBonemeal){
-        if (!isMaxAge(pState)) {
-            float f = getGrowthSpeed(this, pLevel, pPos);
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0) || isBonemeal) {
-                pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
-                BlockPos blockPos = pPos.above();
-                if(pLevel.getBlockState(blockPos).getBlock() instanceof AmbushBlock ambushBlock) {
-                    ambushBlock.grow(pLevel.getBlockState(blockPos), pLevel, blockPos, pRandom, isBonemeal);
-                }
-                if(isLower() && pState.getValue(AGE) == 3) {
-                    pLevel.setBlock(pPos.above(), ModBlocks.AMBUSH_UPPER.get().defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER).setValue(AGE, 4), 3);
-                }
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, pPos, pState);
-            }
-        }
-        if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && pState.getValue(AGE) == 6) {
-        }
+    private boolean canGrowInto(BlockState state) {
+        return state.isAir() || state.is(ModBlocks.AMBUSH.get());
     }
 
-    @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+    private boolean sufficientLight(LevelReader pLevel, BlockPos pPos) {
+        return pLevel.getRawBrightness(pPos, 0) >= 8 || pLevel.canSeeSky(pPos);
     }
 
-    protected static float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {
-        float f = 1.0F;
-        BlockPos blockpos = pPos.below();
+    private boolean isHalf(BlockState state, DoubleBlockHalf half) {
+        return state.is(ModBlocks.AMBUSH.get()) && state.getValue(HALF) == half;
+    }
 
-        for(int i = -1; i <= 1; ++i) {
-            for(int j = -1; j <= 1; ++j) {
-                float f1 = 0.0F;
-                BlockState blockstate = pLevel.getBlockState(blockpos.offset(i, 0, j));
-                if (blockstate.canSustainPlant(pLevel, blockpos.offset(i, 0, j), net.minecraft.core.Direction.UP, (net.minecraftforge.common.IPlantable) pBlock)) {
-                    f1 = 1.0F;
-                    if (blockstate.isFertile(pLevel, pPos.offset(i, 0, j))) {
-                        f1 = 3.0F;
-                    }
-                }
+    private boolean canGrow(LevelReader pLevel, BlockPos pPos, BlockState pState, int k) {
+        return !this.isMaxAge(pState) && sufficientLight(pLevel, pPos) && (k < AGE_TO_GROW_UP || canGrowInto(pLevel.getBlockState(pPos.above())));
+    }
 
-                if (i != 0 || j != 0) {
-                    f1 /= 4.0F;
-                }
-
-                f += f1;
-            }
-        }
-
-        BlockPos blockpos1 = pPos.north();
-        BlockPos blockpos2 = pPos.south();
-        BlockPos blockpos3 = pPos.west();
-        BlockPos blockpos4 = pPos.east();
-        boolean flag = pLevel.getBlockState(blockpos3).is(pBlock) || pLevel.getBlockState(blockpos4).is(pBlock);
-        boolean flag1 = pLevel.getBlockState(blockpos1).is(pBlock) || pLevel.getBlockState(blockpos2).is(pBlock);
-        if (flag && flag1) {
-            f /= 2.0F;
+    private PosAndState getLowerHalf(LevelReader level, BlockPos blockPos, BlockState state) {
+        if(isHalf(state, DoubleBlockHalf.LOWER)) {
+            return new PosAndState(blockPos, state);
         } else {
-            boolean flag2 = pLevel.getBlockState(blockpos3.north()).is(pBlock) || pLevel.getBlockState(blockpos4.north()).is(pBlock) || pLevel.getBlockState(blockpos4.south()).is(pBlock) || pLevel.getBlockState(blockpos3.south()).is(pBlock);
-            if (flag2) {
-                f /= 2.0F;
-            }
+            BlockPos posBelow = blockPos.below();
+            BlockState stateBelow = level.getBlockState(posBelow);
+            return isHalf(stateBelow, DoubleBlockHalf.LOWER) ? new PosAndState(posBelow, stateBelow) : null;
         }
-
-        return f;
-    }
-
-    @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (!pLevel.isAreaLoaded(pPos, 1)) return;
-        if (pLevel.getRawBrightness(pPos, 0) >= 9) {
-            grow(pState, pLevel, pPos, pRandom, false);
-        }
-    }
-
-    @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-
     }
 
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
-        return !isMaxAge(pState);
+        PosAndState posAndState = this.getLowerHalf(pLevel, pPos, pState);
+        return posAndState != null && this.canGrow(pLevel, posAndState.blockPos(), posAndState.state(), posAndState.state().getValue(AGE) + 1);
     }
 
     @Override
@@ -191,12 +183,18 @@ public class AmbushBlock extends FlowerBlock implements BonemealableBlock, ModEn
 
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        grow(pState, pLevel, pPos, pRandom, true);
+        PosAndState posAndState = this.getLowerHalf(pLevel, pPos, pState);
+        if(posAndState != null) {
+            this.grow(pLevel, posAndState.state(), posAndState.blockPos(), 1);
+        }
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return Shapes.empty();
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {}
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+        return ModItems.AMBUSH_SEEDS.get().getDefaultInstance();
     }
 
     @Nullable

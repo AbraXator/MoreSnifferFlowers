@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers;
 
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.networking.ModMessages;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,6 +37,8 @@ public class MoreSnifferFlowers {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            ModMessages.register();
+
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
             ComposterBlock.COMPOSTABLES.put(ModBlocks.DAWNBERRY_VINE.get(), 0.85F);
