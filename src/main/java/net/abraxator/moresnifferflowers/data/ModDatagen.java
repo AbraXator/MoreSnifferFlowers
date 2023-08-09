@@ -26,5 +26,6 @@ public class ModDatagen{
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, completableFuture, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new ModLoottableProvider(packOutput));
         generator.addProvider(event.includeClient(), new ModLootModifierProvider(packOutput));
+        generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, completableFuture, existingFileHelper));
     }
 }

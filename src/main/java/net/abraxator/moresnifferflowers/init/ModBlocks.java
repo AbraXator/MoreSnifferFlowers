@@ -26,7 +26,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> BOBLING_HEAD = BLOCKS.register("bobling_head", () -> new BoblingHeadBlock(BlockBehaviour.Properties.copy(Blocks.MOSS_BLOCK).noOcclusion()));
     public static final RegistryObject<Block> AMBUSH = BLOCKS.register("ambush", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
     //public static final RegistryObject<Block> AMBUSH_CROP = BLOCKS.register("ambush_crop", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
-    public static final RegistryObject<Block> AMBER = BLOCKS.register("amber", () ->  new GlassBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(30.0F, 600.0F)));
+    public static final RegistryObject<Block> AMBER = registerBlock("amber", () ->  new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(30.0F, 600.0F).noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

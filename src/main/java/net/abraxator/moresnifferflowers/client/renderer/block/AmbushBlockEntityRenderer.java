@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +30,7 @@ public class AmbushBlockEntityRenderer implements BlockEntityRenderer<AmbushBloc
         if(pBlockEntity.getBlockState().getValue(AmbushBlock.HALF) == DoubleBlockHalf.UPPER) {
             BlockState state = ModBlocks.AMBER.get().defaultBlockState();
             pPoseStack.pushPose();
-            float progress = pBlockEntity.growProgress;
+            float progress = Math.min(pBlockEntity.growProgress, 1);
             float translate = (float) (0.5 -( progress  * 0.5));
             pPoseStack.translate(translate, 0, translate);
             pPoseStack.scale(progress, progress, progress);

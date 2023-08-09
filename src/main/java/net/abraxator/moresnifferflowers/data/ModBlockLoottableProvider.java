@@ -48,8 +48,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get()))
                         .when(HAS_SILK_TOUCH))
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 4))
-                        .add(LootItem.lootTableItem(Items.DIAMOND))
-                        .add(LootItem.lootTableItem(Items.ACACIA_BUTTON))));
+                        .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))));
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
     }

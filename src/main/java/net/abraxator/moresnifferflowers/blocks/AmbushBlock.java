@@ -126,7 +126,7 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
         if(usedStack.is(Items.BONE_MEAL)) {
             return InteractionResult.PASS;
         } else if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasAmber) {
-            dropResources(ModBlocks.AMBER.get().defaultBlockState(), pLevel, isHalf(pState, DoubleBlockHalf.LOWER) ? pPos.above() : pPos, entity, pPlayer, usedStack);
+            popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
 
             BlockPos lowerPos = isHalf(pState, DoubleBlockHalf.LOWER) ? pPos : pPos.below();
             BlockPos upperPos = isHalf(pState, DoubleBlockHalf.UPPER) ? pPos : pPos.above();

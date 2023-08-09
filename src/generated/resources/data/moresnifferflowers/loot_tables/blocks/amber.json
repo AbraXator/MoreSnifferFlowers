@@ -21,7 +21,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "moresnifferflowers:amber"
         }
       ],
       "rolls": 1.0
