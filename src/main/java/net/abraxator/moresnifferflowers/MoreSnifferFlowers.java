@@ -28,6 +28,7 @@ public class MoreSnifferFlowers {
         ModCreativeTabs.TABS.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
+        ModParticles.PARTICLES.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

@@ -31,11 +31,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:acacia_button"
+          "name": "moresnifferflowers:ambush_banner_pattern"
         }
       ],
       "rolls": {

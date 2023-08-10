@@ -26,6 +26,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         this.tag(ItemTags.FLOWERS).add(item(ModBlocks.DAWNBERRY_VINE));
         this.tag(ItemTags.VILLAGER_PLANTABLE_SEEDS).add(ModItems.DAWNBERRY_VINE_SEEDS.get());
         this.tag(Tags.Items.SEEDS).add(ModItems.DAWNBERRY_VINE_SEEDS.get());
+        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.AMBER_SHARD.get());
+        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get());
     }
 
     private Item item(RegistryObject<Block> object){
