@@ -4,6 +4,5 @@
   "package": "net.abraxator.moresnifferflowers.mixins",
   "compatibilityLevel": "JAVA_11",
   "mixins": [
-    "SnifferDigMixin"
   ]
 }
