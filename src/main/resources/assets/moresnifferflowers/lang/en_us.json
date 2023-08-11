@@ -2,9 +2,16 @@
 	"item.moresnifferflowers.dawnberry": "Dawnberry",
 	"item.moresnifferflowers.dawnberry_vine_seeds": "Dawnberry Vine Seeds",
 	"item.moresnifferflowers.ambush_seeds": "Ambush Seeds",
-		
+	"item.moresnifferflowers.ambush_banner_pattern": "Banner Pattern",
+	"item.moresnifferflowers.ambush_banner_pattern.desc": "Ambush",
+	"item.moresnifferflowers.amber_shard": "Amber Shard",
+	"item.moresnifferflowers.dragonfly": "Dragonfly",
+
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
 	"block.moresnifferflowers.ambush": "Ambush",
-	
+	"block.moresnifferflowers.amber": "Amber",
+
+	"trim_pattern.moresnifferflowers.aroma": "Aroma",
+
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers"
 }

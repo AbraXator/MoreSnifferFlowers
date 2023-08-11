@@ -17,8 +17,8 @@ public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MoreSnifferFlowers.MOD_ID);
 
     //public static final RegistryObject<EntityType<CeruleanVinePatch>> CERULEAN_VINE_PATCH = buildNoEgg("cerulean_vine_patch", makeCastedBuilder(CeruleanVinePatch.class, CeruleanVinePatch::new, 0.25F, 0.25F, 4, 10), false);
-    public static final RegistryObject<EntityType<Bobling>> BOBLING = make(MoreSnifferFlowers.loc("bobling"), Bobling::new, MobCategory.CREATURE, 0.3F, 0.7F, 0x835E38, 0x85B931);
-
+    //public static final RegistryObject<EntityType<Bobling>> BOBLING = make(MoreSnifferFlowers.loc("bobling"), Bobling::new, MobCategory.CREATURE, 0.3F, 0.7F, 0x835E38, 0x85B931);
+    public static final RegistryObject<EntityType<Bobling>> BOBLING = buildNoEgg(MoreSnifferFlowers.loc("bobling"), makeBuilder(Bobling::new, MobCategory.CREATURE, 0.3F, 0.7F, 80, 3), false);
 
     private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary) {
         return make(id, factory, classification, width, height, false, primary, secondary);
@@ -28,9 +28,8 @@ public class ModEntityTypes {
         return build(id, makeBuilder(factory, classification, width, height, 80, 3), fireproof, primary, secondary);
     }
 
-    private static <E extends Entity> RegistryObject<EntityType<E>> buildNoEgg(String name, EntityType.Builder<E> builder, boolean fireproof) {
+    private static <E extends Entity> RegistryObject<EntityType<E>> buildNoEgg(ResourceLocation id, EntityType.Builder<E> builder, boolean fireproof) {
         if (fireproof) builder.fireImmune();
-        ResourceLocation id = new ResourceLocation(MoreSnifferFlowers.MOD_ID, name);
         return ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
     }
 

@@ -32,13 +32,37 @@
         {
           "type": "minecraft:item",
           "name": "moresnifferflowers:ambush_banner_pattern"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:amber_shard"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:dragonfly"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:aroma_armor_trim_smithing_table"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:ambush_seeds"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:dawnberry_vine_seeds"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:torchflower_seeds"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:pitcher_pod"
         }
       ],
-      "rolls": {
-        "type": "minecraft:uniform",
-        "max": 4.0,
-        "min": 1.0
-      }
+      "rolls": 1.0
     }
   ],
   "random_sequence": "moresnifferflowers:blocks/amber"

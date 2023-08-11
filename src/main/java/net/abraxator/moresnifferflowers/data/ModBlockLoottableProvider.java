@@ -7,6 +7,7 @@ import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -47,8 +49,15 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get()))
                         .when(HAS_SILK_TOUCH))
-                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 4))
-                        .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))));
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))
+                        .add(LootItem.lootTableItem(ModItems.AMBER_SHARD.get()))
+                        .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()))
+                        .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get()))
+                        .add(LootItem.lootTableItem(ModItems.AMBUSH_SEEDS.get()))
+                        .add(LootItem.lootTableItem(ModItems.DAWNBERRY_VINE_SEEDS.get()))
+                        .add(LootItem.lootTableItem(Items.TORCHFLOWER_SEEDS))
+                        .add(LootItem.lootTableItem(Items.PITCHER_POD))));
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
     }
