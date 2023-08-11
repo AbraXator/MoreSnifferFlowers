@@ -1,8 +1,17 @@
 {
 	"item.moresnifferflowers.dawnberry": "Bobule Úsvitu",
 	"item.moresnifferflowers.dawnberry_vine_seeds": "Semínka Liány Bobulí Úsvitu",
-	
+	"item.moresnifferflowers.ambush_seeds": "Semínka Jantarového Křoví",
+	"item.moresnifferflowers.ambush_banner_pattern": "Banner Pattern",
+	"item.moresnifferflowers.ambush_banner_pattern.desc": "Jantarové Křoví",
+	"item.moresnifferflowers.amber_shard": "Úlomek Jantaru",
+	"item.moresnifferflowers.dragonfly": "Vážka",
+
 	"block.moresnifferflowers.dawnberry_vine": "Liána Bobulí Úsvitu",
-	
+	"block.moresnifferflowers.ambush": "Jantarové Křoví",
+	"block.moresnifferflowers.amber": "Jantar",
+
+	"trim_pattern.moresnifferflowers.aroma": "Aroma",
+
 	"moresnifferflowers.creative_tab": "Více Čmuchalích Květin"
 }

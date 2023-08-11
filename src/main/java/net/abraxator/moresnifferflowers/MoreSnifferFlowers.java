@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 @Mod(MoreSnifferFlowers.MOD_ID)
 public class MoreSnifferFlowers {
     public static final String MOD_ID = "moresnifferflowers";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public MoreSnifferFlowers() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
