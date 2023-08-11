@@ -24,7 +24,7 @@ public class AmbushBlockEntity extends BlockEntity {
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AmbushBlockEntity entity) {
         if(canGrow(pState, entity.growProgress, entity.hasAmber)) {
-            entity.growProgress += 0.01;
+            entity.growProgress += 0.001;
             entity.level.sendBlockUpdated(pPos, pState, pState, Block.UPDATE_CLIENTS);
             if(entity.growProgress >= 1) {
                 entity.onGrow(pPos, pState, pLevel);
@@ -68,10 +68,10 @@ public class AmbushBlockEntity extends BlockEntity {
     public void reset(BlockPos blockPos, BlockState state, Level level) {
         this.growProgress = 0;
         this.hasAmber = false;
-        level.setBlock(blockPos, state.setValue(AmbushBlock.AGE, 7), 3);
+        //level.setBlock(blockPos, state.setValue(AmbushBlock.AGE, 7), 3);
     }
 
     public static boolean canGrow(BlockState state, float growProgress, boolean hasAmber) {
-        return state.getValue(AmbushBlock.AGE).equals(7) && growProgress != 1 && !hasAmber;
+        return state.getValue(AmbushBlock.AGE).equals(7) && !(growProgress >= 1) && !hasAmber;
     }
 }

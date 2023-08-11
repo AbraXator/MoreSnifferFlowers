@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +59,9 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
 
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        if(!pState.canSurvive(pLevel, pCurrentPos) && pLevel.getBlockEntity(pCurrentPos) instanceof AmbushBlockEntity entity && isHalf(pState, DoubleBlockHalf.UPPER) && entity.growProgress >= 1) {
+            popResource((Level) pLevel, pCurrentPos, new ItemStack(ModBlocks.AMBER.get()));
+        }
         return !pState.canSurvive(pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : pState;
     }
 
@@ -125,13 +129,13 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
         ItemStack usedStack = pPlayer.getItemInHand(pHand);
         if(usedStack.is(Items.BONE_MEAL)) {
             return InteractionResult.PASS;
-        } else if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasAmber) {
+        } else if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasAmber && isHalf(pState, DoubleBlockHalf.UPPER)) {
             popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
 
             BlockPos lowerPos = isHalf(pState, DoubleBlockHalf.LOWER) ? pPos : pPos.below();
             BlockPos upperPos = isHalf(pState, DoubleBlockHalf.UPPER) ? pPos : pPos.above();
-            BlockState lowerState = pLevel.getBlockState(lowerPos);
-            BlockState upperState = pLevel.getBlockState(upperPos);
+            BlockState lowerState = pLevel.getBlockState(lowerPos).setValue(AGE, 7);
+            BlockState upperState = pLevel.getBlockState(upperPos).setValue(AGE, 7);
             pLevel.setBlock(lowerPos, lowerState, 3);
             pLevel.setBlock(upperPos, upperState, 3);
             pLevel.gameEvent(GameEvent.BLOCK_CHANGE, lowerPos, GameEvent.Context.of(pPlayer, lowerState));

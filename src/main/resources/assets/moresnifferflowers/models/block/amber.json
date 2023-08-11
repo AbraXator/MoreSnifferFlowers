@@ -1,5 +1,5 @@
 {
-     "render_type": "translucent",
+	"render_type": "translucent",
   	"parent": "minecraft:block/cube_all",
   	"credit": "Made with Blockbench",
 	"textures": {
