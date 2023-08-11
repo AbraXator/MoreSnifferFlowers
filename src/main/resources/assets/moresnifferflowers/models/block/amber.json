@@ -1,7 +1,37 @@
 {
-  "render_type": "translucent",
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "moresnifferflowers:block/amber"
-  }
+     "render_type": "translucent",
+  	"parent": "minecraft:block/cube_all",
+  	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "moresnifferflowers:block/amber",
+		"1": "moresnifferflowers:block/amber_chest",
+		"particle": "moresnifferflowers:block/amber"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [1, 1, 1],
+			"to": [15, 15, 15],
+			"faces": {
+				"north": {"uv": [0.5, 0.5, 7.5, 7.5], "texture": "#1"},
+				"east": {"uv": [0.5, 8.5, 7.5, 15.5], "texture": "#1"},
+				"south": {"uv": [0.5, 8.5, 7.5, 15.5], "texture": "#1"},
+				"west": {"uv": [0.5, 8.5, 7.5, 15.5], "texture": "#1"},
+				"up": {"uv": [8.5, 0.5, 15.5, 7.5], "texture": "#1"},
+				"down": {"uv": [8.5, 0.5, 15.5, 7.5], "texture": "#1"}
+			}
+		}
+	],
+	"display": {}
 }
