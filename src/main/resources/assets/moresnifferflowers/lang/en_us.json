@@ -11,7 +11,9 @@
 	"block.moresnifferflowers.ambush": "Ambush",
 	"block.moresnifferflowers.amber": "Amber",
 
-	"trim_pattern.moresnifferflowers.aroma": "Aroma",
+	"trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
+
+	"trim_material.moresnifferflowers.amber": "Amber Material",
 
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers"
 }
