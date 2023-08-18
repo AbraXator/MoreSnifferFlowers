@@ -3,15 +3,15 @@
   "overrides": [
     {
       "predicate": {
-        "moresnifferflowers:color": 0
+        "moresnifferflowers:color": 1
       },
-      "model": "moresnifferflowers:item/flower_painter_default"
+      "model": "moresnifferflowers:item/dyespria_active"
     },
     {
       "predicate": {
-        "moresnifferflowers:color": 1
+        "moresnifferflowers:color": 0
       },
-      "model": "moresnifferflowers:item/flower_painter_blank"
+      "model": "moresnifferflowers:item/dyespria_inactive"
     }
   ]
 }

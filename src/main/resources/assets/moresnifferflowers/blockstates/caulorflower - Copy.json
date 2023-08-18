@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "moresnifferflowers:block/caulorflower_0",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "moresnifferflowers:block/caulorflower_0"
+    },
+    "facing=south": {
+      "model": "moresnifferflowers:block/caulorflower_0",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "moresnifferflowers:block/caulorflower_0",
+      "y": 270
+    }
+  }
+}

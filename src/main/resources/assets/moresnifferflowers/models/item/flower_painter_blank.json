@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "moresnifferflowers:item/flower_painter_inside",
-    "layer1": "moresnifferflowers:item/flower_painter_outside"
-  }
-}
