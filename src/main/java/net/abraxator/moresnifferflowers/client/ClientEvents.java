@@ -7,7 +7,9 @@ import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityR
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModEntityTypes;
+import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.items.FlowerPainter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
@@ -15,6 +17,7 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +25,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
+
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -43,6 +48,18 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.FLY.get(), FlyParticle.Provider::new);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
+        event.register((pStack, pTintIndex) -> {
+            var color = FlowerPainter.getColor(pStack);
+            if(pTintIndex != 0 || !color.isPresent()) {
+                return -1;
+            } else {
+                return color.get();
+            }
+        }, ModItems.FLOWER_PAINTER.get());
     }
 
     @SubscribeEvent

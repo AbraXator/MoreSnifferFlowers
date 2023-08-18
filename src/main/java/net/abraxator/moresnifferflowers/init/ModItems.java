@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.items.FlowerPainter;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.BannerPatternItem;
@@ -22,4 +23,5 @@ public class ModItems {
     public static final RegistryObject<Item> AMBER_SHARD = ITEMS.register("amber_shard", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> AROMA_ARMOR_TRIM_SMITHING_TABLE = ITEMS.register("aroma_armor_trim_smithing_table", () -> SmithingTemplateItem.createArmorTrimTemplate(ModTrimPatterns.AROMA));
     public static final RegistryObject<Item> DRAGONFLY = ITEMS.register("dragonfly", () -> new Item(new Item.Properties().food(ModFoods.DRAGONFLY)));
+    public static final RegistryObject<Item> FLOWER_PAINTER = ITEMS.register("flower_painter", () -> new FlowerPainter(new Item.Properties().stacksTo(1)));
 }

@@ -1,3 +1,17 @@
 {
-  "parent": "moresnifferflowers:block/flower_painter"
+  "parent": "item/generated",
+  "overrides": [
+    {
+      "predicate": {
+        "moresnifferflowers:color": 0
+      },
+      "model": "moresnifferflowers:item/flower_painter_default"
+    },
+    {
+      "predicate": {
+        "moresnifferflowers:color": 1
+      },
+      "model": "moresnifferflowers:item/flower_painter_blank"
+    }
+  ]
 }

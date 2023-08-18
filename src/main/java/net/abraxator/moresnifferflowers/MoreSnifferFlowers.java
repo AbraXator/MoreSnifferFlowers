@@ -1,13 +1,17 @@
 package net.abraxator.moresnifferflowers;
 
 import com.mojang.logging.LogUtils;
+import net.abraxator.moresnifferflowers.data.ModItemTagsProvider;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.ModMessages;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -31,11 +35,13 @@ public class MoreSnifferFlowers {
         ModParticles.PARTICLES.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
-
+        modEventBus.addListener(this::clientSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-
+    public void clientSetup(final FMLClientSetupEvent event) {
+        ModItemProperties.register();
+    }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {

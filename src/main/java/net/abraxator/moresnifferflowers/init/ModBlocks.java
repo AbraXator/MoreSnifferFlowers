@@ -1,15 +1,11 @@
 package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.blocks.AmbushBlock;
-import net.abraxator.moresnifferflowers.blocks.BoblingHeadBlock;
-import net.abraxator.moresnifferflowers.blocks.DawnberryVineBlock;
-import net.minecraft.world.effect.MobEffects;
+import net.abraxator.moresnifferflowers.blocks.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
@@ -27,6 +23,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> AMBUSH = BLOCKS.register("ambush", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
     //public static final RegistryObject<Block> AMBUSH_CROP = BLOCKS.register("ambush_crop", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
     public static final RegistryObject<Block> AMBER = registerBlock("amber", () ->  new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(30.0F, 600.0F).noOcclusion()));
+    public static final RegistryObject<Block> CAULORFLOWER = registerBlock("caulorflower", () ->  new CaulorflowerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(30.0F, 600.0F).noOcclusion()));
+    public static final RegistryObject<Block> CAULORFLOWER_PLANT = registerBlock("caulorflower_plant", () ->  new CaulorflowerPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(30.0F, 600.0F).noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
