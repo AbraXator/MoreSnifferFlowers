@@ -4,9 +4,9 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "moresnifferflowers:block/caulorflower_0",
-		"1": "block/oak_log",
+		"1": "minecraft:block/oak_log",
 		"3": "moresnifferflowers:block/caulorflower_1",
-		"particle": "block/oak_log"
+		"particle": "minecraft:block/oak_log"
 	},
 	"elements": [
 		{
