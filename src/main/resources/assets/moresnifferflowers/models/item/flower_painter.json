@@ -1,17 +1,14 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "moresnifferflowers:item/dyespria_inactive"
+  },
   "overrides": [
     {
       "predicate": {
-        "moresnifferflowers:color": 1
+        "moresnifferflowers:color": 1.0
       },
       "model": "moresnifferflowers:item/dyespria_active"
-    },
-    {
-      "predicate": {
-        "moresnifferflowers:color": 0
-      },
-      "model": "moresnifferflowers:item/dyespria_inactive"
     }
   ]
 }

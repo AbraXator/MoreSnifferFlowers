@@ -1,15 +1,14 @@
 package net.abraxator.moresnifferflowers.client;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.FlowerPainter;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
@@ -25,8 +24,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
-
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -48,6 +45,21 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.FLY.get(), FlyParticle.Provider::new);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+        event.register((pState, pLevel, pPos, pTintIndex) -> {
+            if(pLevel.getBlockEntity(pPos) instanceof CaulorflowerBlockEntity entity) {
+                if(pTintIndex == 0) {
+                    return BiomeColors.getAverageFoliageColor(pLevel, pPos);
+                }
+                if(pTintIndex == 1) {
+                    return entity.color;
+                }
+            }
+            return -1;
+        }, ModBlocks.CAULORFLOWER.get(), ModBlocks.CAULORFLOWER_PLANT.get());
     }
 
     @SubscribeEvent

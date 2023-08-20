@@ -1,21 +1,24 @@
 package net.abraxator.moresnifferflowers.items;
 
+import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -27,10 +30,24 @@ public class FlowerPainter extends Item {
     }
 
     @Override
+    public InteractionResult useOn(UseOnContext pContext) {
+        Player player = pContext.getPlayer();
+        Level level = pContext.getLevel();
+        BlockPos blockPos = pContext.getClickedPos();
+
+        if(level.getBlockEntity(blockPos) instanceof CaulorflowerBlockEntity entity && pContext.getHand() == InteractionHand.MAIN_HAND) {
+            entity.setColor(player, pContext.getItemInHand(), blockPos, level.getBlockState(blockPos));
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        } else {
+            return InteractionResult.PASS;
+        }
+    }
+
+    @Override
     public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
-        if(pOther.getItem() instanceof DyeItem && pAction == ClickAction.SECONDARY) {
+        if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
             if(pOther.isEmpty()) {
-                removeOne(pStack).ifPresent(itemStack -> {
+                remove(pStack).ifPresent(itemStack -> {
                     playRemoveOneSound(pPlayer);
                     pAccess.set(itemStack);
                 });
@@ -38,28 +55,62 @@ public class FlowerPainter extends Item {
                 int i = add(pStack, pOther);
                 if(i > 0) {
                     this.playInsertSound(pPlayer);
-                    pOther.shrink(1);
                 }
             }
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     private int add(ItemStack pStack, ItemStack pOther) {
-        return 0;
+        if (!pOther.isEmpty() && pOther.getItem() instanceof DyeItem dyeItem) {
+            ItemStack newStack;
+            var dyeOptional = getDye(pStack);
+            int k = 0;
+            int toShrink = 0;
+            if(dyeOptional.isPresent()) {
+                ItemStack dye = dyeOptional.get();
+                if (ItemStack.isSameItem(dye, pOther)) {
+                    if (dye.getCount() == 64) {
+                        return 0;
+                    } else {
+                        int dyeInside = dye.getCount();
+                        int freeSpace = 64 - dyeInside;
+                        int otherCount = pOther.getCount();
+
+                        k = pOther.getCount() + dye.getCount();
+                        toShrink = k;
+                        newStack = dye.copyWithCount(k);
+
+                        if(freeSpace < otherCount) {
+                            addDye(pStack, newStack.copyWithCount(dyeInside + freeSpace));
+                            pOther.setCount(otherCount - freeSpace);
+                            return otherCount - freeSpace;
+                        }
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                k = pOther.getCount();
+                toShrink = k;
+                newStack = pOther.copyWithCount(k);
+            }
+            pOther.shrink(toShrink);
+            addDye(pStack, newStack);
+            return k;
+        } else {
+            return 0;
+        }
     }
 
-    private Optional<ItemStack> removeOne(ItemStack pStack) {
+    private Optional<ItemStack> remove(ItemStack pStack) {
         var itemStack = getDye(pStack);
         if(itemStack.isPresent()) {
             ItemStack itemStack1 = itemStack.get();
-            itemStack1.shrink(1);
-            if(itemStack1.isEmpty()) {
-                pStack.removeTagKey("dye");
-            } else {
-                pStack.setTag(itemStack1.serializeNBT());
-            }
-            return Optional.of(new ItemStack(itemStack1.getItem(), 1));
+            addDye(pStack, ItemStack.EMPTY);
+            return Optional.of(itemStack1);
         } else {
             return Optional.empty();
         }
@@ -68,21 +119,28 @@ public class FlowerPainter extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         getDye(pStack).ifPresentOrElse(itemStack -> {
-           Component name = Component.literal(pStack.getCount() + " " + pStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(getColor(pStack).get()))));
+           Component name = Component.literal(itemStack.getCount() + " " + itemStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(getColor(pStack).get()))));
            pTooltipComponents.add(name);
         }, () -> {
             pTooltipComponents.add(Component.translatable("tooltip.flower_painter.empty").withStyle(ChatFormatting.GRAY));
         });
     }
 
+    public static void addDye(ItemStack stack, ItemStack dye) {
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.put("dye", dye.serializeNBT());
+        stack.setTag(tag);
+    }
+
     public static Optional<ItemStack> getDye(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getTagElement("dye");
-        return tag == null ? Optional.empty() : Optional.of(ItemStack.of(tag));
+        CompoundTag tag = itemStack.getOrCreateTag();
+        ItemStack stack = ItemStack.of(tag.getCompound("dye"));
+        return stack.getItem() instanceof DyeItem ? Optional.of(stack) : Optional.empty();
     }
 
     public static Optional<Integer> getColor(ItemStack itemStack) {
         var dye = getDye(itemStack);
-        return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor().getTextColor());
+        return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor().getFireworkColor());
     }
 
     private void playRemoveOneSound(Entity pEntity) {

@@ -1,20 +1,17 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import net.abraxator.moresnifferflowers.blocks.blockentities.OgingoBlockEntity;
+import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.Tags;
 
 public interface Colorable {
     default void color(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        OgingoBlockEntity entity = pLevel.getBlockEntity(pPos) instanceof OgingoBlockEntity ? ((OgingoBlockEntity) pLevel.getBlockEntity(pPos)) : null;
+        CaulorflowerBlockEntity entity = pLevel.getBlockEntity(pPos) instanceof CaulorflowerBlockEntity ? ((CaulorflowerBlockEntity) pLevel.getBlockEntity(pPos)) : null;
         int[] aint = new int[3];
         int i = 0;
         int j = 0;
