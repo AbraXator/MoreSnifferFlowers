@@ -23,8 +23,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> AMBUSH = BLOCKS.register("ambush", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
     //public static final RegistryObject<Block> AMBUSH_CROP = BLOCKS.register("ambush_crop", () -> new AmbushBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
     public static final RegistryObject<Block> AMBER = registerBlock("amber", () ->  new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(30.0F, 600.0F).noOcclusion()));
-    public static final RegistryObject<Block> CAULORFLOWER = registerBlock("caulorflower", () ->  new CaulorflowerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.WOOD).strength(30.0F, 600.0F).noOcclusion()));
-    public static final RegistryObject<Block> CAULORFLOWER_PLANT = registerBlock("caulorflower_plant", () ->  new CaulorflowerPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.WOOD).strength(30.0F, 600.0F).noOcclusion()));
+    public static final RegistryObject<Block> CAULORFLOWER = registerBlock("caulorflower", () ->  new CaulorflowerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.WOOD).strength(30.0F, 600.0F).noCollission().noOcclusion()));
+    public static final RegistryObject<Block> CAULORFLOWER_PLANT = registerBlock("caulorflower_plant", () ->  new CaulorflowerPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.WOOD).strength(30.0F, 600.0F).noCollission().noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

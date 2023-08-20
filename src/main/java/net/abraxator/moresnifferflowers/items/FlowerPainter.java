@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.items;
 import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -34,12 +35,50 @@ public class FlowerPainter extends Item {
         Player player = pContext.getPlayer();
         Level level = pContext.getLevel();
         BlockPos blockPos = pContext.getClickedPos();
+        BlockState blockState = level.getBlockState(blockPos);
 
         if(level.getBlockEntity(blockPos) instanceof CaulorflowerBlockEntity entity && pContext.getHand() == InteractionHand.MAIN_HAND) {
-            entity.setColor(player, pContext.getItemInHand(), blockPos, level.getBlockState(blockPos));
+            ItemStack stack = pContext.getItemInHand();
+
+            if(!player.isShiftKeyDown()) {
+                colorOne(stack, entity, level, blockPos, blockState);
+            } else {
+                colorColumn(stack, level, blockPos);
+            }
+
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
             return InteractionResult.PASS;
+        }
+    }
+
+    private void colorOne(ItemStack stack, CaulorflowerBlockEntity entity, Level level, BlockPos blockPos, BlockState blockState) {
+            FlowerPainter.getDye(stack).ifPresentOrElse(
+                    itemStack -> {
+                        entity.dye = itemStack;
+                        itemStack.shrink(1);
+                        addDye(stack, itemStack);
+                    },
+                    () -> {
+                        entity.dye = ItemStack.EMPTY;
+                    }
+            );
+            level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+        }
+
+        private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
+        BlockPos posUp = blockPos.mutable();
+        BlockPos posDown = blockPos.mutable();
+        while (level.getBlockEntity(posUp) instanceof CaulorflowerBlockEntity entity1) {
+            if(getDye(stack).isEmpty()) break;
+            colorOne(stack, entity1, level, posUp, level.getBlockState(posUp));
+            posUp = posUp.above();
+        }
+
+        while (level.getBlockEntity(posDown) instanceof CaulorflowerBlockEntity entity1) {
+            if(getDye(stack).isEmpty()) break;
+            colorOne(stack, entity1, level, posDown, level.getBlockState(posDown));
+            posDown = posDown.below();
         }
     }
 

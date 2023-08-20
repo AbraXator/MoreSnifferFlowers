@@ -14,6 +14,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.item.DyeItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -55,7 +56,11 @@ public class ClientEvents {
                     return BiomeColors.getAverageFoliageColor(pLevel, pPos);
                 }
                 if(pTintIndex == 1) {
-                    return entity.color;
+                    if(entity.dye != null && entity.dye.getItem() instanceof DyeItem dyeItem) {
+                        return dyeItem.getDyeColor().getFireworkColor();
+                    } else {
+                        return -1;
+                    }
                 }
             }
             return -1;
