@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.client;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
+import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
@@ -14,7 +14,6 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.item.DyeItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -51,17 +50,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
         event.register((pState, pLevel, pPos, pTintIndex) -> {
-            if(pLevel.getBlockEntity(pPos) instanceof CaulorflowerBlockEntity entity) {
-                if(pTintIndex == 0) {
-                    return BiomeColors.getAverageFoliageColor(pLevel, pPos);
-                }
-                if(pTintIndex == 1) {
-                    if(entity.dye != null && entity.dye.getItem() instanceof DyeItem dyeItem) {
-                        return FlowerPainter.colorForDye(entity.dye);
-                    } else {
-                        return -1;
-                    }
-                }
+            if(pTintIndex == 0) {
+                return BiomeColors.getAverageFoliageColor(pLevel, pPos);
+            }
+            if(pTintIndex == 1 && pState.getValue(CaulorflowerBlock.HAS_COLOR)) {
+                return FlowerPainter.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());

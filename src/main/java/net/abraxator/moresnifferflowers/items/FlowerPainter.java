@@ -1,15 +1,11 @@
 package net.abraxator.moresnifferflowers.items;
 
-import com.ibm.icu.impl.breakiter.CjkBreakEngine;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
-import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
@@ -25,10 +21,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,35 +38,28 @@ public class FlowerPainter extends Item {
         BlockPos blockPos = pContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
 
-        if(level.getBlockEntity(blockPos) instanceof CaulorflowerBlockEntity entity && pContext.getHand() == InteractionHand.MAIN_HAND) {
+        if(pContext.getHand() == InteractionHand.MAIN_HAND) {
             ItemStack stack = pContext.getItemInHand();
-
             if(!player.isShiftKeyDown()) {
-                colorOne(stack, entity, level, blockPos, blockState);
+                colorOne(stack, level, blockPos, blockState);
             } else {
                 colorColumn(stack, level, blockPos);
             }
             level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
-
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
             return InteractionResult.PASS;
         }
     }
 
-    public static void colorOne(ItemStack stack, CaulorflowerBlockEntity entity, Level level, BlockPos blockPos, BlockState blockState) {
+    public static void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
             FlowerPainter.getDye(stack).ifPresentOrElse(
                     itemStack -> {
-                        if(entity.dye == null) entity.dye = ItemStack.EMPTY;
-                        if(!(entity.dye.getItem() instanceof DyeItem)) {
-                            entity.dye = itemStack.copyWithCount(1);
-                            itemStack.shrink(1);
-                            addDye(stack, itemStack);
-                            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
-                        }
+                        itemStack.shrink(1);
+                        addDye(stack, itemStack);
+                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, ((DyeItem) itemStack.getItem()).getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
                     },
                     () -> {
-                        entity.dye = ItemStack.EMPTY;
                         level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
                     }
             );
@@ -82,15 +69,13 @@ public class FlowerPainter extends Item {
         private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
         BlockPos posUp = blockPos.mutable();
         BlockPos posDown = blockPos.mutable();
-        while (level.getBlockEntity(posUp) instanceof CaulorflowerBlockEntity entity1) {
-            if(getDye(stack).isEmpty()) break;
-            colorOne(stack, entity1, level, posUp, level.getBlockState(posUp));
+        while (level.getBlockState(posUp).is(ModBlocks.CAULORFLOWER.get())) {
+            colorOne(stack, level, posUp, level.getBlockState(posUp));
             posUp = posUp.above();
         }
 
-        while (level.getBlockEntity(posDown) instanceof CaulorflowerBlockEntity entity1) {
-            if(getDye(stack).isEmpty()) break;
-            colorOne(stack, entity1, level, posDown, level.getBlockState(posDown));
+        while (level.getBlockState(posDown).is(ModBlocks.CAULORFLOWER.get())) {
+            colorOne(stack, level, posDown, level.getBlockState(posDown));
             posDown = posDown.below();
         }
     }
@@ -202,8 +187,7 @@ public class FlowerPainter extends Item {
         return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor().getFireworkColor());
     }
 
-    public static int colorForDye(ItemStack stack) {
-        DyeColor dyeColor = ((DyeItem) stack.getItem()).getDyeColor();
+    public static int colorForDye(DyeColor dyeColor) {
         if(dyeColor == DyeColor.WHITE) return 16769023;
         if(dyeColor == DyeColor.LIGHT_GRAY) return 11706808;
         if(dyeColor == DyeColor.GRAY) return 7892606;
