@@ -26,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class FlowerPainter extends Item {
-    public FlowerPainter(Properties pProperties) {
+public class DyespriaItem extends Item {
+    public DyespriaItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -53,7 +53,7 @@ public class FlowerPainter extends Item {
     }
 
     public static void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
-            FlowerPainter.getDye(stack).ifPresentOrElse(
+        DyespriaItem.getDye(stack).ifPresentOrElse(
                     itemStack -> {
                         level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, ((DyeItem) itemStack.getItem()).getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
                         itemStack.shrink(1);
@@ -155,7 +155,7 @@ public class FlowerPainter extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        Component usage = Component.translatableWithFallback("tooltip.flower_painter.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
+        Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
 
         getDye(pStack).ifPresentOrElse(itemStack -> {
            DyeColor dyeColor = ((DyeItem) itemStack.getItem()).getDyeColor();
@@ -166,7 +166,7 @@ public class FlowerPainter extends Item {
            pTooltipComponents.add(name);
         }, () -> {
             pTooltipComponents.add(usage);
-            pTooltipComponents.add(Component.translatableWithFallback("tooltip.flower_painter.empty", "Empty").withStyle(ChatFormatting.GRAY));
+            pTooltipComponents.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
         });
     }
 

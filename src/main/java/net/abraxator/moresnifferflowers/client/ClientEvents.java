@@ -7,7 +7,7 @@ import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.*;
-import net.abraxator.moresnifferflowers.items.FlowerPainter;
+import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
@@ -55,7 +55,7 @@ public class ClientEvents {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
             if(pTintIndex == 1 && pState.getValue(CaulorflowerBlock.HAS_COLOR)) {
-                return FlowerPainter.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
+                return DyespriaItem.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());
@@ -64,13 +64,18 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
+<<<<<<< Updated upstream
             var color = FlowerPainter.getDye(pStack);
             if(pTintIndex != 0 || color.isEmpty()) {
+=======
+            var color = DyespriaItem.getColor(pStack);
+            if(pTintIndex != 0 || !color.isPresent()) {
+>>>>>>> Stashed changes
                 return -1;
             } else {
                 return FlowerPainter.colorForDye(((DyeItem) color.get().getItem()).getDyeColor());
             }
-        }, ModItems.FLOWER_PAINTER.get());
+        }, ModItems.DYESPRIA.get());
     }
 
     @SubscribeEvent

@@ -6,12 +6,16 @@
 	"item.moresnifferflowers.ambush_banner_pattern.desc": "Ambush",
 	"item.moresnifferflowers.amber_shard": "Amber Shard",
 	"item.moresnifferflowers.dragonfly": "Dragonfly",
-	"item.moresnifferflowers.flower_painter": "Flower Painter",
+	"item.moresnifferflowers.dyespria": "Dyespria",
 
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
 	"block.moresnifferflowers.ambush": "Ambush",
 	"block.moresnifferflowers.amber": "Amber",
 	"block.moresnifferflowers.caulorflower": "Caulorflower",
+	
+	"tooltip.dyespria.usage": "Right-click to insert dye \nRight-click caulorflower to repaint \nSneak to apply to the whole column\n",
+	"tooltip.dyespria.empty": "Empty",
+
 
 	"trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
 
