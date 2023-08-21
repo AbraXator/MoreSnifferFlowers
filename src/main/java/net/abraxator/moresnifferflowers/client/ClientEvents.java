@@ -57,7 +57,7 @@ public class ClientEvents {
                 }
                 if(pTintIndex == 1) {
                     if(entity.dye != null && entity.dye.getItem() instanceof DyeItem dyeItem) {
-                        return dyeItem.getDyeColor().getFireworkColor();
+                        return FlowerPainter.colorForDye(entity.dye);
                     } else {
                         return -1;
                     }

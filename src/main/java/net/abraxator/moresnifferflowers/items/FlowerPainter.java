@@ -1,12 +1,15 @@
 package net.abraxator.moresnifferflowers.items;
 
+import com.ibm.icu.impl.breakiter.CjkBreakEngine;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
+import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
@@ -22,8 +25,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -165,11 +170,18 @@ public class FlowerPainter extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        Component usage = Component.translatableWithFallback("tooltip.flower_painter.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
+
         getDye(pStack).ifPresentOrElse(itemStack -> {
-           Component name = Component.literal(itemStack.getCount() + " " + itemStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(getColor(pStack).get()))));
+           DyeColor dyeColor = ((DyeItem) itemStack.getItem()).getDyeColor();
+           int i = dyeColor.getTextColor();
+           Component name = Component.literal(itemStack.getCount() + " - " + itemStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(i))));
+
+           pTooltipComponents.add(usage);
            pTooltipComponents.add(name);
         }, () -> {
-            pTooltipComponents.add(Component.translatable("tooltip.flower_painter.empty").withStyle(ChatFormatting.GRAY));
+            pTooltipComponents.add(usage);
+            pTooltipComponents.add(Component.translatableWithFallback("tooltip.flower_painter.empty", "Empty").withStyle(ChatFormatting.GRAY));
         });
     }
 
