@@ -14,6 +14,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.item.DyeItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -63,11 +64,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-            var color = FlowerPainter.getColor(pStack);
-            if(pTintIndex != 0 || !color.isPresent()) {
+            var color = FlowerPainter.getDye(pStack);
+            if(pTintIndex != 0 || color.isEmpty()) {
                 return -1;
             } else {
-                return color.get();
+                return FlowerPainter.colorForDye(((DyeItem) color.get().getItem()).getDyeColor());
             }
         }, ModItems.FLOWER_PAINTER.get());
     }

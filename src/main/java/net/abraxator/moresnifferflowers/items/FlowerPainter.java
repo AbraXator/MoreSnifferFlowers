@@ -55,9 +55,9 @@ public class FlowerPainter extends Item {
     public static void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
             FlowerPainter.getDye(stack).ifPresentOrElse(
                     itemStack -> {
+                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, ((DyeItem) itemStack.getItem()).getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
                         itemStack.shrink(1);
                         addDye(stack, itemStack);
-                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, ((DyeItem) itemStack.getItem()).getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
                     },
                     () -> {
                         level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
