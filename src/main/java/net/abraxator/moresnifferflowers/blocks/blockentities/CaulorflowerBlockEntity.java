@@ -16,10 +16,6 @@ public class CaulorflowerBlockEntity extends BlockEntity {
         super(ModBlockEntities.CAULORFLOWER.get(), pPos, pBlockState);
     }
 
-    public void setColor(Player player, ItemStack painter, BlockPos blockPos, BlockState blockState) {
-
-    }
-
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);

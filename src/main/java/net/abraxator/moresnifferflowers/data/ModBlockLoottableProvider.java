@@ -60,6 +60,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(Items.PITCHER_POD))));
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
+        dropSelf(ModBlocks.CAULORFLOWER.get());
     }
 
     @Override

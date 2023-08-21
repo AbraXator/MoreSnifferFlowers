@@ -64,7 +64,7 @@ public class ClientEvents {
                 }
             }
             return -1;
-        }, ModBlocks.CAULORFLOWER.get(), ModBlocks.CAULORFLOWER_PLANT.get());
+        }, ModBlocks.CAULORFLOWER.get());
     }
 
     @SubscribeEvent

@@ -20,9 +20,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
-        this.tag(BlockTags.FLOWERS).add(ModBlocks.DAWNBERRY_VINE.get());
-        this.tag(BlockTags.SWORD_EFFICIENT).add(ModBlocks.DAWNBERRY_VINE.get());
-        this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.DAWNBERRY_VINE.get());
+        this.tag(BlockTags.FLOWERS).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH.get(), ModBlocks.CAULORFLOWER.get());
+        this.tag(BlockTags.SWORD_EFFICIENT).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH.get(), ModBlocks.CAULORFLOWER.get());
+        this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH.get(), ModBlocks.CAULORFLOWER.get());
         this.tag(BlockTags.MINEABLE_WITH_HOE).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH.get());
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AMBER.get());
         this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.AMBER.get());

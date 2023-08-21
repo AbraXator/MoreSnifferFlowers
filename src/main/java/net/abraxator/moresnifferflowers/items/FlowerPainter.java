@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
+import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.blocks.blockentities.CaulorflowerBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -45,6 +47,7 @@ public class FlowerPainter extends Item {
             } else {
                 colorColumn(stack, level, blockPos);
             }
+            level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
 
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
@@ -52,18 +55,23 @@ public class FlowerPainter extends Item {
         }
     }
 
-    private void colorOne(ItemStack stack, CaulorflowerBlockEntity entity, Level level, BlockPos blockPos, BlockState blockState) {
+    public static void colorOne(ItemStack stack, CaulorflowerBlockEntity entity, Level level, BlockPos blockPos, BlockState blockState) {
             FlowerPainter.getDye(stack).ifPresentOrElse(
                     itemStack -> {
-                        entity.dye = itemStack;
-                        itemStack.shrink(1);
-                        addDye(stack, itemStack);
+                        if(entity.dye == null) entity.dye = ItemStack.EMPTY;
+                        if(!(entity.dye.getItem() instanceof DyeItem)) {
+                            entity.dye = itemStack.copyWithCount(1);
+                            itemStack.shrink(1);
+                            addDye(stack, itemStack);
+                            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
+                        }
                     },
                     () -> {
                         entity.dye = ItemStack.EMPTY;
+                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
                     }
             );
-            level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+            level.sendBlockUpdated(blockPos, blockState, blockState, 1);
         }
 
         private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
@@ -180,6 +188,27 @@ public class FlowerPainter extends Item {
     public static Optional<Integer> getColor(ItemStack itemStack) {
         var dye = getDye(itemStack);
         return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor().getFireworkColor());
+    }
+
+    public static int colorForDye(ItemStack stack) {
+        DyeColor dyeColor = ((DyeItem) stack.getItem()).getDyeColor();
+        if(dyeColor == DyeColor.WHITE) return 16769023;
+        if(dyeColor == DyeColor.LIGHT_GRAY) return 11706808;
+        if(dyeColor == DyeColor.GRAY) return 7892606;
+        if(dyeColor == DyeColor.BLACK) return 4933207;
+        if(dyeColor == DyeColor.BROWN) return 9857862;
+        if(dyeColor == DyeColor.RED) return 13919072;
+        if(dyeColor == DyeColor.ORANGE) return 15174998;
+        if(dyeColor == DyeColor.YELLOW) return 15919255;
+        if(dyeColor == DyeColor.LIME) return 13759127;
+        if(dyeColor == DyeColor.GREEN) return 6802793;
+        if(dyeColor == DyeColor.CYAN) return 8775615;
+        if(dyeColor == DyeColor.LIGHT_BLUE) return 11137001;
+        if(dyeColor == DyeColor.BLUE) return 9675230;
+        if(dyeColor == DyeColor.PURPLE) return 13477622;
+        if(dyeColor == DyeColor.MAGENTA) return 15184634;
+        if(dyeColor == DyeColor.PINK) return 16759526;
+        else return -1;
     }
 
     private void playRemoveOneSound(Entity pEntity) {

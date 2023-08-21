@@ -13,5 +13,5 @@ public class ModBlockEntities {
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MoreSnifferFlowers.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<AmbushBlockEntity>> AMBUSH = BLOCK_ENTITIES.register("ambush", () -> BlockEntityType.Builder.of(AmbushBlockEntity::new, ModBlocks.AMBUSH.get()).build(null));
-    public static final RegistryObject<BlockEntityType<CaulorflowerBlockEntity>> CAULORFLOWER = BLOCK_ENTITIES.register("caulorflower", () -> BlockEntityType.Builder.of(CaulorflowerBlockEntity::new, ModBlocks.CAULORFLOWER.get(), ModBlocks.CAULORFLOWER_PLANT.get()).build(null));
+    public static final RegistryObject<BlockEntityType<CaulorflowerBlockEntity>> CAULORFLOWER = BLOCK_ENTITIES.register("caulorflower", () -> BlockEntityType.Builder.of(CaulorflowerBlockEntity::new, ModBlocks.CAULORFLOWER.get()).build(null));
 }

@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.lootmodifers.AddItemsModifier;
 import net.minecraft.data.PackOutput;
@@ -20,7 +21,7 @@ public class ModLootModifierProvider extends GlobalLootModifierProvider {
     protected void start() {
         add("seeds_from_sniffing", new AddItemsModifier(new LootItemCondition[] {
                 new LootTableIdCondition.Builder(new ResourceLocation("gameplay/sniffer_digging")).build()
-        }, List.of(ModItems.DAWNBERRY_VINE_SEEDS.get(),ModItems.AMBUSH_SEEDS.get())));
+        }, List.of(ModItems.DAWNBERRY_VINE_SEEDS.get(), ModItems.AMBUSH_SEEDS.get(), ModBlocks.CAULORFLOWER.get().asItem())));
     }
 
 }

@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.data.PackOutput;
@@ -19,5 +20,6 @@ public class ModRecipesProvider extends RecipeProvider {
     protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
         trimSmithing(pWriter, ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get(), MoreSnifferFlowers.loc(getItemName(ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get()) + "_smithing_trim"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get()).pattern("ABA").pattern("ACA").pattern("AAA").define('A', Items.DIAMOND).define('B', ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get()).define('C', ModTags.ModItemTags.AROMA_TRIM_TEMPLATE_INGREDIENT).unlockedBy("has_aroma_trim_template", has(ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get())).save(pWriter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.FLOWER_PAINTER.get()).pattern("AA").pattern("BA").define('A', Items.PAPER).define('B', ModBlocks.CAULORFLOWER.get().asItem()).unlockedBy("has_caulorflower", has(ModBlocks.CAULORFLOWER.get())).save(pWriter);
     }
 }
