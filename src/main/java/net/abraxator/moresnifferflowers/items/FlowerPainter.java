@@ -210,16 +210,16 @@ public class FlowerPainter extends Item {
         if(dyeColor == DyeColor.BLACK) return 4933207;
         if(dyeColor == DyeColor.BROWN) return 9857862;
         if(dyeColor == DyeColor.RED) return 13919072;
-        if(dyeColor == DyeColor.ORANGE) return 15174998;
-        if(dyeColor == DyeColor.YELLOW) return 15919255;
+        if(dyeColor == DyeColor.ORANGE) return 16750371;
+        if(dyeColor == DyeColor.YELLOW) return 16773230;
         if(dyeColor == DyeColor.LIME) return 13759127;
         if(dyeColor == DyeColor.GREEN) return 6802793;
         if(dyeColor == DyeColor.CYAN) return 8775615;
-        if(dyeColor == DyeColor.LIGHT_BLUE) return 11137001;
-        if(dyeColor == DyeColor.BLUE) return 9675230;
-        if(dyeColor == DyeColor.PURPLE) return 13477622;
-        if(dyeColor == DyeColor.MAGENTA) return 15184634;
-        if(dyeColor == DyeColor.PINK) return 16759526;
+        if(dyeColor == DyeColor.LIGHT_BLUE) return 5369079;
+        if(dyeColor == DyeColor.BLUE) return 4605141;
+        if(dyeColor == DyeColor.PURPLE) return 9908724;
+        if(dyeColor == DyeColor.MAGENTA) return 13974514;
+        if(dyeColor == DyeColor.PINK) return 16743632;
         else return -1;
     }
 
