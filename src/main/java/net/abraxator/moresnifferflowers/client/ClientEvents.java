@@ -9,12 +9,13 @@ import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -55,7 +56,7 @@ public class ClientEvents {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
             if(pTintIndex == 1 && pState.getValue(CaulorflowerBlock.HAS_COLOR)) {
-                return DyespriaItem.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
+                return DyespriaItem.getColorForDye(pState.getValue(CaulorflowerBlock.COLOR));
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());
@@ -64,16 +65,10 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-<<<<<<< Updated upstream
-            var color = FlowerPainter.getDye(pStack);
-            if(pTintIndex != 0 || color.isEmpty()) {
-=======
-            var color = DyespriaItem.getColor(pStack);
-            if(pTintIndex != 0 || !color.isPresent()) {
->>>>>>> Stashed changes
+            if(pTintIndex != 0) {
                 return -1;
             } else {
-                return FlowerPainter.colorForDye(((DyeItem) color.get().getItem()).getDyeColor());
+                return DyespriaItem.colorForDyespria(pStack);
             }
         }, ModItems.DYESPRIA.get());
     }

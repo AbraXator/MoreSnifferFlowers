@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moresnifferflowers:flower_painter"
+        "recipe": "moresnifferflowers:dyespria"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "moresnifferflowers:flower_painter"
+      "moresnifferflowers:dyespria"
     ]
   },
   "sends_telemetry_event": false

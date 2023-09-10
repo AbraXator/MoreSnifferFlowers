@@ -8,7 +8,7 @@ import net.minecraft.world.item.DyeItem;
 public class ModItemProperties {
     public static void register() {
         ItemProperties.register(ModItems.DYESPRIA.get(), MoreSnifferFlowers.loc("color"), (pStack, pLevel, pEntity, pSeed) -> {
-            if(DyespriaItem.getDye(pStack).isPresent() && DyespriaItem.getDye(pStack).get().getItem() instanceof DyeItem) {
+            if(DyespriaItem.getDyeAndCount(pStack).isPresent() && DyespriaItem.getDyeAndCount(pStack).get().getFirst() instanceof DyeItem) {
                 return 1.0F;
             } else {
                 return 0.0F;

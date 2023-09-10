@@ -1,13 +1,18 @@
 package net.abraxator.moresnifferflowers.items;
 
+import com.google.common.collect.Maps;
+import com.mojang.datafixers.util.Pair;
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -21,25 +26,49 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class DyespriaItem extends Item {
+    public static final Map<DyeColor, Integer> COLORS = Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
+        dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFD9D9D9);
+        dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF696969);
+        dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF4C4C4C);
+        dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1E1E1E);
+        dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF724727);
+        dyeColorHexFormatMap.put(DyeColor.RED, 0xFFD0021B);
+        dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFFF8300);
+        dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFFFE100);
+        dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF41CD34);
+        dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF287C23);
+        dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
+        dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF4F3FE0);
+        dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF2E388D);
+        dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFF963EC9);
+        dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFD73EDA);
+        dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFF38BAA);
+    });
+
     public DyespriaItem(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
+    public @NotNull InteractionResult useOn(UseOnContext pContext) {
         Player player = pContext.getPlayer();
         Level level = pContext.getLevel();
         BlockPos blockPos = pContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
-
-        if(pContext.getHand() == InteractionHand.MAIN_HAND) {
+        if(player != null && pContext.getHand() == InteractionHand.MAIN_HAND) {
             ItemStack stack = pContext.getItemInHand();
+
+            CompoundTag tag = stack.getOrCreateTagElement(MoreSnifferFlowers.MOD_ID);
+            MoreSnifferFlowers.LOGGER.info(tag.getString("dye"));
+            MoreSnifferFlowers.LOGGER.info(String.valueOf(tag.getInt("count")));
+
             if(!player.isShiftKeyDown()) {
                 colorOne(stack, level, blockPos, blockState);
             } else {
@@ -53,17 +82,21 @@ public class DyespriaItem extends Item {
     }
 
     public static void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
-        DyespriaItem.getDye(stack).ifPresentOrElse(
-                    itemStack -> {
-                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, ((DyeItem) itemStack.getItem()).getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
-                        itemStack.shrink(1);
-                        addDye(stack, itemStack);
-                    },
-                    () -> {
-                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
-                    }
-            );
-            level.sendBlockUpdated(blockPos, blockState, blockState, 1);
+        if(level.getBlockState(blockPos).is(ModBlocks.CAULORFLOWER.get())) {
+                DyespriaItem.getDyeAndCount(stack).ifPresentOrElse(
+                        itemStack -> {
+                            level.setBlock(
+                                    blockPos,
+                                    blockState.setValue(CaulorflowerBlock.COLOR, itemStack.getFirst().getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true),
+                                    3);
+                            removeOneDye(stack);
+                        },
+                        () -> {
+                            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
+                        }
+                );
+                level.sendBlockUpdated(blockPos, blockState, blockState, 1);
+            }
         }
 
         private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
@@ -81,16 +114,15 @@ public class DyespriaItem extends Item {
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
+    public boolean overrideOtherStackedOnMe(ItemStack dyespria, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
         if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
             if(pOther.isEmpty()) {
-                remove(pStack).ifPresent(itemStack -> {
+                remove(dyespria).ifPresent(itemStack -> {
                     playRemoveOneSound(pPlayer);
                     pAccess.set(itemStack);
                 });
             } else {
-                int i = add(pStack, pOther);
-                if(i > 0) {
+                if(add(dyespria, pOther)) {
                     this.playInsertSound(pPlayer);
                 }
             }
@@ -100,67 +132,44 @@ public class DyespriaItem extends Item {
         }
     }
 
-    private int add(ItemStack pStack, ItemStack pOther) {
-        if (!pOther.isEmpty() && pOther.getItem() instanceof DyeItem dyeItem) {
-            ItemStack newStack;
-            var dyeOptional = getDye(pStack);
-            int k = 0;
-            int toShrink = 0;
+    private boolean add(ItemStack dyespria, ItemStack pOther) {
+        if (!pOther.isEmpty()) {
+            DyeItem dyeInside = (DyeItem) pOther.getItem();
+            int amountToInsert = pOther.getCount();
+            int amountInside = 0;
+            var dyeOptional = getDyeAndCount(dyespria);
             if(dyeOptional.isPresent()) {
-                ItemStack dye = dyeOptional.get();
-                if (ItemStack.isSameItem(dye, pOther)) {
-                    if (dye.getCount() == 64) {
-                        return 0;
-                    } else {
-                        int dyeInside = dye.getCount();
-                        int freeSpace = 64 - dyeInside;
-                        int otherCount = pOther.getCount();
-
-                        k = pOther.getCount() + dye.getCount();
-                        toShrink = k;
-                        newStack = dye.copyWithCount(k);
-
-                        if(freeSpace < otherCount) {
-                            addDye(pStack, newStack.copyWithCount(dyeInside + freeSpace));
-                            pOther.setCount(otherCount - freeSpace);
-                            return otherCount - freeSpace;
-                        }
-                    }
-                } else {
-                    return 0;
-                }
-            } else {
-                k = pOther.getCount();
-                toShrink = k;
-                newStack = pOther.copyWithCount(k);
+                amountInside = dyeOptional.get().getSecond();
             }
-            pOther.shrink(toShrink);
-            addDye(pStack, newStack);
-            return k;
-        } else {
-            return 0;
+            setDyeAndCount(dyespria, dyeInside, amountToInsert + amountInside);
+            pOther.setCount(0);
+            return true;
         }
+        return false;
     }
 
     private Optional<ItemStack> remove(ItemStack pStack) {
-        var itemStack = getDye(pStack);
-        if(itemStack.isPresent()) {
-            ItemStack itemStack1 = itemStack.get();
-            addDye(pStack, ItemStack.EMPTY);
-            return Optional.of(itemStack1);
+        Optional<Pair<DyeItem, Integer>> optional1 = getDyeAndCount(pStack);
+        if(optional1.isPresent()) {
+            int toRemove = Math.max(optional1.get().getSecond(), 64);
+            setDyeAndCount(pStack, (DyeItem) ItemStack.EMPTY.getItem(), optional1.get().getSecond() - toRemove);
+            return Optional.of(new ItemStack(optional1.get().getFirst(), toRemove));
         } else {
             return Optional.empty();
         }
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
+    public void appendHoverText(@NotNull ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        Component usage = Component.translatableWithFallback(
+                "tooltip.dyespria.usage",
+                "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n")
+                .withStyle(ChatFormatting.GOLD);
 
-        getDye(pStack).ifPresentOrElse(itemStack -> {
-           DyeColor dyeColor = ((DyeItem) itemStack.getItem()).getDyeColor();
-           int i = dyeColor.getTextColor();
-           Component name = Component.literal(itemStack.getCount() + " - " + itemStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(i))));
+        getDyeAndCount(pStack).ifPresentOrElse(dyeAndCount -> {
+           Component name = Component.literal(
+                   dyeAndCount.getFirst().getDyeColor().getName() + " - " + dyeAndCount.getSecond())
+                   .withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(getColorForDye(dyeAndCount.getFirst().getDyeColor())))));
 
            pTooltipComponents.add(usage);
            pTooltipComponents.add(name);
@@ -170,41 +179,38 @@ public class DyespriaItem extends Item {
         });
     }
 
-    public static void addDye(ItemStack stack, ItemStack dye) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.put("dye", dye.serializeNBT());
+    public static void removeOneDye(ItemStack stack) {
+        getDyeAndCount(stack).ifPresent(dyeItemIntegerPair -> {
+            setDyeAndCount(stack, dyeItemIntegerPair.getFirst(), dyeItemIntegerPair.getSecond() - 1);
+        });
+    }
+
+    public static void setDyeAndCount(ItemStack stack, DyeItem name, int count) {
+        CompoundTag tag = stack.getOrCreateTagElement(MoreSnifferFlowers.MOD_ID);
+        tag.putString("dye", name.toString());
+        tag.putInt("count", count);
         stack.setTag(tag);
+
+        MoreSnifferFlowers.LOGGER.info(tag.getString("dye"));
+        MoreSnifferFlowers.LOGGER.info(String.valueOf(tag.getInt("count")));
     }
 
-    public static Optional<ItemStack> getDye(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        ItemStack stack = ItemStack.of(tag.getCompound("dye"));
-        return stack.getItem() instanceof DyeItem ? Optional.of(stack) : Optional.empty();
+    public static Optional<Pair<DyeItem, Integer>> getDyeAndCount(ItemStack itemStack) {
+        CompoundTag tag = itemStack.getOrCreateTagElement(MoreSnifferFlowers.MOD_ID);
+        Item dyeItem =  ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("dye")));
+        int count = tag.getInt("count");
+        return dyeItem instanceof DyeItem ? Optional.of(new Pair<>(((DyeItem) dyeItem), count)) : Optional.empty();
     }
 
-    public static Optional<Integer> getColor(ItemStack itemStack) {
-        var dye = getDye(itemStack);
-        return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor().getFireworkColor());
+    public static int getColorForDye(DyeColor dyeColor) {
+        return COLORS.getOrDefault(dyeColor, -1);
     }
 
-    public static int colorForDye(DyeColor dyeColor) {
-        if(dyeColor == DyeColor.WHITE) return 16769023;
-        if(dyeColor == DyeColor.LIGHT_GRAY) return 11706808;
-        if(dyeColor == DyeColor.GRAY) return 7892606;
-        if(dyeColor == DyeColor.BLACK) return 4933207;
-        if(dyeColor == DyeColor.BROWN) return 9857862;
-        if(dyeColor == DyeColor.RED) return 13919072;
-        if(dyeColor == DyeColor.ORANGE) return 16750371;
-        if(dyeColor == DyeColor.YELLOW) return 16773230;
-        if(dyeColor == DyeColor.LIME) return 13759127;
-        if(dyeColor == DyeColor.GREEN) return 6802793;
-        if(dyeColor == DyeColor.CYAN) return 8775615;
-        if(dyeColor == DyeColor.LIGHT_BLUE) return 5369079;
-        if(dyeColor == DyeColor.BLUE) return 4605141;
-        if(dyeColor == DyeColor.PURPLE) return 9908724;
-        if(dyeColor == DyeColor.MAGENTA) return 13974514;
-        if(dyeColor == DyeColor.PINK) return 16743632;
-        else return -1;
+    public static int colorForDyespria(ItemStack stack) {
+        if(getDyeAndCount(stack).isPresent())
+            return getColorForDye(getDyeAndCount(stack).get().getFirst().getDyeColor());
+        else
+            return -1;
     }
 
     private void playRemoveOneSound(Entity pEntity) {
@@ -213,9 +219,5 @@ public class DyespriaItem extends Item {
 
     private void playInsertSound(Entity pEntity) {
         pEntity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
-    }
-
-    private void playDropContentsSound(Entity pEntity) {
-        pEntity.playSound(SoundEvents.BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
     }
 }
