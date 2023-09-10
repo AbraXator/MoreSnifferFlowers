@@ -1,13 +1,18 @@
 package net.abraxator.moresnifferflowers.items;
 
+import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
+import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -24,9 +29,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class DyespriaItem extends Item {
+    public static final Map<DyeColor, Integer> COLORS = Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
+        dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFD9D9D9);
+        dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF696969);
+        dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF4C4C4C);
+        dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1E1E1E);
+        dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF724727);
+        dyeColorHexFormatMap.put(DyeColor.RED, 0xFFD0021B);
+        dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFFF8300);
+        dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFFFE100);
+        dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF41CD34);
+        dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF287C23);
+        dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
+        dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF4F3FE0);
+        dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF2E388D);
+        dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFF963EC9);
+        dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFD73EDA);
+        dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFF38BAA);
+    });
+
     public DyespriaItem(Properties pProperties) {
         super(pProperties);
     }
@@ -38,18 +63,22 @@ public class DyespriaItem extends Item {
         BlockPos blockPos = pContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
 
-        if(pContext.getHand() == InteractionHand.MAIN_HAND) {
+        if (pContext.getHand() != InteractionHand.MAIN_HAND) {
+            return InteractionResult.PASS;
+        }
+
+        if(blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer) {
             ItemStack stack = pContext.getItemInHand();
-            if(!player.isShiftKeyDown()) {
+            if (!player.isShiftKeyDown()) {
                 colorOne(stack, level, blockPos, blockState);
             } else {
                 colorColumn(stack, level, blockPos);
             }
             level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
+            ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
             return InteractionResult.sidedSuccess(level.isClientSide);
-        } else {
-            return InteractionResult.PASS;
         }
+        return InteractionResult.PASS;
     }
 
     public static void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
@@ -57,7 +86,7 @@ public class DyespriaItem extends Item {
                     itemStack -> {
                         level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, ((DyeItem) itemStack.getItem()).getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
                         itemStack.shrink(1);
-                        addDye(stack, itemStack);
+                        setDye(stack, itemStack);
                     },
                     () -> {
                         level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
@@ -89,64 +118,42 @@ public class DyespriaItem extends Item {
                     pAccess.set(itemStack);
                 });
             } else {
-                int i = add(pStack, pOther);
-                if(i > 0) {
+                if(add(pStack, pOther)) {
                     this.playInsertSound(pPlayer);
                 }
             }
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
-    private int add(ItemStack pStack, ItemStack pOther) {
-        if (!pOther.isEmpty() && pOther.getItem() instanceof DyeItem dyeItem) {
-            ItemStack newStack;
-            var dyeOptional = getDye(pStack);
-            int k = 0;
-            int toShrink = 0;
-            if(dyeOptional.isPresent()) {
-                ItemStack dye = dyeOptional.get();
-                if (ItemStack.isSameItem(dye, pOther)) {
-                    if (dye.getCount() == 64) {
-                        return 0;
-                    } else {
-                        int dyeInside = dye.getCount();
-                        int freeSpace = 64 - dyeInside;
-                        int otherCount = pOther.getCount();
-
-                        k = pOther.getCount() + dye.getCount();
-                        toShrink = k;
-                        newStack = dye.copyWithCount(k);
-
-                        if(freeSpace < otherCount) {
-                            addDye(pStack, newStack.copyWithCount(dyeInside + freeSpace));
-                            pOther.setCount(otherCount - freeSpace);
-                            return otherCount - freeSpace;
-                        }
-                    }
-                } else {
-                    return 0;
+    private boolean add(ItemStack pStack, ItemStack pOther) {
+        var dyeInsideOptional = getDye(pStack);
+        if(!pOther.isEmpty()) {
+            if(dyeInsideOptional.isPresent()) {
+                ItemStack dyeInside = dyeInsideOptional.get();
+                int amountInside = dyeInside.getCount();
+                int freeSpace = 64 - amountInside;
+                if(freeSpace <= 0) return false;
+                else {
+                    setDye(pStack, dyeInside.copyWithCount(freeSpace));
+                    pOther.shrink(freeSpace);
+                    return true;
                 }
             } else {
-                k = pOther.getCount();
-                toShrink = k;
-                newStack = pOther.copyWithCount(k);
+                setDye(pStack, pOther);
+                pOther.setCount(0);
+                return true;
             }
-            pOther.shrink(toShrink);
-            addDye(pStack, newStack);
-            return k;
-        } else {
-            return 0;
         }
+        return false;
     }
 
     private Optional<ItemStack> remove(ItemStack pStack) {
         var itemStack = getDye(pStack);
         if(itemStack.isPresent()) {
             ItemStack itemStack1 = itemStack.get();
-            addDye(pStack, ItemStack.EMPTY);
+            setDye(pStack, ItemStack.EMPTY);
             return Optional.of(itemStack1);
         } else {
             return Optional.empty();
@@ -158,19 +165,19 @@ public class DyespriaItem extends Item {
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
 
         getDye(pStack).ifPresentOrElse(itemStack -> {
-           DyeColor dyeColor = ((DyeItem) itemStack.getItem()).getDyeColor();
-           int i = dyeColor.getTextColor();
-           Component name = Component.literal(itemStack.getCount() + " - " + itemStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(i))));
+            DyeColor dyeColor = ((DyeItem) itemStack.getItem()).getDyeColor();
+            int i = dyeColor.getTextColor();
+            Component name = Component.literal(itemStack.getCount() + " - " + itemStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(i))));
 
-           pTooltipComponents.add(usage);
-           pTooltipComponents.add(name);
+            pTooltipComponents.add(usage);
+            pTooltipComponents.add(name);
         }, () -> {
             pTooltipComponents.add(usage);
             pTooltipComponents.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
         });
     }
 
-    public static void addDye(ItemStack stack, ItemStack dye) {
+    public static void setDye(ItemStack stack, ItemStack dye) {
         CompoundTag tag = stack.getOrCreateTag();
         tag.put("dye", dye.serializeNBT());
         stack.setTag(tag);
@@ -182,29 +189,13 @@ public class DyespriaItem extends Item {
         return stack.getItem() instanceof DyeItem ? Optional.of(stack) : Optional.empty();
     }
 
-    public static Optional<Integer> getColor(ItemStack itemStack) {
+    public static Optional<DyeColor> getColor(ItemStack itemStack) {
         var dye = getDye(itemStack);
-        return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor().getFireworkColor());
+        return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor());
     }
 
     public static int colorForDye(DyeColor dyeColor) {
-        if(dyeColor == DyeColor.WHITE) return 16769023;
-        if(dyeColor == DyeColor.LIGHT_GRAY) return 11706808;
-        if(dyeColor == DyeColor.GRAY) return 7892606;
-        if(dyeColor == DyeColor.BLACK) return 4933207;
-        if(dyeColor == DyeColor.BROWN) return 9857862;
-        if(dyeColor == DyeColor.RED) return 13919072;
-        if(dyeColor == DyeColor.ORANGE) return 16750371;
-        if(dyeColor == DyeColor.YELLOW) return 16773230;
-        if(dyeColor == DyeColor.LIME) return 13759127;
-        if(dyeColor == DyeColor.GREEN) return 6802793;
-        if(dyeColor == DyeColor.CYAN) return 8775615;
-        if(dyeColor == DyeColor.LIGHT_BLUE) return 5369079;
-        if(dyeColor == DyeColor.BLUE) return 4605141;
-        if(dyeColor == DyeColor.PURPLE) return 9908724;
-        if(dyeColor == DyeColor.MAGENTA) return 13974514;
-        if(dyeColor == DyeColor.PINK) return 16743632;
-        else return -1;
+        return COLORS.getOrDefault(dyeColor, -1);
     }
 
     private void playRemoveOneSound(Entity pEntity) {
@@ -213,9 +204,5 @@ public class DyespriaItem extends Item {
 
     private void playInsertSound(Entity pEntity) {
         pEntity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
-    }
-
-    private void playDropContentsSound(Entity pEntity) {
-        pEntity.playSound(SoundEvents.BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
     }
 }

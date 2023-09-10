@@ -64,16 +64,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-<<<<<<< Updated upstream
-            var color = FlowerPainter.getDye(pStack);
-            if(pTintIndex != 0 || color.isEmpty()) {
-=======
             var color = DyespriaItem.getColor(pStack);
-            if(pTintIndex != 0 || !color.isPresent()) {
->>>>>>> Stashed changes
+            if(pTintIndex != 0 || color.isEmpty()) {
                 return -1;
             } else {
-                return FlowerPainter.colorForDye(((DyeItem) color.get().getItem()).getDyeColor());
+                return DyespriaItem.colorForDye(color.get());
             }
         }, ModItems.DYESPRIA.get());
     }

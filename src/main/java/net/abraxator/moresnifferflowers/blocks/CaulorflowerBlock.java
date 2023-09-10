@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class CaulorflowerBlock extends Block implements BonemealableBlock{
+public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
     public static final BooleanProperty HAS_COLOR = BooleanProperty.create("has_color");
@@ -99,7 +99,8 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock{
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         super.randomTick(pState, pLevel, pPos, pRandom);
         getHeighestPos(pLevel, pPos).ifPresent(blockPos -> {
-            if(net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, blockPos, pLevel.getBlockState(blockPos),pRandom.nextDouble() < 0.1D)) {
+            float f = getGrowthSpeed(this, pLevel, blockPos);
+            if(pRandom.nextFloat() < 0.15) {
                 grow(pLevel, pPos);
             }
         });
@@ -138,5 +139,12 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock{
     @Override
     public BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState getPlant(BlockGetter level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() != this) return defaultBlockState();
+        return state;
     }
 }

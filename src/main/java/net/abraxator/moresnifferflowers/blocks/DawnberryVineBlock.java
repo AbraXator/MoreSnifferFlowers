@@ -28,9 +28,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.IPlantable;
 import org.jetbrains.annotations.NotNull;
 
-public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock {
+public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock, IPlantable {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
     public static final BooleanProperty IS_SHEARED = BooleanProperty.create("is_sheared");
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
@@ -71,43 +72,54 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     @SuppressWarnings("deprecated")
     public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
-        if(itemStack.is(Items.SHEARS)) {
-            if(!(pState.getValue(AGE) >= 4)) {
-                if(pPlayer instanceof ServerPlayer serverPlayer) {
-                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pPos, itemStack);
-                }
 
-                pLevel.playSound(pPlayer, pPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS);
-                BlockState state = pState.setValue(IS_SHEARED, !pState.getValue(IS_SHEARED));
-                pLevel.setBlockAndUpdate(pPos, state);
-                pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, state));
-                itemStack.hurtAndBreak(1, pPlayer, player -> player.broadcastBreakEvent(pHand));
-                return InteractionResult.sidedSuccess(pLevel.isClientSide);
-            }
+        if(itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
+            return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
         }
         if(this.isMaxAge(pState)) {
-            RandomSource randomSource = pLevel.getRandom();
-            final ItemStack DAWNBERRY = new ItemStack(ModItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 2));
-            final ItemStack SEEDS = new ItemStack(ModItems.DAWNBERRY_VINE_SEEDS.get(), randomSource.nextIntBetweenInclusive(0, 1));
-            popResource(pLevel, pPos, DAWNBERRY);
-            popResource(pLevel, pPos, SEEDS);
-            pLevel.playSound(null, pPos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
-            BlockState state = pState.setValue(AGE, 2);
-            pLevel.setBlock(pPos, state, 2);
-            pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, state));
-            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+            return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
         }
         if(pState.getValue(AGE) == 3) {
-            final ItemStack DAWNBERRY = new ItemStack(ModItems.DAWNBERRY.get());
-            popResource(pLevel, pPos, DAWNBERRY);
-            pLevel.playSound(null, pPos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
-            BlockState state = pState.setValue(AGE, 2);
-            pLevel.setBlock(pPos, state, 2);
-            pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, state));
-            return InteractionResult.sidedSuccess(pLevel.isClientSide);
+            return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
         }else {
             return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
         }
+    }
+
+    private InteractionResult shearAction(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        if(player instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
+        }
+
+        level.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS);
+        BlockState state = blockState.setValue(IS_SHEARED, !blockState.getValue(IS_SHEARED));
+        level.setBlockAndUpdate(pos, state);
+        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
+        stack.hurtAndBreak(1, player, o -> o.broadcastBreakEvent(hand));
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    private InteractionResult dropMaxAgeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
+        RandomSource randomSource = level.getRandom();
+        final ItemStack DAWNBERRY = new ItemStack(ModItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 2));
+        final ItemStack SEEDS = new ItemStack(ModItems.DAWNBERRY_VINE_SEEDS.get(), randomSource.nextIntBetweenInclusive(0, 1));
+        popResource(level, pos, DAWNBERRY);
+        popResource(level, pos, SEEDS);
+        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+        BlockState state = blockState.setValue(AGE, 2);
+        level.setBlock(pos, state, 2);
+        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    private InteractionResult dropAgeThreeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
+        final ItemStack DAWNBERRY = new ItemStack(ModItems.DAWNBERRY.get());
+        popResource(level, pos, DAWNBERRY);
+        level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+        BlockState state = blockState.setValue(AGE, 2);
+        level.setBlock(pos, state, 2);
+        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
@@ -133,45 +145,6 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         return spreader;
     }
 
-    protected static float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {
-        float f = 1.0F;
-        BlockPos blockpos = pPos.below();
-
-        for(int i = -1; i <= 1; ++i) {
-            for(int j = -1; j <= 1; ++j) {
-                float f1 = 0.0F;
-                BlockState blockstate = pLevel.getBlockState(blockpos.offset(i, 0, j));
-
-                if (i != 0 || j != 0) {
-                    f1 /= 4.0F;
-                }
-
-                f += f1;
-            }
-        }
-
-        BlockPos blockpos1 = pPos.north();
-        BlockPos blockpos2 = pPos.south();
-        BlockPos blockpos3 = pPos.west();
-        BlockPos blockpos4 = pPos.east();
-        boolean flag = pLevel.getBlockState(blockpos3).is(pBlock) || pLevel.getBlockState(blockpos4).is(pBlock);
-        boolean flag1 = pLevel.getBlockState(blockpos1).is(pBlock) || pLevel.getBlockState(blockpos2).is(pBlock);
-        if (flag && flag1) {
-            f /= 2.0F;
-        } else {
-            boolean flag2 = pLevel.getBlockState(blockpos3.north()).is(pBlock) || pLevel.getBlockState(blockpos4.north()).is(pBlock) || pLevel.getBlockState(blockpos4.south()).is(pBlock) || pLevel.getBlockState(blockpos3.south()).is(pBlock);
-            if (flag2) {
-                f /= 2.0F;
-            }
-        }
-
-        return f;
-    }
-
-    private void canSpread(){
-
-    }
-
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
         return !isMaxAge(pState);
@@ -186,17 +159,22 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
         grow(pState, pLevel, pPos, pRandom);
         pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
-        if(pRandom.nextFloat() >= 0.3F) {
-            boolean canSpread = Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
-            if(pRandom.nextFloat() >= 0.3F && canSpread) {
-                this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
-                this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
-            }
+        boolean canSpread = Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
+        if(pRandom.nextFloat() >= 0.3F && pRandom.nextFloat() >= 0.3F && canSpread) {
+            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
+            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
         }
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return Shapes.empty();
+    }
+
+    @Override
+    public BlockState getPlant(BlockGetter level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() != this) return defaultBlockState();
+        return state;
     }
 }

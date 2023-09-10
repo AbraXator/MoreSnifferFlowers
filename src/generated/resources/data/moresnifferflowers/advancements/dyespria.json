@@ -1,0 +1,34 @@
+{
+  "parent": "moresnifferflowers:root",
+  "criteria": {
+    "used_dyespria": {
+      "conditions": {},
+      "trigger": "moresnifferflowers:used_dyespria"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.more_sniffer_flowers.dyespria.desc",
+      "with": [
+        "block.moresnifferflowers.caulorflower",
+        "item.moresnifferflowers.dyespria"
+      ]
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "moresnifferflowers:dyespria"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.more_sniffer_flowers.dyespria"
+    }
+  },
+  "requirements": [
+    [
+      "used_dyespria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

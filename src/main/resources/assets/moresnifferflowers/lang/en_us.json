@@ -16,10 +16,15 @@
 	"tooltip.dyespria.usage": "Right-click to insert dye \nRight-click caulorflower to repaint \nSneak to apply to the whole column\n",
 	"tooltip.dyespria.empty": "Empty",
 
+	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",
+	"advancements.more_sniffer_flowers.dyespria.desc": "Bring color to Caulorflower using Dyespria",
+	"advancements.more_sniffer_flowers.any_seed": "Interestingly smelling expansion",
+	"advancements.more_sniffer_flowers.any_seed.desc": "Discover More Sniffer Flowers",
 
 	"trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
 
 	"trim_material.moresnifferflowers.amber": "Amber Material",
 
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers"
+
 }

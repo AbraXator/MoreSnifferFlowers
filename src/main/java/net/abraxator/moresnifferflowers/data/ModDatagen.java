@@ -29,5 +29,6 @@ public class ModDatagen{
         generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, completableFuture, existingFileHelper));
         generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, completableFuture));
         generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput));
+        generator.addProvider(event.includeServer(), new ModAdvancementProvider(packOutput, completableFuture, existingFileHelper));
     }
 }
