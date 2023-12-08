@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "center=true": {
+      "model": "moresnifferflowers:block/big_crop"
+    },
+    "center=false": {
+      "model": ""
+    }
+  }
+}

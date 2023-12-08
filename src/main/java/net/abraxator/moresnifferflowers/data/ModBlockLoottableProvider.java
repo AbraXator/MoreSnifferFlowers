@@ -7,22 +7,16 @@ import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
@@ -61,6 +55,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
+        add(ModBlocks.BIG_CROP.get(), noDrop());
     }
 
     @Override
