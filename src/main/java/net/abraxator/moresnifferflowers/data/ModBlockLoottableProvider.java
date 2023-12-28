@@ -55,7 +55,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
-        add(ModBlocks.BIG_CROP.get(), noDrop());
+        add(ModBlocks.GIANT_CARROT.get(), noDrop());
     }
 
     @Override

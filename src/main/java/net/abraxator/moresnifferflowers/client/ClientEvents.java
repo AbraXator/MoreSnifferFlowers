@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.block.GiantCarrotBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
@@ -31,6 +32,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onEntityRenderersRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(BoblingModel.LAYER_LOCATION, BoblingModel::createBodyLayer);
+        event.registerLayerDefinition(GiantCarrotBlockEntityRenderer.GIANT_CARROT, GiantCarrotBlockEntityRenderer::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -41,6 +43,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void blockRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.AMBUSH.get(), AmbushBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.GIANT_CROP.get(), GiantCarrotBlockEntityRenderer::new);
     }
 
     @SubscribeEvent

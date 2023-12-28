@@ -29,5 +29,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AMBER.get());
         this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.AMBER.get());
         this.tag(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM).add(Blocks.WHEAT, Blocks.CARROTS, Blocks.POTATOES, Blocks.BEETROOTS, Blocks.NETHER_WART);
+        this.tag(ModTags.ModBlockTags.AIR).add(Blocks.AIR);
     }
 }

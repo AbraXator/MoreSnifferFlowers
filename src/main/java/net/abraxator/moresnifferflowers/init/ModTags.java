@@ -17,6 +17,7 @@ public class ModTags {
 
     public static class ModBlockTags {
         public static final TagKey<Block> CROPS_FERTIABLE_BY_FBM = create(Registries.BLOCK, "crops_fertiable_by_fbm");
+        public static final TagKey<Block> AIR = create(Registries.BLOCK, "air");
     }
 
     public static class ModBannerPatternTags {
