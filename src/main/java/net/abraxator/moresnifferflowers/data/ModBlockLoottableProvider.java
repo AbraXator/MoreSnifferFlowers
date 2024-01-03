@@ -56,6 +56,10 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
         add(ModBlocks.GIANT_CARROT.get(), noDrop());
+        add(ModBlocks.GIANT_POTATO.get(), noDrop());
+        add(ModBlocks.GIANT_NETHERWART.get(), noDrop());
+        add(ModBlocks.GIANT_BEETROOT.get(), noDrop());
+        add(ModBlocks.GIANT_WHEAT.get(), noDrop());
     }
 
     @Override
