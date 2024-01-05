@@ -8,6 +8,7 @@ import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.block.BonmeeliaBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.*;
@@ -37,6 +38,7 @@ public class ClientEvents {
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_CARROT, GiantCropModels::createGiantCarrotLayer);
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_POTATO, GiantCropModels::createGiantPotatoLayer);
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_NETHERWART, GiantCropModels::createNetherwartLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.EMPTY_JAR, BonmeeliaBlockEntityRenderer::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -48,6 +50,7 @@ public class ClientEvents {
     public static void blockRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.AMBUSH.get(), AmbushBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.GIANT_CROP.get(), GiantCropBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.BONMEELIA.get(), BonmeeliaBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
