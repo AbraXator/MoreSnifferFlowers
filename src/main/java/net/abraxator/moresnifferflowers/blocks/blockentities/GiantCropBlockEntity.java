@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class GiantCropBlockEntity extends BlockEntity {
+public class GiantCropBlockEntity extends ModBlockEntity {
     public GiantCropBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GIANT_CROP.get(), pPos, pBlockState);
     }
