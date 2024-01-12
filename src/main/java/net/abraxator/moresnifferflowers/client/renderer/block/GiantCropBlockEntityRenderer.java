@@ -28,8 +28,8 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 	private final ModelPart carrot;
 	private final ModelPart potato;
 	private final ModelPart netherwart;
-	//private final ModelPart beetroot;
-	//private final ModelPart wheat;
+	private final ModelPart beetroot;
+	private final ModelPart wheat;
 
 	public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
 		ModelPart carrotModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_CARROT);
@@ -41,6 +41,12 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 		ModelPart netherwartModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
 		this.netherwart = netherwartModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_NETHERWART.get(), this.netherwart);
+		ModelPart beetrootModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
+		this.beetroot = beetrootModelPart.getChild("root");
+		this.modelPartMap.put(ModBlocks.GIANT_BEETROOT.get(), this.beetroot);
+		ModelPart wheatModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
+		this.wheat = wheatModelPart.getChild("root");
+		this.modelPartMap.put(ModBlocks.GIANT_WHEAT.get(), this.wheat);
 	}
 
 	@Override
