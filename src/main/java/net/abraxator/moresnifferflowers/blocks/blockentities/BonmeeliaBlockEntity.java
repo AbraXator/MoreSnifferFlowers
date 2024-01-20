@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks.blockentities;
 
+import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,12 +30,14 @@ public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
         }
         if(hintDuration == 0) {
             hasHint = false;
+            BonmeeliaBlock.displayHint(level, worldPosition, getBlockState(), false);
         }
     }
     
     public void displayHint() {
         this.hasHint = true;
         this.hintDuration = 1F;
+        BonmeeliaBlock.displayHint(level, worldPosition, getBlockState(), true);
     }
     
     public void giveBottle(ItemStack itemStack) {

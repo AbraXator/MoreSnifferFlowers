@@ -1,4 +1,5 @@
 {
+    "render_type": "translucent",
     "parent": "moresnifferflowers:block/bonmeelia_base",
     "textures": {
         "1": "moresnifferflowers:block/bonmeelia_outline"

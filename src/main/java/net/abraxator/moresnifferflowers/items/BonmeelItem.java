@@ -26,8 +26,8 @@ public class BonmeelItem extends Item {
             Blocks.CARROTS, new Pair<>(ModBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
             Blocks.POTATOES, new Pair<>(ModBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
             Blocks.NETHER_WART, new Pair<>(ModBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
-            Blocks.BEETROOTS, new Pair<>(ModBlocks.GIANT_POTATO.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
-            Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
+            Blocks.BEETROOTS, new Pair<>(ModBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
+            Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
     );
 
     public BonmeelItem(Properties pProperties) {
@@ -40,6 +40,7 @@ public class BonmeelItem extends Item {
         Level level = pContext.getLevel();
         BlockPos clickedPos = pContext.getClickedPos();
         BlockState clickedState = level.getBlockState(clickedPos);
+        if(!clickedState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) return InteractionResult.PASS;
         Block crop = clickedState.getBlock();
         Block giantVersion = MAP.get(crop).getA();
         BoundingBox boundingBox = new BoundingBox(
