@@ -20,6 +20,6 @@ public class AmbushBlockEntity extends GrowingCropBlockEntity {
 
     @Override
     public boolean canGrow(float growProgress, boolean hasGrown) {
-        return this.getBlockState().getValue(AmbushBlock.AGE).equals(7) && super.canGrow(growProgress, hasGrown);
+        return this.getBlockState().getValue(AmbushBlock.AGE).equals(7) && super.canGrow(growProgress, hasGrown);   
     }
 }

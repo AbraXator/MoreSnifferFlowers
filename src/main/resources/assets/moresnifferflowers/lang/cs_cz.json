@@ -6,11 +6,19 @@
 	"item.moresnifferflowers.ambush_banner_pattern.desc": "Jantarové Křoví",
 	"item.moresnifferflowers.amber_shard": "Úlomek Jantaru",
 	"item.moresnifferflowers.dragonfly": "Vážka",
+	"item.moresnifferflowers.dyespria": "Barvonástřikia",
+	"item.moresnifferflowers.jar_of_bonmeel": "Skleněná Nádoba Plna Lepší Moučky",
+	"item.moresnifferflowers.bonmeelia_seeds": "Semena Lepšomoučkovníku",
 
 	"block.moresnifferflowers.dawnberry_vine": "Liána Bobulí Úsvitu",
 	"block.moresnifferflowers.ambush": "Jantarové Křoví",
 	"block.moresnifferflowers.amber": "Jantar",
+	"block.moresnifferflowers.caulorflower": "Barvokvěták",
+	"block.moresnifferflowers.bonmeelia": "Lepšomoučkovník",
 
+	"tooltip.dyespria.usage": "Right-click to insert dye \nRight-click caulorflower to repaint \nSneak to apply to the whole column\n",
+	"tooltip.dyespria.empty": "Empty",
+	
 	"trim_pattern.moresnifferflowers.aroma": "Aroma",
 
 	"trim_material.moresnifferflowers.amber": "Jantarový Materiál",

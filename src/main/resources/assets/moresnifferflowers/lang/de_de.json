@@ -1,0 +1,33 @@
+{
+  "item.moresnifferflowers.dawnberry": "Dawnberry",
+  "item.moresnifferflowers.dawnberry_vine_seeds": "Dawnberry Vine Seeds",
+  "item.moresnifferflowers.ambush_seeds": "Ambush Seeds",
+  "item.moresnifferflowers.ambush_banner_pattern": "Banner Pattern",
+  "item.moresnifferflowers.ambush_banner_pattern.desc": "Ambush",
+  "item.moresnifferflowers.amber_shard": "Amber Shard",
+  "item.moresnifferflowers.dragonfly": "Dragonfly",
+  "item.moresnifferflowers.dyespria": "Dyespria",
+  "item.moresnifferflowers.jar_of_bonmeel": "Jar Of Bonmeel",
+  "item.moresnifferflowers.bonmeelia_seeds": "Bonmeelia Seeds",
+
+  "block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
+  "block.moresnifferflowers.ambush": "Ambush",
+  "block.moresnifferflowers.amber": "Amber",
+  "block.moresnifferflowers.caulorflower": "Caulorflower",
+  "block.moresnifferflowers.bonmeelia": "Bonmeelia",
+
+  "tooltip.dyespria.usage": "Right-click to insert dye \nRight-click caulorflower to repaint \nSneak to apply to the whole column\n",
+  "tooltip.dyespria.empty": "Empty",
+
+  "advancements.more_sniffer_flowers.dyespria": "Colorful plants",
+  "advancements.more_sniffer_flowers.dyespria.desc": "Bring color to Caulorflower using Dyespria",
+  "advancements.more_sniffer_flowers.any_seed": "Interestingly smelling expansion",
+  "advancements.more_sniffer_flowers.any_seed.desc": "Discover More Sniffer Flowers",
+
+  "trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
+
+  "trim_material.moresnifferflowers.amber": "Amber Material",
+
+  "moresnifferflowers.creative_tab": "More Sniffer Flowers"
+
+}

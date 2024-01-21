@@ -7,11 +7,14 @@
 	"item.moresnifferflowers.amber_shard": "Amber Shard",
 	"item.moresnifferflowers.dragonfly": "Dragonfly",
 	"item.moresnifferflowers.dyespria": "Dyespria",
+	"item.moresnifferflowers.jar_of_bonmeel": "Jar Of Bonmeel",
+	"item.moresnifferflowers.bonmeelia_seeds": "Bonmeelia Seeds",
 
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
 	"block.moresnifferflowers.ambush": "Ambush",
 	"block.moresnifferflowers.amber": "Amber",
 	"block.moresnifferflowers.caulorflower": "Caulorflower",
+	"block.moresnifferflowers.bonmeelia": "Bonmeelia",
 	
 	"tooltip.dyespria.usage": "Right-click to insert dye \nRight-click caulorflower to repaint \nSneak to apply to the whole column\n",
 	"tooltip.dyespria.empty": "Empty",

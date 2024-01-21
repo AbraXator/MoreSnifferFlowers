@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blocks.blockentities.BonmeeliaBlockEntity;
+import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -30,6 +31,7 @@ import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import javax.lang.model.util.ElementScanner6;
 import java.awt.*;
 
 public class BonmeeliaBlock extends Block implements ModEntityBlock {
@@ -65,7 +67,8 @@ public class BonmeeliaBlock extends Block implements ModEntityBlock {
             //entity.giveBottle(itemStack);
             pLevel.setBlock(pPos, pState.setValue(HAS_BOTTLE, true), 3);
         } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
-            return InteractionResult.CONSUME;
+            pLevel.setBlock(pPos, pState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
+            pPlayer.addItem(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
         } else if(!pState.getValue(HAS_BOTTLE)) {
             entity.displayHint();
         }
@@ -82,8 +85,12 @@ public class BonmeeliaBlock extends Block implements ModEntityBlock {
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         pLevel.setBlockAndUpdate(pPos, pState.setValue(AGE, getCurrentAge(pState) + 1));
         var particle = new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 0.5F);
-
-        pLevel.sendParticles(particle, pPos.getX(), pPos.getY(), pPos.getZ(), 10, pRandom.nextGaussian() * 0.5, pRandom.nextGaussian() * 0.5, pRandom.nextGaussian() * 0.5, 0.5D);
+        Vec3 center = pPos.getCenter();
+        double r = (double)(0.4F - (pRandom.nextFloat() + pRandom.nextFloat()) * 0.4F);
+        double x = center.x * r;
+        double y = center.y * r;
+        double z = center.z * r;
+        pLevel.sendParticles(particle, x, y, z, 10, pRandom.nextGaussian() * 0.5, pRandom.nextGaussian() * 0.5, pRandom.nextGaussian() * 0.5, 0.5D);
     }
 
     private int getCurrentAge(BlockState blockState) {

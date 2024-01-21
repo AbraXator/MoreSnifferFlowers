@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
+import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.core.BlockPos;
@@ -18,10 +19,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import oshi.util.tuples.Pair;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class BonmeelItem extends Item {
+public class JarOfBonmeelItem extends Item {
     public final Map<Block, Pair<Block, Pair<IntegerProperty, Integer>>> MAP = Map.of(
             Blocks.CARROTS, new Pair<>(ModBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
             Blocks.POTATOES, new Pair<>(ModBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
@@ -30,7 +32,7 @@ public class BonmeelItem extends Item {
             Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
     );
 
-    public BonmeelItem(Properties pProperties) {
+    public JarOfBonmeelItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -51,6 +53,7 @@ public class BonmeelItem extends Item {
                 clickedPos.getY() + 2,
                 clickedPos.getZ() + 1);
         Supplier<Stream<BlockPos>> stream = () -> BlockPos.betweenClosedStream(boundingBox);
+        final UUID uuid = UUID.randomUUID();
 
         boolean flag = stream.get().allMatch(pos -> {
             BlockState blockState = level.getBlockState(pos);
@@ -69,6 +72,9 @@ public class BonmeelItem extends Item {
             stream.get().forEach(pos -> {
                 level.destroyBlock(pos, false);
                 level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.IS_CENTER, pos.equals(clickedPos)));
+                if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
+                    entity.uuid = uuid;
+                }
             });
             return InteractionResult.sidedSuccess(level.isClientSide);
         }

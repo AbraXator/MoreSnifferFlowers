@@ -1,3 +1,6 @@
 {
-  "parent": "moresnifferflowers:block/jar_of_bonmeel"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "moresnifferflowers:item/jar_of_bonmeel"
+  }
 }
