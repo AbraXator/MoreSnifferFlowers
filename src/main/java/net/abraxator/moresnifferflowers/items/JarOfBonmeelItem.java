@@ -18,10 +18,11 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import oshi.util.tuples.Pair;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class JarOfBonmeelItem extends Item {
     public final Map<Block, Pair<Block, Pair<IntegerProperty, Integer>>> MAP = Map.of(
@@ -45,17 +46,15 @@ public class JarOfBonmeelItem extends Item {
         if(!clickedState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) return InteractionResult.PASS;
         Block crop = clickedState.getBlock();
         Block giantVersion = MAP.get(crop).getA();
-        BoundingBox boundingBox = new BoundingBox(
+        Iterable<BlockPos> blockPosList = BlockPos.betweenClosed(
                 clickedPos.getX() - 1,
                 clickedPos.getY() - 0,
                 clickedPos.getZ() - 1,
                 clickedPos.getX() + 1,
                 clickedPos.getY() + 2,
-                clickedPos.getZ() + 1);
-        Supplier<Stream<BlockPos>> stream = () -> BlockPos.betweenClosedStream(boundingBox);
-        final UUID uuid = UUID.randomUUID();
-
-        boolean flag = stream.get().allMatch(pos -> {
+                clickedPos.getZ() + 1
+        );
+        boolean flag = StreamSupport.stream(blockPosList.spliterator(), false).allMatch(pos -> {
             BlockState blockState = level.getBlockState(pos);
             int cropY = clickedPos.getY();
             var PROPERTY = MAP.get(crop).getB().getA();
@@ -68,17 +67,28 @@ public class JarOfBonmeelItem extends Item {
             return InteractionResult.PASS;
         }
 
-        if (player instanceof ServerPlayer && flag) {
-            stream.get().forEach(pos -> {
-                level.destroyBlock(pos, false);
-                level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.IS_CENTER, pos.equals(clickedPos)));
-                if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
-                    entity.uuid = uuid;
-                }
-            });
-            return InteractionResult.sidedSuccess(level.isClientSide);
+        if (flag && !level.isClientSide()) {
+            return placeLogic(blockPosList, level, giantVersion, clickedPos);
         }
 
         return InteractionResult.PASS;
+    }
+
+    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos) {
+        int i = 0;
+        List<BlockPos> list = new ArrayList<>();
+        blockPosList.forEach(list::add);
+
+        blockPosList.forEach(pos -> {
+            pos = pos.immutable();
+            level.destroyBlock(pos, false);
+            level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.IS_CENTER, pos.equals(clickedPos)));
+            if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
+                entity.pos1 = clickedPos.mutable().move(1, 2, 1);
+                entity.pos2 = clickedPos.mutable().move(-1, 0, -1);
+            }
+        });
+
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 }

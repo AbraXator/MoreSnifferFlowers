@@ -31,13 +31,13 @@ public class GiantCropBlock extends Block implements EntityBlock {
 
     @Override
     public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
-        if(!(pLevel.getBlockEntity(pCurrentPos) instanceof GiantCropBlockEntity entity)) {
+        /*if(!(pLevel.getBlockEntity(pCurrentPos) instanceof GiantCropBlockEntity entity)) {
             return super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
         }
         Set<BlockPos> box = getBox(pCurrentPos, pLevel, entity);
         if(box.size() <= 26) {
             box.forEach(blockPos -> pLevel.destroyBlock(blockPos, false));
-        }
+        }*/
         return super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
     }
 
@@ -50,8 +50,7 @@ public class GiantCropBlock extends Block implements EntityBlock {
     private void scan(LevelAccessor level, BlockPos currentPos, Set<BlockPos> visited, GiantCropBlockEntity entity) {
         if(visited.contains(currentPos) 
                 || !level.getBlockState(currentPos).is(this)
-                || !(level.getBlockEntity(currentPos) instanceof GiantCropBlockEntity entity1)
-                || !entity.uuid.equals(entity1.uuid)) {
+                || !(level.getBlockEntity(currentPos) instanceof GiantCropBlockEntity entity1)) {
             return;
         }
 

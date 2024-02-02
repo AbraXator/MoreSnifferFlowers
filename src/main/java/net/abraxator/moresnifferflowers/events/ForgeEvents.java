@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.events;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModParticles;
@@ -34,6 +35,12 @@ public class ForgeEvents {
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if(event.getState().is(ModBlocks.AMBER.get()) && event.getLevel() instanceof ServerLevel serverLevel) {
             fireFlyLogic(event.getState(), serverLevel, event.getPos(), event.getPlayer(), event);
+        }
+
+        if(event.getLevel().getBlockEntity(event.getPos()) instanceof GiantCropBlockEntity entity) {
+            BlockPos.betweenClosed(entity.pos1, entity.pos2).forEach(blockPos -> {
+                event.getLevel().destroyBlock(blockPos, false);
+            });
         }
     }
 
