@@ -16,7 +16,7 @@
 	"block.moresnifferflowers.caulorflower": "Caulorflower",
 	"block.moresnifferflowers.bonmeelia": "Bonmeelia",
 	
-	"tooltip.dyespria.usage": "Right-click to insert dye \nRight-click caulorflower to repaint \nSneak to apply to the whole column\n",
+	"tooltip.dyespria.usage": "Hover+Right-click to insert dye \nRight-click Caulorflower to paint \nSneak to paint whole column\n",
 	"tooltip.dyespria.empty": "Empty",
 
 	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",

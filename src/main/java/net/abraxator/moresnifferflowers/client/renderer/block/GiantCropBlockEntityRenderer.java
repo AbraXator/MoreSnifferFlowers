@@ -41,10 +41,10 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 		ModelPart netherwartModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
 		this.netherwart = netherwartModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_NETHERWART.get(), this.netherwart);
-		ModelPart beetrootModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
+		ModelPart beetrootModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_BEETROOT);
 		this.beetroot = beetrootModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_BEETROOT.get(), this.beetroot);
-		ModelPart wheatModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
+		ModelPart wheatModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_WHEAT);
 		this.wheat = wheatModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_WHEAT.get(), this.wheat);
 	}
