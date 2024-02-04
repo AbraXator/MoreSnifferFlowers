@@ -1,5 +1,5 @@
 {
-	"render_type": "translucent",
+	"render_type": "cutout",
 	"parent": "minecraft:block/cube_all",
 	"textures": {
 		"all": "moresnifferflowers:block/clear_texture"

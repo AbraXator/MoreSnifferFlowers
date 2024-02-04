@@ -7,7 +7,7 @@
 	"item.moresnifferflowers.amber_shard": "Úlomek Jantaru",
 	"item.moresnifferflowers.dragonfly": "Vážka",
 	"item.moresnifferflowers.dyespria": "Barvonástřikia",
-	"item.moresnifferflowers.jar_of_bonmeel": "Skleněná Nádoba Plna Lepší Moučky",
+	"item.moresnifferflowers.jar_of_bonmeel": "Skleněná Nádoba Plná Lepšomoučky",
 	"item.moresnifferflowers.bonmeelia_seeds": "Semena Lepšomoučkovníku",
 
 	"block.moresnifferflowers.dawnberry_vine": "Liána Bobulí Úsvitu",
@@ -16,10 +16,10 @@
 	"block.moresnifferflowers.caulorflower": "Barvokvěták",
 	"block.moresnifferflowers.bonmeelia": "Lepšomoučkovník",
 
-	"tooltip.dyespria.usage": "Right-click to insert dye \nRight-click caulorflower to repaint \nSneak to apply to the whole column\n",
-	"tooltip.dyespria.empty": "Empty",
+	"tooltip.dyespria.usage": "Pokud zamíříte vaším počítačovým cursorem a zárověn zmáčkete pravé tlačítko myši, vložíte barvivo \nPravým tlačítkem myši nabarvíte Barvokvěták \nPlížením nabarvíte celý sloupec \n",
+	"tooltip.dyespria.empty": "Prázdnota",
 	
-	"trim_pattern.moresnifferflowers.aroma": "Aroma",
+	"trim_pattern.moresnifferflowers.aroma": "Má aspoň 3 definice ale tady se myslí vůně",
 
 	"trim_material.moresnifferflowers.amber": "Jantarový Materiál",
 
