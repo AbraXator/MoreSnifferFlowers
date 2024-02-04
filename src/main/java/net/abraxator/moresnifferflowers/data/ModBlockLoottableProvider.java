@@ -1,12 +1,14 @@
 package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.blocks.DawnberryVineBlock;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -17,6 +19,9 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
@@ -55,11 +60,25 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
-        add(ModBlocks.GIANT_CARROT.get(), noDrop());
-        add(ModBlocks.GIANT_POTATO.get(), noDrop());
-        add(ModBlocks.GIANT_NETHERWART.get(), noDrop());
-        add(ModBlocks.GIANT_BEETROOT.get(), noDrop());
-        add(ModBlocks.GIANT_WHEAT.get(), noDrop());
+        add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 3)));
+        add(ModBlocks.GIANT_POTATO.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 3)));
+        add(ModBlocks.GIANT_NETHERWART.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 3)));
+        add(ModBlocks.GIANT_BEETROOT.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 3)));
+        add(ModBlocks.GIANT_WHEAT.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 3)));
+        add(ModBlocks.BONMEELIA.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get())))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(ModItems.JAR_OF_BONMEEL.get()))
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BONMEELIA.get())
+                                .setProperties(StatePropertiesPredicate.Builder.properties()
+                                        .hasProperty(BonmeeliaBlock.AGE, BonmeeliaBlock.MAX_AGE)
+                                        .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true))))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(Items.GLASS_BOTTLE))
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BONMEELIA.get())
+                                .setProperties(StatePropertiesPredicate.Builder.properties()
+                                        .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true)))));
     }
 
     @Override

@@ -26,9 +26,9 @@ public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
     
     private void hintLogic() {
         if(hintDuration > 0) {
-            hintDuration -= 0.01;
+            hintDuration--;
         }
-        if(hintDuration == 0) {
+        else {
             hasHint = false;
             BonmeeliaBlock.displayHint(level, worldPosition, getBlockState(), false);
         }
@@ -36,13 +36,8 @@ public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
     
     public void displayHint() {
         this.hasHint = true;
-        this.hintDuration = 1F;
+        this.hintDuration = 20;
         BonmeeliaBlock.displayHint(level, worldPosition, getBlockState(), true);
-    }
-    
-    public void giveBottle(ItemStack itemStack) {
-        this.hasBottle = true;
-        itemStack.shrink(1);
     }
 
     @Override
