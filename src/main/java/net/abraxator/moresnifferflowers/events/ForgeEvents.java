@@ -39,7 +39,7 @@ public class ForgeEvents {
 
         if(event.getLevel().getBlockEntity(event.getPos()) instanceof GiantCropBlockEntity entity) {
             BlockPos.betweenClosed(entity.pos1, entity.pos2).forEach(blockPos -> {
-                event.getLevel().destroyBlock(blockPos, false);
+                event.getLevel().destroyBlock(blockPos, true);
             });
         }
     }

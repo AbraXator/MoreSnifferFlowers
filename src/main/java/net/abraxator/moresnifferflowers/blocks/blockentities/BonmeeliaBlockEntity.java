@@ -36,7 +36,7 @@ public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
     
     public void displayHint() {
         this.hasHint = true;
-        this.hintDuration = 20;
+        this.hintDuration = 40;
         BonmeeliaBlock.displayHint(level, worldPosition, getBlockState(), true);
     }
 

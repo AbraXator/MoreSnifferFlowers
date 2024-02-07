@@ -64,7 +64,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
-        add(ModBlocks.GIANT_CARROT.get(), block -> createGiantCropBuilder(block, Items.CARROT));
+        add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT));
         add(ModBlocks.GIANT_POTATO.get(), block -> createGiantCropBuilder(block, Items.POTATO));
         add(ModBlocks.GIANT_NETHERWART.get(), block -> createGiantCropBuilder(block, Items.NETHER_WART));
         add(ModBlocks.GIANT_BEETROOT.get(), block -> createGiantCropBuilder(block, Items.BEETROOT));
@@ -89,7 +89,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                         .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true)))))));
     }
 
-    private LootTable.Builder createGiantCropBuilder (Block block, ItemLike pItem) {
+    private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem) {
         return createGiantCropBuilder(block, pItem, Items.AIR);
     }
 
