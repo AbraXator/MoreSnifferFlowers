@@ -1,0 +1,55 @@
+{
+  "variants": {
+    "age=0,bottle=true,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_0"
+    },
+    "age=1,bottle=true,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_1"
+    },
+    "age=2,bottle=true,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_2"
+    },
+    "age=3,bottle=true,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_3"
+    },
+
+    "age=0,bottle=true,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_0"
+    },
+    "age=1,bottle=true,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_1"
+    },
+    "age=2,bottle=true,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_2"
+    },
+    "age=3,bottle=true,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_bottle_3"
+    },
+
+    "age=0,bottle=false,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_outline"
+    },
+    "age=1,bottle=false,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_outline"
+    },
+    "age=2,bottle=false,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_outline"
+    },
+    "age=3,bottle=false,hint=true": {
+      "model": "moresnifferflowers:block/bonmeelia_outline"
+    },
+
+    "age=0,bottle=false,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_empty"
+    },
+    "age=1,bottle=false,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_empty"
+    },
+    "age=2,bottle=false,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_empty"
+    },
+    "age=3,bottle=false,hint=false": {
+      "model": "moresnifferflowers:block/bonmeelia_empty"
+    }
+  }
+}

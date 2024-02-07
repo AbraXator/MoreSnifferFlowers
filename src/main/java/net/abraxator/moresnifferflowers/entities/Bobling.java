@@ -2,9 +2,7 @@ package net.abraxator.moresnifferflowers.entities;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Dynamic;
 import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -70,7 +68,6 @@ public class Bobling extends Animal {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        BoblingAi.initMemories(this, pLevel.getRandom());
         this.resetLastPoseChangeTickToFullStand(pLevel.getLevel().getGameTime());
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
@@ -85,11 +82,6 @@ public class Bobling extends Animal {
     }
 
     @Override
-    protected Brain<?> makeBrain(Dynamic<?> pDynamic) {
-        return BoblingAi.makeBrain(this.brainProvider().makeBrain(pDynamic));
-    }
-
-    @Override
     public EntityDimensions getDimensions(Pose pPose) {
         return pPose == Pose.SITTING ? SITTING_DIMENSION.scale(this.getScale()) : super.getDimensions(pPose);
     }
@@ -101,7 +93,6 @@ public class Bobling extends Animal {
         ((Brain<Bobling>) brain).tick(((ServerLevel) this.level()), this);
         this.level().getProfiler().pop();
         this.level().getProfiler().push("BoblingActivityUpdate");
-        BoblingAi.updateActivity(this);
         this.level().getProfiler().pop();
         super.customServerAiStep();
     }

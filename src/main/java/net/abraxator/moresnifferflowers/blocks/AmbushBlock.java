@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -129,7 +128,7 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
         ItemStack usedStack = pPlayer.getItemInHand(pHand);
         if(usedStack.is(Items.BONE_MEAL)) {
             return InteractionResult.PASS;
-        } else if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasAmber && isHalf(pState, DoubleBlockHalf.UPPER)) {
+        } else if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasGrown && isHalf(pState, DoubleBlockHalf.UPPER)) {
             popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
 
             BlockPos lowerPos = isHalf(pState, DoubleBlockHalf.LOWER) ? pPos : pPos.below();
@@ -210,6 +209,6 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.AMBUSH.get(), pLevel.isClientSide ? null : AmbushBlockEntity::tick);
+        return tickerHelper(pLevel, pState, pBlockEntityType);
     }
 }

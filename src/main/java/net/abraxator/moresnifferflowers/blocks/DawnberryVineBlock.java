@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -73,17 +74,19 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
 
+        if(pLevel.isClientSide()) return InteractionResult.PASS;
+
         if(itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
             return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
-        }
-        if(this.isMaxAge(pState)) {
+        } else if(itemStack.is(Items.BONE_MEAL)) {
+            performBonemeal(((ServerLevel) pLevel), pLevel.getRandom(), pPos, pState);
+        } else if(this.isMaxAge(pState)) {
             return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
-        }
-        if(pState.getValue(AGE) == 3) {
+        } else if(pState.getValue(AGE) == 3) {
             return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
-        }else {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
         }
+
+        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
     private InteractionResult shearAction(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
@@ -103,6 +106,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         RandomSource randomSource = level.getRandom();
         final ItemStack DAWNBERRY = new ItemStack(ModItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 2));
         final ItemStack SEEDS = new ItemStack(ModItems.DAWNBERRY_VINE_SEEDS.get(), randomSource.nextIntBetweenInclusive(0, 1));
+
         popResource(level, pos, DAWNBERRY);
         popResource(level, pos, SEEDS);
         level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
@@ -157,8 +161,9 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        grow(pState, pLevel, pPos, pRandom);
-        pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
+        //grow(pState, pLevel, pPos, pRandom);
+        int age = getAge(pState);
+        pLevel.setBlock(pPos, pState.setValue(AGE, age >= 4 ? age : age + 1), 2);
         boolean canSpread = Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
         if(pRandom.nextFloat() >= 0.3F && pRandom.nextFloat() >= 0.3F && canSpread) {
             this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);

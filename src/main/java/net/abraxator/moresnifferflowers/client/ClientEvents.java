@@ -2,9 +2,13 @@ package net.abraxator.moresnifferflowers.client;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
+import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
+import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
@@ -14,7 +18,6 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.item.DyeItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -30,7 +33,12 @@ import net.minecraftforge.forgespi.locating.IModFile;
 public class ClientEvents {
     @SubscribeEvent
     public static void onEntityRenderersRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(BoblingModel.LAYER_LOCATION, BoblingModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.BOBLING, BoblingModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.GIANT_CARROT, GiantCropModels::createGiantCarrotLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.GIANT_POTATO, GiantCropModels::createGiantPotatoLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.GIANT_NETHERWART, GiantCropModels::createNetherwartLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.GIANT_BEETROOT, GiantCropModels::createBeetrootLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.GIANT_WHEAT, GiantCropModels::createWheatLayer);
     }
 
     @SubscribeEvent
@@ -41,11 +49,13 @@ public class ClientEvents {
     @SubscribeEvent
     public static void blockRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.AMBUSH.get(), AmbushBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.GIANT_CROP.get(), GiantCropBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.FLY.get(), FlyParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.CARROT.get(), CarrotParticle.Provider::new);
     }
 
     @SubscribeEvent
@@ -72,6 +82,21 @@ public class ClientEvents {
             }
         }, ModItems.DYESPRIA.get());
     }
+
+    /*@SubscribeEvent
+    public static void onTickClientTick(TickEvent.ClientTickEvent event) {
+        Player player = Minecraft.getInstance().player;
+        HitResult hitResult = player.pick(player.getAttributeValue(ForgeMod.BLOCK_REACH.get()), 0.0F, false);
+        if(hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
+            if(player.level().getBlockState(blockPos).is(ModBlocks.GIANT_CARROT.get())) {
+                VoxelShape voxelShape = Block.box(0, 0, 0, 0, 0, 0);
+                voxelShape.
+            }
+        }
+    }*/
+
+
 
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
