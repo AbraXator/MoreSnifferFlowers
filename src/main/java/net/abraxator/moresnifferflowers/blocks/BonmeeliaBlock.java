@@ -33,6 +33,7 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
     public static final BooleanProperty HAS_BOTTLE = BooleanProperty.create("bottle");
     public static final BooleanProperty SHOW_HINT = BooleanProperty.create("hint");
+    public static final BooleanProperty HAS_JAR = BooleanProperty.create("jar");
     public static final int MAX_AGE = AGE
             .getAllValues()
             .map(Property.Value::value)
@@ -41,12 +42,12 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
 
     public BonmeeliaBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0));
+        registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0).setValue(HAS_JAR, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(AGE, HAS_BOTTLE, SHOW_HINT);
+        pBuilder.add(AGE, HAS_BOTTLE, SHOW_HINT, HAS_JAR);
     }
 
     @Override
@@ -89,7 +90,9 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
 
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        pLevel.setBlockAndUpdate(pPos, pState.setValue(AGE, getCurrentAge(pState) + 1));
+        pLevel.setBlockAndUpdate(pPos, pState
+                .setValue(AGE, getCurrentAge(pState) + 1)
+                .setValue(HAS_JAR, (getCurrentAge(pState) + 1) == MAX_AGE && pState.getValue(HAS_BOTTLE)));
         var particle = new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 0.5F);
         Vec3 center = pPos.getCenter();
         double r = (double)(0.4F - (pRandom.nextFloat() + pRandom.nextFloat()) * 0.4F);

@@ -35,11 +35,26 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "moresnifferflowers:bonmeelia",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "bottle": "true"
-          }
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "block": "moresnifferflowers:bonmeelia",
+                "condition": "minecraft:block_state_property",
+                "properties": {
+                  "age": "3"
+                }
+              }
+            },
+            {
+              "block": "moresnifferflowers:bonmeelia",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "bottle": "true"
+              }
+            }
+          ]
         }
       ],
       "entries": [
