@@ -5,37 +5,13 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "moresnifferflowers:giant_wheat",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "center": "true"
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
           "name": "minecraft:wheat"
-        }
-      ],
-      "rolls": 1.0
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
-          "name": "minecraft:air"
         }
       ],
       "rolls": 1.0
