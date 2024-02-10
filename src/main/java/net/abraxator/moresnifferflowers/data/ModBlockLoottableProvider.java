@@ -63,11 +63,11 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
-        add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT));
-        add(ModBlocks.GIANT_POTATO.get(), createSingleItemTable(Items.POTATO));
-        add(ModBlocks.GIANT_NETHERWART.get(), createSingleItemTable(Items.NETHER_WART));
-        add(ModBlocks.GIANT_BEETROOT.get(), createSingleItemTable(Items.BEETROOT));
-        add(ModBlocks.GIANT_WHEAT.get(), createSingleItemTable(Items.WHEAT));
+        add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_POTATO.get(), createSingleItemTable(Items.POTATO, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_NETHERWART.get(), createSingleItemTable(Items.NETHER_WART, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_BEETROOT.get(), createSingleItemTable(Items.BEETROOT, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_WHEAT.get(), createSingleItemTable(Items.WHEAT, UniformGenerator.between(1, 4)));
         add(ModBlocks.BONMEELIA.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get())))
