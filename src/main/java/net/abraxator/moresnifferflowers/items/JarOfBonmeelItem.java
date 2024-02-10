@@ -4,24 +4,25 @@ import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
 import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class JarOfBonmeelItem extends Item {
@@ -68,13 +69,13 @@ public class JarOfBonmeelItem extends Item {
         }
 
         if (flag && !level.isClientSide()) {
-            return placeLogic(blockPosList, level, giantVersion, clickedPos);
+            return placeLogic(blockPosList, level, giantVersion, clickedPos, player);
         }
 
         return InteractionResult.PASS;
     }
 
-    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos) {
+    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos, Player player) {
         int i = 0;
         List<BlockPos> list = new ArrayList<>();
         blockPosList.forEach(list::add);
@@ -89,6 +90,12 @@ public class JarOfBonmeelItem extends Item {
             }
         });
 
+        player.getMainHandItem().shrink(1);
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        pTooltipComponents.set(0, Component.translatableWithFallback("tooltip.jar_of_bonmeel.usage", "Can be applied to a 3x3 grid of the following crops: carrot, potato, wheat, beetroot and nether wart"));
     }
 }
