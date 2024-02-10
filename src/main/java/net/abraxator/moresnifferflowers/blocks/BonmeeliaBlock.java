@@ -71,8 +71,8 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
         }
 
         if(itemStack.is(Items.GLASS_BOTTLE) && !pState.getValue(HAS_BOTTLE)) {
-            //entity.giveBottle(itemStack);
             pLevel.setBlock(pPos, pState.setValue(HAS_BOTTLE, true), 3);
+            pPlayer.getMainHandItem().shrink(1);
         } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
             pLevel.setBlock(pPos, pState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
             pPlayer.addItem(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
