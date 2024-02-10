@@ -12,7 +12,7 @@ displayTest="MATCH_VERSION"
 description='''Lorem Ipsum'''
 
 [[dependencies.moresnifferflowers]]
-    modId="forge"
+    modId="neoforge"
     mandatory=true
     versionRange="[47.0.19,)"
     ordering="NONE"

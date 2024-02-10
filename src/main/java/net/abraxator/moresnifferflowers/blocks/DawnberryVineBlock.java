@@ -1,8 +1,8 @@
 package net.abraxator.moresnifferflowers.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +18,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,17 +32,24 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.IPlantable;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.IPlantable;
 import org.jetbrains.annotations.NotNull;
 
 public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock, IPlantable {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
     public static final BooleanProperty IS_SHEARED = BooleanProperty.create("is_sheared");
+    public static final MapCodec<DawnberryVineBlock> CODEC = simpleCodec(DawnberryVineBlock::new);
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     public DawnberryVineBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0).setValue(IS_SHEARED, Boolean.FALSE));
+    }
+
+    @Override
+    protected MapCodec<? extends MultifaceBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -129,9 +139,9 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
         if (!isMaxAge(pState)) {
             float f = getGrowthSpeed(this, pLevel, pPos);
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
+            if (CommonHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
                 pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, pPos, pState);
+                CommonHooks.onCropsGrowPost(pLevel, pPos, pState);
             }
         }
     }
@@ -150,7 +160,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
         return !isMaxAge(pState);
     }
 

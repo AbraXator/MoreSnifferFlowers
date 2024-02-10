@@ -1,34 +1,34 @@
 package net.abraxator.moresnifferflowers.advancements;
 
-import com.google.gson.JsonObject;
-import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
+
+import java.util.Optional;
 
 public class UsedDyespriaTrigger extends SimpleCriterionTrigger<UsedDyespriaTrigger.Instance> {
-    public static final ResourceLocation ID = MoreSnifferFlowers.loc("used_dyespria");
-
-    @Override
-    protected UsedDyespriaTrigger.Instance createInstance(JsonObject p_66248_, ContextAwarePredicate p_286603_, DeserializationContext p_66250_) {
-        return new Instance(p_286603_);
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return ID;
-    }
-
     public void trigger(ServerPlayer player) {
         this.trigger(player, instance -> true);
     }
 
-    public static class Instance extends AbstractCriterionTriggerInstance {
-        public Instance(ContextAwarePredicate p_286466_) {
-            super(ID, p_286466_);
+    @Override
+    public Codec<Instance> codec() {
+        return Instance.CODEC;
+    }
+
+    public static record Instance(Optional<ContextAwarePredicate> player) implements SimpleInstance {
+        public static final Codec<UsedDyespriaTrigger.Instance> CODEC = RecordCodecBuilder.create(instanceInstance -> instanceInstance
+                .group(ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                        .forGetter(UsedDyespriaTrigger.Instance::player))
+                .apply(instanceInstance, UsedDyespriaTrigger.Instance::new));
+
+        @Override
+        public Optional<ContextAwarePredicate> player() {
+            return this.player();
         }
     }
 }
