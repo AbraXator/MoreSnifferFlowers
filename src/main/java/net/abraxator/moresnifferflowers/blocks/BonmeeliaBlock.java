@@ -113,7 +113,7 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return tickerHelper(pLevel, pState, pBlockEntityType);
+        return tickerHelper(pLevel);
     }
 
     @Nullable
