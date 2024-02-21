@@ -19,6 +19,7 @@
 	"tooltip.dyespria.usage": "Pokud zamíříte vaším počítačovým cursorem a zárověn zmáčkete pravé tlačítko myši, vložíte barvivo \nPravým tlačítkem myši nabarvíte Barvokvěták \nPlížením nabarvíte celý sloupec \n",
 	"tooltip.dyespria.empty": "Prázdnota",
 	"tooltip.jar_of_bonmeel.usage": "Aplikovatelný na obdelník o stranách 'x' a 'y', přičemž x je rovno 5 - 2 a y je rovno 2.94 + sin(x), na následující sazeničky: brambora, mrkev, bradavičník, řepa a obilí! :)",
+	"tooltip.amber_shard.usage": "Nikdo vás nenutí využít jako materiál na krácení brnění",
 
 	"advancements.more_sniffer_flowers.dyespria": "Barevné Kvítí",
 	"advancements.more_sniffer_flowers.dyespria.desc": "Doneste barvu Barvokvětákovi",

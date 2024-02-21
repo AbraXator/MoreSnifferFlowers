@@ -94,9 +94,9 @@ public class DyespriaItem extends Item {
                     }
             );
             level.sendBlockUpdated(blockPos, blockState, blockState, 1);
-        }
-
-        private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
+    }
+        
+    private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
         BlockPos posUp = blockPos.mutable();
         BlockPos posDown = blockPos.mutable();
         while (level.getBlockState(posUp).is(ModBlocks.CAULORFLOWER.get())) {
@@ -111,15 +111,15 @@ public class DyespriaItem extends Item {
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
+    public boolean overrideOtherStackedOnMe(ItemStack dyespria, ItemStack dye, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
         if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
-            if(pOther.isEmpty()) {
-                remove(pStack).ifPresent(itemStack -> {
+            if(dye.isEmpty()) {
+                remove(dyespria).ifPresent(itemStack -> {
                     playRemoveOneSound(pPlayer);
                     pAccess.set(itemStack);
                 });
             } else {
-                if(add(pStack, pOther)) {
+                if(add(dyespria, dye)) {
                     this.playInsertSound(pPlayer);
                 }
             }
@@ -128,36 +128,43 @@ public class DyespriaItem extends Item {
         return false;
     }
 
-    private boolean add(ItemStack pStack, ItemStack pOther) {
-        var dyeInsideOptional = getDye(pStack);
- // Dobrý den mrtko, ⬇️⬇️ tadyto by mělo brát v potaz jakej item máš v kurzoru (barvivo jo/ne) a barvu toho barviva
-        if(!pOther.isEmpty()) {
+    private boolean add(ItemStack dyespria, ItemStack dyeToInsert) {
+        var dyeInsideOptional = getDye(dyespria);
+        if(!dyeToInsert.isEmpty() && dyeToInsert.getItem() instanceof DyeItem) {
             if(dyeInsideOptional.isPresent()) {
                 ItemStack dyeInside = dyeInsideOptional.get();
                 int amountInside = dyeInside.getCount();
                 int freeSpace = 64 - amountInside;
-                int totalDye = amountInside + pOther.getCount();
-                if(totalDye > 64) totalDye = 64;
-                if(freeSpace <= 0) return false;
-                else {
-                    setDye(pStack, dyeInside.copyWithCount(totalDye));
-                    pOther.shrink(freeSpace);
-                    return true;
+                int totalDye = Math.min(amountInside + dyeToInsert.getCount(), 64);
+                
+                if(freeSpace <= 0 || !dyeCheck(dyeInside, dyeToInsert)) {
+                    return false;
                 }
+
+                setDye(dyespria, dyeInside.copyWithCount(totalDye));
+                dyeToInsert.shrink(freeSpace);
+                return true;
             } else {
-                setDye(pStack, pOther);
-                pOther.setCount(0);
+                setDye(dyespria, dyeToInsert);
+                dyeToInsert.setCount(0);
                 return true;
             }
         }
         return false;
     }
-
-    private Optional<ItemStack> remove(ItemStack pStack) {
-        var itemStack = getDye(pStack);
+    
+    private boolean dyeCheck(ItemStack dyeInside, ItemStack dyeToInsert) {
+        DyeItem dyeInsideItem = ((DyeItem) dyeInside.getItem());
+        DyeItem dyeToInsertItem = ((DyeItem) dyeToInsert.getItem());
+        
+        return dyeInsideItem.getDyeColor().equals(dyeToInsertItem.getDyeColor());   
+    }
+    
+    private Optional<ItemStack> remove(ItemStack dyespria) {
+        var itemStack = getDye(dyespria);
         if(itemStack.isPresent()) {
             ItemStack itemStack1 = itemStack.get();
-            setDye(pStack, ItemStack.EMPTY);
+            setDye(dyespria, ItemStack.EMPTY);
             return Optional.of(itemStack1);
         } else {
             return Optional.empty();

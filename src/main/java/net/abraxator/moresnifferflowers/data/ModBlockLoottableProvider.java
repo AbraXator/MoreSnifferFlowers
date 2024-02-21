@@ -49,7 +49,11 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(DawnberryVineBlock.AGE, 4)))));
         add(ModBlocks.AMBER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .when(HAS_SILK_TOUCH)
+                        .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(HAS_NO_SILK_TOUCH)
                         .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))
                         .add(LootItem.lootTableItem(ModItems.AMBER_SHARD.get()))
                         .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()))
@@ -86,6 +90,8 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .and(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BONMEELIA.get())
                                 .setProperties((StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true)))))));
+        dropSelf(ModBlocks.CROPRESSOR.get());
+        dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
     }
 
     private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem) {
