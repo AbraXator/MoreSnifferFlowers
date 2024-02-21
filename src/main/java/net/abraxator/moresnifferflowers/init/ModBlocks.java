@@ -31,6 +31,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> GIANT_WHEAT = registerBlockNoItem("giant_wheat", () ->  new GiantCropBlock(BlockBehaviour.Properties.copy(ModBlocks.GIANT_CARROT.get()).noOcclusion()));
     public static final RegistryObject<Block> BONMEELIA = registerBlockNoItem("bonmeelia", () ->  new BonmeeliaBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).lightLevel(value -> 3).noOcclusion()));
     public static final RegistryObject<Block> CROPRESSOR = registerBlockWithItem("cropressor", () ->  new CropressorBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL)));
+    public static final RegistryObject<Block> MORE_SNIFFER_FLOWER = BLOCKS.register("more_sniffer_flower", () -> new MoreSnifferFlowerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.GRASS).strength(2.0F).noCollission().noOcclusion()));
+
 
     private static <T extends Block> RegistryObject<T> registerBlockNoItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

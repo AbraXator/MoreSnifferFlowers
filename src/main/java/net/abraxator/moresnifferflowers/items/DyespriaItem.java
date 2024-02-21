@@ -9,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
@@ -129,14 +130,17 @@ public class DyespriaItem extends Item {
 
     private boolean add(ItemStack pStack, ItemStack pOther) {
         var dyeInsideOptional = getDye(pStack);
+ // Dobrý den mrtko, ⬇️⬇️ tadyto by mělo brát v potaz jakej item máš v kurzoru (barvivo jo/ne) a barvu toho barviva
         if(!pOther.isEmpty()) {
             if(dyeInsideOptional.isPresent()) {
                 ItemStack dyeInside = dyeInsideOptional.get();
                 int amountInside = dyeInside.getCount();
                 int freeSpace = 64 - amountInside;
+                int totalDye = amountInside + pOther.getCount();
+                if(totalDye > 64) totalDye = 64;
                 if(freeSpace <= 0) return false;
                 else {
-                    setDye(pStack, dyeInside.copyWithCount(freeSpace));
+                    setDye(pStack, dyeInside.copyWithCount(totalDye));
                     pOther.shrink(freeSpace);
                     return true;
                 }

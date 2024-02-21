@@ -29,6 +29,23 @@
 
 	"trim_material.moresnifferflowers.amber": "Amber Material",
 
+	"block.minecraft.banner.moresnifferflowers.ambush.white": "White Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.light_gray": "Light Gray Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.gray": "Gray Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.black": "Black Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.brown": "Brown Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.red": "Red Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.orange": "Orange Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.yellow": "Yellow Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.lime": "Lime Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.green": "Green Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.cyan": "Cyan Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.light_blue": "Light Blue Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.blue": "Blue Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.purple": "Purple Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.magenta": "Magenta Ambush",
+	"block.minecraft.banner.moresnifferflowers.ambush.pink": "Pink Ambush",
+	
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers"
 
 }
