@@ -28,11 +28,10 @@ public class MoreSnifferFlowers {
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
         ModParticles.PARTICLES.register(modEventBus);
+        ModAdvancementCritters.TRIGGERS.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        ModAdvancementCritters.init();
-
         event.enqueueWork(() -> {
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);

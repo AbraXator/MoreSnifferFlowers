@@ -46,7 +46,7 @@ public class ForgeEvents {
     @SubscribeEvent
     public static void onGetAdvancement(AdvancementEvent.AdvancementEarnEvent event) {
         if(event.getAdvancement().id().equals(new ResourceLocation("minecraft", "husbandry/obtain_sniffer_egg")) && event.getEntity() instanceof ServerPlayer serverPlayer) {
-            ModAdvancementCritters.EARN_SNIFFER_ADVANCEMENT.trigger(serverPlayer);
+            ModAdvancementCritters.EARN_SNIFFER_ADVANCEMENT.get().trigger(serverPlayer);
         }
     }
 

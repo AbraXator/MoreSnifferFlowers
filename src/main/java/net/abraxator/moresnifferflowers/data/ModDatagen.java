@@ -8,7 +8,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModDatagen{
+public class ModDatagen {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event){
         var generator = event.getGenerator();
@@ -23,7 +23,7 @@ public class ModDatagen{
         generator.addProvider(event.includeClient(), new ModLootModifierProvider(packOutput));
         generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, future, existingFileHelper));
         generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, future));
-        generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput));
+        generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput, future));
         generator.addProvider(event.includeServer(), new ModAdvancementProvider(packOutput, future, existingFileHelper));
     }
 }

@@ -25,10 +25,5 @@ public class UsedDyespriaTrigger extends SimpleCriterionTrigger<UsedDyespriaTrig
                 .group(ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
                         .forGetter(UsedDyespriaTrigger.Instance::player))
                 .apply(instanceInstance, UsedDyespriaTrigger.Instance::new));
-
-        @Override
-        public Optional<ContextAwarePredicate> player() {
-            return this.player();
-        }
     }
 }

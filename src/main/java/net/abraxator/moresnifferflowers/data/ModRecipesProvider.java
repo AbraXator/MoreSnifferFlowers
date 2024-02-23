@@ -4,16 +4,18 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModTags;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.SmithingRecipe;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class ModRecipesProvider extends RecipeProvider {
-    public ModRecipesProvider(PackOutput pOutput) {
-        super(pOutput);
+    public ModRecipesProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> future) {
+        super(pOutput, future);
     }
 
     @Override

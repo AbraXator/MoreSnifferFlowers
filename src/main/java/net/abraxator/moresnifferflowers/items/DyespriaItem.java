@@ -75,7 +75,7 @@ public class DyespriaItem extends Item {
                 colorColumn(stack, level, blockPos);
             }
             level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
-            ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
+            ModAdvancementCritters.USED_DYESPRIA.get().trigger(serverPlayer);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
@@ -160,8 +160,6 @@ public class DyespriaItem extends Item {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         Dye dye = getDye(pStack);
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
-
-
 
         if(!dye.isEmpty()) {
             Component name = Component.literal(dye.amount + " - " + dye.color.getName()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(dye.color.getTextColor())).get().orThrow()));
