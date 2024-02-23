@@ -122,26 +122,32 @@ public class DyespriaItem extends Item {
         return false;
     }
 
-    private boolean add(ItemStack pStack, ItemStack pOther) {
-        Dye dye = getDye(pStack);
-        if(!pOther.isEmpty()) {
+    private boolean add(ItemStack dyespria, ItemStack dyeToInsert) {
+        Dye dye = getDye(dyespria);
+        if(dyeToInsert.getItem() instanceof DyeItem) {
             if(!dye.isEmpty()) {
                 int amountInside = dye.amount;
                 int freeSpace = 64 - amountInside;
-                if(freeSpace <= 0) return false;
-                else {
-                    dye = new Dye(dye.color, freeSpace);
-                    setDye(pStack, stackFromDye(dye));
-                    pOther.shrink(freeSpace);
-                    return true;
+                int totalDye = Math.min(amountInside + dyeToInsert.getCount(), 64);
+                if(freeSpace <= 0 || !dyeCheck(dye, dyeToInsert)) {
+                    return false;
                 }
+
+                setDye(dyespria, dye.color, totalDye);
+                dyeToInsert.shrink(freeSpace);
             } else {
-                setDye(pStack, pOther);
-                pOther.setCount(0);
-                return true;
+                setDye(dyespria, dyeToInsert);
+                dyeToInsert.setCount(0);
             }
+            return true;
         }
         return false;
+    }
+
+    private boolean dyeCheck(Dye dye, ItemStack dyeToInsert) {
+        DyeItem dyeToInsertItem = ((DyeItem) dyeToInsert.getItem());
+
+        return dye.color.equals(dyeToInsertItem.getDyeColor());
     }
 
     private ItemStack remove(ItemStack pStack) {

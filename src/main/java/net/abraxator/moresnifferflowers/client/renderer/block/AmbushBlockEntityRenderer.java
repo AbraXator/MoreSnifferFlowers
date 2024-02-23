@@ -27,7 +27,7 @@ public class AmbushBlockEntityRenderer implements BlockEntityRenderer<AmbushBloc
             pPoseStack.pushPose();
             float progress = Math.min(pBlockEntity.growProgress, 1);
             float translate = 0.5f -(progress  * 0.5f);
-            pPoseStack.translate(translate, 0.4f, translate);
+            pPoseStack.translate(translate, translate, translate);
             pPoseStack.scale(progress, progress, progress);
             this.blockRenderer.renderSingleBlock(state, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, ModelData.EMPTY, RenderType.translucent());
             pPoseStack.popPose();

@@ -33,6 +33,8 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
 
+import java.io.File;
+import java.net.URI;
 import java.nio.file.Path;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -118,14 +120,13 @@ public class ClientEvents {
             if(iModFileInfo == null) {
                 MoreSnifferFlowers.LOGGER.error("Could not find More Sniffer Flowers mod file info; built-in resource packs will be missing!");
             }
-
-            IModFile modFile = iModFileInfo.getFile();
+            String path = iModFileInfo.getFile().getFilePath().toString() + "/resourcepacks/rtx_moresnifferflowers";
             event.addRepositorySource(pOnLoad -> {
                 Pack pack = Pack.readMetaAndCreate(
                         MoreSnifferFlowers.loc("rtx_moresnifferflowers").toString(),
                         Component.literal("RTX More Sniffer Flowers"),
                         false,
-                        new FilePackResources.FileResourcesSupplier(Path.of("rtx_moresnifferflowers"), true),
+                        new FilePackResources.FileResourcesSupplier(new File(path), true),
                         //TODO: ^^^^^^^^^^^^^^^^^^^!!!!!!!!!!!!!!!!!NOT WORKING!!!!!!!!!!!!!!!^^^^^^^^^^^^^^^^^^^
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,

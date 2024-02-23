@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_aroma_trim_template",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_aroma_trim_template"
     ]
   ],
   "rewards": {
     "recipes": [
       "moresnifferflowers:aroma_armor_trim_smithing_table"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

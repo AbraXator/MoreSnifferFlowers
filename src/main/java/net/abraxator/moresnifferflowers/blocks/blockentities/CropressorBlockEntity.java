@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -32,13 +33,13 @@ public class CropressorBlockEntity extends ModBlockEntity {
                 i++;
             }
         }
-        /*Optional<CropressorRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSOR.get(), container, level);
+        Optional<RecipeHolder<CropressorRecipe>> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSOR.get(), container, level);
         var list = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.CROPRESSOR.get());
         System.out.println(list);
         if(recipe.isPresent()) {
-            CropressorRecipe cropressorRecipe = recipe.get();
+            CropressorRecipe cropressorRecipe = recipe.get().value();
             inv = NonNullList.of(cropressorRecipe.result);
-        }*/
+        }
     }
 
     public void addItem(ItemStack itemStack) {

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_caulorflower",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_caulorflower"
     ]
   ],
   "rewards": {
     "recipes": [
       "moresnifferflowers:dyespria"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

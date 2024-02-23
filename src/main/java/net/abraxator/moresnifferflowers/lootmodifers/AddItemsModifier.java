@@ -4,6 +4,7 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.ExtraCodecs;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
+import net.neoforged.neoforge.server.command.ModIdArgument;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -34,14 +36,15 @@ public class AddItemsModifier extends LootModifier {
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
 
-        for (LootItemCondition condition : this.conditions) {
+        /*for (LootItemCondition condition : this.conditions) {
             if(!condition.test(context)) {
                 return generatedLoot;
             }
-        }
+        }*/
 
         items.forEach(item -> generatedLoot.add(item.getDefaultInstance()));
         newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));
+        //return ObjectArrayList.of(ModItems.BONMEELIA_SEEDS.asItem().getDefaultInstance());
         return newLoot;
     }
 
