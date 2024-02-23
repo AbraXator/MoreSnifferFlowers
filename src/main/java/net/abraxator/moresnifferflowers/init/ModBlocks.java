@@ -33,6 +33,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> GIANT_BEETROOT = registerBlockNoItem("giant_beetroot", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion()));
     public static final DeferredBlock<Block> GIANT_WHEAT = registerBlockNoItem("giant_wheat", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion()));
     public static final DeferredBlock<Block> BONMEELIA = registerBlockNoItem("bonmeelia", () ->  new BonmeeliaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).lightLevel(value -> 3).noOcclusion()));
+    public static final DeferredBlock<Block> CROPRESSOR = registerBlockNoItem("cropressor", () ->  new CropressorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
+    public static final DeferredBlock<Block> MORE_SNIFFER_FLOWER = registerBlockNoItem("more_sniffer_flower", () ->  new CropressorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
 
 
     private static <T extends Block> DeferredBlock<T> registerBlockNoItem(String name, Supplier<T> block) {

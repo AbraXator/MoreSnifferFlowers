@@ -14,5 +14,5 @@ public class ModModelLayerLocations {
     public static final ModelLayerLocation GIANT_NETHERWART = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "giant_netherwart"), "main");
     public static final ModelLayerLocation GIANT_BEETROOT = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "giant_beetroot"), "main");
     public static final ModelLayerLocation GIANT_WHEAT = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "giant_wheat"), "main");
-    public static final ModelLayerLocation EMPTY_JAR = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "empty_jar"), "main");
+    public static final ModelLayerLocation CROPRESSOR = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "cropressor"), "main");
 }

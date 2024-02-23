@@ -29,6 +29,8 @@ public class MoreSnifferFlowers {
         ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
         ModParticles.PARTICLES.register(modEventBus);
         ModAdvancementCritters.TRIGGERS.register(modEventBus);
+        ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
+        ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

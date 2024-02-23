@@ -32,13 +32,13 @@ public class CropressorBlockEntity extends ModBlockEntity {
                 i++;
             }
         }
-        Optional<CropressorRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSOR.get(), container, level);
+        /*Optional<CropressorRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSOR.get(), container, level);
         var list = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.CROPRESSOR.get());
         System.out.println(list);
         if(recipe.isPresent()) {
             CropressorRecipe cropressorRecipe = recipe.get();
             inv = NonNullList.of(cropressorRecipe.result);
-        }
+        }*/
     }
 
     public void addItem(ItemStack itemStack) {
@@ -68,7 +68,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
         super.saveAdditional(pTag);
         pTag.putInt("size", inv.size());
         for(int i = 0; i < inv.size(); i++) {
-            pTag.put("item_" + i, inv.get(i).serializeNBT());
+            pTag.put("item_" + i, inv.get(i).serializeAttachments());
         }
         pTag.putBoolean("finished", hasFinished);
     }
