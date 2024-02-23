@@ -48,26 +48,29 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(DawnberryVineBlock.AGE, 4)))));
         add(ModBlocks.AMBER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .when(HAS_SILK_TOUCH)
+                        .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                        .add(LootItem.lootTableItem(ModBlocks.AMBER.get()))
-                        .when(HAS_SILK_TOUCH))
-                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(HAS_NO_SILK_TOUCH)
                         .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))
                         .add(LootItem.lootTableItem(ModItems.AMBER_SHARD.get()))
                         .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()))
                         .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get()))
                         .add(LootItem.lootTableItem(ModItems.AMBUSH_SEEDS.get()))
                         .add(LootItem.lootTableItem(ModItems.DAWNBERRY_VINE_SEEDS.get()))
+                        .add(LootItem.lootTableItem(ModBlocks.CAULORFLOWER.get().asItem()))
+                        .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get()))
                         .add(LootItem.lootTableItem(Items.TORCHFLOWER_SEEDS))
                         .add(LootItem.lootTableItem(Items.PITCHER_POD))));
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
-        add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT));
-        add(ModBlocks.GIANT_POTATO.get(), block -> createGiantCropBuilder(block, Items.POTATO));
-        add(ModBlocks.GIANT_NETHERWART.get(), block -> createGiantCropBuilder(block, Items.NETHER_WART));
-        add(ModBlocks.GIANT_BEETROOT.get(), block -> createGiantCropBuilder(block, Items.BEETROOT));
-        add(ModBlocks.GIANT_WHEAT.get(), block -> createGiantCropBuilder(block, Items.WHEAT));
+        add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_POTATO.get(), createSingleItemTable(Items.POTATO, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_NETHERWART.get(), createSingleItemTable(Items.NETHER_WART, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_BEETROOT.get(), createSingleItemTable(Items.BEETROOT, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_WHEAT.get(), createSingleItemTable(Items.WHEAT, UniformGenerator.between(1, 4)));
         add(ModBlocks.BONMEELIA.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get())))
@@ -86,6 +89,8 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .and(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BONMEELIA.get())
                                 .setProperties((StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true)))))));
+        dropSelf(ModBlocks.CROPRESSOR.get());
+        dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
     }
 
     private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem) {

@@ -3,11 +3,13 @@ package net.abraxator.moresnifferflowers.client;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+import net.abraxator.moresnifferflowers.client.model.block.CropressorModel;
 import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.*;
@@ -48,6 +50,7 @@ public class ClientEvents {
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_NETHERWART, GiantCropModels::createNetherwartLayer);
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_BEETROOT, GiantCropModels::createBeetrootLayer);
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_WHEAT, GiantCropModels::createWheatLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.CROPRESSOR, CropressorModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -59,6 +62,7 @@ public class ClientEvents {
     public static void blockRenderer(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.AMBUSH.get(), AmbushBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.GIANT_CROP.get(), GiantCropBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CROPRESSOR.get(), CropressorBlockEntityRenderer::new);
     }
 
     @SubscribeEvent

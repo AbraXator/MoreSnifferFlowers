@@ -1,0 +1,9 @@
+{
+	"gui_light": "front",
+	"loader": "forge:obj",
+	"flip-v": true,
+	"model": "moresnifferflowers:models/item/obj/cropressed_nether_wart.obj",
+	"textures": {
+		"texture0": "moresnifferflowers:item/obj/cropressed_nether_wart"
+	}
+}
