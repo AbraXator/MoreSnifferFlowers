@@ -107,7 +107,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
         return getHeighestPos(pLevel, pPos).isPresent() && pLevel.getBlockState(getHeighestPos(pLevel, pPos).get().above()).is(Blocks.AIR);
     }
 

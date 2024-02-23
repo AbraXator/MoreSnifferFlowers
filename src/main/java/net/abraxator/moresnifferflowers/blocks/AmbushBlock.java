@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, ModEntityBlock, ModCropBlock {
@@ -174,7 +175,7 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
         PosAndState posAndState = this.getLowerHalf(pLevel, pPos, pState);
         return posAndState != null && this.canGrow(pLevel, posAndState.blockPos(), posAndState.state(), posAndState.state().getValue(AGE) + 1);
     }
@@ -196,7 +197,7 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {}
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return ModItems.AMBUSH_SEEDS.get().getDefaultInstance();
     }
 

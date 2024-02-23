@@ -4,19 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.abraxator.moresnifferflowers.blocks.AmbushBlock;
 import net.abraxator.moresnifferflowers.blocks.blockentities.AmbushBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class AmbushBlockEntityRenderer implements BlockEntityRenderer<AmbushBlockEntity> {
     private final BlockRenderDispatcher blockRenderer;

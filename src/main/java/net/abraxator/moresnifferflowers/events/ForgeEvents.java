@@ -18,12 +18,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.player.AdvancementEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.List;
 
@@ -44,12 +45,12 @@ public class ForgeEvents {
 
     @SubscribeEvent
     public static void onGetAdvancement(AdvancementEvent.AdvancementEarnEvent event) {
-        if(event.getAdvancement().getId().equals(new ResourceLocation("minecraft", "husbandry/obtain_sniffer_egg")) && event.getEntity() instanceof ServerPlayer serverPlayer) {
+        if(event.getAdvancement().id().equals(new ResourceLocation("minecraft", "husbandry/obtain_sniffer_egg")) && event.getEntity() instanceof ServerPlayer serverPlayer) {
             ModAdvancementCritters.EARN_SNIFFER_ADVANCEMENT.trigger(serverPlayer);
         }
     }
 
-    private static void fireFlyLogic(BlockState state, ServerLevel serverLevel, BlockPos pos, Player player, Event event) {
+    private static void fireFlyLogic(BlockState state, ServerLevel serverLevel, BlockPos pos, Player player, ICancellableEvent event) {
         List<ItemStack> list = Block.getDrops(state, serverLevel, pos, serverLevel.getBlockEntity(pos), player, player.getMainHandItem());
         RandomSource randomSource = serverLevel.getRandom();
         if ((randomSource.nextInt(list.size())) == list.size()) {

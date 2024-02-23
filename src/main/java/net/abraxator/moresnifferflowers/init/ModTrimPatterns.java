@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.armortrim.TrimPattern;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModTrimPatterns {
     public static final ResourceKey<TrimPattern> AROMA = ResourceKey.create(Registries.TRIM_PATTERN, MoreSnifferFlowers.loc("aroma"));
@@ -19,7 +18,7 @@ public class ModTrimPatterns {
     }
 
     private static void register(BootstapContext<TrimPattern> context, Item item, ResourceKey<TrimPattern> key) {
-        TrimPattern trimPattern = new TrimPattern(key.location(), ForgeRegistries.ITEMS.getHolder(item).get(), Component.translatable(Util.makeDescriptionId("trim_pattern", key.location())));
+        TrimPattern trimPattern = new TrimPattern(key.location(), BuiltInRegistries.ITEM.wrapAsHolder(item), Component.translatable(Util.makeDescriptionId("trim_pattern", key.location())), false);
         context.register(key, trimPattern);
     }
 }

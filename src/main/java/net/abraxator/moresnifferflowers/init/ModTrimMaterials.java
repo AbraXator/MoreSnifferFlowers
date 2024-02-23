@@ -2,7 +2,9 @@ package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.Util;
+import net.minecraft.commands.execution.tasks.BuildContexts;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.network.chat.Component;
@@ -19,7 +21,7 @@ public class ModTrimMaterials {
     public static final ResourceKey<TrimMaterial> AMBER = ResourceKey.create(Registries.TRIM_MATERIAL, MoreSnifferFlowers.loc("amber"));
 
     public static void bootstrap(BootstapContext<TrimMaterial> context) {
-        register(context, AMBER, ModItems.AMBER_SHARD.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#df910b")), 0.6F, Map.of());
+        register(context, AMBER, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.AMBER_SHARD.get()), Style.EMPTY.withColor(TextColor.parseColor("#df910b").get().orThrow()), 0.6F, Map.of());
     }
 
     private static void register(BootstapContext<TrimMaterial> p_268244_, ResourceKey<TrimMaterial> p_268139_, Holder<Item> p_268311_, Style p_268232_, float p_268197_, Map<ArmorMaterials, String> p_268352_) {

@@ -14,6 +14,7 @@ import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
@@ -22,6 +23,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
@@ -29,8 +31,15 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
 
+import java.nio.file.Path;
+
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
+    @SubscribeEvent
+    public static void clientSetup(final FMLClientSetupEvent event) {
+        ModItemProperties.register();
+    }
+
     @SubscribeEvent
     public static void onEntityRenderersRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayerLocations.BOBLING, BoblingModel::createBodyLayer);
@@ -74,11 +83,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-            var color = DyespriaItem.getColor(pStack);
-            if(pTintIndex != 0 || color.isEmpty()) {
+            DyespriaItem.Dye dye = DyespriaItem.getDye(pStack);
+            if(pTintIndex != 0 || dye.isEmpty()) {
                 return -1;
             } else {
-                return DyespriaItem.colorForDye(color.get());
+                return DyespriaItem.colorForDye(dye.color());
             }
         }, ModItems.DYESPRIA.get());
     }
@@ -112,7 +121,8 @@ public class ClientEvents {
                         MoreSnifferFlowers.loc("rtx_moresnifferflowers").toString(),
                         Component.literal("RTX More Sniffer Flowers"),
                         false,
-                        pId -> new PathPackResources(, modFile.findResource("resourcepacks/rtx_moresnifferflowers"), true),
+                        new FilePackResources.FileResourcesSupplier(Path.of("NOT WORKING!!!!"), true),
+                        //TODO: ^^^^^^^^^^^^^^^^^^^!!!!!!!!!!!!!!!!!NOT WORKING!!!!!!!!!!!!!!!^^^^^^^^^^^^^^^^^^^
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,
                         PackSource.BUILT_IN);
@@ -122,4 +132,5 @@ public class ClientEvents {
             });
         }
     }
+
 }

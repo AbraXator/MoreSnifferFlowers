@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.blocks.blockentities.BonmeeliaBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.core.BlockPos;
@@ -34,6 +35,7 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
     public static final BooleanProperty HAS_BOTTLE = BooleanProperty.create("bottle");
     public static final BooleanProperty SHOW_HINT = BooleanProperty.create("hint");
     public static final BooleanProperty HAS_JAR = BooleanProperty.create("jar");
+    public static final MapCodec<BonmeeliaBlock> CODEC = simpleCodec(BonmeeliaBlock::new);
     public static final int MAX_AGE = AGE
             .getAllValues()
             .map(Property.Value::value)
@@ -43,6 +45,11 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
     public BonmeeliaBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0).setValue(HAS_JAR, false));
+    }
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec() {
+        return CODEC;
     }
 
     @Override

@@ -82,20 +82,19 @@ public class DyespriaItem extends Item {
     }
 
     public static void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
-        DyespriaItem.getDye(stack).ifPresentOrElse(
-                    itemStack -> {
-                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, ((DyeItem) itemStack.getItem()).getDyeColor()).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
-                        itemStack.shrink(1);
-                        setDye(stack, itemStack);
-                    },
-                    () -> {
-                        level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
-                    }
-            );
-            level.sendBlockUpdated(blockPos, blockState, blockState, 1);
+        Dye dye = getDye(stack);
+
+        if(!dye.isEmpty()) {
+            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
+            setDye(stack, stackFromDye(new Dye(dye.color, dye.amount - 1)));
+        } else {
+            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
         }
 
-        private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
+        level.sendBlockUpdated(blockPos, blockState, blockState, 1);
+    }
+
+    private void colorColumn(ItemStack stack, Level level, BlockPos blockPos) {
         BlockPos posUp = blockPos.mutable();
         BlockPos posDown = blockPos.mutable();
         while (level.getBlockState(posUp).is(ModBlocks.CAULORFLOWER.get())) {
@@ -113,10 +112,8 @@ public class DyespriaItem extends Item {
     public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
         if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
             if(pOther.isEmpty()) {
-                remove(pStack).ifPresent(itemStack -> {
-                    playRemoveOneSound(pPlayer);
-                    pAccess.set(itemStack);
-                });
+                pAccess.set(remove(pStack));
+                playRemoveOneSound(pPlayer);
             } else {
                 if(add(pStack, pOther)) {
                     this.playInsertSound(pPlayer);
@@ -128,15 +125,15 @@ public class DyespriaItem extends Item {
     }
 
     private boolean add(ItemStack pStack, ItemStack pOther) {
-        var dyeInsideOptional = getDye(pStack);
+        Dye dye = getDye(pStack);
         if(!pOther.isEmpty()) {
-            if(dyeInsideOptional.isPresent()) {
-                ItemStack dyeInside = dyeInsideOptional.get();
-                int amountInside = dyeInside.getCount();
+            if(!dye.isEmpty()) {
+                int amountInside = dye.amount;
                 int freeSpace = 64 - amountInside;
                 if(freeSpace <= 0) return false;
                 else {
-                    setDye(pStack, dyeInside.copyWithCount(freeSpace));
+                    dye = new Dye(dye.color, freeSpace);
+                    setDye(pStack, stackFromDye(dye));
                     pOther.shrink(freeSpace);
                     return true;
                 }
@@ -149,49 +146,55 @@ public class DyespriaItem extends Item {
         return false;
     }
 
-    private Optional<ItemStack> remove(ItemStack pStack) {
-        var itemStack = getDye(pStack);
-        if(itemStack.isPresent()) {
-            ItemStack itemStack1 = itemStack.get();
-            setDye(pStack, ItemStack.EMPTY);
-            return Optional.of(itemStack1);
+    private ItemStack remove(ItemStack pStack) {
+        Dye dye = getDye(pStack);
+        if(!dye.isEmpty()) {
+            setDye(pStack, DyeColor.WHITE, 0);
+            return stackFromDye(dye);
         } else {
-            return Optional.empty();
+            return ItemStack.EMPTY;
         }
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        Dye dye = getDye(pStack);
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
 
-        getDye(pStack).ifPresentOrElse(itemStack -> {
-            DyeColor dyeColor = ((DyeItem) itemStack.getItem()).getDyeColor();
-            int i = dyeColor.getTextColor();
-            Component name = Component.literal(itemStack.getCount() + " - " + itemStack.getHoverName().getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(i))));
+
+
+        if(!dye.isEmpty()) {
+            Component name = Component.literal(dye.amount + " - " + dye.color.getName()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(dye.color.getTextColor())).get().orThrow()));
 
             pTooltipComponents.add(usage);
             pTooltipComponents.add(name);
-        }, () -> {
+        } else {
             pTooltipComponents.add(usage);
             pTooltipComponents.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
-        });
+        }
     }
 
     public static void setDye(ItemStack stack, ItemStack dye) {
+        setDye(stack, ((DyeItem) dye.getItem()).getDyeColor(), dye.getCount());
+    }
+
+    public static void setDye(ItemStack stack, DyeColor dyeColor, int amount) {
         CompoundTag tag = stack.getOrCreateTag();
-        tag.put("dye", dye.serializeNBT());
+        tag.putInt("color", dyeColor.getId());
+        tag.putInt("amount", amount);
         stack.setTag(tag);
     }
 
-    public static Optional<ItemStack> getDye(ItemStack itemStack) {
+    public static Dye getDye(ItemStack itemStack) {
         CompoundTag tag = itemStack.getOrCreateTag();
-        ItemStack stack = ItemStack.of(tag.getCompound("dye"));
-        return stack.getItem() instanceof DyeItem ? Optional.of(stack) : Optional.empty();
+        int colorId = tag.getInt("color");
+        int amount = tag.getInt("amount");
+
+        return new Dye(DyeColor.byId(colorId), amount);
     }
 
-    public static Optional<DyeColor> getColor(ItemStack itemStack) {
-        var dye = getDye(itemStack);
-        return dye.map(stack -> ((DyeItem) stack.getItem()).getDyeColor());
+    public static ItemStack stackFromDye(Dye dye) {
+        return new ItemStack(DyeItem.byColor(dye.color), dye.amount);
     }
 
     public static int colorForDye(DyeColor dyeColor) {
@@ -204,5 +207,11 @@ public class DyespriaItem extends Item {
 
     private void playInsertSound(Entity pEntity) {
         pEntity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
+    }
+
+    public record Dye(DyeColor color, int amount) {
+        public boolean isEmpty() {
+            return Dye.this.amount <= 0;
+        }
     }
 }
