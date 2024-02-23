@@ -4,14 +4,12 @@ import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -26,11 +24,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class DyespriaItem extends Item {
     public static final Map<DyeColor, Integer> COLORS = Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
@@ -162,7 +160,14 @@ public class DyespriaItem extends Item {
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
 
         if(!dye.isEmpty()) {
-            Component name = Component.literal(dye.amount + " - " + dye.color.getName()).withStyle(Style.EMPTY.withColor(TextColor.parseColor(Integer.toHexString(dye.color.getTextColor())).get().orThrow()));
+            Component name = Component
+                    .literal(dye.amount + " - " + WordUtils.capitalizeFully(dye.color
+                                    .getName()
+                                    .toLowerCase()
+                                    .replaceAll("[^a-z_]", "")
+                                    .replaceAll("_", " ")))
+                    .withStyle(Style.EMPTY
+                            .withColor(colorForDye(dye.color)));
 
             pTooltipComponents.add(usage);
             pTooltipComponents.add(name);

@@ -121,7 +121,7 @@ public class ClientEvents {
                         MoreSnifferFlowers.loc("rtx_moresnifferflowers").toString(),
                         Component.literal("RTX More Sniffer Flowers"),
                         false,
-                        new FilePackResources.FileResourcesSupplier(Path.of("NOT WORKING!!!!"), true),
+                        new FilePackResources.FileResourcesSupplier(Path.of("rtx_moresnifferflowers"), true),
                         //TODO: ^^^^^^^^^^^^^^^^^^^!!!!!!!!!!!!!!!!!NOT WORKING!!!!!!!!!!!!!!!^^^^^^^^^^^^^^^^^^^
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,

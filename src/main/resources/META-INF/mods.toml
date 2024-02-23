@@ -10,7 +10,8 @@ displayName="More Sniffer Flowers"
 authors="AbraXator, Nikdo53"
 displayTest="MATCH_VERSION"
 description='''Lorem Ipsum'''
-
+[[mixins]]
+    config="more_sniffer_flowers.neoforge.mixins.json"
 [[dependencies.moresnifferflowers]]
     modId="neoforge"
     type="required"
