@@ -101,6 +101,23 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
         return false;
     }
 
+    private boolean hasAmber(Level level, BlockPos blockPos) {
+        if(level.getBlockEntity(blockPos) instanceof AmbushBlockEntity entity) {
+            return entity.hasGrown;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
+        if(pState.getValue(AGE) <= MAX_AGE && pRandom.nextInt(100) < 10 && isHalf(pState, DoubleBlockHalf.LOWER)) {
+            double dx = pPos.getX() + pRandom.nextDouble();
+            double dy = pPos.getY() + pRandom.nextDouble();
+            double dz = pPos.getZ() + pRandom.nextDouble();
+            pLevel.addParticle(ModParticles.AMBUSH.get(), dx, dy, dz, 0, 0, 0);
+        }
+    }
 
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {

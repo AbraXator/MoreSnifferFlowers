@@ -47,7 +47,9 @@
 	"block.minecraft.banner.moresnifferflowers.ambush.purple": "Purple Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.magenta": "Magenta Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.pink": "Pink Ambush",
-	
+
+	"death.attack.moresnifferflowersveggies": "%s has eaten their veggies",
+
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers"
 
 }

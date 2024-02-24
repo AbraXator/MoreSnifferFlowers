@@ -100,13 +100,15 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
         pLevel.setBlockAndUpdate(pPos, pState
                 .setValue(AGE, getCurrentAge(pState) + 1)
                 .setValue(HAS_JAR, (getCurrentAge(pState) + 1) == MAX_AGE && pState.getValue(HAS_BOTTLE)));
-        var particle = new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 0.5F);
-        Vec3 center = pPos.getCenter();
-        double r = (double)(0.4F - (pRandom.nextFloat() + pRandom.nextFloat()) * 0.4F);
-        double x = center.x * r;
-        double y = center.y * r;
-        double z = center.z * r;
-        pLevel.sendParticles(particle, x, y, z, 10, pRandom.nextGaussian() * 0.5, pRandom.nextGaussian() * 0.5, pRandom.nextGaussian() * 0.5, 0.5D);
+        var particle = new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 1F);
+        for(int i = 0; i <= pRandom.nextIntBetweenInclusive(5, 10); i++) {
+            pLevel.sendParticles(
+                    particle,
+                    pPos.getX() + pRandom.nextDouble(),
+                    pPos.getY() + pRandom.nextDouble(),
+                    pPos.getZ() + pRandom.nextDouble(),
+                    1, 0, 0, 0, 0.3D);
+        }
     }
 
     private int getCurrentAge(BlockState blockState) {

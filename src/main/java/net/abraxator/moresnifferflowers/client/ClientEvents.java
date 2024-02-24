@@ -6,8 +6,10 @@ import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.client.model.block.CropressorModel;
 import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
+import net.abraxator.moresnifferflowers.client.particle.AmbushParticle;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
+import net.abraxator.moresnifferflowers.client.particle.GiantCropParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
@@ -17,6 +19,7 @@ import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.FilePackResources;
+import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
@@ -33,8 +36,6 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
 
-import java.io.File;
-import java.net.URI;
 import java.nio.file.Path;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -71,6 +72,8 @@ public class ClientEvents {
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.FLY.get(), FlyParticle.Provider::new);
         event.registerSpriteSet(ModParticles.CARROT.get(), CarrotParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.AMBUSH.get(), AmbushParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.GIANT_CROP.get(), GiantCropParticle.Provider::new);
     }
 
     @SubscribeEvent
@@ -116,17 +119,40 @@ public class ClientEvents {
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
         if(event.getPackType() == PackType.CLIENT_RESOURCES) {
+            IModFile iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID).getFile();
+            event.addRepositorySource(pOnLoad ->  pOnLoad.accept(
+                    Pack.readMetaAndCreate(
+                            "rtx_moresnifferflowers",
+                            Component.literal("RTX More Sniffer Flowers"),
+                            false,
+                            new Pack.ResourcesSupplier() {
+                                @Override
+                                public PackResources openPrimary(String pId) {
+                                    return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/rtx_moresnifferflowers"), false);
+                                }
+
+                                @Override
+                                public PackResources openFull(String pId, Pack.Info pInfo) {
+                                    return openPrimary(pId);
+                                }
+                            },
+                            PackType.CLIENT_RESOURCES,
+                            Pack.Position.TOP,
+                            PackSource.BUILT_IN)));
+        }
+        /*if(event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFileInfo iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID);
             if(iModFileInfo == null) {
                 MoreSnifferFlowers.LOGGER.error("Could not find More Sniffer Flowers mod file info; built-in resource packs will be missing!");
             }
-            String path = iModFileInfo.getFile().getFilePath().toString() + "/resourcepacks/rtx_moresnifferflowers";
+            IModFile modFile = iModFileInfo.getFile();
+            Path path = modFile.findResource("resourcepacks/rtx_moresnifferflowers");
             event.addRepositorySource(pOnLoad -> {
                 Pack pack = Pack.readMetaAndCreate(
                         MoreSnifferFlowers.loc("rtx_moresnifferflowers").toString(),
                         Component.literal("RTX More Sniffer Flowers"),
                         false,
-                        new FilePackResources.FileResourcesSupplier(new File(path), true),
+                        new FilePackResources.FileResourcesSupplier(path, true),
                         //TODO: ^^^^^^^^^^^^^^^^^^^!!!!!!!!!!!!!!!!!NOT WORKING!!!!!!!!!!!!!!!^^^^^^^^^^^^^^^^^^^
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,
@@ -135,6 +161,6 @@ public class ClientEvents {
                     pOnLoad.accept(pack);
                 }
             });
-        }
+        }*/
     }
 }
