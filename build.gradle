@@ -109,7 +109,7 @@ final manifestAttributes = [
 
 jar {
     manifest.attributes(manifestAttributes)
-    finalizedBy('reobfJar')
+    //finalizedBy('reobfJar')
 }
 
 tasks.withType(JavaCompile).configureEach {
