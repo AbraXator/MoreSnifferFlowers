@@ -3,26 +3,21 @@ package net.abraxator.moresnifferflowers.init;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BannerPatternItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
-import net.minecraft.world.item.SmithingTemplateItem;
+import net.minecraft.item.*;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
-    public static final DeferredRegister.Items ITEMS = 
-            DeferredRegister.createItems(MoreSnifferFlowers.MOD_ID);
-
-    public static final DeferredItem<Item> DAWNBERRY_VINE_SEEDS = ITEMS.register("dawnberry_vine_seeds", () -> new ItemNameBlockItem(ModBlocks.DAWNBERRY_VINE.get(), new Item.Properties()));
-    public static final DeferredItem<Item> DAWNBERRY = ITEMS.register("dawnberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.6F).fast().build())));
-    public static final DeferredItem<Item> AMBUSH_SEEDS = ITEMS.register("ambush_seeds", () -> new ItemNameBlockItem(ModBlocks.AMBUSH.get(), new Item.Properties()));
-    public static final DeferredItem<Item> AMBUSH_BANNER_PATTERN = ITEMS.register("ambush_banner_pattern", () -> new BannerPatternItem(ModTags.ModBannerPatternTags.AMBUSH_BANNER_PATTERN, new Item.Properties().stacksTo(1)));
-    public static final DeferredItem<Item> AMBER_SHARD = ITEMS.register("amber_shard", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> AROMA_ARMOR_TRIM_SMITHING_TABLE = ITEMS.register("aroma_armor_trim_smithing_table", () -> SmithingTemplateItem.createArmorTrimTemplate(ModTrimPatterns.AROMA));
-    public static final DeferredItem<Item> DRAGONFLY = ITEMS.register("dragonfly", () -> new Item(new Item.Properties().food(ModFoods.DRAGONFLY)));
-    public static final DeferredItem<Item> DYESPRIA = ITEMS.register("dyespria", () -> new DyespriaItem(new Item.Properties().stacksTo(1)));
-    public static final DeferredItem<Item> BONMEELIA_SEEDS = ITEMS.register("bonmeelia_seeds", () -> new ItemNameBlockItem(ModBlocks.BONMEELIA.get(), new Item.Properties()));
-    public static final DeferredItem<Item> JAR_OF_BONMEEL = ITEMS.register("jar_of_bonmeel", () -> new JarOfBonmeelItem(new Item.Properties()));
+    public static final Item DAWNBERRY_VINE_SEEDS = Registry.register(Registries.ITEM, "dawnberry_vine_seeds", new AliasedBlockItem(ModBlocks.DAWNBERRY_VINE, new Item.Settings()));
+    public static final Item DAWNBERRY = Registry.register(Registries.ITEM,"dawnberry", new Item(new Item.Settings().food(new FoodComponent.Builder().hunger(4).saturationModifier(0.6F).snack().build())));
+    public static final Item AMBUSH_SEEDS = Registry.register(Registries.ITEM,"ambush_seeds", new AliasedBlockItem(ModBlocks.AMBUSH, new Item.Settings()));
+    public static final Item AMBUSH_BANNER_PATTERN = Registry.register(Registries.ITEM,"ambush_banner_pattern", new BannerPatternItem(ModTags.ModBannerPatternTags.AMBUSH_BANNER_PATTERN, new Item.Settings().maxCount(1)));
+    public static final Item AMBER_SHARD = Registry.register(Registries.ITEM,"amber_shard", new Item(new Item.Settings()));
+    public static final Item AROMA_ARMOR_TRIM_SMITHING_TABLE = Registry.register(Registries.ITEM,"aroma_armor_trim_smithing_table", SmithingTemplateItem.of(ModTrimPatterns.AROMA));
+    public static final Item DRAGONFLY = Registry.register(Registries.ITEM,"dragonfly", new Item(new Item.Settings().food(ModFoods.DRAGONFLY)));
+    public static final Item DYESPRIA = Registry.register(Registries.ITEM,"dyespria", new DyespriaItem(new Item.Settings().maxCount(1)));
+    public static final Item BONMEELIA_SEEDS = Registry.register(Registries.ITEM,"bonmeelia_seeds", new AliasedBlockItem(ModBlocks.BONMEELIA, new Item.Settings()));
+    public static final Item JAR_OF_BONMEEL = Registry.register(Registries.ITEM,"jar_of_bonmeel", new JarOfBonmeelItem(new Item.Settings()));
 }

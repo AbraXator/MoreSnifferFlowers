@@ -5,13 +5,13 @@ import net.abraxator.moresnifferflowers.advancements.EarnSnifferAdvancementTrigg
 import net.abraxator.moresnifferflowers.advancements.UsedDyespriaTrigger;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.AdvancementType;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementEntry;
+import net.minecraft.advancement.AdvancementFrame;
+import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -20,21 +20,21 @@ import java.util.function.Consumer;
 
 public class ModAdvancementGenerator implements AdvancementProvider.AdvancementGenerator {
     @Override
-    public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> saver, ExistingFileHelper existingFileHelper) {
-        AdvancementHolder root = Advancement.Builder.advancement().display(
-                        Items.SNIFFER_EGG.getDefaultInstance(),
-                        Component.translatable("advancements.more_sniffer_flowers.any_seed"),
-                        Component.translatable("advancements.more_sniffer_flowers.any_seed.desc"),
-                        new ResourceLocation("textures/block/farmland.png"), AdvancementType.TASK, true, true, false)
-                .addCriterion("hasAdvancement", new EarnSnifferAdvancementTrigger().createCriterion(new EarnSnifferAdvancementTrigger.Instance(Optional.empty())))
-                .save(saver, MoreSnifferFlowers.MOD_ID + ":root");
+    public void generate(RegistryWrapper.WrapperLookup registries, Consumer<AdvancementEntry> saver, ExistingFileHelper existingFileHelper) {
+        AdvancementEntry root = Advancement.Builder.create().display(
+                        Items.SNIFFER_EGG.getDefaultStack(),
+                        Text.translatable("advancements.more_sniffer_flowers.any_seed"),
+                        Text.translatable("advancements.more_sniffer_flowers.any_seed.desc"),
+                        new Identifier("textures/block/farmland.png"), AdvancementFrame.TASK, true, true, false)
+                .criterion("hasAdvancement", new EarnSnifferAdvancementTrigger().create(new EarnSnifferAdvancementTrigger.Instance(Optional.empty())))
+                .build(saver, MoreSnifferFlowers.MOD_ID + ":root");
 
-        Advancement.Builder.advancement().parent(root).display(
+        Advancement.Builder.create().parent(root).display(
                         ModItems.DYESPRIA.get(),
-                        Component.translatable("advancements.more_sniffer_flowers.dyespria"),
-                        Component.translatable("advancements.more_sniffer_flowers.dyespria.desc", ModBlocks.CAULORFLOWER.get().getDescriptionId(), ModItems.DYESPRIA.get().getDescriptionId()),
-                        null, AdvancementType.TASK, true, true, false)
-                .addCriterion("used_dyespria", new UsedDyespriaTrigger().createCriterion(new UsedDyespriaTrigger.Instance(Optional.empty())))
+                        Text.translatable("advancements.more_sniffer_flowers.dyespria"),
+                        Text.translatable("advancements.more_sniffer_flowers.dyespria.desc", ModBlocks.CAULORFLOWER.get().getDescriptionId(), ModItems.DYESPRIA.get().getDescriptionId()),
+                        null, AdvancementFrame.TASK, true, true, false)
+                .addCriterion("used_dyespria", new UsedDyespriaTrigger().create(new UsedDyespriaTrigger.Instance(Optional.empty())))
                 .save(saver, MoreSnifferFlowers.MOD_ID + ":dyespria");
     }
 }

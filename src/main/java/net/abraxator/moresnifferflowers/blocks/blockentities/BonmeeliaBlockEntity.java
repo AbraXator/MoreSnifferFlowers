@@ -2,9 +2,9 @@ package net.abraxator.moresnifferflowers.blocks.blockentities;
 
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
 
 public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
     public boolean hasBottle;
@@ -26,26 +26,26 @@ public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
         }
         else {
             hasHint = false;
-            BonmeeliaBlock.displayHint(level, worldPosition, getBlockState(), false);
+            BonmeeliaBlock.displayHint(world, pos, getCachedState(), false);
         }
     }
     
     public void displayHint() {
         this.hasHint = true;
         this.hintDuration = 40;
-        BonmeeliaBlock.displayHint(level, worldPosition, getBlockState(), true);
+        BonmeeliaBlock.displayHint(world, pos, getCachedState(), true);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void readNbt(NbtCompound pTag) {
+        super.readNbt(pTag);
         hasHint = pTag.getBoolean("hint");
         hasBottle = pTag.getBoolean("bottle");
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag); 
+    protected void writeNbt(NbtCompound pTag) {
+        super.writeNbt(pTag); 
         pTag.putBoolean("hint", hasHint);
         pTag.putBoolean("bottle", hasBottle);
     }

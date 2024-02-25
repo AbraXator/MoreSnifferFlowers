@@ -1,32 +1,30 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 
 public class MoreSnifferFlowerBlock extends Block implements ModCropBlock {
-    public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
-    public static final IntegerProperty STALK_TYPE = IntegerProperty.create("stalk_type", 1, 3);
-    public static final IntegerProperty LEAVES_TYPE = IntegerProperty.create("leaves_type", 1, 3);
+    public static final EnumProperty<DyeColor> COLOR = EnumProperty.of("color", DyeColor.class);
+    public static final IntProperty STALK_TYPE = IntProperty.of("stalk_type", 1, 3);
+    public static final IntProperty LEAVES_TYPE = IntProperty.of("leaves_type", 1, 3);
 
-    public MoreSnifferFlowerBlock(Properties pProperties) {
+    public MoreSnifferFlowerBlock(Settings pProperties) {
         super(pProperties);
-        this.registerDefaultState(this.defaultBlockState().setValue(STALK_TYPE, 1).setValue(LEAVES_TYPE, 1));
+        this.setDefaultState(this.getDefaultState().with(STALK_TYPE, 1).with(LEAVES_TYPE, 1));
     }
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
+    protected void appendProperties(StateManager.Builder<Block, BlockState> pBuilder) {
+        super.appendProperties(pBuilder);
         pBuilder.add(STALK_TYPE, LEAVES_TYPE);
     }
     @Override
-    public BlockState getPlant(BlockGetter level, BlockPos pos) {
+    public BlockState getPlant(BlockView level, BlockPos pos) {
         return null;
     }
 }

@@ -2,8 +2,8 @@ package net.abraxator.moresnifferflowers.blocks.blockentities;
 
 import net.abraxator.moresnifferflowers.blocks.AmbushBlock;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
 
 public class AmbushBlockEntity extends GrowingCropBlockEntity {
     public AmbushBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -12,6 +12,6 @@ public class AmbushBlockEntity extends GrowingCropBlockEntity {
 
     @Override
     public boolean canGrow(float growProgress, boolean hasGrown) {
-        return this.getBlockState().getValue(AmbushBlock.AGE).equals(7) && super.canGrow(growProgress, hasGrown);   
+        return this.getCachedState().get(AmbushBlock.AGE).equals(7) && super.canGrow(growProgress, hasGrown);   
     }
 }

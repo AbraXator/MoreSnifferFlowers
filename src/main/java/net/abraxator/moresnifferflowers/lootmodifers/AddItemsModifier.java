@@ -5,13 +5,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.abraxator.moresnifferflowers.init.ModItems;
-import net.minecraft.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.condition.LootCondition;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Util;
+import net.minecraft.util.dynamic.Codecs;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 import net.neoforged.neoforge.server.command.ModIdArgument;
@@ -22,12 +22,12 @@ import java.util.function.Supplier;
 
 public class AddItemsModifier extends LootModifier {
     public static final Supplier<Codec<AddItemsModifier>> CODEC = Suppliers.memoize(()
-            -> RecordCodecBuilder.create(inst -> codecStart(inst).and(ExtraCodecs.nonEmptyList(BuiltInRegistries.ITEM.byNameCodec().listOf())
+            -> RecordCodecBuilder.create(inst -> codecStart(inst).and(Codecs.nonEmptyList(Registries.ITEM.getCodec().listOf())
             .fieldOf("item").forGetter(m -> m.items)).apply(inst, AddItemsModifier::new)));
 
     private final List<Item> items;
 
-    public AddItemsModifier(LootItemCondition[] conditionsIn, List<Item> items) {
+    public AddItemsModifier(LootCondition[] conditionsIn, List<Item> items) {
         super(conditionsIn);
         this.items = items;
     }
@@ -42,7 +42,7 @@ public class AddItemsModifier extends LootModifier {
             }
         }*/
 
-        items.forEach(item -> generatedLoot.add(item.getDefaultInstance()));
+        items.forEach(item -> generatedLoot.add(item.getDefaultStack()));
         newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));
         //return ObjectArrayList.of(ModItems.BONMEELIA_SEEDS.asItem().getDefaultInstance());
         return newLoot;

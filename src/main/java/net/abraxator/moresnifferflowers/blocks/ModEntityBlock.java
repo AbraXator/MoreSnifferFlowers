@@ -1,18 +1,16 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blocks.blockentities.ModBlockEntity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public interface ModEntityBlock extends EntityBlock {
+public interface ModEntityBlock extends BlockEntityProvider {
     @Nullable
-     default <T extends BlockEntity> BlockEntityTicker<T> tickerHelper(Level pLevel) {
-        if(pLevel.isClientSide) return null;
+     default <T extends BlockEntity> BlockEntityTicker<T> tickerHelper(World pLevel) {
+        if(pLevel.isClient) return null;
         return (pLevel1, pPos, pState1, pBlockEntity) -> ((ModBlockEntity) pBlockEntity).tick();
     }
 }

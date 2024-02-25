@@ -2,16 +2,15 @@ package net.abraxator.moresnifferflowers.blocks.blockentities;
 
 import net.abraxator.moresnifferflowers.blocks.AmbushBlock;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.core.pattern.ThreadIdPatternConverter;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,16 +25,16 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    public void setChanged() {
-        super.setChanged();
+    public void markDirty() {
+        super.markDirty();
     }
 
     public void tick() {
         if(canGrow(this.growProgress, this.hasGrown)) {
             this.growProgress += growRate;
-            this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+            this.world.updateListeners(getPos(), getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
             if(this.growProgress >= 1) {
-                this.onGrow(getBlockPos(), getBlockState(), getLevel());
+                this.onGrow(getPos(), getCachedState(), getWorld());
             }
         }
     }
@@ -45,40 +44,40 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public NbtCompound toInitialChunkDataNbt() {
+        NbtCompound tag = super.toInitialChunkDataNbt();
+        writeNbt(tag);
         return tag;
     }
 
-    public void onGrow(BlockPos blockPos, BlockState state, Level level) {
+    public void onGrow(BlockPos blockPos, BlockState state, World level) {
         this.hasGrown = true;;
-        this.level.sendBlockUpdated(blockPos, state, state, Block.UPDATE_CLIENTS);
+        this.world.updateListeners(blockPos, state, state, Block.NOTIFY_LISTENERS);
     }
 
-    public void reset(BlockPos blockPos, BlockState state, Level level) {
+    public void reset(BlockPos blockPos, BlockState state, World level) {
         this.growProgress = 0;
         this.hasGrown = false;
         //level.setBlock(blockPos, state.setValue(AmbushBlock.AGE, 7), 3);
     }
     
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void readNbt(NbtCompound pTag) {
+        super.readNbt(pTag);
         this.hasGrown = pTag.getBoolean("hasGrown");
         this.growProgress = pTag.getFloat("progress");
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void writeNbt(NbtCompound pTag) {
+        super.writeNbt(pTag);
         pTag.putBoolean("hasGrown", this.hasGrown);
         pTag.putFloat("progress", this.growProgress);
     }
 
     @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 }

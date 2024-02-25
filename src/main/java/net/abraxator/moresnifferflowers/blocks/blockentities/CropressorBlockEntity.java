@@ -3,20 +3,18 @@ package net.abraxator.moresnifferflowers.blocks.blockentities;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.abraxator.moresnifferflowers.recipes.CropressorRecipe;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-
+import net.minecraft.block.BlockState;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import java.util.Optional;
 
 public class CropressorBlockEntity extends ModBlockEntity {
-    private NonNullList<ItemStack> inv = NonNullList.withSize(9, ItemStack.EMPTY);
+    private DefaultedList<ItemStack> inv = DefaultedList.ofSize(9, ItemStack.EMPTY);
     private boolean hasFinished;
 
     public CropressorBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -25,38 +23,38 @@ public class CropressorBlockEntity extends ModBlockEntity {
 
     @Override
     public void tick() {
-        Container container = new SimpleContainer(9);
+        Inventory container = new SimpleInventory(9);
         int i = 0;
         for(ItemStack itemStack : inv) {
             if(!itemStack.isEmpty()) {
-                container.setItem(i, new ItemStack(itemStack.getItem(), 1));
+                container.setStack(i, new ItemStack(itemStack.getItem(), 1));
                 i++;
             }
         }
-        Optional<RecipeHolder<CropressorRecipe>> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSOR.get(), container, level);
-        var list = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.CROPRESSOR.get());
+        Optional<RecipeEntry<CropressorRecipe>> recipe = world.getRecipeManager().getFirstMatch(ModRecipeTypes.CROPRESSOR.get(), container, world);
+        var list = world.getRecipeManager().listAllOfType(ModRecipeTypes.CROPRESSOR.get());
         System.out.println(list);
         if(recipe.isPresent()) {
             CropressorRecipe cropressorRecipe = recipe.get().value();
-            inv = NonNullList.of(cropressorRecipe.result);
+            inv = DefaultedList.copyOf(cropressorRecipe.result);
         }
     }
 
     public void addItem(ItemStack itemStack) {
         int i = -1;
 
-        while(i + 1 != 9 && inv.get(i + 1).is(ItemStack.EMPTY.getItem())) {
+        while(i + 1 != 9 && inv.get(i + 1).isOf(ItemStack.EMPTY.getItem())) {
             i++;
         }
 
         if(i > 0) {
             inv.set(i, itemStack);
-            itemStack.shrink(1);
-            this.setChanged();
+            itemStack.decrement(1);
+            this.markDirty();
         }
     }
 
-    public NonNullList<ItemStack> getInventory() {
+    public DefaultedList<ItemStack> getInventory() {
         return inv;
     }
 
@@ -65,8 +63,8 @@ public class CropressorBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void writeNbt(NbtCompound pTag) {
+        super.writeNbt(pTag);
         pTag.putInt("size", inv.size());
         for(int i = 0; i < inv.size(); i++) {
             pTag.put("item_" + i, inv.get(i).serializeAttachments());
@@ -75,11 +73,11 @@ public class CropressorBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        inv = NonNullList.withSize(9, ItemStack.EMPTY);
+    public void readNbt(NbtCompound pTag) {
+        super.readNbt(pTag);
+        inv = DefaultedList.ofSize(9, ItemStack.EMPTY);
         for(int i = 0; i < pTag.getInt("size"); i++) {
-            inv.set(i, ItemStack.of(pTag.getCompound("item_" + i)));
+            inv.set(i, ItemStack.fromNbt(pTag.getCompound("item_" + i)));
         }
         hasFinished = pTag.getBoolean("finished");
     }

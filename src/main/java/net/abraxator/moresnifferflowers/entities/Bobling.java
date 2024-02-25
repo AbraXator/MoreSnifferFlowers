@@ -3,98 +3,106 @@ package net.abraxator.moresnifferflowers.entities;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.entity.AnimationState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.MemoryModuleState;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.ai.control.MoveControl;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class Bobling extends Animal {
+public class Bobling extends AnimalEntity {
     //public static final ImmutableList<SensorType<? extends Sensor<? super Bobling>>> SENSOR_TYPES = ImmutableList.
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_MODULE_TYPES = ImmutableList.of(MemoryModuleType.AVOID_TARGET);
-    public static final EntityDataAccessor<Long> LAST_POSE_CHANGE_TICK = SynchedEntityData.defineId(Bobling.class, EntityDataSerializers.LONG);
+    public static final TrackedData<Long> LAST_POSE_CHANGE_TICK = DataTracker.registerData(Bobling.class, TrackedDataHandlerRegistry.LONG);
     public final AnimationState sitDownAnimationState = new AnimationState();
     public final AnimationState sitPoseAnimationState = new AnimationState();
     public final AnimationState standUpAnimationState = new AnimationState();
-    private static final EntityDimensions SITTING_DIMENSION = EntityDimensions.scalable(ModEntityTypes.BOBLING.get().getWidth(), ModEntityTypes.BOBLING.get().getHeight() - 0.6F);
+    private static final EntityDimensions SITTING_DIMENSION = EntityDimensions.changing(ModEntityTypes.BOBLING.get().getWidth(), ModEntityTypes.BOBLING.get().getHeight() - 0.6F);
 
-    public Bobling(EntityType<? extends Bobling> pEntityType, Level pLevel) {
+    public Bobling(EntityType<? extends Bobling> pEntityType, World pLevel) {
         super(pEntityType, pLevel);
         this.moveControl = new BoblingMoveControl();
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putLong("LastPoseTick", this.entityData.get(LAST_POSE_CHANGE_TICK));
+    public void writeCustomDataToNbt(NbtCompound pCompound) {
+        super.writeCustomDataToNbt(pCompound);
+        pCompound.putLong("LastPoseTick", this.dataTracker.get(LAST_POSE_CHANGE_TICK));
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
+    public void readCustomDataFromNbt(NbtCompound pCompound) {
+        super.readCustomDataFromNbt(pCompound);
         long i = pCompound.getLong("LastPoseTick");
         if(i < 0L) {
-            this.setPose(Pose.SITTING);
+            this.setPose(EntityPose.SITTING);
         }
 
         this.resetLastPoseChangeTick(i);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return createLivingAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.8F).add(Attributes.FOLLOW_RANGE, 10.0F);
+    public static DefaultAttributeContainer.Builder createAttributes() {
+        return createLivingAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 10.0D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.8F).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 10.0F);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(LAST_POSE_CHANGE_TICK, 0L);
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(LAST_POSE_CHANGE_TICK, 0L);
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        this.resetLastPoseChangeTickToFullStand(pLevel.getLevel().getGameTime());
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    public EntityData initialize(ServerWorldAccess pLevel, LocalDifficulty pDifficulty, SpawnReason pReason, @Nullable EntityData pSpawnData, @Nullable NbtCompound pDataTag) {
+        this.resetLastPoseChangeTickToFullStand(pLevel.toServerWorld().getTime());
+        return super.initialize(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
     @Override
-    protected Brain.Provider<Bobling> brainProvider() {
-        return Brain.provider(MEMORY_MODULE_TYPES, ImmutableList.of());
+    protected Brain.Profile<Bobling> createBrainProfile() {
+        return Brain.createProfile(MEMORY_MODULE_TYPES, ImmutableList.of());
     }
 
     @Override
-    protected void registerGoals() {
+    protected void initGoals() {
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pPose) {
-        return pPose == Pose.SITTING ? SITTING_DIMENSION.scale(this.getScale()) : super.getDimensions(pPose);
+    public EntityDimensions getDimensions(EntityPose pPose) {
+        return pPose == EntityPose.SITTING ? SITTING_DIMENSION.scaled(this.getScaleFactor()) : super.getDimensions(pPose);
     }
 
     @Override
-    protected void customServerAiStep() {
-        this.level().getProfiler().push("BoblingBrain");
+    protected void mobTick() {
+        this.method_48926().getProfiler().push("BoblingBrain");
         Brain<?> brain = this.getBrain();
-        ((Brain<Bobling>) brain).tick(((ServerLevel) this.level()), this);
-        this.level().getProfiler().pop();
-        this.level().getProfiler().push("BoblingActivityUpdate");
-        this.level().getProfiler().pop();
-        super.customServerAiStep();
+        ((Brain<Bobling>) brain).tick(((ServerWorld) this.method_48926()), this);
+        this.method_48926().getProfiler().pop();
+        this.method_48926().getProfiler().push("BoblingActivityUpdate");
+        this.method_48926().getProfiler().pop();
+        super.mobTick();
     }
 
     @Override
@@ -105,7 +113,7 @@ public class Bobling extends Animal {
             clampHeadRotationToBody(this, 30);
         }
 
-        if(this.level().isClientSide()) {
+        if(this.method_48926().isClient()) {
             this.setupAnimationStates();
         }
     }
@@ -114,35 +122,35 @@ public class Bobling extends Animal {
         if(this.isBoblingVisuallySitting()) {
             this.standUpAnimationState.stop();
             if(this.isVisuallySittingDown()) {
-                this.sitDownAnimationState.startIfStopped(this.tickCount);
+                this.sitDownAnimationState.startIfNotRunning(this.age);
                 this.sitPoseAnimationState.stop();
             } else {
                 this.sitDownAnimationState.stop();
-                this.sitPoseAnimationState.startIfStopped(this.tickCount);
+                this.sitPoseAnimationState.startIfNotRunning(this.age);
             }
         } else {
             this.sitDownAnimationState.stop();;
             this.sitPoseAnimationState.stop();
-            this.standUpAnimationState.animateWhen(this.isInPoseTransition() && this.getPoseTime() >= 0L, this.tickCount);
+            this.standUpAnimationState.setRunning(this.isInPoseTransition() && this.getPoseTime() >= 0L, this.age);
         }
     }
 
-    public void updateWalkAnimation(float f) {
+    public void updateLimbs(float f) {
         float f2;
-        if(this.getPose() == Pose.STANDING) {
+        if(this.getPose() == EntityPose.STANDING) {
             f2 = Math.min(f * 6.0f, 1.0F);
         } else {
             f2 = 0.0F;
         }
 
-        this.walkAnimation.update(f2, 0.2F);
+        this.limbAnimator.updateLimbs(f2, 0.2F);
     }
 
     @Override
-    public void travel(Vec3 pTravelVector) {
-        if(this.refuseToMove() && this.onGround()) {
-            Vec3 vec3 = new Vec3(0.0D, 1.0D, 0.0D);
-            this.setDeltaMovement(this.getDeltaMovement().multiply(vec3));
+    public void travel(Vec3d pTravelVector) {
+        if(this.refuseToMove() && this.isOnGround()) {
+            Vec3d vec3 = new Vec3d(0.0D, 1.0D, 0.0D);
+            this.setVelocity(this.getVelocity().multiply(vec3));
             pTravelVector = pTravelVector.multiply(vec3);
         }
 
@@ -154,27 +162,27 @@ public class Bobling extends Animal {
     }
 
     @Override
-    public boolean canBreed() {
+    public boolean isReadyToBreed() {
         return false;
     }
 
     @Override
-    public boolean canSprint() {
+    public boolean canSprintAsVehicle() {
         return true;
     }
 
     public boolean isPanicking() {
-        return this.getBrain().checkMemory(MemoryModuleType.IS_PANICKING, MemoryStatus.VALUE_PRESENT);
+        return this.getBrain().isMemoryInState(MemoryModuleType.IS_PANICKING, MemoryModuleState.VALUE_PRESENT);
     }
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
+    public PassiveEntity createChild(ServerWorld pLevel, PassiveEntity pOtherParent) {
         return null;
     }
 
     public boolean isBoblingSitting() {
-        return this.entityData.get(LAST_POSE_CHANGE_TICK) < 0L;
+        return this.dataTracker.get(LAST_POSE_CHANGE_TICK) < 0L;
     }
 
     public boolean isBoblingVisuallySitting() {
@@ -187,7 +195,7 @@ public class Bobling extends Animal {
     }
 
     public long getPoseTime() {
-        return (long) (this.level().getGameTime() - Mth.abs(this.entityData.get(LAST_POSE_CHANGE_TICK)));
+        return (long) (this.method_48926().getTime() - MathHelper.abs(this.dataTracker.get(LAST_POSE_CHANGE_TICK)));
     }
 
     private boolean isVisuallySittingDown() {
@@ -196,28 +204,28 @@ public class Bobling extends Animal {
 
     public void sitDown() {
         if (!this.isBoblingSitting()) {
-            this.playSound(SoundEvents.CAMEL_SIT, 1.0F, 1.0F);
-            this.setPose(Pose.SITTING);
-            this.resetLastPoseChangeTick(-this.level().getGameTime());
+            this.playSound(SoundEvents.ENTITY_CAMEL_SIT, 1.0F, 1.0F);
+            this.setPose(EntityPose.SITTING);
+            this.resetLastPoseChangeTick(-this.method_48926().getTime());
         }
     }
 
     public void standUp() {
         if (this.isBoblingSitting()) {
-            this.playSound(SoundEvents.CAMEL_STAND, 1.0F, 1.0F);
-            this.setPose(Pose.STANDING);
-            this.resetLastPoseChangeTick(this.level().getGameTime());
+            this.playSound(SoundEvents.ENTITY_CAMEL_STAND, 1.0F, 1.0F);
+            this.setPose(EntityPose.STANDING);
+            this.resetLastPoseChangeTick(this.method_48926().getTime());
         }
     }
 
     public void standUpInstantly() {
-        this.setPose(Pose.STANDING);
-        this.resetLastPoseChangeTickToFullStand(this.level().getGameTime());
+        this.setPose(EntityPose.STANDING);
+        this.resetLastPoseChangeTickToFullStand(this.method_48926().getTime());
     }
 
     @VisibleForTesting
     public void resetLastPoseChangeTick(long pLastPoseChangeTick) {
-        this.entityData.set(LAST_POSE_CHANGE_TICK, pLastPoseChangeTick);
+        this.dataTracker.set(LAST_POSE_CHANGE_TICK, pLastPoseChangeTick);
     }
 
     private void resetLastPoseChangeTickToFullStand(long p_265447_) {
@@ -225,17 +233,17 @@ public class Bobling extends Animal {
     }
 
     @Override
-    protected void actuallyHurt(DamageSource pDamageSource, float pDamageAmount) {
+    protected void applyDamage(DamageSource pDamageSource, float pDamageAmount) {
         this.standUpInstantly();
-        super.actuallyHurt(pDamageSource, pDamageAmount);
+        super.applyDamage(pDamageSource, pDamageAmount);
     }
 
     private void clampHeadRotationToBody(Entity p_265624_, float p_265541_) {
-        float f = p_265624_.getYHeadRot();
-        float f1 = Mth.wrapDegrees(this.yBodyRot - f);
-        float f2 = Mth.clamp(Mth.wrapDegrees(this.yBodyRot - f), -p_265541_, p_265541_);
+        float f = p_265624_.getHeadYaw();
+        float f1 = MathHelper.wrapDegrees(this.bodyYaw - f);
+        float f2 = MathHelper.clamp(MathHelper.wrapDegrees(this.bodyYaw - f), -p_265541_, p_265541_);
         float f3 = f + f1 - f2;
-        p_265624_.setYHeadRot(f3);
+        p_265624_.setHeadYaw(f3);
     }
 
     class BoblingMoveControl extends MoveControl {
@@ -245,7 +253,7 @@ public class Bobling extends Animal {
 
         @Override
         public void tick() {
-            if(this.operation == Operation.MOVE_TO && Bobling.this.isBoblingSitting() && !Bobling.this.isInPoseTransition()) {
+            if(this.state == State.MOVE_TO && Bobling.this.isBoblingSitting() && !Bobling.this.isInPoseTransition()) {
                 Bobling.this.standUp();
             }
 

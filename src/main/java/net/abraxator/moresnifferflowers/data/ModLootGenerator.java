@@ -1,25 +1,24 @@
 package net.abraxator.moresnifferflowers.data;
 
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.ValidationContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.minecraft.data.DataOutput;
+import net.minecraft.data.server.loottable.LootTableProvider;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTableReporter;
+import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.util.Identifier;
 
 public class ModLootGenerator extends LootTableProvider {
-    public ModLootGenerator(PackOutput pOutput) {
+    public ModLootGenerator(DataOutput pOutput) {
         super(pOutput, Set.of(), List.of(
-                new LootTableProvider.SubProviderEntry(ModBlockLoottableProvider::new, LootContextParamSets.BLOCK)
+                new LootTableProvider.LootTypeGenerator(ModBlockLoottableProvider::new, LootContextTypes.BLOCK)
         ));
     }
 
     @Override
-    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationcontext) {
+    protected void validate(Map<Identifier, LootTable> map, LootTableReporter validationcontext) {
 
     }
 }

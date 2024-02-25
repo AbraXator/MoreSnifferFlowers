@@ -1,32 +1,31 @@
 package net.abraxator.moresnifferflowers.client.particle;
 
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.AnimatedParticle;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SimpleAnimatedParticle;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.SimpleParticleType;
-
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particle.DefaultParticleType;
 import javax.annotation.Nullable;
 
-public class CarrotParticle extends SimpleAnimatedParticle {
-    protected CarrotParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet pSprites) {
+public class CarrotParticle extends AnimatedParticle {
+    protected CarrotParticle(ClientWorld pLevel, double pX, double pY, double pZ, SpriteProvider pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, 0);
         this.scale(1.5F);
-        this.setLifetime(20);
-        this.setSpriteFromAge(pSprites);
+        this.setMaxAge(20);
+        this.setSpriteForAge(pSprites);
     }
 
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet sprites;
+    public static class Provider implements ParticleFactory<DefaultParticleType> {
+        private final SpriteProvider sprites;
 
-        public Provider(SpriteSet sprites) {
+        public Provider(SpriteProvider sprites) {
             this.sprites = sprites;
         }
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+        public Particle createParticle(DefaultParticleType pType, ClientWorld pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             return new CarrotParticle(pLevel, pX, pY, pZ, sprites);
         }
     }

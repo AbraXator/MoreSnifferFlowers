@@ -3,106 +3,106 @@ package net.abraxator.moresnifferflowers.blocks;
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.blocks.blockentities.BonmeeliaBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModItems;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.PlantBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Property;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
-    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
-    public static final BooleanProperty HAS_BOTTLE = BooleanProperty.create("bottle");
-    public static final BooleanProperty SHOW_HINT = BooleanProperty.create("hint");
-    public static final BooleanProperty HAS_JAR = BooleanProperty.create("jar");
-    public static final MapCodec<BonmeeliaBlock> CODEC = simpleCodec(BonmeeliaBlock::new);
+public class BonmeeliaBlock extends PlantBlock implements ModEntityBlock {
+    public static final IntProperty AGE = IntProperty.of("age", 0, 3);
+    public static final BooleanProperty HAS_BOTTLE = BooleanProperty.of("bottle");
+    public static final BooleanProperty SHOW_HINT = BooleanProperty.of("hint");
+    public static final BooleanProperty HAS_JAR = BooleanProperty.of("jar");
+    public static final MapCodec<BonmeeliaBlock> CODEC = createCodec(BonmeeliaBlock::new);
     public static final int MAX_AGE = AGE
-            .getAllValues()
+            .stream()
             .map(Property.Value::value)
             .max(Integer::compare)
             .orElse(0);
 
-    public BonmeeliaBlock(Properties pProperties) {
+    public BonmeeliaBlock(Settings pProperties) {
         super(pProperties);
-        registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0).setValue(HAS_JAR, false));
+        setDefaultState(this.getDefaultState().with(HAS_BOTTLE, false).with(SHOW_HINT, false).with(AGE, 0).with(HAS_JAR, false));
     }
 
     @Override
-    protected MapCodec<? extends BushBlock> codec() {
+    protected MapCodec<? extends PlantBlock> getCodec() {
         return CODEC;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(AGE, HAS_BOTTLE, SHOW_HINT, HAS_JAR);
     }
 
     @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        pPos = pPos.below();
-        return mayPlaceOn(pLevel.getBlockState(pPos), pLevel, pPos);
+    public boolean canPlaceAt(BlockState pState, WorldView pLevel, BlockPos pPos) {
+        pPos = pPos.down();
+        return canPlantOnTop(pLevel.getBlockState(pPos), pLevel, pPos);
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(Blocks.FARMLAND);
+    protected boolean canPlantOnTop(BlockState pState, BlockView pLevel, BlockPos pPos) {
+        return pState.isOf(Blocks.FARMLAND);
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        ItemStack itemStack = pPlayer.getMainHandItem();
+    public ActionResult onUse(BlockState pState, World pLevel, BlockPos pPos, PlayerEntity pPlayer, Hand pHand, BlockHitResult pHit) {
+        ItemStack itemStack = pPlayer.getMainHandStack();
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
 
         if (!(blockEntity instanceof BonmeeliaBlockEntity entity)) {
-            return InteractionResult.FAIL;
+            return ActionResult.FAIL;
         }
 
-        if(itemStack.is(Items.GLASS_BOTTLE) && !pState.getValue(HAS_BOTTLE)) {
-            pLevel.setBlock(pPos, pState.setValue(HAS_BOTTLE, true), 3);
-            pPlayer.getMainHandItem().shrink(1);
-        } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
-            pLevel.setBlock(pPos, pState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
-            pPlayer.addItem(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
-        } else if(!pState.getValue(HAS_BOTTLE)) {
+        if(itemStack.isOf(Items.GLASS_BOTTLE) && !pState.get(HAS_BOTTLE)) {
+            pLevel.setBlockState(pPos, pState.with(HAS_BOTTLE, true), 3);
+            pPlayer.getMainHandStack().decrement(1);
+        } else if (pState.get(HAS_BOTTLE) && pState.get(AGE) >= MAX_AGE) {
+            pLevel.setBlockState(pPos, pState.with(AGE, 0).with(HAS_BOTTLE, false), 3);
+            pPlayer.giveItemStack(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
+        } else if(!pState.get(HAS_BOTTLE)) {
             entity.displayHint();
         }
 
-        return InteractionResult.sidedSuccess(pLevel.isClientSide);
+        return ActionResult.success(pLevel.isClient);
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
-        return pState.getValue(AGE) < MAX_AGE && pState.getValue(HAS_BOTTLE);
+    public boolean hasRandomTicks(BlockState pState) {
+        return pState.get(AGE) < MAX_AGE && pState.get(HAS_BOTTLE);
     }
 
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        pLevel.setBlockAndUpdate(pPos, pState
-                .setValue(AGE, getCurrentAge(pState) + 1)
-                .setValue(HAS_JAR, (getCurrentAge(pState) + 1) == MAX_AGE && pState.getValue(HAS_BOTTLE)));
-        var particle = new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 1F);
-        for(int i = 0; i <= pRandom.nextIntBetweenInclusive(5, 10); i++) {
-            pLevel.sendParticles(
+    public void randomTick(BlockState pState, ServerWorld pLevel, BlockPos pPos, Random pRandom) {
+        pLevel.setBlockState(pPos, pState
+                .with(AGE, getCurrentAge(pState) + 1)
+                .with(HAS_JAR, (getCurrentAge(pState) + 1) == MAX_AGE && pState.get(HAS_BOTTLE)));
+        var particle = new DustParticleEffect(Vec3d.unpackRgb(11162034).toVector3f(), 1F);
+        for(int i = 0; i <= pRandom.nextBetween(5, 10); i++) {
+            pLevel.spawnParticles(
                     particle,
                     pPos.getX() + pRandom.nextDouble(),
                     pPos.getY() + pRandom.nextDouble(),
@@ -112,22 +112,22 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock {
     }
 
     private int getCurrentAge(BlockState blockState) {
-        return blockState.getValue(AGE);
+        return blockState.get(AGE);
     }
 
-    public static void displayHint(Level level, BlockPos blockPos, BlockState blockState, boolean show) {
-        level.setBlock(blockPos, blockState.setValue(SHOW_HINT, show), 3);
+    public static void displayHint(World level, BlockPos blockPos, BlockState blockState, boolean show) {
+        level.setBlockState(blockPos, blockState.with(SHOW_HINT, show), 3);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return tickerHelper(pLevel);
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity createBlockEntity(BlockPos pPos, BlockState pState) {
         return new BonmeeliaBlockEntity(pPos, pState);
     }
 }

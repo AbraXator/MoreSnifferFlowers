@@ -4,32 +4,35 @@ import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.RandomSequence;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickAction;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ClickType;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -57,72 +60,72 @@ public class DyespriaItem extends Item {
         dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFF38BAA);
     });
 
-    public DyespriaItem(Properties pProperties) {
+    public DyespriaItem(Settings pProperties) {
         super(pProperties);
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        Player player = pContext.getPlayer();
-        Level level = pContext.getLevel();
-        BlockPos blockPos = pContext.getClickedPos();
+    public ActionResult useOnBlock(ItemUsageContext pContext) {
+        PlayerEntity player = pContext.getPlayer();
+        World level = pContext.getWorld();
+        BlockPos blockPos = pContext.getBlockPos();
         BlockState blockState = level.getBlockState(blockPos);
-        ItemStack stack = pContext.getItemInHand();
+        ItemStack stack = pContext.getStack();
 
-        if (pContext.getHand() != InteractionHand.MAIN_HAND) {
-            return InteractionResult.PASS;
+        if (pContext.getHand() != Hand.MAIN_HAND) {
+            return ActionResult.PASS;
         }
 
-        if(blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-            if (!player.isShiftKeyDown()) {
+        if(blockState.isIn(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayerEntity serverPlayer && level instanceof ServerWorld serverLevel) {
+            if (!player.isSneaking()) {
                 colorOne(stack, serverLevel, blockPos, blockState);
             } else {
                 colorColumn(stack, serverLevel, blockPos);
             }
-            level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
+            level.playSound(player, blockPos, SoundEvents.ITEM_DYE_USE, SoundCategory.BLOCKS);
             ModAdvancementCritters.USED_DYESPRIA.get().trigger(serverPlayer);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ActionResult.success(level.isClient);
         }
-        return InteractionResult.PASS;
+        return ActionResult.PASS;
     }
 
-    public void colorOne(ItemStack stack, ServerLevel level, BlockPos blockPos, BlockState blockState) {
+    public void colorOne(ItemStack stack, ServerWorld level, BlockPos blockPos, BlockState blockState) {
         Dye dye = getDye(stack);
-        RandomSource randomSource = level.random;
+        Random randomSource = level.random;
 
-        if(blockState.getValue(CaulorflowerBlock.COLOR).equals(dye.color)) {
+        if(blockState.get(CaulorflowerBlock.COLOR).equals(dye.color)) {
             return;
         }
 
         if(!dye.isEmpty()) {
-            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
+            level.setBlockState(blockPos, blockState.with(CaulorflowerBlock.COLOR, dye.color).with(CaulorflowerBlock.HAS_COLOR, true), 3);
             setDye(stack, stackFromDye(new Dye(dye.color, dye.amount - 1)));
         } else {
-            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
+            level.setBlockState(blockPos, blockState.with(CaulorflowerBlock.HAS_COLOR, false), 3);
         }
 
         particles(randomSource, level, dye, blockPos);
 
-        level.sendBlockUpdated(blockPos, blockState, blockState, 1);
+        level.updateListeners(blockPos, blockState, blockState, 1);
     }
 
-    private void colorColumn(ItemStack stack, ServerLevel level, BlockPos blockPos) {
-        BlockPos posUp = blockPos.above().mutable();
-        BlockPos posDown = blockPos.mutable();
-        while (level.getBlockState(posUp).is(ModBlocks.CAULORFLOWER.get())) {
+    private void colorColumn(ItemStack stack, ServerWorld level, BlockPos blockPos) {
+        BlockPos posUp = blockPos.up().mutableCopy();
+        BlockPos posDown = blockPos.mutableCopy();
+        while (level.getBlockState(posUp).isIn(ModBlocks.CAULORFLOWER.get())) {
             colorOne(stack, level, posUp, level.getBlockState(posUp));
-            posUp = posUp.above();
+            posUp = posUp.up();
         }
 
-        while (level.getBlockState(posDown).is(ModBlocks.CAULORFLOWER.get())) {
+        while (level.getBlockState(posDown).isIn(ModBlocks.CAULORFLOWER.get())) {
             colorOne(stack, level, posDown, level.getBlockState(posDown));
-            posDown = posDown.below();
+            posDown = posDown.down();
         }
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
-        if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
+    public boolean onClicked(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickType pAction, PlayerEntity pPlayer, StackReference pAccess) {
+        if(pAction == ClickType.RIGHT && pSlot.canTakePartial(pPlayer)) {
             if(pOther.isEmpty()) {
                 pAccess.set(remove(pStack));
                 playRemoveOneSound(pPlayer);
@@ -138,10 +141,10 @@ public class DyespriaItem extends Item {
         return false;
     }
 
-    private void particles(RandomSource randomSource, ServerLevel level, Dye dye, BlockPos blockPos) {
-        for(int i = 0; i <= randomSource.nextIntBetweenInclusive(5, 10); i++) {
-            level.sendParticles(
-                    new DustParticleOptions(dye.isEmpty() ? Vec3.fromRGB24(14013909).toVector3f() : Vec3.fromRGB24(colorForDye(dye.color)).toVector3f(), 1.0F),
+    private void particles(Random randomSource, ServerWorld level, Dye dye, BlockPos blockPos) {
+        for(int i = 0; i <= randomSource.nextBetween(5, 10); i++) {
+            level.spawnParticles(
+                    new DustParticleEffect(dye.isEmpty() ? Vec3d.unpackRgb(14013909).toVector3f() : Vec3d.unpackRgb(colorForDye(dye.color)).toVector3f(), 1.0F),
                     blockPos.getX() + randomSource.nextDouble(),
                     blockPos.getY() + randomSource.nextDouble(),
                     blockPos.getZ() + randomSource.nextDouble(),
@@ -159,7 +162,7 @@ public class DyespriaItem extends Item {
                 if (!dyeCheck(dye, dyeToInsert)) {
                     //DYESPRIA HAS DIFFERENT DYE AND YOU INSERT ANOTHER 😝
                     setDye(dyespria, dyeToInsert);
-                    dyeToInsert.shrink(totalDye);
+                    dyeToInsert.decrement(totalDye);
                     return stackFromDye(dye);
                 } else if(freeSpace <= 0) {
                     //DYESPRIA HAS NO SPACE 😇
@@ -168,7 +171,7 @@ public class DyespriaItem extends Item {
 
                 //DYESPRIA HAS DYE AND YOU INSERT SAME DYE 🥳
                 setDye(dyespria, dye.color, totalDye);
-                dyeToInsert.shrink(totalDye);
+                dyeToInsert.decrement(totalDye);
                 return dyeToInsert;
             } else {
                 //DYESPRIA HAS NO DYE 🥸
@@ -182,7 +185,7 @@ public class DyespriaItem extends Item {
     private boolean dyeCheck(Dye dye, ItemStack dyeToInsert) {
         DyeItem dyeToInsertItem = ((DyeItem) dyeToInsert.getItem());
 
-        return dye.color.equals(dyeToInsertItem.getDyeColor());
+        return dye.color.equals(dyeToInsertItem.getColor());
     }
 
     private ItemStack remove(ItemStack pStack) {
@@ -196,41 +199,41 @@ public class DyespriaItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendTooltip(ItemStack pStack, @Nullable World pLevel, List<Text> pTooltipComponents, TooltipContext pIsAdvanced) {
         Dye dye = getDye(pStack);
-        Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
+        Text usage = Text.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").formatted(Formatting.GOLD);
 
         if(!dye.isEmpty()) {
-            Component name = Component
+            Text name = Text
                     .literal(dye.amount + " - " + WordUtils.capitalizeFully(dye.color
                                     .getName()
                                     .toLowerCase()
                                     .replaceAll("[^a-z_]", "")
                                     .replaceAll("_", " ")))
-                    .withStyle(Style.EMPTY
+                    .fillStyle(Style.EMPTY
                             .withColor(colorForDye(dye.color)));
 
             pTooltipComponents.add(usage);
             pTooltipComponents.add(name);
         } else {
             pTooltipComponents.add(usage);
-            pTooltipComponents.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
+            pTooltipComponents.add(Text.translatableWithFallback("tooltip.dyespria.empty", "Empty").formatted(Formatting.GRAY));
         }
     }
 
     public static void setDye(ItemStack stack, ItemStack dye) {
-        setDye(stack, ((DyeItem) dye.getItem()).getDyeColor(), dye.getCount());
+        setDye(stack, ((DyeItem) dye.getItem()).getColor(), dye.getCount());
     }
 
     public static void setDye(ItemStack stack, DyeColor dyeColor, int amount) {
-        CompoundTag tag = stack.getOrCreateTag();
+        NbtCompound tag = stack.getOrCreateNbt();
         tag.putInt("color", dyeColor.getId());
         tag.putInt("amount", amount);
-        stack.setTag(tag);
+        stack.setNbt(tag);
     }
 
     public static Dye getDye(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getOrCreateTag();
+        NbtCompound tag = itemStack.getOrCreateNbt();
         int colorId = tag.getInt("color");
         int amount = tag.getInt("amount");
 
@@ -246,11 +249,11 @@ public class DyespriaItem extends Item {
     }
 
     private void playRemoveOneSound(Entity pEntity) {
-        pEntity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
+        pEntity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F, 0.8F + pEntity.method_48926().getRandom().nextFloat() * 0.4F);
     }
 
     private void playInsertSound(Entity pEntity) {
-        pEntity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
+        pEntity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F, 0.8F + pEntity.method_48926().getRandom().nextFloat() * 0.4F);
     }
 
     public record Dye(DyeColor color, int amount) {

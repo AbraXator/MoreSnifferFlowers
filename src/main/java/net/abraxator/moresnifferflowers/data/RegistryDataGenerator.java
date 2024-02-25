@@ -4,22 +4,22 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModDamageTypes;
 import net.abraxator.moresnifferflowers.init.ModTrimMaterials;
 import net.abraxator.moresnifferflowers.init.ModTrimPatterns;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataOutput;
+import net.minecraft.registry.RegistryBuilder;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
-    public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.TRIM_MATERIAL, ModTrimMaterials::bootstrap)
-            .add(Registries.TRIM_PATTERN, ModTrimPatterns::bootstrap)
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap);
+    public static final RegistryBuilder BUILDER = new RegistryBuilder()
+            .addRegistry(RegistryKeys.TRIM_MATERIAL, ModTrimMaterials::bootstrap)
+            .addRegistry(RegistryKeys.TRIM_PATTERN, ModTrimPatterns::bootstrap)
+            .addRegistry(RegistryKeys.DAMAGE_TYPE, ModDamageTypes::bootstrap);
 
-    public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+    public RegistryDataGenerator(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> provider) {
         super(output, provider, BUILDER, Set.of("minecraft", MoreSnifferFlowers.MOD_ID));
     }
 }

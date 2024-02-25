@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.init;
 
-import net.minecraft.world.food.FoodProperties;
+import net.minecraft.item.FoodComponent;
 
 public class ModFoods {
-    public static final FoodProperties DRAGONFLY = new FoodProperties.Builder().nutrition(1).saturationMod(0.3F).fast().meat().build();
+    public static final FoodComponent DRAGONFLY = new FoodComponent.Builder().hunger(1).saturationModifier(0.3F).snack().meat().build();
 }

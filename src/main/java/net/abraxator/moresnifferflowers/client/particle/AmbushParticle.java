@@ -1,24 +1,23 @@
 package net.abraxator.moresnifferflowers.client.particle;
 
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.AnimatedParticle;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SimpleAnimatedParticle;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
-
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteProvider;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.util.math.MathHelper;
 import javax.annotation.Nullable;
 
-public class AmbushParticle extends SimpleAnimatedParticle {
+public class AmbushParticle extends AnimatedParticle {
     private final double xModifier;
     private final double zModifier;
 
-    protected AmbushParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet pSprites) {
+    protected AmbushParticle(ClientWorld pLevel, double pX, double pY, double pZ, SpriteProvider pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, -0.125F);
         this.scale(0.95F);
-        this.setLifetime(50);
-        this.setSpriteFromAge(pSprites);
+        this.setMaxAge(50);
+        this.setSpriteForAge(pSprites);
         this.xModifier = pLevel.random.nextDouble();
         this.zModifier = pLevel.random.nextDouble();
     }
@@ -26,20 +25,20 @@ public class AmbushParticle extends SimpleAnimatedParticle {
     @Override
     public void tick() {
         super.tick();
-        this.x = x + Mth.sin((float) (level.getGameTime() * 0.5)) * xModifier;
-        this.z = z + Mth.cos((float) (level.getGameTime() * 0.5)) * zModifier;
+        this.x = x + MathHelper.sin((float) (world.getTime() * 0.5)) * xModifier;
+        this.z = z + MathHelper.cos((float) (world.getTime() * 0.5)) * zModifier;
     }
 
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
-        private final SpriteSet sprites;
+    public static class Provider implements ParticleFactory<DefaultParticleType> {
+        private final SpriteProvider sprites;
 
-        public Provider(SpriteSet sprites) {
+        public Provider(SpriteProvider sprites) {
             this.sprites = sprites;
         }
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+        public Particle createParticle(DefaultParticleType pType, ClientWorld pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             return new AmbushParticle(pLevel, pX, pY, pZ, sprites);
         }
     }

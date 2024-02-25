@@ -1,57 +1,56 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blocks.blockentities.CropressorBlockEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class CropressorBlock extends Block implements ModEntityBlock {
-    public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
+    public static final EnumProperty<Part> PART = EnumProperty.of("part", Part.class);
 
-    public CropressorBlock(Properties pProperties) {
+    public CropressorBlock(Settings pProperties) {
         super(pProperties);
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof CropressorBlockEntity entity) {
+    public ActionResult onUse(BlockState pState, World pLevel, BlockPos pPos, PlayerEntity pPlayer, Hand pHand, BlockHitResult pHit) {
+        if(!pLevel.isClient && pLevel.getBlockEntity(pPos) instanceof CropressorBlockEntity entity) {
             if(entity.isHasFinished()) {
-                pPlayer.addItem(entity.getInventory().get(0));
+                pPlayer.giveItemStack(entity.getInventory().get(0));
             } else {
-                entity.addItem(pPlayer.getMainHandItem());
+                entity.addItem(pPlayer.getMainHandStack());
             }
 
-            return InteractionResult.SUCCESS;
+            return ActionResult.SUCCESS;
         }
 
-        return InteractionResult.FAIL;
+        return ActionResult.FAIL;
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return tickerHelper(pLevel);
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity createBlockEntity(BlockPos pPos, BlockState pState) {
         return new CropressorBlockEntity(pPos, pState);
     }
 
-    public static enum Part implements StringRepresentable {
+    public static enum Part implements StringIdentifiable {
         SHLONGADOODLE("shlongadoodle"),
         SCRUNCLO("scrunclo");
 
@@ -66,7 +65,7 @@ public class CropressorBlock extends Block implements ModEntityBlock {
         }
 
         @Override
-        public String getSerializedName() {
+        public String asString() {
             return name;
         }
     }
