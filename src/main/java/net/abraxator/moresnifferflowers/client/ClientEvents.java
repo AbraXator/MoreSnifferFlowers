@@ -6,8 +6,10 @@ import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.client.model.block.CropressorModel;
 import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
+import net.abraxator.moresnifferflowers.client.particle.AmbushParticle;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
+import net.abraxator.moresnifferflowers.client.particle.GiantCropParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
@@ -60,6 +62,8 @@ public class ClientEvents {
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.FLY.get(), FlyParticle.Provider::new);
         event.registerSpriteSet(ModParticles.CARROT.get(), CarrotParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.AMBUSH.get(), AmbushParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.GIANT_CROP.get(), GiantCropParticle.Provider::new);
     }
 
     @SubscribeEvent
@@ -78,11 +82,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-            var color = DyespriaItem.getColor(pStack);
-            if(pTintIndex != 0 || color.isEmpty()) {
+            DyespriaItem.Dye dye = DyespriaItem.getDye(pStack);
+            if(pTintIndex != 0 || dye.isEmpty()) {
                 return -1;
             } else {
-                return DyespriaItem.colorForDye(color.get());
+                return DyespriaItem.colorForDye(dye.color());
             }
         }, ModItems.DYESPRIA.get());
     }

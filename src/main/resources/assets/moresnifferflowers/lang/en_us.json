@@ -5,6 +5,7 @@
 	"item.moresnifferflowers.ambush_banner_pattern": "Banner Pattern",
 	"item.moresnifferflowers.ambush_banner_pattern.desc": "Ambush",
 	"item.moresnifferflowers.amber_shard": "Amber Shard",
+	"item.moresnifferflowers.aroma_armor_trim_smithing_table": "Smithing Template",
 	"item.moresnifferflowers.dragonfly": "Dragonfly",
 	"item.moresnifferflowers.dyespria": "Dyespria",
 	"item.moresnifferflowers.jar_of_bonmeel": "Jar Of Bonmeel",
@@ -15,6 +16,11 @@
 	"block.moresnifferflowers.amber": "Amber",
 	"block.moresnifferflowers.caulorflower": "Caulorflower",
 	"block.moresnifferflowers.bonmeelia": "Bonmeelia",
+	"block.moresnifferflowers.giant_potato": "Giant Potato",
+	"block.moresnifferflowers.giant_netherwart": "Giant Nether Wart",
+	"block.moresnifferflowers.giant_carrot": "Giant Carrot",
+	"block.moresnifferflowers.giant_wheat": "Giant Wheat",
+	"block.moresnifferflowers.giant_beetroot": "Giant Beetroot",
 	
 	"tooltip.dyespria.usage": "Hover+Right-click to insert dye \nRight-click Caulorflower to paint \nSneak to paint whole column\n",
 	"tooltip.dyespria.empty": "Empty",
@@ -46,7 +52,9 @@
 	"block.minecraft.banner.moresnifferflowers.ambush.purple": "Purple Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.magenta": "Magenta Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.pink": "Pink Ambush",
-	
+
+	"death.attack.moresnifferflowersveggies": "%s has eaten their veggies",
+
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers"
 
 }

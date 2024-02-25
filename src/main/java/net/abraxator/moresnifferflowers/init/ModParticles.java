@@ -13,4 +13,6 @@ public class ModParticles {
 
     public static final RegistryObject<SimpleParticleType> FLY = PARTICLES.register("fly", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> CARROT = PARTICLES.register("carrot", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> AMBUSH = PARTICLES.register("ambush", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> GIANT_CROP = PARTICLES.register("giant_crop", () -> new SimpleParticleType(false));
 }

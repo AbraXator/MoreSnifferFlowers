@@ -17,4 +17,5 @@ public class ModCreativeTabs {
             .icon(() -> new ItemStack(ModItems.DAWNBERRY.get()))
             .displayItems((parameters, output) -> ModItems.ITEMS.getEntries().forEach(itemRegistryObject -> output.accept(itemRegistryObject.get())))
             .build());
+
 }
