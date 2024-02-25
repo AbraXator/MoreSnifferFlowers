@@ -1,102 +1,57 @@
-/*buildscript {
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}*/
-
 plugins {
     id 'maven-publish'
-    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
-    id 'net.neoforged.gradle.userdev' version '7.0.80'
-    //id 'org.spongepowered.gradle' version '0.7-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
 }
 
-group = 'net.abraxator.moresnifferflowers'
-archivesBaseName = 'moresnifferflowers'
-mod_id='moresnifferflowers'
+group = project.group
+version = project.version
 
 repositories {
     mavenCentral()
     mavenLocal()
-    //maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
 }
 
 base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
-
-/*minecraft {
-
-
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-}*/
-
-/*mappings {
-    mappings channel: 'parchment', version: '1.20.2-2023.12.10-1.20.4'
-}*/
-
-runs {
-    // applies to all the run configs below
-    configureEach {
-        // Recommended logging data for a userdev environment
-        // The markers can be added/remove as needed separated by commas.
-        // "SCAN": For mods scan.
-        // "REGISTRIES": For firing of registry events.
-        // "REGISTRYDUMP": For getting the contents of all registries.
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
-
-        // Recommended logging level for the console
-        // You can set various levels here.
-        // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-        systemProperty 'forge.logging.console.level', 'debug'
-
-        modSource project.sourceSets.main
-    }
-
-    client {
-        // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
-    }
-
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
-        programArgument '--nogui'
-    }
-
-    // This run config launches GameTestServer and runs all registered gametests, then exits.
-    // By default, the server will crash when no gametests are provided.
-    // The gametest system is also enabled by default for other run configs under the /test command.
-    gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
-    }
-
-    data {
-        // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-        // workingDirectory project.file('run-data')
-
-        // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-        programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+loom {
+    splitEnvironmentSourceSets()
+    mods {
+        "moresnifferflowers" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
     }
 }
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    implementation("net.neoforged:neoforge:20.4.80-beta")
-    //compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-    //annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    //mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
-/*mixin {
-    add sourceSets.main, 'more_sniffer_flowers.mixins.refmap.json'
-    config 'more_sniffer_flowers.mixins.json'
-    debug.verbose = true
-    debug.export = true
-}*/
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    it.options.release = 17
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 final manifestAttributes = [
         'Specification-Title'   : 'moresnifferflowers',
@@ -109,9 +64,4 @@ final manifestAttributes = [
 
 jar {
     manifest.attributes(manifestAttributes)
-    //finalizedBy('reobfJar')
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
 }
