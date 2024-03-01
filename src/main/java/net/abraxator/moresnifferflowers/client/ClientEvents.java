@@ -18,7 +18,6 @@ import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
@@ -33,10 +32,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
-
-import java.nio.file.Path;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -82,7 +78,7 @@ public class ClientEvents {
             if(pTintIndex == 0) {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
-            if(pTintIndex == 1 && pState.getValue(CaulorflowerBlock.HAS_COLOR)) {
+            if(pTintIndex == 1) {
                 return DyespriaItem.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
             }
             return -1;
