@@ -83,7 +83,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
 
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
-        return getHeighestPos(pLevel, pPos, true).isPresent() && pLevel.getBlockState(getHeighestPos(pLevel, pPos, true).get().above()).is(Blocks.AIR);
+        return highestPos(pLevel, pPos, true).isPresent() && pLevel.getBlockState(highestPos(pLevel, pPos, true).get().above()).is(Blocks.AIR);
     }
 
     @Override
@@ -96,35 +96,33 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
         grow(pLevel, pPos, true);
     }
 
-    protected void grow(ServerLevel pLevel, BlockPos pos, boolean bonemeal) {
-        getHeighestPos(pLevel, pos, bonemeal).ifPresent(highestPos -> {
-            BlockPos placedBlock = highestPos.above();
+    protected void grow(ServerLevel pLevel, BlockPos originalPos, boolean bonemeal) {
+        highestPos(pLevel, originalPos, bonemeal).ifPresent(highestPos -> {
             BlockState highestBlockState = pLevel.getBlockState(highestPos);
-            BlockState currentState = pLevel.getBlockState(pos);
-            pLevel.setBlockAndUpdate(placedBlock, highestBlockState.setValue(FLIPPED, placedBlock.getY() % 2 == 0));
+            pLevel.setBlockAndUpdate(highestPos, highestBlockState.setValue(FLIPPED, highestPos.getY() % 2 == 0));
         });
     }
 
-    private Optional<BlockPos> getHeighestPos(BlockGetter level, BlockPos blockPos, boolean bonemeal) {
-        var pos = getTopConnectedBlock(level, getLowestPos(level, blockPos).get(), this, Direction.UP);
-        return pos.filter(blockPos1 -> bonemeal || !(blockPos1.below().getY() > (getLowestPos(level, blockPos).get().getY() + 5))).map(BlockPos::below);
+    private Optional<BlockPos> highestPos(BlockGetter level, BlockPos originalPos, boolean bonemeal) {
+        var lowestPos = getLowestPos(level, originalPos);
+        if(lowestPos.isEmpty()) return Optional.empty();
+        var highestPos = getLastConnectedBlock(level, lowestPos.get(), Direction.UP);
+        return highestPos.filter(blockPos1 -> bonemeal || !((lowestPos.get().getY() + 5) <= blockPos1.getY()));
     }
 
-    private Optional<BlockPos> getLowestPos(BlockGetter level, BlockPos blockPos) {
-        var posDown = getTopConnectedBlock(level, blockPos, this, Direction.DOWN).map(BlockPos::above);
-        return level.getBlockState(posDown.get()).is(this) ? posDown : Optional.empty();
+    private Optional<BlockPos> getLowestPos(BlockGetter level, BlockPos originalPos) {
+        var posDown = getLastConnectedBlock(level, originalPos, Direction.DOWN).map(BlockPos::above);
+        return posDown.filter(blockPos -> level.getBlockState(blockPos).is(this));
     }
 
-    public static Optional<BlockPos> getTopConnectedBlock(BlockGetter pGetter, BlockPos pPos, Block pBaseBlock, Direction pDirection) {
+    public Optional<BlockPos> getLastConnectedBlock(BlockGetter pGetter, BlockPos pPos, Direction pDirection) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = pPos.mutable();
-
-        BlockState blockstate;
-        do {
+        
+        while (pGetter.getBlockState(blockpos$mutableblockpos).is(this)){
             blockpos$mutableblockpos.move(pDirection);
-            blockstate = pGetter.getBlockState(blockpos$mutableblockpos);
-        } while(blockstate.is(pBaseBlock));
+        }
 
-        return pDirection == Direction.DOWN ? Optional.of(blockpos$mutableblockpos.below()) : (blockstate.is(Blocks.AIR) ? Optional.of(blockpos$mutableblockpos) : Optional.empty());
+        return pDirection == Direction.DOWN ? Optional.of(blockpos$mutableblockpos) : (pGetter.getBlockState(blockpos$mutableblockpos).is(Blocks.AIR) ? Optional.of(blockpos$mutableblockpos.below()) : Optional.empty());
     }
 
     @Override
