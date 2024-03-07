@@ -1,0 +1,128 @@
+---- Minecraft Crash Report ----
+// Surprise! Haha. Well, this is awkward.
+
+Time: 2024-03-02 20:35:14
+Description: Exception ticking world
+
+java.lang.IllegalArgumentException: Cannot set property BooleanProperty{name=flipped, clazz=class java.lang.Boolean, values=[true, false]} as it does not exist in Block{minecraft:air}
+	at net.minecraft.world.level.block.state.StateHolder.setValue(StateHolder.java:115) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading}
+	at net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock.lambda$grow$0(CaulorflowerBlock.java:103) ~[%23198!/:?] {re:classloading}
+	at java.util.Optional.ifPresent(Optional.java:178) ~[?:?] {}
+	at net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock.grow(CaulorflowerBlock.java:100) ~[%23198!/:?] {re:classloading}
+	at net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock.randomTick(CaulorflowerBlock.java:80) ~[%23198!/:?] {re:classloading}
+	at net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase.randomTick(BlockBehaviour.java:853) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,re:mixin}
+	at net.minecraft.server.level.ServerLevel.tickChunk(ServerLevel.java:515) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerChunkCache.tickChunks(ServerChunkCache.java:408) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerChunkCache.tick(ServerChunkCache.java:358) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerLevel.tick(ServerLevel.java:363) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:999) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:885) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:112) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:718) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:255) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:833) ~[?:?] {}
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at net.minecraft.world.level.block.state.StateHolder.setValue(StateHolder.java:115) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading}
+	at net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock.lambda$grow$0(CaulorflowerBlock.java:103) ~[%23198!/:?] {re:classloading}
+	at java.util.Optional.ifPresent(Optional.java:178) ~[?:?] {}
+	at net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock.grow(CaulorflowerBlock.java:100) ~[%23198!/:?] {re:classloading}
+	at net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock.randomTick(CaulorflowerBlock.java:80) ~[%23198!/:?] {re:classloading}
+	at net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase.randomTick(BlockBehaviour.java:853) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,re:mixin}
+	at net.minecraft.server.level.ServerLevel.tickChunk(ServerLevel.java:515) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerChunkCache.tickChunks(ServerChunkCache.java:408) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.level.ServerChunkCache.tick(ServerChunkCache.java:358) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+-- Affected level --
+Details:
+	All players: 1 total; [ServerPlayer['Dev'/165, l='ServerLevel[New World]', x=-54.30, y=63.00, z=361.30]]
+	Chunk stats: 2209
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (-48,63,368), Section: (at 0,15,0 in -3,3,23; chunk contains blocks -48,-64,368 to -33,319,383), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,-64,0 to -1,319,511)
+	Level time: 1706 game time, 1706 day time
+	Level name: New World
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: true
+	Level weather: Rain time: 168858 (now: false), thunder time: 18376 (now: false)
+	Known server brands: neoforge
+	Removed feature flags: 
+	Level was modded: true
+	Level storage version: 0x04ABD - Anvil
+	Loaded entity count: 165
+Stacktrace:
+	at net.minecraft.server.level.ServerLevel.fillReportDetails(ServerLevel.java:1737) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1002) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:885) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.client.server.IntegratedServer.tickServer(IntegratedServer.java:112) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:718) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:255) ~[neoforge-20.4.80-beta.jar%23193!/:?] {re:classloading,pl:accesstransformer:B}
+	at java.lang.Thread.run(Thread.java:833) ~[?:?] {}
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.20.4
+	Minecraft Version ID: 1.20.4
+	Operating System: Windows 11 (amd64) version 10.0
+	Java Version: 17.0.8.1, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 561798248 bytes (535 MiB) / 1642070016 bytes (1566 MiB) up to 4135583744 bytes (3944 MiB)
+	CPUs: 16
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 7 5800HS with Radeon Graphics        
+	Identifier: AuthenticAMD Family 25 Model 80 Stepping 0
+	Microarchitecture: Zen 3
+	Frequency (GHz): 3.19
+	Number of physical packages: 1
+	Number of physical CPUs: 8
+	Number of logical CPUs: 16
+	Graphics card #0 name: AMD Radeon(TM) Graphics
+	Graphics card #0 vendor: Advanced Micro Devices, Inc. (0x1002)
+	Graphics card #0 VRAM (MB): 512.00
+	Graphics card #0 deviceId: 0x1638
+	Graphics card #0 versionInfo: DriverVersion=31.0.21902.5
+	Memory slot #0 capacity (MB): 8192.00
+	Memory slot #0 clockSpeed (GHz): 3.20
+	Memory slot #0 type: DDR4
+	Memory slot #1 capacity (MB): 8192.00
+	Memory slot #1 clockSpeed (GHz): 3.20
+	Memory slot #1 type: DDR4
+	Virtual memory max (MB): 27039.42
+	Virtual memory used (MB): 22897.11
+	Swap memory total (MB): 11264.00
+	Swap memory used (MB): 1090.38
+	JVM Flags: 1 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump
+	Server Running: true
+	Player Count: 1 / 8; [ServerPlayer['Dev'/165, l='ServerLevel[New World]', x=-54.30, y=63.00, z=361.30]]
+	Data Packs: vanilla, mod_data, mod:moresnifferflowers (incompatible), mod:neoforge
+	Enabled Feature Flags: minecraft:vanilla
+	World Generation: Stable
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'neoforge'; Server brand changed to 'neoforge'
+	Launched Version: 20.4.80-beta
+	ModLauncher: 10.0.9+10.0.9+main.dcd20f30
+	ModLauncher launch target: forgeclientuserdev
+	ModLauncher naming: mcp
+	ModLauncher services: 
+		mixin-0.8.5.jar mixin PLUGINSERVICE 
+		loader-2.0.7.jar slf4jfixer PLUGINSERVICE 
+		loader-2.0.7.jar runtime_enum_extender PLUGINSERVICE 
+		at-modlauncher-10.0.1.jar accesstransformer PLUGINSERVICE 
+		loader-2.0.7.jar runtimedistcleaner PLUGINSERVICE 
+		modlauncher-10.0.9.jar mixin TRANSFORMATIONSERVICE 
+		modlauncher-10.0.9.jar fml TRANSFORMATIONSERVICE 
+	FML Language Providers: 
+		lowcodefml@2.0
+		minecraft@2.0
+		javafml@2.0
+	Mod List: 
+		neoforge-20.4.80-beta.jar                         |Minecraft                     |minecraft                     |1.20.4              |DONE      |Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		main                                              |More Sniffer Flowers          |moresnifferflowers            |1.3.1               |DONE      |Manifest: NOSIGNATURE
+		                                                  |NeoForge                      |neoforge                      |20.4.80-beta        |DONE      |Manifest: NOSIGNATURE
+	Crash Report UUID: 30d4a913-e677-468c-8888-76c175e2f926
+	FML: 20.4
+	NeoForge: net.neoforged:20.4.80-beta

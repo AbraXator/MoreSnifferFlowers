@@ -37,6 +37,7 @@ import org.joml.Vector3f;
 import java.util.List;
 import java.util.Map;
 
+
 public class DyespriaItem extends Item {
     public static final Map<DyeColor, Integer> COLORS = Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
         dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFD9D9D9);
@@ -95,10 +96,10 @@ public class DyespriaItem extends Item {
         }
 
         if(!dye.isEmpty()) {
-            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color).setValue(CaulorflowerBlock.HAS_COLOR, true), 3);
+            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color), 3);
             setDye(stack, stackFromDye(new Dye(dye.color, dye.amount - 1)));
         } else {
-            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.HAS_COLOR, false), 3);
+            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, DyeColor.WHITE), 3);
         }
 
         particles(randomSource, level, dye, blockPos);

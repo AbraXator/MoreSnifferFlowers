@@ -12,6 +12,13 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
+repositories {
+    maven {
+        url 'https://cursemaven.com'
+    }
+    mavenCentral()
+}
+
 group = 'net.abraxator.moresnifferflowers'
 archivesBaseName = 'moresnifferflowers'
 
@@ -37,6 +44,9 @@ minecraft {
                 more_sniffer_flowers {
                     source sourceSets.main
                 }
+                quark {
+                    source sourceSets.main
+                }
             }
         }
 
@@ -58,13 +68,20 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.0.35'
-
+    //compileOnly("org.violetmoon.quark:Quark-4.0-438.3254")
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.2"))
+    implementation("io.github.llamalad7:mixinextras-forge:0.3.2")
+    implementation ('curse.maven:Zeta-968868:5151582')
+    implementation ('curse.maven:Quark-243121:5151658')
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 mixin {
     add sourceSets.main, 'more_sniffer_flowers.mixins.refmap.json'
     config 'more_sniffer_flowers.mixins.json'
+    add sourceSets.main, 'quark.mixins.refmap.json'
+    config 'quark.mixins.json'
+    config 'quark_integrations.mixins.json'
     debug.verbose = true
     debug.export = true
 }

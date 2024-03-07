@@ -22,6 +22,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -72,7 +73,7 @@ public class ClientEvents {
             if(pTintIndex == 0) {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
-            if(pTintIndex == 1 && pState.getValue(CaulorflowerBlock.HAS_COLOR)) {
+            if(pTintIndex == 1 && pState.getValue(CaulorflowerBlock.COLOR).equals(DyeColor.WHITE)) {
                 return DyespriaItem.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
             }
             return -1;
