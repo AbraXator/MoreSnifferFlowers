@@ -18,7 +18,10 @@ mod_id='moresnifferflowers'
 repositories {
     mavenCentral()
     mavenLocal()
-    //maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
 }
 
 base {
@@ -87,8 +90,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation("net.neoforged:neoforge:20.4.80-beta")
-    //compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
-    //annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation("maven.modrinth:trimmed:1.20.4-2.1.5+neoforge")
 }
 
 /*mixin {
