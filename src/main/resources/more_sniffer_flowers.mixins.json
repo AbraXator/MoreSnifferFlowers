@@ -7,5 +7,8 @@
   "mixins": [
     "FarmBlockMixin",
     "SpriteResourceLoaderMixin"
+  ],
+   "client": [
+   "SpriteResourceLoaderMixin$PalettedPermutationsAccessor"
   ]
 }
