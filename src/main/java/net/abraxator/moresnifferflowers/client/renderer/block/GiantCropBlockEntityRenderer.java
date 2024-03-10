@@ -56,9 +56,10 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 		Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/" + path));
 		VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
 
-		if(blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && GiantCropBlock.isCenter(blockState)) {
+		if(blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(GiantCropBlock.MODEL_POSITION) != GiantCropBlock.ModelPos.NONE) {
+			var modelPos = blockState.getValue(GiantCropBlock.MODEL_POSITION);
 			pPoseStack.pushPose();
-			pPoseStack.translate(0.5, 1.5, 0.5);
+			pPoseStack.translate(modelPos.x, modelPos.y, modelPos.z);
 			pPoseStack.mulPose(new Quaternionf().rotateX((float) (Math.PI)));
 			modelPartMap.get(blockState.getBlock()).render(pPoseStack, vertexConsumer, pPackedLight, pPackedOverlay);
 			pPoseStack.popPose();

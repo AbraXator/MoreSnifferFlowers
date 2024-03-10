@@ -1,17 +1,20 @@
 package net.abraxator.moresnifferflowers;
 
 import com.mojang.logging.LogUtils;
+import net.abraxator.moresnifferflowers.events.OtherModEvents;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import org.violetmoon.quark.base.Quark;
 
 @Mod(MoreSnifferFlowers.MOD_ID)
 public class MoreSnifferFlowers {
@@ -35,6 +38,11 @@ public class MoreSnifferFlowers {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
+
+        if(ModList.get().isLoaded("quark")) {
+            MinecraftForge.EVENT_BUS.addListener(OtherModEvents::onSimpleHarvest);
+        }
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 

@@ -91,20 +91,13 @@ public class DyespriaItem extends Item {
         Dye dye = getDye(stack);
         RandomSource randomSource = level.random;
 
-        if(blockState.getValue(CaulorflowerBlock.COLOR).equals(dye.color)) {
+        if(blockState.getValue(CaulorflowerBlock.COLOR).equals(dye.color) || dye.isEmpty()) {
             return;
         }
 
-        if(!dye.isEmpty()) {
-            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color), 3);
-            setDye(stack, stackFromDye(new Dye(dye.color, dye.amount - 1)));
-        } else {
-            level.setBlock(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, DyeColor.WHITE), 3);
-        }
-
+        level.setBlockAndUpdate(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color));
+        setDye(stack, stackFromDye(new Dye(dye.color, dye.amount - 1)));
         particles(randomSource, level, dye, blockPos);
-
-        level.sendBlockUpdated(blockPos, blockState, blockState, 1);
     }
 
     private void colorColumn(ItemStack stack, ServerLevel level, BlockPos blockPos) {
@@ -220,7 +213,9 @@ public class DyespriaItem extends Item {
     }
 
     public static void setDye(ItemStack stack, ItemStack dye) {
-        setDye(stack, ((DyeItem) dye.getItem()).getDyeColor(), dye.getCount());
+        var count = dye.getItem() instanceof DyeItem ? dye.getCount() : 0;
+        var dyeToInset = dye.getItem() instanceof DyeItem ? ((DyeItem) dye.getItem()).getDyeColor() : DyeColor.WHITE;
+        setDye(stack, dyeToInset, count);
     }
 
     public static void setDye(ItemStack stack, DyeColor dyeColor, int amount) {

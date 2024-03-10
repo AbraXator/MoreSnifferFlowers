@@ -5,6 +5,7 @@
   "refmap": "more_sniffer_flowers.mixins.refmap.json",
   "compatibilityLevel": "JAVA_11",
   "mixins": [
-    "FarmBlockMixin"
+    "FarmBlockMixin",
+    "SpriteResourceLoaderMixin"
   ]
 }

@@ -1,2 +1,0 @@
-/gamerule randomTickSpeed 999
-/gamerule randomTickSpeed 9999

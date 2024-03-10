@@ -94,7 +94,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
     }
 
-    private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem) {
+    /*private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem) {
         return createGiantCropBuilder(block, pItem, Items.AIR);
     }
 
@@ -107,7 +107,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                         .hasProperty(GiantCropBlock.IS_CENTER, true))))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
                         .add(this.applyExplosionDecay(specialDrop, LootItem.lootTableItem(specialDrop))));
-    }
+    }*/
 
     @Override
     protected Iterable<Block> getKnownBlocks() {

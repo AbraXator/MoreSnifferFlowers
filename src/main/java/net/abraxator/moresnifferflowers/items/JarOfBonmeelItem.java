@@ -3,11 +3,8 @@ package net.abraxator.moresnifferflowers.items;
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModParticles;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
@@ -15,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -82,17 +78,15 @@ public class JarOfBonmeelItem extends Item {
     }
 
     private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos, Player player) {
-        int i = 0;
-        List<BlockPos> list = new ArrayList<>();
-        blockPosList.forEach(list::add);
-
         blockPosList.forEach(pos -> {
             pos = pos.immutable();
             level.destroyBlock(pos, false);
-            level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.IS_CENTER, pos.equals(clickedPos)));
+            level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, evaulateModelPos(pos, clickedPos)));
+
             for(int j = 0; j <= 3; j++) {
                 ((ServerLevel) level).sendParticles(new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 1.0F), clickedPos.getX() + level.random.nextDouble(), clickedPos.above().getY() + level.random.nextDouble(), clickedPos.getZ() + level.random.nextDouble()   , 1, 0, 0, 0, 0.3D);
             }
+
             if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
                 entity.pos1 = clickedPos.mutable().move(1, 2, 1);
                 entity.pos2 = clickedPos.mutable().move(-1, 0, -1);
@@ -101,6 +95,31 @@ public class JarOfBonmeelItem extends Item {
 
         player.getMainHandItem().shrink(1);
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    private GiantCropBlock.ModelPos evaulateModelPos(BlockPos pos, BlockPos posToCompare) {
+        var value = GiantCropBlock.ModelPos.NONE;
+
+        if(pos.equals(posToCompare.mutable().move(1, 1, 0))) {
+            value = GiantCropBlock.ModelPos.X;
+        }
+        if(pos.equals(posToCompare.mutable().move(-1, 1, 0))) {
+            value = GiantCropBlock.ModelPos.IX;
+        }
+        if(pos.equals(posToCompare.mutable().move(0, 1, 1))) {
+            value = GiantCropBlock.ModelPos.Z;
+        }
+        if(pos.equals(posToCompare.mutable().move(0, 1, -1))) {
+            value = GiantCropBlock.ModelPos.IZ;
+        }
+        if(pos.equals(posToCompare.mutable().move(0, 2, 0))) {
+            value = GiantCropBlock.ModelPos.Y;
+        }
+        if(pos.equals(posToCompare.mutable().move(0, 0, 0))) {
+            value = GiantCropBlock.ModelPos.IY;
+        }
+
+        return value;
     }
 
     @Override

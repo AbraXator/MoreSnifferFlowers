@@ -73,7 +73,7 @@ public class ClientEvents {
             if(pTintIndex == 0) {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
-            if(pTintIndex == 1 && pState.getValue(CaulorflowerBlock.COLOR).equals(DyeColor.WHITE)) {
+            if(pTintIndex == 1) {
                 return DyespriaItem.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
             }
             return -1;
