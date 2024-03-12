@@ -1,5 +1,5 @@
 {
-  "parent": "moresnifferflowers:root.json",
+  "parent": "moresnifferflowers:root",
   "criteria": {
     "used_dyespria": {
       "trigger": "moresnifferflowers:used_dyespria"

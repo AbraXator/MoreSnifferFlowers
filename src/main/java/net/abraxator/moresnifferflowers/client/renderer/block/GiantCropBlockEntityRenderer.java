@@ -33,19 +33,19 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 
 	public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
 		ModelPart carrotModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_CARROT);
-		this.carrot = carrotModelPart.getChild("root.json");
+		this.carrot = carrotModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_CARROT.get(), this.carrot);
 		ModelPart potatoModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_POTATO);
-		this.potato = potatoModelPart.getChild("root.json");
+		this.potato = potatoModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_POTATO.get(), this.potato);
 		ModelPart netherwartModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
-		this.netherwart = netherwartModelPart.getChild("root.json");
+		this.netherwart = netherwartModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_NETHERWART.get(), this.netherwart);
 		ModelPart beetrootModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_BEETROOT);
-		this.beetroot = beetrootModelPart.getChild("root.json");
+		this.beetroot = beetrootModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_BEETROOT.get(), this.beetroot);
 		ModelPart wheatModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_WHEAT);
-		this.wheat = wheatModelPart.getChild("root.json");
+		this.wheat = wheatModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_WHEAT.get(), this.wheat);
 	}
 

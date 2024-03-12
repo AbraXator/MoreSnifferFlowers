@@ -8,7 +8,7 @@ public class GiantCropModels {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition root = partdefinition.addOrReplaceChild("root.json", CubeListBuilder.create().texOffs(0, 0).addBox(-19.0F, -7.0F, -19.0F, 38.0F, 8.0F, 38.0F, new CubeDeformation(0.0F)).texOffs(0, 46).addBox(-15.0F, -30.0F, -15.0F, 30.0F, 24.0F, 30.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0).addBox(-19.0F, -7.0F, -19.0F, 38.0F, 8.0F, 38.0F, new CubeDeformation(0.0F)).texOffs(0, 46).addBox(-15.0F, -30.0F, -15.0F, 30.0F, 24.0F, 30.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
         PartDefinition rocks = root.addOrReplaceChild("rocks", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
         PartDefinition cube_r1 = rocks.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(10, 10).addBox(-2.0F, -2.0F, 1.0F, 4.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-14.6F, -1.0F, -18.7F, -2.7314F, -0.2112F, -2.9601F));
         PartDefinition cube_r2 = rocks.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 6).addBox(-8.0F, -2.0F, -3.0F, 4.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-21.0F, -2.0F, 8.0F, 0.6562F, -1.4259F, -0.3124F));
@@ -27,7 +27,7 @@ public class GiantCropModels {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition root = partdefinition.addOrReplaceChild("root.json", CubeListBuilder.create().texOffs(0, 0).addBox(-15.0F, -34.0F, -15.0F, 30.0F, 35.0F, 30.0F, new CubeDeformation(0.0F))
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0).addBox(-15.0F, -34.0F, -15.0F, 30.0F, 35.0F, 30.0F, new CubeDeformation(0.0F))
                 .texOffs(62, 65).addBox(-13.0F, -38.0F, -13.0F, 26.0F, 4.0F, 26.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
         PartDefinition cube_r1 = root.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 89).addBox(-2.5F, -3.5F, -1.5F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-7.3861F, -28.1887F, 17.0546F, -2.0591F, -0.9234F, 1.5556F));
         PartDefinition cube_r2 = root.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 89).addBox(-1.5F, -2.5F, -1.5F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-17.6225F, -7.4366F, -7.7957F, 0.032F, 0.0349F, -0.7966F));
@@ -52,7 +52,7 @@ public class GiantCropModels {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition root = partdefinition.addOrReplaceChild("root.json", CubeListBuilder.create().texOffs(0, 16).addBox(14.0F, -7.0F, -20.0F, 6.0F, 7.0F, 6.0F, new CubeDeformation(0.0F))
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 16).addBox(14.0F, -7.0F, -20.0F, 6.0F, 7.0F, 6.0F, new CubeDeformation(0.0F))
                 .texOffs(80, 90).addBox(11.0F, -19.0F, -23.0F, 12.0F, 12.0F, 12.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 0).addBox(-17.0F, -44.0F, -17.0F, 34.0F, 20.0F, 34.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 86).addBox(-10.0F, -20.0F, -10.0F, 20.0F, 20.0F, 20.0F, new CubeDeformation(0.0F))
@@ -72,7 +72,7 @@ public class GiantCropModels {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition root = partdefinition.addOrReplaceChild("root.json", CubeListBuilder.create().texOffs(0, 0).addBox(-14.0F, -25.0F, -14.0F, 28.0F, 21.0F, 28.0F, new CubeDeformation(0.0F))
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0).addBox(-14.0F, -25.0F, -14.0F, 28.0F, 21.0F, 28.0F, new CubeDeformation(0.0F))
                 .texOffs(80, 74).addBox(-12.0F, -28.0F, -12.0F, 24.0F, 3.0F, 24.0F, new CubeDeformation(0.0F))
                 .texOffs(84, 0).addBox(-11.0F, -4.0F, -11.0F, 22.0F, 5.0F, 22.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
         PartDefinition cube_r1 = root.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 75).addBox(-25.0F, -22.0F, -0.75F, 52.0F, 23.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, -29.0F, 0.0F, 0.0F, -0.7854F, 0.0F));
@@ -121,7 +121,7 @@ public class GiantCropModels {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition root = partdefinition.addOrReplaceChild("root.json", CubeListBuilder.create().texOffs(0, 149).addBox(-10.0F, -47.0F, -10.0F, 20.0F, 48.0F, 20.0F, new CubeDeformation(0.0F))
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 149).addBox(-10.0F, -47.0F, -10.0F, 20.0F, 48.0F, 20.0F, new CubeDeformation(0.0F))
                 .texOffs(188, 51).addBox(-23.0F, -50.0F, -11.0F, 46.0F, 51.0F, 0.0F, new CubeDeformation(0.0F))
                 .texOffs(188, 0).addBox(-23.0F, -50.0F, 11.0F, 46.0F, 51.0F, 0.0F, new CubeDeformation(0.0F))
                 .texOffs(172, 149).addBox(-23.0F, -50.0F, 17.0F, 46.0F, 51.0F, 0.0F, new CubeDeformation(0.0F))

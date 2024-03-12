@@ -8,7 +8,7 @@ public class CropressorModel {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition root = partdefinition.addOrReplaceChild("root.json", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
 
         PartDefinition nejsemvidet = root.addOrReplaceChild("nejsemvidet", CubeListBuilder.create().texOffs(0, 44).addBox(-3.0F, -10.0F, 2.0F, 12.0F, 8.0F, 0.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 24).addBox(9.0F, -10.0F, 2.0F, 0.0F, 8.0F, 12.0F, new CubeDeformation(0.0F))

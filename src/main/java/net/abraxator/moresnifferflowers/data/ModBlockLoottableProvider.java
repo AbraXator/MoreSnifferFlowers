@@ -54,7 +54,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .when(HAS_NO_SILK_TOUCH)
-                        //.add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))
+                        .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))
                         .add(LootItem.lootTableItem(ModItems.AMBER_SHARD.get()))
                         .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()))
                         .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get()))

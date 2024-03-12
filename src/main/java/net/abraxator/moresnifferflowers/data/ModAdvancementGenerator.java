@@ -36,7 +36,7 @@ public class ModAdvancementGenerator implements AdvancementProvider.AdvancementG
                         true,
                         false)
                 .addCriterion("has_advancement", ModAdvancementCritters.getSnifferAdvancement())
-                .save(saver, MoreSnifferFlowers.loc("root.json"), existingFileHelper);
+                .save(saver, MoreSnifferFlowers.loc("root"), existingFileHelper);
 
         Advancement.Builder.advancement()
                 .parent(root)
