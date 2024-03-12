@@ -27,10 +27,12 @@
 	"tooltip.jar_of_bonmeel.usage": "Can be applied to a 3x3 grid of the following crops: carrot, potato, wheat, beetroot and nether wart",
 	"tooltip.amber_shard.usage": "Can be used as an armor trim material",
 
-	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",
-	"advancements.more_sniffer_flowers.dyespria.desc": "Bring color to Caulorflower using Dyespria",
 	"advancements.more_sniffer_flowers.any_seed": "Interestingly smelling expansion",
 	"advancements.more_sniffer_flowers.any_seed.desc": "Discover More Sniffer Flowers",
+	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",
+	"advancements.more_sniffer_flowers.dyespria.desc": "Bring color to Caulorflower using Dyespria",
+	"advancements.more_sniffer_flowers.bonmeel": "Let It Grow!",
+	"advancements.more_sniffer_flowers.bonmeel.desc": "Enlarge your crops using the magic of Bonmeel",
 
 	"trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
 

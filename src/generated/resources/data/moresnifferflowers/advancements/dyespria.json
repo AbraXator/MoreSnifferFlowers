@@ -1,0 +1,25 @@
+{
+  "parent": "moresnifferflowers:root.json",
+  "criteria": {
+    "used_dyespria": {
+      "trigger": "moresnifferflowers:used_dyespria"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.more_sniffer_flowers.dyespria.desc"
+    },
+    "icon": {
+      "item": "moresnifferflowers:dyespria"
+    },
+    "title": {
+      "translate": "advancements.more_sniffer_flowers.dyespria"
+    }
+  },
+  "requirements": [
+    [
+      "used_dyespria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

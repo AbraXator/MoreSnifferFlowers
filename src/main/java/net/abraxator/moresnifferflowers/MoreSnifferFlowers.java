@@ -9,6 +9,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 
 @Mod(MoreSnifferFlowers.MOD_ID)
@@ -19,7 +20,7 @@ public class MoreSnifferFlowers {
     public MoreSnifferFlowers(IEventBus modEventBus, Dist dist) {
         if(dist.isClient()) modEventBus.addListener(ClientEvents::clientSetup);
         modEventBus.addListener(this::commonSetup);
-
+        modEventBus.addListener((RegisterEvent e) -> ModAdvancementCritters.init());
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -28,7 +29,6 @@ public class MoreSnifferFlowers {
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
         ModParticles.PARTICLES.register(modEventBus);
-        ModAdvancementCritters.TRIGGERS.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
     }
@@ -44,4 +44,9 @@ public class MoreSnifferFlowers {
     public static ResourceLocation loc(String path) {
         return new ResourceLocation(MOD_ID, path);
     }
+
+    public static String sLoc(String path) {
+        return loc(path).toString();
+    }
+
 }

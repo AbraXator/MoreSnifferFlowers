@@ -33,19 +33,19 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 
 	public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
 		ModelPart carrotModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_CARROT);
-		this.carrot = carrotModelPart.getChild("root");
+		this.carrot = carrotModelPart.getChild("root.json");
 		this.modelPartMap.put(ModBlocks.GIANT_CARROT.get(), this.carrot);
 		ModelPart potatoModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_POTATO);
-		this.potato = potatoModelPart.getChild("root");
+		this.potato = potatoModelPart.getChild("root.json");
 		this.modelPartMap.put(ModBlocks.GIANT_POTATO.get(), this.potato);
 		ModelPart netherwartModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
-		this.netherwart = netherwartModelPart.getChild("root");
+		this.netherwart = netherwartModelPart.getChild("root.json");
 		this.modelPartMap.put(ModBlocks.GIANT_NETHERWART.get(), this.netherwart);
 		ModelPart beetrootModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_BEETROOT);
-		this.beetroot = beetrootModelPart.getChild("root");
+		this.beetroot = beetrootModelPart.getChild("root.json");
 		this.modelPartMap.put(ModBlocks.GIANT_BEETROOT.get(), this.beetroot);
 		ModelPart wheatModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_WHEAT);
-		this.wheat = wheatModelPart.getChild("root");
+		this.wheat = wheatModelPart.getChild("root.json");
 		this.modelPartMap.put(ModBlocks.GIANT_WHEAT.get(), this.wheat);
 	}
 
@@ -56,9 +56,10 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 		Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/" + path));
 		VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
 
-		if(blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && GiantCropBlock.isCenter(blockState)) {
+		if(blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(GiantCropBlock.MODEL_POSITION) != GiantCropBlock.ModelPos.NONE) {
+			var modelPos = blockState.getValue(GiantCropBlock.MODEL_POSITION);
 			pPoseStack.pushPose();
-			pPoseStack.translate(0.5, 1.5, 0.5);
+			pPoseStack.translate(modelPos.x, modelPos.y, modelPos.z);
 			pPoseStack.mulPose(new Quaternionf().rotateX((float) (Math.PI)));
 			modelPartMap.get(blockState.getBlock()).render(pPoseStack, vertexConsumer, pPackedLight, pPackedOverlay);
 			pPoseStack.popPose();
