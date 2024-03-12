@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
+import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
@@ -9,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -70,14 +72,14 @@ public class JarOfBonmeelItem extends Item {
             return InteractionResult.PASS;
         }
 
-        if (flag && !level.isClientSide()) {
-            return placeLogic(blockPosList, level, giantVersion, clickedPos, player);
+        if (flag && !level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            return placeLogic(blockPosList, level, giantVersion, clickedPos, serverPlayer);
         }
 
         return InteractionResult.PASS;
     }
 
-    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos, Player player) {
+    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos, ServerPlayer serverPlayer) {
         blockPosList.forEach(pos -> {
             pos = pos.immutable();
             level.destroyBlock(pos, false);
@@ -93,7 +95,8 @@ public class JarOfBonmeelItem extends Item {
             }
         });
 
-        player.getMainHandItem().shrink(1);
+        serverPlayer.getMainHandItem().shrink(1);
+        ModAdvancementCritters.USED_BONMEEL.trigger(serverPlayer);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

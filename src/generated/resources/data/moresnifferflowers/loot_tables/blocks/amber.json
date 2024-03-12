@@ -49,10 +49,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:ambush_banner_pattern"
-        },
-        {
-          "type": "minecraft:item",
           "name": "moresnifferflowers:amber_shard"
         },
         {

@@ -1,13 +1,13 @@
 {
   "criteria": {
-    "hasAdvancement": {
+    "has_advancement": {
       "conditions": {},
       "trigger": "moresnifferflowers:earn_sniffer_advancement"
     }
   },
   "display": {
     "announce_to_chat": true,
-    "background": "minecraft:textures/block/farmland.png",
+    "background": "moresnifferflowers:textures/misc/grass_block.misc",
     "description": {
       "translate": "advancements.more_sniffer_flowers.any_seed.desc"
     },
@@ -23,7 +23,7 @@
   },
   "requirements": [
     [
-      "hasAdvancement"
+      "has_advancement"
     ]
   ],
   "sends_telemetry_event": true

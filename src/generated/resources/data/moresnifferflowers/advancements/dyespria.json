@@ -9,11 +9,7 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.more_sniffer_flowers.dyespria.desc",
-      "with": [
-        "block.moresnifferflowers.caulorflower",
-        "item.moresnifferflowers.dyespria"
-      ]
+      "translate": "advancements.more_sniffer_flowers.dyespria.desc"
     },
     "frame": "task",
     "hidden": false,

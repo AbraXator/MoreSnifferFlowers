@@ -1,7 +1,9 @@
-// 1.20.1	2023-09-10T14:56:36.9459647	Recipes
+// 1.20.1	2024-03-12T13:08:36.027985	Recipes
+7201c4a50414327704378a6eada626b68059cf5a data/moresnifferflowers/advancements/recipes/misc/ambush_banner_pattern.json
 9fafe9062b464e27ae5125273cba17027dab7fa5 data/moresnifferflowers/advancements/recipes/misc/aroma_armor_trim_smithing_table.json
 cadb20d0c333fb304a758939754586df613ddf55 data/moresnifferflowers/advancements/recipes/misc/aroma_armor_trim_smithing_table_smithing_trim.json
 a1d22ba5488bb219f5def7e118b1df2558f770e9 data/moresnifferflowers/advancements/recipes/misc/dyespria.json
+0dc1db3838f006a3e56f065b1ec597c0945a1106 data/moresnifferflowers/recipes/ambush_banner_pattern.json
 ffb6c722428a02ab77644ac990e856e0d3bf9a91 data/moresnifferflowers/recipes/aroma_armor_trim_smithing_table.json
 71c7a7ec595b68ea9de4c6a6ee7b6b058122a7b2 data/moresnifferflowers/recipes/aroma_armor_trim_smithing_table_smithing_trim.json
 1d133e22ed81937483b3ea3c6ba8709526a08e58 data/moresnifferflowers/recipes/dyespria.json
