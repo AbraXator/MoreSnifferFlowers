@@ -17,6 +17,8 @@ repositories {
         url 'https://cursemaven.com'
     }
     mavenCentral()
+    maven { url "https://maven.blamejared.com/" }
+    maven { url "https://modmaven.dev" }
 }
 
 group = 'net.abraxator.moresnifferflowers'
@@ -64,9 +66,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.0.35'
-    compileOnly ('curse.maven:Quark-243121:5151658')
+    minecraft("net.minecraftforge:forge:${mc_version}-${forge_version}")
+    compileOnly("curse.maven:Quark-${quark_version}")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}"))
 }
 
 mixin {

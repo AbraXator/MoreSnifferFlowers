@@ -35,8 +35,9 @@ public class ModItems {
     public static final RegistryObject<Item> BONMEELIA_SEEDS = ITEMS.register("bonmeelia_seeds", () -> new ItemNameBlockItem(ModBlocks.BONMEELIA.get(), new Item.Properties()));
     public static final RegistryObject<Item> JAR_OF_BONMEEL = ITEMS.register("jar_of_bonmeel", () -> new JarOfBonmeelItem(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSED_POTATO = ITEMS.register("cropressed_potato", () -> new Item(new Item.Properties()));
-//    public static final RegistryObject<Item> CROPRESSED_CARROT = ITEMS.register("cropressed_carrot", () -> new Item(new Item.Properties()));
-//    public static final RegistryObject<Item> CROPRESSED_BEETROOT = ITEMS.register("cropressed_beetroot", () -> new Item(new Item.Properties()));
-//    public static final RegistryObject<Item> CROPRESSED_NETHERWART = ITEMS.register("cropressed_nether_wart", () -> new Item(new Item.Properties()));
-//    public static final RegistryObject<Item> CROPRESSED_WHEAT = ITEMS.register("cropressed_wheat", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSED_CARROT = ITEMS.register("cropressed_carrot", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSED_BEETROOT = ITEMS.register("cropressed_beetroot", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSED_NETHERWART = ITEMS.register("cropressed_nether_wart", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSED_WHEAT = ITEMS.register("cropressed_wheat", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSOR = ITEMS.register("cropressor", () -> new ItemNameBlockItem(ModBlocks.CROPRESSOR_OUT.get(), new Item.Properties()));
 }

@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.events;
+package net.abraxator.moresnifferflowers.compat.quark;
 
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;

@@ -23,7 +23,11 @@ public class ModCustomRecipeProvider extends RecipeProvider {
 
     public static void createRecipes(Consumer<FinishedRecipe> pWriter) {
         ModCustomRecipeProvider.output = pWriter;
+        createCropressing(ModItems.CROPRESSED_CARROT.get(), Items.CARROT);
         createCropressing(ModItems.CROPRESSED_POTATO.get(), Items.POTATO);
+        createCropressing(ModItems.CROPRESSED_NETHERWART.get(), Items.NETHER_WART);
+        createCropressing(ModItems.CROPRESSED_BEETROOT.get(), Items.BEETROOT);
+        createCropressing(ModItems.CROPRESSED_WHEAT.get(), Items.WHEAT);
     }
 
     @Override
