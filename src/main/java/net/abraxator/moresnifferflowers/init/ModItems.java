@@ -39,4 +39,10 @@ public class ModItems {
 //    public static final RegistryObject<Item> CROPRESSED_BEETROOT = ITEMS.register("cropressed_beetroot", () -> new Item(new Item.Properties()));
 //    public static final RegistryObject<Item> CROPRESSED_NETHERWART = ITEMS.register("cropressed_nether_wart", () -> new Item(new Item.Properties()));
 //    public static final RegistryObject<Item> CROPRESSED_WHEAT = ITEMS.register("cropressed_wheat", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MECHANICAL_DOODAD_A = ITEMS.register("mechanical_doodad_a", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MECHANICAL_DOODAD_B = ITEMS.register("mechanical_doodad_b", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MECHANICAL_DOODAD_C = ITEMS.register("mechanical_doodad_c", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MECHANICAL_DOODAD_D = ITEMS.register("mechanical_doodad_d", () -> new Item(new Item.Properties()));
+
+
 }
