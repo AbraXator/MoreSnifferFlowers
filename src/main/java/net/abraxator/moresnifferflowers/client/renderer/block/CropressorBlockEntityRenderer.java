@@ -3,10 +3,8 @@ package net.abraxator.moresnifferflowers.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.blocks.CropressorBlock;
 import net.abraxator.moresnifferflowers.blocks.blockentities.CropressorBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -38,11 +36,11 @@ public class CropressorBlockEntityRenderer implements BlockEntityRenderer<Cropre
         BlockState blockState = pBlockEntity.getBlockState();
         VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
 
-        if(blockState.is(ModBlocks.CROPRESSOR.get()) && blockState.getValue(CropressorBlock.PART) == CropressorBlock.Part.SHLONGADOODLE) {
+        /*if(blockState.is(ModBlocks.CROPRESSOR.get()) && blockState.getValue(CropressorBlock.PART) == CropressorBlock.Part.CENTER) {
             pPoseStack.pushPose();
             pPoseStack.translate(0.5, 1.5, 0.5);
             root.render(pPoseStack, vertexConsumer, pPackedLight, pPackedOverlay);
             pPoseStack.popPose();
-        }
+        }*/
     }
 }

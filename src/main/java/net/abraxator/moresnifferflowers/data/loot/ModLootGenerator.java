@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.data;
+package net.abraxator.moresnifferflowers.data.loot;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;

@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.data;
+package net.abraxator.moresnifferflowers.data.advancement;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

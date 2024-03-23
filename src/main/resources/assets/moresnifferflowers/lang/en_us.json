@@ -24,7 +24,7 @@
 	
 	"tooltip.dyespria.usage": "Hover+Right-click to insert dye \nRight-click Caulorflower to paint \nSneak to paint whole column\n",
 	"tooltip.dyespria.empty": "Empty",
-	"tooltip.jar_of_bonmeel.usage": "Can be applied to a 3x3 grid of the following crops: carrot, potato, wheat, beetroot and nether wart",
+	"tooltip.jar_of_bonmeel.usage": "Can be applied to a fully grown 3x3 grid of the following crops: carrot, potato, wheat, beetroot and nether wart",
 	"tooltip.amber_shard.usage": "Can be used as an armor trim material",
 
 	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",

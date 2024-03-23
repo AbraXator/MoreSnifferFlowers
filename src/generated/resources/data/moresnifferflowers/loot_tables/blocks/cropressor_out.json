@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:air"
+          "name": "moresnifferflowers:cropressor_out"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "moresnifferflowers:blocks/cropressor"
+  "random_sequence": "moresnifferflowers:blocks/cropressor_out"
 }

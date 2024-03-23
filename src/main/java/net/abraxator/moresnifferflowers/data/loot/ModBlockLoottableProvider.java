@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.data;
+package net.abraxator.moresnifferflowers.data.loot;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
@@ -90,7 +90,8 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .and(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BONMEELIA.get())
                                 .setProperties((StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true)))))));
-        dropSelf(ModBlocks.CROPRESSOR.get());
+        dropSelf(ModBlocks.CROPRESSOR_OUT.get());
+        dropSelf(ModBlocks.CROPRESSOR_CENTER.get());
         dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
     }
 

@@ -1,6 +1,13 @@
 package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.data.advancement.ModAdvancementProvider;
+import net.abraxator.moresnifferflowers.data.loot.ModLootModifierProvider;
+import net.abraxator.moresnifferflowers.data.loot.ModLoottableProvider;
+import net.abraxator.moresnifferflowers.data.recipe.ModRecipesProvider;
+import net.abraxator.moresnifferflowers.data.tag.ModBannerPatternTagsProvider;
+import net.abraxator.moresnifferflowers.data.tag.ModBlockTagsProvider;
+import net.abraxator.moresnifferflowers.data.tag.ModItemTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -21,14 +28,23 @@ public class ModDatagen{
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> completableFuture = event.getLookupProvider();
-        TagsProvider<Block> blockTagsProvider = new ModBlockTagsProvider(packOutput, completableFuture, existingFileHelper);
-        generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, completableFuture, blockTagsProvider.contentsGetter(), existingFileHelper));
+
+        //DATAPACK REGISTRIES
+        generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, completableFuture));
+
+        //LOOT
         generator.addProvider(event.includeServer(), new ModLoottableProvider(packOutput));
         generator.addProvider(event.includeClient(), new ModLootModifierProvider(packOutput));
+
+        //TAGS
+        TagsProvider<Block> blockTagsProvider = generator.addProvider(event.includeServer(), new ModBlockTagsProvider(packOutput, completableFuture, existingFileHelper));
+        generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, completableFuture, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, completableFuture, existingFileHelper));
-        generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, completableFuture));
-        generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput));
+
+        //ADVANCEMENTS
         generator.addProvider(event.includeServer(), new ModAdvancementProvider(packOutput, completableFuture, existingFileHelper));
+
+        //RECIPES
+        generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput));
     }
 }

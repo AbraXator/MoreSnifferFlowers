@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.data;
+package net.abraxator.moresnifferflowers.data.advancement;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;

@@ -1,0 +1,65 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "translucent",
+	"texture_size": [128, 128],
+	"textures": {
+		"0": "moresnifferflowers:block/cropressor"
+	},
+	"elements": [
+		{
+			"name": "prvniblocksjinimmenem",
+			"from": [7, 10, 6],
+			"to": [11, 14, 10],
+			"faces": {
+				"north": {"uv": [3.5, 6, 4, 6.5], "texture": "#0"},
+				"east": {"uv": [3, 6, 3.5, 6.5], "texture": "#0"},
+				"south": {"uv": [4.5, 6, 5, 6.5], "texture": "#0"},
+				"west": {"uv": [4, 6, 4.5, 6.5], "texture": "#0"},
+				"up": {"uv": [4, 6, 3.5, 5.5], "texture": "#0"},
+				"down": {"uv": [4.5, 5.5, 4, 6], "texture": "#0"}
+			}
+		},
+		{
+			"name": "prvniblocksjinimmenem",
+			"from": [6, 14, 5],
+			"to": [12, 15, 11],
+			"faces": {
+				"north": {"uv": [6, 5.5, 6.75, 5.625], "texture": "#0"},
+				"east": {"uv": [5.25, 5.5, 6, 5.625], "texture": "#0"},
+				"south": {"uv": [7.5, 5.5, 8.25, 5.625], "texture": "#0"},
+				"west": {"uv": [6.75, 5.5, 7.5, 5.625], "texture": "#0"},
+				"up": {"uv": [6.75, 5.5, 6, 4.75], "texture": "#0"},
+				"down": {"uv": [7.5, 4.75, 6.75, 5.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "prvniblocksjinimmenem",
+			"from": [0, 0, 2],
+			"to": [15, 10, 14],
+			"faces": {
+				"north": {"uv": [1.5, 3.25, 3, 4.5], "texture": "#0"},
+				"east": {"uv": [0, 3.25, 1.5, 4.5], "texture": "#0"},
+				"south": {"uv": [4.5, 3.25, 6, 4.5], "texture": "#0"},
+				"west": {"uv": [3, 3.25, 4.5, 4.5], "texture": "#0"},
+				"up": {"uv": [3, 3.25, 1.5, 1.75], "texture": "#0"},
+				"down": {"uv": [4.5, 1.75, 3, 3.25], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "nejsemvidet",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": []
+		},
+		{
+			"name": "bone",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0, 1, 2]
+		}
+	]
+}

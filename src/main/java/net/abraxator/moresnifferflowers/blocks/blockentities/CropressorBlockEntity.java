@@ -2,21 +2,25 @@ package net.abraxator.moresnifferflowers.blocks.blockentities;
 
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
-import net.abraxator.moresnifferflowers.recipes.CropressorRecipe;
+import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class CropressorBlockEntity extends ModBlockEntity {
-    private NonNullList<ItemStack> inv = NonNullList.withSize(9, ItemStack.EMPTY);
+    public NonNullList<ItemStack> inv = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
     private boolean hasFinished;
+    private static final int INV_SIZE = 16;
 
     public CropressorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.CROPRESSOR.get(), pPos, pBlockState);
@@ -24,7 +28,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
 
     @Override
     public void tick() {
-        Container container = new SimpleContainer(9);
+        Container container = new SimpleContainer(INV_SIZE);
         int i = 0;
         for(ItemStack itemStack : inv) {
             if(!itemStack.isEmpty()) {
@@ -32,31 +36,36 @@ public class CropressorBlockEntity extends ModBlockEntity {
                 i++;
             }
         }
-        Optional<CropressorRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSOR.get(), container, level);
-        var list = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.CROPRESSOR.get());
-        System.out.println(list);
+
+        Optional<CropressingRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSING.get(), container, level);
+        var list = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.CROPRESSING.get());
+        System.out.println(inv.stream().filter(Predicate.not(ItemStack::isEmpty)).count());
+
         if(recipe.isPresent()) {
-            CropressorRecipe cropressorRecipe = recipe.get();
-            inv = NonNullList.of(cropressorRecipe.result);
-        }
-    }
-
-    public void addItem(ItemStack itemStack) {
-        int i = -1;
-
-        while(i + 1 != 9 && inv.get(i + 1).is(ItemStack.EMPTY.getItem())) {
-            i++;
-        }
-
-        if(i > 0) {
-            inv.set(i, itemStack);
-            itemStack.shrink(1);
-            this.setChanged();
+            CropressingRecipe cropressorRecipe = recipe.get();
+            Vec3 pos = worldPosition.getCenter().add(0, 0.5, 0);
+            level.addFreshEntity(new ItemEntity(level, pos.x, pos.y, pos.z, cropressorRecipe.result()));
+            inv = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
         }
     }
 
     public NonNullList<ItemStack> getInventory() {
         return inv;
+    }
+
+    public int addItem(ItemStack pStack) {
+        for(int i = 0; i < this.inv.size(); ++i) {
+            if (this.inv.get(i).isEmpty()) {
+                inv.set(i, pStack);
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public void setItems(NonNullList<ItemStack> pItems) {
+        this.inv = pItems;
     }
 
     public boolean isHasFinished() {
@@ -66,20 +75,13 @@ public class CropressorBlockEntity extends ModBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        pTag.putInt("size", inv.size());
-        for(int i = 0; i < inv.size(); i++) {
-            pTag.put("item_" + i, inv.get(i).serializeNBT());
-        }
-        pTag.putBoolean("finished", hasFinished);
+        ContainerHelper.saveAllItems(pTag, inv);
     }
 
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        inv = NonNullList.withSize(9, ItemStack.EMPTY);
-        for(int i = 0; i < pTag.getInt("size"); i++) {
-            inv.set(i, ItemStack.of(pTag.getCompound("item_" + i)));
-        }
-        hasFinished = pTag.getBoolean("finished");
+        inv = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(pTag, inv);
     }
 }

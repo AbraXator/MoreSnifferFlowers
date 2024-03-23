@@ -1,5 +1,6 @@
-package net.abraxator.moresnifferflowers.data;
+package net.abraxator.moresnifferflowers.data.loot;
 
+import net.abraxator.moresnifferflowers.data.loot.ModBlockLoottableProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
