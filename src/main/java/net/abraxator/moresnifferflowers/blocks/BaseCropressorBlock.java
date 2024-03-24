@@ -121,12 +121,8 @@ public class BaseCropressorBlock extends HorizontalDirectionalBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ENTITY_POS = PART == Part.OUT ? pPos : getEntityPos(pLevel, pPos);
-        if (!pLevel.isClientSide && pLevel.getBlockEntity(ENTITY_POS) instanceof CropressorBlockEntity entity) {
-            if (entity.isHasFinished()) {
-                pPlayer.addItem(entity.getInventory().get(0));
-            } else {
-                entity.addItem(pPlayer.getMainHandItem());
-            }
+        if (!pLevel.isClientSide && pLevel.getBlockEntity(ENTITY_POS) instanceof CropressorBlockEntity entity && entity.canInteract()) {
+            entity.addItem(pPlayer.getMainHandItem());
 
             return InteractionResult.SUCCESS;
         }
