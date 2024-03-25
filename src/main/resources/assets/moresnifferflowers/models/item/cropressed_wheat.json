@@ -1,6 +1,6 @@
 {
 	"gui_light": "front",
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
 	"flip-v": true,
 	"model": "moresnifferflowers:models/item/obj/cropressed_wheat.obj",
 	"textures": {

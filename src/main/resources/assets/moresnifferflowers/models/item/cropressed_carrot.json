@@ -1,6 +1,7 @@
 {
 	"gui_light": "front",
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
+	"shade_quads": false,
 	"flip-v": true,
 	"model": "moresnifferflowers:models/item/obj/cropressed_carrot.obj",
 	"textures": {
