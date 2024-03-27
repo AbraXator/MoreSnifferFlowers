@@ -25,7 +25,7 @@ public class ModAdvancementGenerator implements ForgeAdvancementProvider.Advance
                         MoreSnifferFlowers.loc("textures/misc/grass_block.misc"),
                         FrameType.TASK,
                         true,
-                        true,
+                        false,
                         false)
                 .addCriterion("has_advancement", ModAdvancementCritters.getSnifferAdvancement())
                 .save(consumer, MoreSnifferFlowers.loc("root").toString());
