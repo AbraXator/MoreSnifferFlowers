@@ -7,94 +7,104 @@ import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Optional;
-import java.util.function.Predicate;
-
 public class CropressorBlockEntity extends ModBlockEntity {
-    public NonNullList<ItemStack> inv = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
+    public ItemStack content = ItemStack.EMPTY;
+    public ItemStack result = ItemStack.EMPTY;
     public int progress = 0;
+    public final int MAX_PROGRESS = 100;
     private static final int INV_SIZE = 16;
+    private final RecipeManager.CachedCheck<Container, CropressingRecipe> quickCheck = RecipeManager.createCheck(ModRecipeTypes.CROPRESSING.get());
 
     public CropressorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.CROPRESSOR.get(), pPos, pBlockState);
     }
 
     @Override
-    public void tick() {
-        Container container = new SimpleContainer(INV_SIZE);
-        int i = 0;
-        for(ItemStack itemStack : inv) {
-            if(!itemStack.isEmpty()) {
-                container.setItem(i, new ItemStack(itemStack.getItem(), 1));
-                i++;
+    public void tick(Level level) {
+        if(content.getCount() >= INV_SIZE) {
+            progress++;
+            var container = new SimpleContainer(content);
+            var cropressingRecipe = quickCheck.getRecipeFor(container, level).get();
+            result = cropressingRecipe.assemble(container, level.registryAccess());
+            if(progress % 10 == 0) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+            }
+
+            if(progress >= MAX_PROGRESS) {
+                Vec3 blockPos = getBlockPos().relative(getBlockState().getValue(BaseCropressorBlock.FACING).getOpposite()).getCenter();
+                ItemEntity entity = new ItemEntity(level, blockPos.x, blockPos.y + 0.5, blockPos.z, result);
+                level.addFreshEntity(entity);
+                content = ItemStack.EMPTY;
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+                level.gameEvent(GameEvent.BLOCK_CHANGE, getBlockPos(), GameEvent.Context.of(getBlockState()));
+                setChanged();
+                progress = 0;
             }
         }
-
-        Optional<CropressingRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CROPRESSING.get(), container, level);
-        var list = level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.CROPRESSING.get());
-        System.out.println(inv.stream().filter(Predicate.not(ItemStack::isEmpty)).count());
-
-        if(recipe.isPresent()) {
-            progress += 1;
-            CropressingRecipe cropressorRecipe = recipe.get();
-            inv.set(0, cropressorRecipe.result());
-            if(progress == 1) {
-                craft(cropressorRecipe);
-            }
-        }
-    }
-
-    private void craft(CropressingRecipe cropressingRecipe) {
-        BlockPos blockPos = worldPosition.relative(getBlockState().getValue(BaseCropressorBlock.FACING).getOpposite());
-        Vec3 vec3 = blockPos.getCenter().add(0, 0.5, 0);
-        ItemEntity entity = new ItemEntity(level, vec3.x, vec3.y, vec3.z, cropressingRecipe.result());
-        progress = 0;
-        inv = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
     }
 
     public boolean canInteract() {
-        return 0 >= progress;
+        return 0 >= progress || content.getCount() >= INV_SIZE;
     }
 
-    public NonNullList<ItemStack> getInventory() {
-        return inv;
-    }
-
-    public int addItem(ItemStack pStack) {
-        for(int i = 0; i < this.inv.size(); ++i) {
-            if (this.inv.get(i).isEmpty()) {
-                inv.set(i, pStack);
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public void setItems(NonNullList<ItemStack> pItems) {
-        this.inv = pItems;
+    public void addItem(ItemStack pStack, Level level) {
+        boolean b = content.getCount() >= INV_SIZE;
+        boolean b1 = !content.is(pStack.getItem());
+        boolean b2 = !content.isEmpty();
+        boolean b3 = (b1 && b2);
+        if(b || b3) return;
+        var freeSpace = INV_SIZE - content.getCount();
+        var toInsert = Math.min(pStack.getCount(), freeSpace);
+        content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
+        pStack.shrink(toInsert);
+        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        ContainerHelper.saveAllItems(pTag, inv);
+        pTag.put("content", content.serializeNBT());
+        pTag.putInt("progress", progress);
+        pTag.put("result", result.serializeNBT());
     }
 
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        inv = NonNullList.withSize(INV_SIZE, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(pTag, inv);
+        content = ItemStack.of(pTag.getCompound("content"));
+        progress = pTag.getInt("progress");
+        result = ItemStack.of(pTag.getCompound("result"));
+    }
+
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public CompoundTag getUpdateTag() {
+        CompoundTag compoundtag = new CompoundTag();
+        compoundtag.put("result", result.serializeNBT());
+        compoundtag.putInt("progress", progress);
+        return compoundtag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
     }
 }

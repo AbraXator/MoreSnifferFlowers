@@ -17,15 +17,8 @@ import java.util.List;
 public record CropressingRecipe(ResourceLocation id, Ingredient ingredient, int count, ItemStack result) implements Recipe<Container> {
     @Override
     public boolean matches(Container pContainer, Level pLevel) {
-        List<ItemStack> list = new ArrayList<>();
-        int l = 0;
-
-        for(int i = 0; i < pContainer.getContainerSize(); i++) {
-            list.add(pContainer.getItem(i));
-            l++;
-        }
-
-        return l == count && list.stream().allMatch(ingredient);
+        ItemStack itemStack = pContainer.getItem(0);
+        return itemStack.getCount() == count && ingredient.test(itemStack.copyWithCount(1));
     }
 
     @Override

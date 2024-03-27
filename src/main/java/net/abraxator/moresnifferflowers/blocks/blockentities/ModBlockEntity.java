@@ -11,5 +11,5 @@ public abstract class ModBlockEntity extends BlockEntity {
         super(pType, pPos, pBlockState);
     }
 
-    public void tick() {}
+    public void tick(Level level) {}
 }
