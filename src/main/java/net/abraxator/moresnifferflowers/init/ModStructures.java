@@ -12,6 +12,9 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
@@ -43,7 +46,13 @@ public class ModStructures {
         HolderGetter<Biome> biomeHolderGetter = context.lookup(Registries.BIOME);
         HolderGetter<StructureTemplatePool> poolHolderGetter = context.lookup(Registries.TEMPLATE_POOL);
         context.register(DESERT_SNIFFER_TEMPLE, new JigsawStructure(
-                structure(biomeHolderGetter.getOrThrow(BiomeTags.HAS_DESERT_PYRAMID), TerrainAdjustment.NONE),
-                poolHolderGetter.getOrThrow(Pools.)));
+                structure(
+                        biomeHolderGetter.getOrThrow(BiomeTags.HAS_DESERT_PYRAMID),
+                        TerrainAdjustment.NONE),
+                poolHolderGetter.getOrThrow(ModPools.DESERT_SNIFFER_TEMPLE),
+                7, 
+                ConstantHeight.of(VerticalAnchor.absolute(0)),
+                true,
+                Heightmap.Types.WORLD_SURFACE_WG));
     }
 }
