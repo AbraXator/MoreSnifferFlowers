@@ -41,8 +41,7 @@ public class BaseCropressorBlock extends HorizontalDirectionalBlock {
     protected static final VoxelShape CENTER_SOUTH = Block.box(2, 0, 1, 14, 10, 16);
     protected static final VoxelShape CENTER_WEST = Block.box(0, 0, 2, 15, 10, 14);
     protected static final VoxelShape CENTER_NORTH = Block.box(2, 0, 0, 14, 10, 15);
-
-
+    
     public BaseCropressorBlock(Properties pProperties, Part part) {
         super(pProperties);
         PART = part;

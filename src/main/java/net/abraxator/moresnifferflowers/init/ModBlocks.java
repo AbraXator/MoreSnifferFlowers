@@ -33,7 +33,8 @@ public class ModBlocks {
     public static final RegistryObject<Block> CROPRESSOR_CENTER = registerBlockNoItem("cropressor_center", () ->  new BaseCropressorBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL), BaseCropressorBlock.Part.CENTER));
     public static final RegistryObject<Block> CROPRESSOR_OUT = registerBlockNoItem("cropressor_out", () ->  new CropressorBlockOut(BlockBehaviour.Properties.copy(Blocks.ANVIL), BaseCropressorBlock.Part.OUT));
     public static final RegistryObject<Block> MORE_SNIFFER_FLOWER = BLOCKS.register("more_sniffer_flower", () -> new MoreSnifferFlowerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).sound(SoundType.GRASS).strength(2.0F).noCollission().noOcclusion()));
-
+    public static final RegistryObject<Block> BASE_REBREWING_STAND = registerBlockWithItem("base_rebrewing_stand", () -> new BaseRebrewingStandBlock(BlockBehaviour.Properties.of().noOcclusion()));
+    public static final RegistryObject<Block> UPPER_REBREWING_STAND = registerBlockWithItem("upper_rebrewing_stand", () -> new UpperRebrewingStandBlock(BlockBehaviour.Properties.of().noOcclusion()));
 
     private static <T extends Block> RegistryObject<T> registerBlockNoItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
