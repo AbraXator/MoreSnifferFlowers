@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:cropressor_out"
+          "name": "moresnifferflowers:cropressor"
         }
       ],
       "rolls": 1.0

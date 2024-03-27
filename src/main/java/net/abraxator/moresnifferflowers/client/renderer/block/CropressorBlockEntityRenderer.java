@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.common.Mod;
 
 public class CropressorBlockEntityRenderer implements BlockEntityRenderer<CropressorBlockEntity> {
     private static final Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/cropressor"));
@@ -48,17 +49,22 @@ public class CropressorBlockEntityRenderer implements BlockEntityRenderer<Cropre
         VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         Direction direction = pBlockEntity.getBlockState().getValue(BaseCropressorBlock.FACING).getOpposite();
-        Vec3 scale = switch (direction) {
-            case NORTH -> new Vec3(0, 0, -1/40);
-            case EAST -> new Vec3(1/40, 0, 0);
-            case SOUTH -> new Vec3(0, 0, 1/40);
-            default -> new Vec3(-1/40, 0, 0);
-        };
 
-        if(blockState.is(ModBlocks.CROPRESSOR_OUT.get()) && !pBlockEntity.canInteract()) {
+        var progress = pBlockEntity.progress;
+        if(blockState.is(ModBlocks.CROPRESSOR_OUT.get()) && progress > 0) {
+            double scale = 100D;
+            double d = progress / scale;
+            Vec3 factor = switch (direction) {
+                case NORTH -> new Vec3(0.5, 0, (1 - d));
+                case EAST -> new Vec3(d, 0, 0.55);
+                case SOUTH -> new Vec3(0.5, 0, d);
+                default -> new Vec3((1 - d), 0, 0.55);
+            };
+
             pPoseStack.pushPose();
-            pPoseStack.translate(scale.x, 0, scale.z);
-            itemRenderer.renderStatic(pBlockEntity.inv.get(0), ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, pBlockEntity.getLevel(), ((int) pBlockEntity.getBlockPos().asLong()));
+            pPoseStack.translate(factor.x, 0.225, factor.z);
+            pPoseStack.scale(0.25F, 0.25F, 0.25F);
+            itemRenderer.renderStatic(pBlockEntity.result, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, pBlockEntity.getLevel(), ((int) pBlockEntity.getBlockPos().asLong()));
             pPoseStack.popPose();
         }
     }
