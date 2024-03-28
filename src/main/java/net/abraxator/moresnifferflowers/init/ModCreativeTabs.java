@@ -14,7 +14,7 @@ public class ModCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> moresnifferflowers_TAB = TABS.register("moresnifferflowers_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("moresnifferflowers.creative_tab"))
-            .icon(() -> new ItemStack(ModItems.DAWNBERRY.get()))
+            .icon(() -> new ItemStack(ModItems.DYESPRIA.get()))
             .displayItems((parameters, output) -> ModItems.ITEMS.getEntries().forEach(itemRegistryObject -> output.accept(itemRegistryObject.get())))
             .build());
 

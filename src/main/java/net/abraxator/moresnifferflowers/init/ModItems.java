@@ -42,8 +42,10 @@ public class ModItems {
     public static final RegistryObject<Item> CROPRESSED_WHEAT = ITEMS.register("cropressed_wheat", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSOR = ITEMS.register("cropressor", () -> new ItemNameBlockItem(ModBlocks.CROPRESSOR_OUT.get(), new Item.Properties()));
 
-    public static final RegistryObject<Item> MECHANICAL_DOODAD_A = ITEMS.register("mechanical_doodad_a", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> MECHANICAL_DOODAD_B = ITEMS.register("mechanical_doodad_b", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> MECHANICAL_DOODAD_C = ITEMS.register("mechanical_doodad_c", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> MECHANICAL_DOODAD_D = ITEMS.register("mechanical_doodad_d", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSOR_TUBE = ITEMS.register("cropressor_tube", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSOR_BELT = ITEMS.register("cropressor_belt", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSOR_SCRAP = ITEMS.register("cropressor_scrap", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CROPRESSOR_ENGINE = ITEMS.register("cropressor_engine", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> EXTRACTION_BOTTLE = ITEMS.register("extraction_bottle", () -> new Item(new Item.Properties()));
+
 }

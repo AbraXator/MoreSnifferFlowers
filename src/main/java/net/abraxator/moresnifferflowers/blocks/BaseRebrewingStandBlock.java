@@ -24,8 +24,8 @@ public class BaseRebrewingStandBlock extends Block {
 
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if(pState.is(ModBlocks.BASE_REBREWING_STAND.get())) super.playerWillDestroy(pLevel, pPos.above(), pState, pPlayer);
-        if(pState.is(ModBlocks.UPPER_REBREWING_STAND.get())) super.playerWillDestroy(pLevel, pPos.below(), pState, pPlayer);
+        if(pState.is(ModBlocks.REBREWING_STAND_BOTTOM.get())) super.playerWillDestroy(pLevel, pPos.above(), pState, pPlayer);
+        if(pState.is(ModBlocks.REBREWING_STAND_TOP.get())) super.playerWillDestroy(pLevel, pPos.below(), pState, pPlayer);
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
@@ -44,7 +44,7 @@ public class BaseRebrewingStandBlock extends Block {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         if(!pLevel.isClientSide) {
             BlockPos blockPos = pPos.above();
-            pLevel.setBlockAndUpdate(blockPos, ModBlocks.UPPER_REBREWING_STAND.get().defaultBlockState());
+            pLevel.setBlockAndUpdate(blockPos, ModBlocks.REBREWING_STAND_TOP.get().defaultBlockState());
             pState.updateNeighbourShapes(pLevel, blockPos, 3);
         }
     }

@@ -1,5 +1,27 @@
 {
 	"gui_light": "front",
+	"display": {
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 2],
+            "scale":[ 0.6, 0.6, 0.6 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 45, 0 ],
+            "translation": [ 2, -2, 1],
+            "scale": [ 0.6, 0.6, 0.6 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 45, 0 ],
+            "translation": [ 8, 2, -3 ],
+            "scale": [ 0.8, 0.8, 0.8 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 225, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.8, 0.80, 0.80 ]
+        }
+      },
 	"loader": "forge:obj",
 	"flip-v": true,
 	"model": "moresnifferflowers:models/item/obj/cropressed_wheat.obj",
