@@ -22,7 +22,7 @@ public class ModAdvancementGenerator implements ForgeAdvancementProvider.Advance
                         Items.SNIFFER_EGG.getDefaultInstance(),
                         Component.translatable("advancements.more_sniffer_flowers.any_seed"),
                         Component.translatable("advancements.more_sniffer_flowers.any_seed.desc"),
-                        MoreSnifferFlowers.loc("textures/misc/grass_block.misc"),
+                        MoreSnifferFlowers.loc("textures/gui/grass_block_bg.png"),
                         FrameType.TASK,
                         true,
                         false,
