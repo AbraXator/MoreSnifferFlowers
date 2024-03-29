@@ -39,6 +39,7 @@
 	"tooltip.dyespria.empty": "Empty",
 	"tooltip.jar_of_bonmeel.usage": "Can be applied to a fully grown 3x3 grid of the following crops: \nCarrot, Potato, Wheat, Beetroot and Nether Wart",
 	"tooltip.amber_shard.usage": "Can be used as an armor trim material",
+	"bottle_of_extraction.tooltip.usage": "Drink to extract all effects into single potion",
 
 	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",
 	"advancements.more_sniffer_flowers.dyespria.desc": "Bring color to Caulorflower using Dyespria",
@@ -70,5 +71,7 @@
 
 	"moresnifferflowers.creative_tab": "More Sniffer Flowers",
 
-	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing"
+	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
+
+	"hover_name.moresnifferflowers.extracted_bottle": "Extracted Bottle"
 }

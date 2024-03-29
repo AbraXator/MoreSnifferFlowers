@@ -93,6 +93,8 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.CROPRESSOR_OUT.get());
         dropSelf(ModBlocks.CROPRESSOR_CENTER.get());
         dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
+        dropSelf(ModBlocks.REBREWING_STAND_BOTTOM.get());
+        dropOther(ModBlocks.REBREWING_STAND_TOP.get(), Items.AIR);
     }
 
     /*private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem) {

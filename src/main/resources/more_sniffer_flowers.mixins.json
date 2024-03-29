@@ -6,7 +6,8 @@
   "compatibilityLevel": "JAVA_11",
   "mixins": [
     "FarmBlockMixin",
-    "SpriteResourceLoaderMixin"
+    "SpriteResourceLoaderMixin",
+    "ItemStackMixin"
   ],
    "client": [
    "SpriteResourceLoaderMixin$PalettedPermutationsAccessor"
