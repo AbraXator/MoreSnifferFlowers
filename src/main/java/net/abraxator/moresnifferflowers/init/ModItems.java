@@ -47,7 +47,7 @@ public class ModItems {
     public static final RegistryObject<Item> CROPRESSOR_BELT = ITEMS.register("cropressor_belt", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSOR_SCRAP = ITEMS.register("cropressor_scrap", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSOR_ENGINE = ITEMS.register("cropressor_engine", () -> new Item(new Item.Properties()));
-
+    public static final RegistryObject<Item> REBREWING_STAND = ITEMS.register("rebrewing_stand", () -> new ItemNameBlockItem(ModBlocks.REBREWING_STAND_TOP.get(), new Item.Properties()));
     public static final RegistryObject<Item> EXTRACTION_BOTTLE = ITEMS.register("extraction_bottle", () -> new BottleOfExtractionItem(new Item.Properties()));
 
 }

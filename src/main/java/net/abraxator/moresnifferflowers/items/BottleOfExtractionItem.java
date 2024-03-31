@@ -22,7 +22,6 @@ public class BottleOfExtractionItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
-        git add .
         if (!(pLivingEntity instanceof Player player)) return pStack;
 
         player.addItem(initPotion(player));
