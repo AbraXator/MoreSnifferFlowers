@@ -7,6 +7,6 @@
     "tag": "minecraft:trimmable_armor"
   },
   "template": {
-    "item": "moresnifferflowers:aroma_armor_trim_smithing_table"
+    "item": "moresnifferflowers:aroma_armor_trim_smithing_template"
   }
 }

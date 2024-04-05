@@ -1,6 +1,8 @@
-// 1.20.1	2024-03-27T19:01:02.2625633	Registries
+// 1.20.1	2024-04-05T20:51:58.6223012	Registries
 d12b665266acc01bfd291df40ec9b938c97c82c8 data/minecraft/worldgen/structure/desert_sniffer_temple.json
 87e2f7bfc2cb5cb155108de2921cf82af30becef data/minecraft/worldgen/template_pool/desert_sniffer_temple.json
 77d03d75537e90eb7a411e54a09fc2129c3fca5e data/moresnifferflowers/trim_material/amber.json
-bdaf9e30632d3a26faeee87dac1a706881daa153 data/moresnifferflowers/trim_pattern/aroma.json
+afa543ff6f8baa1f3a7ee2aeb340890bac6ad998 data/moresnifferflowers/trim_material/nether_wart.json
+12dd4955414b24d4b0461348bfffa0d8cb7dcb73 data/moresnifferflowers/trim_pattern/aroma.json
+efc8457e9fee9e9a30d6ddb4be8c3b554b948752 data/moresnifferflowers/trim_pattern/nether_wart.json
 5bd08df4ee6ceee28484b05def4bd5982e6e62d1 data/moresnifferflowers/worldgen/processor_list/sniffer_temple.json
