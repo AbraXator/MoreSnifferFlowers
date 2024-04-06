@@ -13,11 +13,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ModTrimPatterns {
     public static final ResourceKey<TrimPattern> AROMA = ResourceKey.create(Registries.TRIM_PATTERN, MoreSnifferFlowers.loc("aroma"));
     public static final ResourceKey<TrimPattern> NETHER_WART = ResourceKey.create(Registries.TRIM_PATTERN, MoreSnifferFlowers.loc("nether_wart"));
+    public static final ResourceKey<TrimPattern> TATER = ResourceKey.create(Registries.TRIM_PATTERN, MoreSnifferFlowers.loc("tater"));
 
 
     public static void bootstrap(BootstapContext<TrimPattern> context) {
         register(context, ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get(), AROMA);
         register(context, ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), NETHER_WART);
+        register(context, ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), TATER);
+
 
     }
 

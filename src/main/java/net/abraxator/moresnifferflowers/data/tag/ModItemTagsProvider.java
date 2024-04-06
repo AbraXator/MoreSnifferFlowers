@@ -30,8 +30,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         this.tag(Tags.Items.SEEDS).add(ModItems.DAWNBERRY_VINE_SEEDS.get());
         this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.AMBER_SHARD.get());
         this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_NETHERWART.get());
+        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_POTATO.get());
+        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_CARROT.get());
+        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_BEETROOT.get());
+        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_WHEAT.get());
         this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         this.tag(ModTags.ModItemTags.AROMA_TRIM_TEMPLATE_INGREDIENT).add(ModItems.AMBER_SHARD.get(), ModBlocks.AMBER.get().asItem());
         this.tag(ModTags.ModItemTags.CROPRESSABLE_CROPS).add(Items.POTATO, Items.CARROT, Items.BEETROOT, Items.NETHER_WART, Items.WHEAT);
     }

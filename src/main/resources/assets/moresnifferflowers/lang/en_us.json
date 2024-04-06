@@ -50,9 +50,14 @@
 
 	"trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
 	"trim_pattern.moresnifferflowers.nether_wart": "Nether Wart Armor Trim",
+	"trim_pattern.moresnifferflowers.tater": "Tater Armor Trim",
 
 	"trim_material.moresnifferflowers.amber": "Amber Material",
 	"trim_material.moresnifferflowers.nether_wart": "Nether Wart Material",
+	"trim_material.moresnifferflowers.potato": "Potato Material",
+	"trim_material.moresnifferflowers.carrot": "Carrot Material",
+	"trim_material.moresnifferflowers.wheat": "Wheat Material",
+	"trim_material.moresnifferflowers.beetroot": "Beetroot Material",
 
 	"block.minecraft.banner.moresnifferflowers.ambush.white": "White Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.light_gray": "Light Gray Ambush",

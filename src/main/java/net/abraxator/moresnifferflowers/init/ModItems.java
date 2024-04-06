@@ -43,6 +43,7 @@ public class ModItems {
     public static final RegistryObject<Item> CROPRESSOR_SCRAP = ITEMS.register("cropressor_scrap", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSOR_ENGINE = ITEMS.register("cropressor_engine", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSED_POTATO = ITEMS.register("cropressed_potato", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> TATER_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("tater_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(ModTrimPatterns.TATER));
     public static final RegistryObject<Item> CROPRESSED_CARROT = ITEMS.register("cropressed_carrot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSED_BEETROOT = ITEMS.register("cropressed_beetroot", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CROPRESSED_NETHERWART = ITEMS.register("cropressed_nether_wart", () -> new Item(new Item.Properties()));

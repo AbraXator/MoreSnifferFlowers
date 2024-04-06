@@ -1,8 +1,8 @@
-// 1.20.1	2024-04-05T20:51:58.6233225	Tags for minecraft:item mod id moresnifferflowers
+// 1.20.1	2024-04-06T12:16:49.9667098	Tags for minecraft:item mod id moresnifferflowers
 00af8e945961fff32054e3bff55be68741b610c0 data/forge/tags/items/seeds.json
 f62abb376042ea174f7cf54e4cff50f90131a75e data/minecraft/tags/items/flowers.json
-399a5215aaa8812f77135e4a7aed30c54b1649f5 data/minecraft/tags/items/trim_materials.json
-d72018353e8e63f752c381798f059f8ec96cccd9 data/minecraft/tags/items/trim_templates.json
+b5d913c46576b75c8bde0536fbb7b919df0813f2 data/minecraft/tags/items/trim_materials.json
+bf36f018afd8e646a6460a1a26f42c947ce90e70 data/minecraft/tags/items/trim_templates.json
 00af8e945961fff32054e3bff55be68741b610c0 data/minecraft/tags/items/villager_plantable_seeds.json
 d6f54d2de44a444dc58075bcd6a043f4244b195d data/moresnifferflowers/tags/items/aroma_trim_template_ingredient.json
 81e01fc4a489c378d1791ba949a0eefae869add6 data/moresnifferflowers/tags/items/cropressable_crops.json
