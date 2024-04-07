@@ -37,8 +37,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get());
         this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+
         this.tag(ModTags.ModItemTags.AROMA_TRIM_TEMPLATE_INGREDIENT).add(ModItems.AMBER_SHARD.get(), ModBlocks.AMBER.get().asItem());
         this.tag(ModTags.ModItemTags.CROPRESSABLE_CROPS).add(Items.POTATO, Items.CARROT, Items.BEETROOT, Items.NETHER_WART, Items.WHEAT);
+        this.tag(ModTags.ModItemTags.CROP_SMITHING_TEMPLATES).add(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
     }
 
     private Item item(RegistryObject<Block> object){

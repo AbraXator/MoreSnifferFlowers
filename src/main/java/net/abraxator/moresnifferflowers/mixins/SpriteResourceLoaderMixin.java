@@ -30,7 +30,6 @@ public abstract class SpriteResourceLoaderMixin {
                     ResourceLocation trimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/aroma");
                     ResourceLocation leggingsTrimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/aroma").withSuffix("_leggings");
                     permutations.setTextures(ImmutableList.<ResourceLocation>builder().addAll(permutations.getTextures()).add(trimLocation, leggingsTrimLocation).build());
-
                 }
                 if (source instanceof PalettedPermutationsAccessor permutations && permutations.getPaletteKey().getPath().equals("trims/color_palettes/trim_palette")) {
                     ResourceLocation trimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/tater");
@@ -40,6 +39,21 @@ public abstract class SpriteResourceLoaderMixin {
                 if (source instanceof PalettedPermutationsAccessor permutations && permutations.getPaletteKey().getPath().equals("trims/color_palettes/trim_palette")) {
                     ResourceLocation trimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/nether_wart");
                     ResourceLocation leggingsTrimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/nether_wart").withSuffix("_leggings");
+                    permutations.setTextures(ImmutableList.<ResourceLocation>builder().addAll(permutations.getTextures()).add(trimLocation, leggingsTrimLocation).build());
+                }
+                if (source instanceof PalettedPermutationsAccessor permutations && permutations.getPaletteKey().getPath().equals("trims/color_palettes/trim_palette")) {
+                    ResourceLocation trimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/carotene");
+                    ResourceLocation leggingsTrimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/carotene").withSuffix("_leggings");
+                    permutations.setTextures(ImmutableList.<ResourceLocation>builder().addAll(permutations.getTextures()).add(trimLocation, leggingsTrimLocation).build());
+                }
+                if (source instanceof PalettedPermutationsAccessor permutations && permutations.getPaletteKey().getPath().equals("trims/color_palettes/trim_palette")) {
+                    ResourceLocation trimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/grain");
+                    ResourceLocation leggingsTrimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/grain").withSuffix("_leggings");
+                    permutations.setTextures(ImmutableList.<ResourceLocation>builder().addAll(permutations.getTextures()).add(trimLocation, leggingsTrimLocation).build());
+                }
+                if (source instanceof PalettedPermutationsAccessor permutations && permutations.getPaletteKey().getPath().equals("trims/color_palettes/trim_palette")) {
+                    ResourceLocation trimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/beat");
+                    ResourceLocation leggingsTrimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/beat").withSuffix("_leggings");
                     permutations.setTextures(ImmutableList.<ResourceLocation>builder().addAll(permutations.getTextures()).add(trimLocation, leggingsTrimLocation).build());
                 }
                     //Já věřim že tohle jde udělat líp

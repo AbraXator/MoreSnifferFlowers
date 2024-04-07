@@ -1,0 +1,9 @@
+{
+  "asset_name": "beetroot",
+  "description": {
+    "color": "#D9AA51",
+    "translate": "trim_material.moresnifferflowers.beetroot"
+  },
+  "ingredient": "moresnifferflowers:cropressed_beetroot",
+  "item_model_index": 0.4
+}
