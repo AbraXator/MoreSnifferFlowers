@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:rebrewing_stand_bottom"
+          "name": "moresnifferflowers:rebrewing_stand"
         }
       ],
       "rolls": 1.0

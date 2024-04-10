@@ -31,7 +31,7 @@ minecraft {
     //mappings channel: 'official', version: '1.20.1'
     mappings channel: 'parchment', version: '1.19.3-2023.03.12-1.20'
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accestransformer.cfg')
 
     runs {
         configureEach {

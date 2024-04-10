@@ -20,7 +20,7 @@ public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
     }
 
     @Override
-    public void tick() {
+    public void tick(Level level) {
         hintLogic();
     }
     

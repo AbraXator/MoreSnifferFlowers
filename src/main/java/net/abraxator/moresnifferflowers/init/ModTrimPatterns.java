@@ -15,7 +15,7 @@ public class ModTrimPatterns {
     public static final ResourceKey<TrimPattern> AROMA = ResourceKey.create(Registries.TRIM_PATTERN, MoreSnifferFlowers.loc("aroma"));
 
     public static void bootstrap(BootstapContext<TrimPattern> context) {
-        register(context, ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get(), AROMA);
+        register(context, ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get(), AROMA);
     }
 
     private static void register(BootstapContext<TrimPattern> context, Item item, ResourceKey<TrimPattern> key) {

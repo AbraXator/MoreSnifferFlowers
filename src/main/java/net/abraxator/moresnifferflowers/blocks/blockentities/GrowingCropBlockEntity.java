@@ -30,7 +30,7 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
         super.setChanged();
     }
 
-    public void tick() {
+    public void tick(Level level) {
         if(canGrow(this.growProgress, this.hasGrown)) {
             this.growProgress += growRate;
             this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);

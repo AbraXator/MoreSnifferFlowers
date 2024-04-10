@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import net.abraxator.moresnifferflowers.blocks.blockentities.RebrewingStandBlock;
+import net.abraxator.moresnifferflowers.blocks.blockentities.RebrewingStandBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,6 +14,6 @@ public class RebrewingStandBlockTop extends BaseRebrewingStandBlock implements M
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new RebrewingStandBlock(pPos, pState);
+        return new RebrewingStandBlockEntity(pPos, pState);
     }
 }

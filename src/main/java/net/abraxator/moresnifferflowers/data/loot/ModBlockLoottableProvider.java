@@ -57,7 +57,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         //.add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))
                         .add(LootItem.lootTableItem(ModItems.AMBER_SHARD.get()))
                         .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()))
-                        .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TABLE.get()))
+                        .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get()))
                         .add(LootItem.lootTableItem(ModItems.AMBUSH_SEEDS.get()))
                         .add(LootItem.lootTableItem(ModItems.DAWNBERRY_VINE_SEEDS.get()))
                         .add(LootItem.lootTableItem(ModBlocks.CAULORFLOWER.get().asItem()))

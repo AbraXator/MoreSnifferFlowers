@@ -1,18 +1,28 @@
 package net.abraxator.moresnifferflowers.items;
 
+import com.ibm.icu.impl.units.MeasureUnitImpl;
 import mezz.jei.api.runtime.IEditModeConfig;
 import net.abraxator.moresnifferflowers.init.ModMobEffects;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.PlayerChatMessage;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.level.NoteBlockEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class BottleOfExtractionItem extends Item {
@@ -22,12 +32,20 @@ public class BottleOfExtractionItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
-        if (!(pLivingEntity instanceof Player player)) return pStack;
-
-        player.addItem(initPotion(player));
-        player.curePotionEffects(pStack);
-
-        return pStack;
+        var ret = pStack;
+        
+        if (!(pLivingEntity instanceof Player player) && pLevel.isClientSide) {
+            return pStack;
+        }
+        
+        if (pLivingEntity instanceof ServerPlayer serverplayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, pStack);
+            serverplayer.awardStat(Stats.ITEM_USED.get(this));
+        }
+        
+        ret = initPotion(((Player) pLivingEntity));
+        pLivingEntity.removeAllEffects();
+        return ret;
     }
 
     @Override
@@ -50,7 +68,7 @@ public class BottleOfExtractionItem extends Item {
 
         return potion;
     }
-
+    
     @Override
     public int getUseDuration(ItemStack pStack) {
         return 32;

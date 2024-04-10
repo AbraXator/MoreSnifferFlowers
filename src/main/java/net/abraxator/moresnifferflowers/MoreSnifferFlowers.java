@@ -1,9 +1,11 @@
 package net.abraxator.moresnifferflowers;
 
 import com.mojang.logging.LogUtils;
+import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
 import net.abraxator.moresnifferflowers.compat.quark.OtherModEvents;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,6 +36,7 @@ public class MoreSnifferFlowers {
         ModParticles.PARTICLES.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        ModMenuTypes.MENU_TYPES.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
@@ -47,6 +50,7 @@ public class MoreSnifferFlowers {
 
     public void clientSetup(final FMLClientSetupEvent event) {
         ModItemProperties.register();
+        MenuScreens.register(ModMenuTypes.REBREWING_STAND.get(), RebrewingStandScreen::new);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
