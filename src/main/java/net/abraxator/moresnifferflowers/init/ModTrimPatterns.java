@@ -22,17 +22,11 @@ public class ModTrimPatterns {
 
     public static void bootstrap(BootstapContext<TrimPattern> context) {
         register(context, ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get(), AROMA);
-<<<<<<< HEAD
-=======
         register(context, ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), NETHER_WART);
         register(context, ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), TATER);
         register(context, ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), CAROTENE);
         register(context, ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), GRAIN);
         register(context, ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get(), BEAT);
-
-
-
->>>>>>> a00c1bc047a9ed294aa16580f3aaf24b831b63be
     }
 
     private static void register(BootstapContext<TrimPattern> context, Item item, ResourceKey<TrimPattern> key) {
