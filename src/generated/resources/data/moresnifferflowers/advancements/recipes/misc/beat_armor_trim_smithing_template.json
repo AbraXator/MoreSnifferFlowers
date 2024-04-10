@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crop_smithing_templates": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "moresnifferflowers:crop_smithing_templates"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "moresnifferflowers:beat_armor_trim_smithing_template"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_crop_smithing_templates",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "moresnifferflowers:beat_armor_trim_smithing_template"
+    ]
+  },
+  "sends_telemetry_event": false
+}

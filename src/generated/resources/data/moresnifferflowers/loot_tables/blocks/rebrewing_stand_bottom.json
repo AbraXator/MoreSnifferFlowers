@@ -11,7 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
+<<<<<<< HEAD
           "name": "moresnifferflowers:rebrewing_stand"
+=======
+          "name": "minecraft:air"
+>>>>>>> a00c1bc047a9ed294aa16580f3aaf24b831b63be
         }
       ],
       "rolls": 1.0

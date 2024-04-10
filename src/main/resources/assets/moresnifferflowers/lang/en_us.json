@@ -41,7 +41,7 @@
 	"tooltip.dyespria.empty": "Empty",
 	"tooltip.jar_of_bonmeel.usage": "Can be applied to a fully grown 3x3 grid of the following crops: \nCarrot, Potato, Wheat, Beetroot and Nether Wart",
 	"tooltip.amber_shard.usage": "Can be used as an armor trim material",
-	"bottle_of_extraction.tooltip.usage": "Drink to extract all effects into single potion",
+	"bottle_of_extraction.tooltip.usage": "Drink to extract all effects into a bottle",
 
 	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",
 	"advancements.more_sniffer_flowers.dyespria.desc": "Bring color to Caulorflower using Dyespria",
@@ -49,8 +49,18 @@
 	"advancements.more_sniffer_flowers.any_seed.desc": "Discover More Sniffer Flowers",
 
 	"trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
+	"trim_pattern.moresnifferflowers.nether_wart": "Nether Wart Armor Trim",
+	"trim_pattern.moresnifferflowers.tater": "Tater Armor Trim",
+	"trim_pattern.moresnifferflowers.carotene": "Carotene Armor Trim",
+	"trim_pattern.moresnifferflowers.grain": "Grain Armor Trim",
+	"trim_pattern.moresnifferflowers.beat": "Beat Armor Trim",
 
 	"trim_material.moresnifferflowers.amber": "Amber Material",
+	"trim_material.moresnifferflowers.nether_wart": "Nether Wart Material",
+	"trim_material.moresnifferflowers.potato": "Potato Material",
+	"trim_material.moresnifferflowers.carrot": "Carrot Material",
+	"trim_material.moresnifferflowers.wheat": "Wheat Material",
+	"trim_material.moresnifferflowers.beetroot": "Beetroot Material",
 
 	"block.minecraft.banner.moresnifferflowers.ambush.white": "White Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.light_gray": "Light Gray Ambush",
@@ -68,6 +78,8 @@
 	"block.minecraft.banner.moresnifferflowers.ambush.purple": "Purple Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.magenta": "Magenta Ambush",
 	"block.minecraft.banner.moresnifferflowers.ambush.pink": "Pink Ambush",
+	
+	"effect.moresnifferflowers.extracted": "Extracted",
 
 	"death.attack.moresnifferflowersveggies": "%s has eaten their veggies",
 
