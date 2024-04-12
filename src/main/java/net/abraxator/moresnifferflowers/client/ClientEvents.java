@@ -23,6 +23,7 @@ import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -90,22 +91,10 @@ public class ClientEvents {
                 return DyespriaItem.colorForDye(dye.color());
             }
         }, ModItems.DYESPRIA.get());
+        event.register((pStack, pTintIndex) -> 
+                pTintIndex > 0 ? -1 : PotionUtils.getColor(pStack), 
+           ModItems.EXTRACTED_BOTTLE.get());
     }
-
-    /*@SubscribeEvent
-    public static void onTickClientTick(TickEvent.ClientTickEvent event) {
-        Player player = Minecraft.getInstance().player;
-        HitResult hitResult = player.pick(player.getAttributeValue(ForgeMod.BLOCK_REACH.get()), 0.0F, false);
-        if(hitResult.getType() == HitResult.Type.BLOCK) {
-            BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
-            if(player.level().getBlockState(blockPos).is(ModBlocks.GIANT_CARROT.get())) {
-                VoxelShape voxelShape = Block.box(0, 0, 0, 0, 0, 0);
-                voxelShape.
-            }
-        }
-    }*/
-
-
 
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {

@@ -19,8 +19,10 @@ public abstract class ItemStackMixin extends net.minecraftforge.common.capabilit
 
     @Inject(method = "getHoverName", at=@At("TAIL"), cancellable=true)
     public void moresnifferflowers$getHoverName(CallbackInfoReturnable<Component> callbackInfo) {
-        if(getOrCreateTag().contains("isMoreSnifferFlowers")) {
+        if(getOrCreateTag().contains("extractedBottle")) {
             callbackInfo.setReturnValue(Component.translatable("hover_name.moresnifferflowers.extracted_bottle"));
+        } else if(getOrCreateTag().contains("rebrewedPotion")) {
+            callbackInfo.setReturnValue(Component.translatable("hover_name.moresnifferflowers.rebrewed_potion"));
         }
     }
 }

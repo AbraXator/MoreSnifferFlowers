@@ -40,9 +40,9 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         this.addSlot(new OriginalPotionSlot(rebrewingStandContainer, 1, 79, 12));
         this.addSlot(new IngredientSlot(rebrewingStandContainer, 2, 102, 19));
         this.addSlot(new PotionSlot(rebrewingStandContainer, 3, 56, 51));
-        this.addSlot(new PotionSlot(rebrewingStandContainer, 4, 79, 85));
+        this.addSlot(new PotionSlot(rebrewingStandContainer, 4, 79, 58));
         this.addSlot(new PotionSlot(rebrewingStandContainer, 5, 102, 51));
-
+        
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 9; ++j) {
                 this.addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
@@ -52,6 +52,8 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         for(int k = 0; k < 9; ++k) {
             this.addSlot(new Slot(playerInv, k, 8 + k * 18, 142));
         }
+        
+        addDataSlots(rebrewingStandContainerData);
     }
 
     @Override
@@ -95,7 +97,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack pStack) {
-            return pStack.is(Items.POTION) || pStack.is(Items.LINGERING_POTION) || pStack.is(Items.SPLASH_POTION);
+            return pStack.is(ModItems.EXTRACTED_BOTTLE.get());
         }
 
         @Override
@@ -127,7 +129,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack pStack) {
-            return false;
+            return pStack.is(Items.GLASS_BOTTLE);
         }
 
         public void onTake(Player pPlayer, ItemStack pStack) {

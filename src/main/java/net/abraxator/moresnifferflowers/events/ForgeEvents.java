@@ -29,18 +29,7 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ForgeEvents {
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        if(event.getState().is(ModBlocks.AMBER.get()) && event.getLevel() instanceof ServerLevel serverLevel) {
-            fireFlyLogic(event.getState(), serverLevel, event.getPos(), event.getPlayer(), event);
-        }
 
-        if(event.getLevel().getBlockEntity(event.getPos()) instanceof GiantCropBlockEntity entity) {
-            BlockPos.betweenClosed(entity.pos1, entity.pos2).forEach(blockPos -> {
-                event.getLevel().destroyBlock(blockPos, true);
-            });
-        }
-    }
 
     @SubscribeEvent
     public static void onGetAdvancement(AdvancementEvent.AdvancementEarnEvent event) {

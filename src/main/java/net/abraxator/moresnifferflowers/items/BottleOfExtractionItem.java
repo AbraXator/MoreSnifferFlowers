@@ -2,9 +2,11 @@ package net.abraxator.moresnifferflowers.items;
 
 import com.ibm.icu.impl.units.MeasureUnitImpl;
 import mezz.jei.api.runtime.IEditModeConfig;
+import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.EndTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,10 +14,13 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -59,14 +64,10 @@ public class BottleOfExtractionItem extends Item {
     }
 
     private ItemStack initPotion(Player player) {
-        ItemStack potion = new ItemStack(Items.POTION);
-        CompoundTag tag = potion.getOrCreateTag();
-        PotionUtils.setCustomEffects(potion, player.getActiveEffects());
-        tag.putBoolean("isMoreSnifferFlowers", true);
-        tag.putInt("CustomPotionColor", 4723885);
-        potion.setTag(tag);
-
-        return potion;
+        ItemStack itemStack1 = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
+        PotionUtils.setCustomEffects(itemStack1, player.getActiveEffects());
+        itemStack1.addTagElement("extractedBottle", EndTag.INSTANCE);
+        return itemStack1;
     }
     
     @Override

@@ -87,5 +87,6 @@
 
 	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
 
-	"hover_name.moresnifferflowers.extracted_bottle": "Extracted Bottle"
+	"hover_name.moresnifferflowers.extracted_bottle": "Extracted Bottle",
+	"hover_name.moresnifferflowers.rebrewed_potion": "Rebrewed Potion"
 }

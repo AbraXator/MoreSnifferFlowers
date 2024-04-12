@@ -15,19 +15,17 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class ModCustomRecipeProvider extends RecipeProvider {
-    private static Consumer<FinishedRecipe> output;
 
     public ModCustomRecipeProvider(PackOutput pOutput) {
         super(pOutput);
     }
 
     public static void createRecipes(Consumer<FinishedRecipe> pWriter) {
-        ModCustomRecipeProvider.output = pWriter;
-        createCropressing(ModItems.CROPRESSED_CARROT.get(), Items.CARROT);
-        createCropressing(ModItems.CROPRESSED_POTATO.get(), Items.POTATO);
-        createCropressing(ModItems.CROPRESSED_NETHERWART.get(), Items.NETHER_WART);
-        createCropressing(ModItems.CROPRESSED_BEETROOT.get(), Items.BEETROOT);
-        createCropressing(ModItems.CROPRESSED_WHEAT.get(), Items.WHEAT);
+        createCropressing(pWriter, ModItems.CROPRESSED_CARROT.get(), Items.CARROT);
+        createCropressing(pWriter, ModItems.CROPRESSED_POTATO.get(), Items.POTATO);
+        createCropressing(pWriter, ModItems.CROPRESSED_NETHERWART.get(), Items.NETHER_WART);
+        createCropressing(pWriter, ModItems.CROPRESSED_BEETROOT.get(), Items.BEETROOT);
+        createCropressing(pWriter, ModItems.CROPRESSED_WHEAT.get(), Items.WHEAT);
     }
 
     @Override
@@ -35,7 +33,7 @@ public class ModCustomRecipeProvider extends RecipeProvider {
 
     }
 
-    public static void createCropressing(ItemLike result, ItemLike crop) {
-        new CropressingRecipeBuilder(result).requiresCrop(crop.asItem()).unlockedBy("has_cropressor", has(ModBlocks.CROPRESSOR_OUT.get())).save(output);
+    public static void createCropressing(Consumer<FinishedRecipe> writer, ItemLike result, ItemLike crop) {
+        new CropressingRecipeBuilder(result).requiresCrop(crop.asItem()).unlockedBy("has_cropressor", has(ModBlocks.CROPRESSOR_OUT.get())).save(writer);
     }
 }

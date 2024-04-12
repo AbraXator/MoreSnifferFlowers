@@ -1,11 +1,22 @@
 package net.abraxator.moresnifferflowers.blocks.blockentities;
 
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.types.templates.TaggedChoice;
+import it.unimi.dsi.fastutil.ints.IntImmutableList;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -15,20 +26,27 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.http.conn.MultihomePlainSocketFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     public static final double MAX_FUEL = 16;
     public static final int DATA_PROGRESS = 0;
     public static final int DATA_FUEL = 1;
-    public static final int MAX_PROGRESS = 40;
+    public static final int MAX_PROGRESS = 100;
     private NonNullList<ItemStack> inv = NonNullList.withSize(6, ItemStack.EMPTY);
     int brewProgress;
     int fuel;
@@ -36,8 +54,8 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         @Override
         public int get(int pIndex) {
             return switch (pIndex) {
-                case 0 -> brewProgress;
-                case 1 -> fuel;
+                case 0 -> RebrewingStandBlockEntity.this.brewProgress;
+                case 1 -> RebrewingStandBlockEntity.this.fuel;
                 default -> 0;
             };
         }
@@ -46,10 +64,10 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         public void set(int pIndex, int pValue) {
             switch (pIndex) {
                 case 0:
-                    brewProgress = pValue;
+                    RebrewingStandBlockEntity.this.brewProgress = pValue;
                     break;
                 case 1:
-                    fuel = pValue;
+                    RebrewingStandBlockEntity.this.fuel = pValue;
             }
         }
 
@@ -79,7 +97,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         var ogPotionStack = inv.get(1);
         var ingredientStack = inv.get(2);
         ItemStack[] potionStack = {inv.get(3), inv.get(4), inv.get(5)};
-        if(fuel <= 0 && fuel < MAX_FUEL && fuelStack.is(ModItems.CROPRESSED_NETHERWART.get())) {
+        if(fuel < MAX_FUEL && fuelStack.is(ModItems.CROPRESSED_NETHERWART.get())) {
             fuel++;
             fuelStack.shrink(1);
             setChanged();
@@ -87,37 +105,51 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         
         if(canBrew()) {
             brewProgress++;
-            
             if(brewProgress >= MAX_PROGRESS) {
-                var ogPotion = PotionUtils.getPotion(ogPotionStack);
-                ogPotion.getEffects().stream().map(instance -> {
-                    var dur = instance.getDuration();
-                    var amp = instance.getAmplifier();
-                    if(ingredientStack.is(Items.REDSTONE)) {
-                        dur = 6000;
-                        amp += 2;
-                    }
-                    if(ingredientStack.is(Items.GLOWSTONE_DUST)) {
-                        dur = 12000;
-                        amp += 1;
-                    }
-                    
-                    return new MobEffectInstance(instance.getEffect(), dur, amp);
-                });
+                var effects = getEffect(ogPotionStack, ingredientStack);
+                List<Integer> index = Util.make(Lists.newArrayList(), integers -> integers.addAll(Arrays.asList(3, 4, 5)));
                 
-                Arrays.stream(potionStack).filter(itemStack -> itemStack.is(Items.GLASS_BOTTLE));
-                Arrays.stream(potionStack).map(itemStack -> PotionUtils.setPotion(itemStack, ogPotion));
+                for(int i : index) {
+                    ItemStack itemStack = inv.get(i);
+                    if(itemStack.is(ItemStack.EMPTY.getItem())) {
+                        
+                    } else {
+                        ItemStack itemStack1 = Items.POTION.getDefaultInstance();
+                        PotionUtils.setCustomEffects(itemStack1, effects);
+                        itemStack1.addTagElement("rebrewedPotion", EndTag.INSTANCE);
+                        inv.set(i, itemStack1);
+                    }
+                }
+
                 fuel -= 4;
                 brewProgress = 0;
             }
         }
+    }
+
+    private List<MobEffectInstance> getEffect(ItemStack inputPotion, ItemStack ingredient) {
+        List<MobEffectInstance> ret = new ArrayList<>();
+        ListTag listTag = ((ListTag) inputPotion.getOrCreateTag().get("CustomPotionEffects"));
+        
+        for(int i = 0; i < listTag.size(); i++) {
+            var potion = listTag.getCompound(i);
+            var id = potion.getString("forge:id");
+            var amp = potion.getByte("Amplifier") + (ingredient.is(Items.REDSTONE) ? 2 : 1);
+            var dur = potion.getInt("Duration") + (ingredient.is(Items.GLOWSTONE_DUST) ? 12000 : 6000);
+            var instance = new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(id.split(":")[1])), dur, amp);
+            
+            ret.add(instance);
+        }
+        
+        
+        return ret;
     }
     
     private boolean canBrew() {
         boolean ret = false;
         
         for(int i = 3; i <= 5; i++) {
-            if(!inv.get(i).isEmpty()) {
+            if(inv.get(i).is(Items.GLASS_BOTTLE)) {
                 ret = true;
             }
         }
@@ -132,7 +164,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     public int getContainerSize() {
-        return 0;
+        return 6;
     }
 
     @Override
@@ -165,5 +197,35 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     @Override
     public void clearContent() {
         this.inv.clear();
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        ContainerHelper.saveAllItems(pTag, inv);
+        pTag.putInt("progress", brewProgress);
+        pTag.putInt("fuel", fuel);
+        super.saveAdditional(pTag);
+    }
+    
+    @Override
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        inv = NonNullList.withSize(6, ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(pTag, inv);
+        fuel = pTag.getInt("fuel");
+        brewProgress = pTag.getInt("progress");
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("fuel", fuel);
+        tag.putInt("progress", brewProgress);
+        return tag;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 }

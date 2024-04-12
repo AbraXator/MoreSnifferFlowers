@@ -46,9 +46,9 @@ public class BaseRebrewingStandBlock extends Block implements ModEntityBlock {
         if (pLevel.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            BlockPos blockPos = pPos.above();
+            BlockPos blockPos = pPos;
             if(pLevel.getBlockState(pPos).is(ModBlocks.REBREWING_STAND_BOTTOM.get())) {
-                blockPos.below();
+                blockPos = blockPos.above();
             }
             
             BlockEntity entity = pLevel.getBlockEntity(blockPos);

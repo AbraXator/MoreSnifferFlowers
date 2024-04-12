@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_aroma_trim_template": {
+    "has_nether_wart": {
       "conditions": {
         "items": [
           {
             "items": [
-              "moresnifferflowers:aroma_armor_trim_smithing_template"
+              "minecraft:nether_wart"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moresnifferflowers:cropressed_potato"
+        "recipe": "moresnifferflowers:extraction_bottle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_aroma_trim_template",
+      "has_nether_wart",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "moresnifferflowers:cropressed_potato"
+      "moresnifferflowers:extraction_bottle"
     ]
   },
   "sends_telemetry_event": false
