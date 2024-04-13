@@ -20,6 +20,9 @@
 	"item.moresnifferflowers.cropressed_nether_wart": "Cropressed Nether Wart",
 	"item.moresnifferflowers.cropressed_carrot": "Cropressed Carrot",
 	"item.moresnifferflowers.extraction_bottle": "Bottle o' Extraction",
+	"item.moresnifferflowers.extracted_bottle": "Extracted Potion",
+	"item.moresnifferflowers.extracted_bottle.effect.empty": "Uncraftable Extracted Potion",
+
    	"item.moresnifferflowers.rebrewing_stand": "Rebrewing Stand",
 	"item.moresnifferflowers.cropressor": "Cropressor",
 
@@ -87,6 +90,6 @@
 
 	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
 
-	"hover_name.moresnifferflowers.extracted_bottle": "Extracted Bottle",
+	"hover_name.moresnifferflowers.extracted_bottle": "Extracted Potion",
 	"hover_name.moresnifferflowers.rebrewed_potion": "Rebrewed Potion"
 }
