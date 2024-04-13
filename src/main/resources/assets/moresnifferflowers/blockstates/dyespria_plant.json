@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+    {
+      "model": "moresnifferflowers:block/dyespria_plant"
+    },
+    {
+      "model": "moresnifferflowers:block/dyespria_plant_rotated"
+    }
+   ]
+  }
+}
