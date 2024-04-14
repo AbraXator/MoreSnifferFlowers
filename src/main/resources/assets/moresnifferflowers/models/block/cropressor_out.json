@@ -1,6 +1,7 @@
 {	
 	"credit": "Made with Blockbench",
 	"render_type": "cutout",
+	"ambientocclusion": false,
 	"texture_size": [128, 128],
 	"textures": {
 		"0": "moresnifferflowers:block/cropressor",

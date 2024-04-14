@@ -1,12 +1,23 @@
 {
   "variants": {
-    "": [
-    {
-      "model": "moresnifferflowers:block/dyespria_plant"
+    "age=3": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_stage3",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_stage3_rotated",
+        "weight": 1
+      }
+    ],
+    "age=2": {
+      "model": "moresnifferflowers:block/dyespria_plant_stage2"
     },
-    {
-      "model": "moresnifferflowers:block/dyespria_plant_rotated"
+    "age=1": {
+      "model": "moresnifferflowers:block/dyespria_plant_stage1"
+    },
+    "age=0": {
+      "model": "moresnifferflowers:block/dyespria_plant_stage0"
     }
-   ]
   }
 }
