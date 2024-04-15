@@ -1,5 +1,6 @@
 {
 	"gui_light": "front",
+	"ambientocclusion": false,
  	"render_type": "cutout",
 	"display": {
         "ground": {
@@ -28,6 +29,7 @@
 	"model": "moresnifferflowers:models/block/obj/dyespria_plant_thick.obj",
 	"textures": {
 		"texture0": "moresnifferflowers:block/obj/dyespria_plant_0",
+		"particle": "moresnifferflowers:block/dyespria_plant_stage2",
 		"texture0": "moresnifferflowers:block/obj/dyespria_plant_1"
 
 	}

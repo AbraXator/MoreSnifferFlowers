@@ -1,6 +1,6 @@
 {
   "render_type": "cutout",
-  "parent": "moresnifferflowers:block/farmland_cross",
+  "parent": "minecraft:block/cross",
   "textures": {
     "cross": "moresnifferflowers:block/dyespria_plant_stage1"
   }

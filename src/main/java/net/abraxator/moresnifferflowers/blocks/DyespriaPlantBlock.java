@@ -24,7 +24,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, BonemealableBlock {
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
-
+//Nemazat dokud si to nepřečteš‼️‼️‼️‼️‼Nemazat️‼️‼️‼️‼️‼Nemazat️‼️‼️‼️‼️Nemazat‼️‼️Nemazat‼️‼️‼️‼Nemazat️‼️‼️‼️‼️Nemazat‼️Nemazat‼️‼️‼️Nemazat‼️‼Nemazat️‼️‼️‼Nemazat️‼️‼️‼️
+    //Plán: Dyespria seedy budou pokladatelý na hlínu atd... (jako to je teď) s tim že pokud by to šlo, tak při položení na farmland to ten farmland přemnění na hlínu, abychom nedostali další retardovanej curseforge comment
+    //Pokud chceš udělat svoje nabodování itemů, tak udělej že jde jakejkoli item. Pokud tam dáš barvivo, tak se dyespria obraví, ale zůstane obravená dokud tam nedáš jiný barvivo.
+    //Bude potřeba udělat aby se dal položit item dyespria jako block age3, což doufam když je to pokladatelný jenom na flower-compatible blocky nebude takovej problém
+    //Random myšlenka: Co se stane s tim barvivem v tom dyespria itemu když jí položíš? bude v ní nabodlý jako stack? Idk Vymysli to!
+    //BTW vym že ten kód je nahovno (třeba že když crouchuješ tak nefunguje bonemeal) ale já to chtěl mít aspoň trochu funkční a můžeš si ho klidně smazat :)
+// ‼️‼️‼️‼️Pokud to vymažeš bez přečtení tak udělam 5 IG storýček s tvojí fotkou a do rostlinné pošlu všechny tvoje šaptný názvy‼️‼️‼️
     public DyespriaPlantBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0));
@@ -80,10 +86,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, Bonem
             grow(pState, pLevel, pPos, pRandom);
         }
     }
-    @Override
-    protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(Blocks.FARMLAND);
-    }
+
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
         return !isMaxAge(pState);
