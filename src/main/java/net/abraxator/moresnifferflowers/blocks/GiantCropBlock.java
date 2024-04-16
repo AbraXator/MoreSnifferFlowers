@@ -41,11 +41,11 @@ public class GiantCropBlock extends Block implements EntityBlock {
     }
 
     public static enum ModelPos implements StringRepresentable {
-        X("x", -0.49999, 0.49, 0.49999),
-        IX("ix", 1.49998, 0.499, 0.49998),
-        Z("z", 0.49997, 0.498, -0.49997),
-        IZ("iz", 0.49996, 0.4999, 1.49996),
-        Y("y", 0.49995, -0.4998, 0.49995),
+        X("x", -0.5006, 0.5006, 0.5006),
+        IX("ix", 1.5003, 0.5003, 0.5003),
+        Z("z", 0.4991, 0.4991, -0.4991),
+        IZ("iz", 0.4994, 0.4994, 1.4994),
+        Y("y", 0.4997, -0.4997, 0.4997),
         IY("iy", 0.5, 1.5, 0.5),
         NONE("none");
 

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_nether_wart": {
+    "has_amethyst": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:nether_wart"
+              "minecraft:amethyst_shard"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_nether_wart",
+      "has_amethyst",
       "has_the_recipe"
     ]
   ],
