@@ -12,6 +12,7 @@ import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.particle.GiantCropParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.init.*;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
@@ -34,6 +36,10 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -58,6 +64,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.AMBUSH.get(), AmbushBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.GIANT_CROP.get(), GiantCropBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CROPRESSOR.get(), CropressorBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.DYESPRIA_PLANT.get(), DyespriaPlantBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
@@ -75,10 +82,17 @@ public class ClientEvents {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
             if(pTintIndex == 1) {
-                return DyespriaItem.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
+                return DyespriaItem.colorForDye(pState.getValue(ModStateProperties.COLOR));
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());
+        event.register((pState, pLevel, pPos, pTintIndex) -> {
+            if(pTintIndex == 0) {
+                return DyespriaItem.colorForDye(pState.getValue(ModStateProperties.COLOR));
+            }
+            
+            return -1;
+        });
     }
 
     @SubscribeEvent

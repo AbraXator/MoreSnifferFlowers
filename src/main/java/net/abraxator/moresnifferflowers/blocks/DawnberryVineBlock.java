@@ -30,6 +30,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
 public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock, IPlantable {
@@ -48,16 +49,17 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         pBuilder.add(AGE, IS_SHEARED);
     }
 
-    protected IntegerProperty getAgeProperty() {
-        return AGE;
-    }
-
     public int getAge(BlockState pState) {
         return pState.getValue(this.getAgeProperty());
     }
 
     public int getMaxAge() {
         return AGE.getPossibleValues().stream().toList().get(AGE.getPossibleValues().size() - 1);
+    }
+
+    @Override
+    public IntegerProperty getAgeProperty() {
+        return AGE;
     }
 
     public final boolean isMaxAge(BlockState pState) {

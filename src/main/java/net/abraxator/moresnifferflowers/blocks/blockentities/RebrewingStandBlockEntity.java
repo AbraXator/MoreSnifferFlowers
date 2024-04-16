@@ -122,7 +122,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         List<MobEffectInstance> ret = new ArrayList<>();
         ListTag listTag = ((ListTag) inputPotion.getOrCreateTag().get("CustomPotionEffects"));
         
-        for(int i = 0; i < listTag.size(); i++) {
+        for(int i = 0; i <  listTag.size(); i++) {
             var potion = listTag.getCompound(i);
             var id = potion.getString("forge:id");
             var amp = potion.getByte("Amplifier") + (ingredient.is(Items.REDSTONE) ? 2 : 1);

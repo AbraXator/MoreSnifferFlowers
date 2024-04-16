@@ -1,12 +1,44 @@
 package net.abraxator.moresnifferflowers.blocks;
 
+import net.minecraft.DefaultUncaughtExceptionHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.IPlantable;
 
-public interface ModCropBlock extends IPlantable {
+public interface ModCropBlock extends IPlantable, BonemealableBlock {
+    IntegerProperty getAgeProperty();
+    
+    default boolean isMaxAge (BlockState blockState) {
+        return getAge(blockState) >= getMaxAge();
+    }
+    
+    default int getMaxAge() {
+        return getAgeProperty().getPossibleValues().stream().toList().get(getAgeProperty().getPossibleValues().size() - 1);
+    }
+
+    default int getAge(BlockState blockState) {
+        return blockState.getValue(getAgeProperty());
+    }
+    
+    default void makeGrowOnTick(Block block, BlockState blockState, Level level, BlockPos blockPos) {
+        if (!isMaxAge(blockState) && level.isAreaLoaded(blockPos, 1) && level.getRawBrightness(blockPos, 0) >= 9) {
+            float f = getGrowthSpeed(block, level, blockPos);
+            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, blockPos, blockState, level.getRandom().nextInt((int)(25.0F / f) + 1) == 0)) {
+                level.setBlock(blockPos, blockState.setValue(getAgeProperty(), (blockState.getValue(getAgeProperty()) + 1)), 2);
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, blockPos, blockState);
+            }
+        }
+    }
+    
+    default void makeGrowOnBonemeal(Level level, BlockPos blockPos, BlockState blockState) {
+        level.setBlock(blockPos, blockState.setValue(getAgeProperty(), getAge(blockState) >= 3 ? getAge(blockState) : getAge(blockState) + 1), 2);
+    }
+    
     default float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {
         float f = 1.0F;
         BlockPos blockpos = pPos.below();

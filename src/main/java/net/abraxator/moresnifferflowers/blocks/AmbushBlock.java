@@ -18,7 +18,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -31,20 +30,19 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, ModEntityBlock, ModCropBlock {
-    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 8);
-    public static final int MAX_AGE = 7;
+public class AmbushBlock extends DoublePlantBlock implements ModEntityBlock, ModCropBlock {
     public static final int AGE_TO_GROW_UP = 4;
 
     public AmbushBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER));
     }
-
-    private boolean isMaxAge(BlockState state) {
-        return state.getValue(AGE) >= MAX_AGE;
+    
+    @Override
+    public IntegerProperty getAgeProperty() {
+        return ModStateProperties.AGE_8;
     }
-
+    
     @Override
     public boolean isRandomlyTicking(BlockState pState) {
         return !isMaxAge(pState);
@@ -71,7 +69,7 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
             boolean b = blockState.is(this);
             return b && isHalf(blockState, DoubleBlockHalf.LOWER);
         } else {
-            return this.mayPlaceOn(pLevel.getBlockState(pPos.below()), pLevel, pPos.below()) && sufficientLight(pLevel, pPos) && pState.getValue(AGE) < AGE_TO_GROW_UP || isHalf(pLevel.getBlockState(pPos.above()), DoubleBlockHalf.UPPER);
+            return this.mayPlaceOn(pLevel.getBlockState(pPos.below()), pLevel, pPos.below()) && sufficientLight(pLevel, pPos) && getAge(pState) < AGE_TO_GROW_UP || isHalf(pLevel.getBlockState(pPos.above()), DoubleBlockHalf.UPPER);
         }
     }
 
@@ -82,7 +80,7 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(AGE);
+        pBuilder.add(ModStateProperties.AGE_8);
         super.createBlockStateDefinition(pBuilder);
     }
 
@@ -100,17 +98,9 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
         return false;
     }
 
-    private boolean hasAmber(Level level, BlockPos blockPos) {
-        if(level.getBlockEntity(blockPos) instanceof AmbushBlockEntity entity) {
-            return entity.hasGrown;
-        }
-
-        return false;
-    }
-
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(pState.getValue(AGE) <= MAX_AGE && pRandom.nextInt(100) < 10 && isHalf(pState, DoubleBlockHalf.LOWER)) {
+        if(getAge(pState) <= getMaxAge() && pRandom.nextInt(100) < 10 && isHalf(pState, DoubleBlockHalf.LOWER)) {
             double dx = pPos.getX() + pRandom.nextDouble();
             double dy = pPos.getY() + pRandom.nextDouble();
             double dz = pPos.getZ() + pRandom.nextDouble();
@@ -126,12 +116,12 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
         }
     }
 
-    private void grow(ServerLevel pLevel, BlockState pState, BlockPos pPos, int i) {
-        int k = Math.min(pState.getValue(AGE) + i, MAX_AGE);
+    void grow(ServerLevel pLevel, BlockState pState, BlockPos pPos, int i) {
+        int k = Math.min(getAge(pState) + i, getMaxAge());
         if(this.canGrow(pLevel, pPos, pState, k)) {
-            pLevel.setBlock(pPos, pState.setValue(AGE, k), 2);
+            pLevel.setBlock(pPos, pState.setValue(getAgeProperty(), k), 2);
             if(k >= AGE_TO_GROW_UP) {
-                pLevel.setBlock(pPos.above(), this.defaultBlockState().setValue(AGE, k).setValue(HALF, DoubleBlockHalf.UPPER), 3);
+                pLevel.setBlock(pPos.above(), this.defaultBlockState().setValue(getAgeProperty(), k).setValue(HALF, DoubleBlockHalf.UPPER), 3);
             }
 
             if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity) {
@@ -150,8 +140,8 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
 
             BlockPos lowerPos = isHalf(pState, DoubleBlockHalf.LOWER) ? pPos : pPos.below();
             BlockPos upperPos = isHalf(pState, DoubleBlockHalf.UPPER) ? pPos : pPos.above();
-            BlockState lowerState = pLevel.getBlockState(lowerPos).setValue(AGE, 7);
-            BlockState upperState = pLevel.getBlockState(upperPos).setValue(AGE, 7);
+            BlockState lowerState = pLevel.getBlockState(lowerPos).setValue(getAgeProperty(), 7);
+            BlockState upperState = pLevel.getBlockState(upperPos).setValue(getAgeProperty(), 7);
             pLevel.setBlock(lowerPos, lowerState, 3);
             pLevel.setBlock(upperPos, upperState, 3);
             pLevel.gameEvent(GameEvent.BLOCK_CHANGE, lowerPos, GameEvent.Context.of(pPlayer, lowerState));
@@ -193,7 +183,7 @@ public class AmbushBlock extends DoublePlantBlock implements BonemealableBlock, 
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
         PosAndState posAndState = this.getLowerHalf(pLevel, pPos, pState);
-        return posAndState != null && this.canGrow(pLevel, posAndState.blockPos(), posAndState.state(), posAndState.state().getValue(AGE) + 1);
+        return posAndState != null && this.canGrow(pLevel, posAndState.blockPos(), posAndState.state(), getAge(posAndState.state()) + 1);
     }
 
     @Override

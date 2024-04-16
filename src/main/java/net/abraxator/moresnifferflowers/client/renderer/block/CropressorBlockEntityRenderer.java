@@ -46,7 +46,6 @@ public class CropressorBlockEntityRenderer implements BlockEntityRenderer<Cropre
     @Override
     public void render(CropressorBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         BlockState blockState = pBlockEntity.getBlockState();
-        VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         Direction direction = pBlockEntity.getBlockState().getValue(BaseCropressorBlock.FACING).getOpposite();
 

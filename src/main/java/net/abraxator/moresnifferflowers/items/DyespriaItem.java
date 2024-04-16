@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -91,11 +92,11 @@ public class DyespriaItem extends Item {
         Dye dye = getDye(stack);
         RandomSource randomSource = level.random;
 
-        if(blockState.getValue(CaulorflowerBlock.COLOR).equals(dye.color) || dye.isEmpty()) {
+        if(blockState.getValue(ModStateProperties.COLOR).equals(dye.color) || dye.isEmpty()) {
             return;
         }
 
-        level.setBlockAndUpdate(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color));
+        level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.COLOR, dye.color));
         setDye(stack, stackFromDye(new Dye(dye.color, dye.amount - 1)));
         particles(randomSource, level, dye, blockPos);
     }
