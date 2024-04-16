@@ -5,6 +5,8 @@ import mezz.jei.api.runtime.IEditModeConfig;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.nbt.ByteArrayTag;
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.EndTag;
 import net.minecraft.network.chat.Component;
@@ -66,7 +68,7 @@ public class BottleOfExtractionItem extends Item {
     private ItemStack initPotion(Player player) {
         ItemStack itemStack1 = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
         PotionUtils.setCustomEffects(itemStack1, player.getActiveEffects());
-        itemStack1.addTagElement("extractedBottle", EndTag.INSTANCE);
+        itemStack1.addTagElement("extractedBottle", ByteTag.ZERO);
         return itemStack1;
     }
     

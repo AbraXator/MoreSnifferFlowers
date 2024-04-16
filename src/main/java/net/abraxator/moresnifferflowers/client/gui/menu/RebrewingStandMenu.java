@@ -10,14 +10,13 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.Tags;
 import org.checkerframework.checker.optional.qual.MaybePresent;
 import org.openjdk.nashorn.internal.ir.ReturnNode;
@@ -58,7 +57,62 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        return null;
+        ItemStack movedStack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(pIndex);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            movedStack = itemstack1.copy();
+            if ((pIndex < 0 || pIndex > 5)) {
+                if (RebrewingStandMenu.FuelSlot.mayPlaceItem(movedStack)) {
+                    if (this.moveItemStackTo(itemstack1, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (OriginalPotionSlot.mayPlaceItem(itemstack1)) {
+                    if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (IngredientSlot.mayPlaceItem(movedStack)) {
+                    if (!this.moveItemStackTo(itemstack1, 2, 3, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (PotionSlot.mayPlaceItem(movedStack)) {
+                    if (!this.moveItemStackTo(itemstack1, 3, 6, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (pIndex >= 6 && pIndex < 33) {
+                    if (!this.moveItemStackTo(itemstack1, 33, 42, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (pIndex >= 33 && pIndex < 42) {
+                    if (!this.moveItemStackTo(itemstack1, 6, 33, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!this.moveItemStackTo(itemstack1, 6, 42, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                if (!this.moveItemStackTo(itemstack1, 6, 42, true)) {
+                    return ItemStack.EMPTY;
+                }
+
+                slot.onQuickCraft(itemstack1, movedStack);
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (itemstack1.getCount() == movedStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(pPlayer, itemstack1);
+        }
+
+        return movedStack;
     }
 
     public int getFuel() {
@@ -78,10 +132,14 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         public FuelSlot(Container pContainer, int pSlot, int pX, int pY) {
             super(pContainer, pSlot, pX, pY);
         }
-
+            
+        public static boolean mayPlaceItem(ItemStack itemStack) {
+            return itemStack.is(ModItems.CROPRESSED_NETHERWART.get());
+        }
+        
         @Override
         public boolean mayPlace(ItemStack pStack) {
-            return pStack.is(ModItems.CROPRESSED_NETHERWART.get());
+            return mayPlaceItem(pStack);
         }
 
         @Override
@@ -95,9 +153,13 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
             super(pContainer, pSlot, pX, pY);
         }
 
+        public static boolean mayPlaceItem(ItemStack itemStack) {
+            return itemStack.is(ModItems.EXTRACTED_BOTTLE.get());
+        }
+
         @Override
         public boolean mayPlace(ItemStack pStack) {
-            return pStack.is(ModItems.EXTRACTED_BOTTLE.get());
+            return mayPlaceItem(pStack);
         }
 
         @Override
@@ -111,11 +173,14 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
             super(pContainer, pSlot, pX, pY);
         }
 
-        @Override
-        public boolean mayPlace(ItemStack pStack) {
-            return pStack.is(Items.REDSTONE) || pStack.is(Items.GLOWSTONE_DUST);
+        public static boolean mayPlaceItem(ItemStack itemStack) {
+            return itemStack.is(Items.GLOWSTONE_DUST) || itemStack.is(Items.REDSTONE);
         }
 
+        @Override
+        public boolean mayPlace(ItemStack pStack) {
+            return mayPlaceItem(pStack);
+        }
         @Override
         public int getMaxStackSize() {
             return 64;
@@ -127,9 +192,13 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
             super(pContainer, pSlot, pX, pY);
         }
 
+        public static boolean mayPlaceItem(ItemStack itemStack) {
+            return itemStack.is(PotionUtils.setPotion(Items.POTION.getDefaultInstance(), Potions.WATER).getItem());
+        }
+
         @Override
         public boolean mayPlace(ItemStack pStack) {
-            return pStack.is(Items.GLASS_BOTTLE);
+            return mayPlaceItem(pStack);
         }
 
         public void onTake(Player pPlayer, ItemStack pStack) {

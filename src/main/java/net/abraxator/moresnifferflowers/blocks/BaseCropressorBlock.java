@@ -12,9 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BaseSpawner;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -77,19 +75,19 @@ public class BaseCropressorBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if(!pLevel.isClientSide && pPlayer.isCreative()) {
-            if(PART == CropressorBlockOut.Part.OUT) {
-                BlockPos blockPos = pPos.relative(getNeighbourDirection(PART, pState.getValue(FACING)));
-                BlockState blockState = pLevel.getBlockState(blockPos);
-                if(getPartFromState(blockState) == CropressorBlockOut.Part.CENTER) {
-                    pLevel.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 35);
-                    pLevel.levelEvent(pPlayer, 2001, blockPos, Block.getId(blockState));
-                }
+    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
+        if(pDirection == getNeighbourDirection(PART, pState.getValue(FACING))) {
+            var b = pNeighborState.getBlock() instanceof BaseCropressorBlock;
+            var b1 = getPartFromState(pNeighborState) != PART;
+            if(b && b1) {
+                return super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
+            } else {
+                return Blocks.AIR.defaultBlockState();
             }
         }
-
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        
+        return super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos);
+            
     }
 
     @Nullable
@@ -113,7 +111,8 @@ public class BaseCropressorBlock extends HorizontalDirectionalBlock {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         if(!pLevel.isClientSide) {
             BlockPos blockPos = pPos.relative(pState.getValue(FACING));
-            pLevel.setBlockAndUpdate(blockPos, ModBlocks.CROPRESSOR_CENTER.get().defaultBlockState().setValue(FACING, pState.getValue(FACING)));
+            pLevel.setBlock(blockPos, ModBlocks.CROPRESSOR_CENTER.get().defaultBlockState().setValue(FACING, pState.getValue(FACING)), 3);
+            pLevel.blockUpdated(pPos, Blocks.AIR);
             pState.updateNeighbourShapes(pLevel, pPos, 3);
         }
     }

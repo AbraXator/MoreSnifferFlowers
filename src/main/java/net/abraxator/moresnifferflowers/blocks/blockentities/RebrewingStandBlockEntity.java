@@ -1,44 +1,36 @@
 package net.abraxator.moresnifferflowers.blocks.blockentities;
 
 import com.google.common.collect.Lists;
-import com.mojang.datafixers.types.templates.TaggedChoice;
-import it.unimi.dsi.fastutil.ints.IntImmutableList;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.EndTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.http.conn.MultihomePlainSocketFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -83,7 +75,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     protected Component getDefaultName() {
-        return Component.translatableWithFallback("container.more_sniffer_flowers.rebrewing", "Rebrewing Stand");
+        return Component.literal("");
     }
 
     @Override
@@ -96,7 +88,6 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         var fuelStack = inv.get(0);
         var ogPotionStack = inv.get(1);
         var ingredientStack = inv.get(2);
-        ItemStack[] potionStack = {inv.get(3), inv.get(4), inv.get(5)};
         if(fuel < MAX_FUEL && fuelStack.is(ModItems.CROPRESSED_NETHERWART.get())) {
             fuel++;
             fuelStack.shrink(1);
@@ -111,16 +102,16 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                 
                 for(int i : index) {
                     ItemStack itemStack = inv.get(i);
-                    if(itemStack.is(ItemStack.EMPTY.getItem())) {
-                        
-                    } else {
+                    if (!itemStack.is(ItemStack.EMPTY.getItem())) {
                         ItemStack itemStack1 = Items.POTION.getDefaultInstance();
                         PotionUtils.setCustomEffects(itemStack1, effects);
-                        itemStack1.addTagElement("rebrewedPotion", EndTag.INSTANCE);
+                        itemStack1.addTagElement("rebrewedPotion", ByteTag.ZERO);
                         inv.set(i, itemStack1);
                     }
                 }
-
+                
+                ingredientStack.shrink(1);
+                inv.set(1, Items.GLASS_BOTTLE.getDefaultInstance());
                 fuel -= 4;
                 brewProgress = 0;
             }
@@ -149,7 +140,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         boolean ret = false;
         
         for(int i = 3; i <= 5; i++) {
-            if(inv.get(i).is(Items.GLASS_BOTTLE)) {
+            if(PotionUtils.getAllEffects(inv.get(i).getTag()).isEmpty()) {
                 ret = true;
             }
         }
@@ -201,10 +192,10 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
-        ContainerHelper.saveAllItems(pTag, inv);
-        pTag.putInt("progress", brewProgress);
-        pTag.putInt("fuel", fuel);
         super.saveAdditional(pTag);
+        ContainerHelper.saveAllItems(pTag, inv);
+        pTag.putByte("progress", ((byte) brewProgress));
+        pTag.putByte("fuel", ((byte) fuel));
     }
     
     @Override
@@ -212,20 +203,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         super.load(pTag);
         inv = NonNullList.withSize(6, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(pTag, inv);
-        fuel = pTag.getInt("fuel");
-        brewProgress = pTag.getInt("progress");
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("fuel", fuel);
-        tag.putInt("progress", brewProgress);
-        return tag;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        fuel = pTag.getByte("fuel");
+        brewProgress = pTag.getByte("progress");
     }
 }

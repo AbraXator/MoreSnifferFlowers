@@ -14,7 +14,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,12 +25,13 @@ import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class BaseRebrewingStandBlock extends Block implements ModEntityBlock {
+public class BaseRebrewingStandBlock extends Block {
     public static final BooleanProperty[] HAS_BOTTLE = new BooleanProperty[]{BlockStateProperties.HAS_BOTTLE_0, BlockStateProperties.HAS_BOTTLE_1, BlockStateProperties.HAS_BOTTLE_2};
     
     public BaseRebrewingStandBlock(Properties pProperties) {
@@ -36,9 +40,27 @@ public class BaseRebrewingStandBlock extends Block implements ModEntityBlock {
 
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if(pState.is(ModBlocks.REBREWING_STAND_BOTTOM.get())) super.playerWillDestroy(pLevel, pPos.above(), pState, pPlayer);
-        if(pState.is(ModBlocks.REBREWING_STAND_TOP.get())) super.playerWillDestroy(pLevel, pPos.below(), pState, pPlayer);
+        if(pState.is(ModBlocks.REBREWING_STAND_TOP.get())) {
+            BlockState blockstate1 = pState.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+            pLevel.setBlock(pPos.below(), blockstate1, 35);
+            pLevel.levelEvent(pPlayer, 2001, pPos.below(), Block.getId(blockstate1));
+        }
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
+        return canSurvive(pState, pLevel, pCurrentPos) ? super.updateShape(pState, pDirection, pNeighborState, pLevel, pCurrentPos, pNeighborPos) : Blocks.AIR.defaultBlockState();
+    }
+
+    @Override
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        if(!pState.is(ModBlocks.REBREWING_STAND_TOP.get())) {
+            return super.canSurvive(pState, pLevel, pPos);
+        } else {
+            BlockState blockState = pLevel.getBlockState(pPos.below());
+            return blockState.is(ModBlocks.REBREWING_STAND_BOTTOM.get());
+        }
     }
 
     @Override
@@ -78,22 +100,5 @@ public class BaseRebrewingStandBlock extends Block implements ModEntityBlock {
             pLevel.setBlockAndUpdate(blockPos, ModBlocks.REBREWING_STAND_TOP.get().defaultBlockState());
             pState.updateNeighbourShapes(pLevel, blockPos, 3);
         }
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new BrewingStandBlockEntity(pPos, pState);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pLevel.isClientSide) return null;
-        return (pLevel1, pPos, pState1, pBlockEntity) -> {
-            if (pBlockEntity instanceof RebrewingStandBlockEntity) {
-                ((RebrewingStandBlockEntity) pBlockEntity).tick(pLevel); 
-            }
-        };
     }
 }

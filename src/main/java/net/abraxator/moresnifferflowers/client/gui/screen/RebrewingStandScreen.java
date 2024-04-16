@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStandMenu> {
     public static final ResourceLocation TEXTURE = MoreSnifferFlowers.loc("textures/gui/container/rebrewing_stand.png");
-    private static final int[] BUBBLELENGTHS = new int[]{27, 22, 17, 12, 8, 4, 0};
+    private static final int[] BUBBLELENGTHS = new int[]{0, 5, 8, 12, 17, 22, 27};
     
     public RebrewingStandScreen(RebrewingStandMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -34,7 +34,7 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
         
-        if(fuel > 0) {
+        if(fuel > 0) { 
             renderFuel = fuel == 1 ? 2 : fuel == 16 ? 18 : fuel + 1;
             guiGraphics.blit(TEXTURE, x + 55, y + 39, 176, 29, renderFuel, 4);
         }
@@ -42,7 +42,7 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         if(progress > 0) {
             var bubbleFactor = BUBBLELENGTHS[progress / 2 % 7];
             System.out.println(bubbleFactor);
-            guiGraphics.blit(TEXTURE, x + 59, y + 72 + 27 - bubbleFactor, 186, 27 - bubbleFactor, 11, bubbleFactor);   
+            guiGraphics.blit(TEXTURE, x + 59, y + 37 - bubbleFactor, 186, 28 - bubbleFactor, 11, bubbleFactor);   
         }
     }
 }
