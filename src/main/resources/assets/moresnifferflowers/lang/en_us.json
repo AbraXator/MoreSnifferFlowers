@@ -22,7 +22,10 @@
 	"item.moresnifferflowers.cropressed_carrot": "Cropressed Carrot",
 	"item.moresnifferflowers.extraction_bottle": "Bottle o' Extraction",
 	"item.moresnifferflowers.extracted_bottle": "Extracted Potion",
+	"item.moresnifferflowers.extracted_bottle.effect.water": "Extracted Potion",
+	"item.moresnifferflowers.rebrewed_potion.effect.water": "Rebrewed Potion",
 	"item.moresnifferflowers.extracted_bottle.effect.empty": "Uncraftable Extracted Potion",
+	"item.moresnifferflowers.rebrewed_potion.effect.empty": "Uncraftable Rebrewed Potion",
 
    	"item.moresnifferflowers.rebrewing_stand": "Rebrewing Stand",
 	"item.moresnifferflowers.cropressor": "Cropressor",
