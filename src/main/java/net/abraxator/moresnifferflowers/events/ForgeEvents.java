@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntit
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.mixins.SnifferEggMixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -29,6 +30,10 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ForgeEvents {
+    @SubscribeEvent
+    public static void onBlockEvent(BlockEvent event) {
+    }
+    
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if(event.getState().is(ModBlocks.AMBER.get()) && event.getLevel() instanceof ServerLevel serverLevel) {

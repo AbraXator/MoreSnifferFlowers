@@ -13,7 +13,7 @@ public class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(
             BuiltInRegistries.CREATIVE_MODE_TAB.key(), MoreSnifferFlowers.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> moresnifferflowers_TAB = TABS.register("moresnifferflowers_tab", () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> TAB = TABS.register("moresnifferflowers_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("moresnifferflowers.creative_tab"))
             .icon(() -> new ItemStack(ModItems.DYESPRIA.get()))
             .displayItems((parameters, output) -> {

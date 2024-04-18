@@ -64,11 +64,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
     }
 
     public void addItem(ItemStack pStack, Level level) {
-        boolean b = content.getCount() >= INV_SIZE;
-        boolean b1 = !content.is(pStack.getItem());
-        boolean b2 = !content.isEmpty();
-        boolean b3 = (b1 && b2);
-        if(b || b3) return;
+        if(content.getCount() >= INV_SIZE || (!content.is(pStack.getItem()) && !content.isEmpty())) return;
         var freeSpace = INV_SIZE - content.getCount();
         var toInsert = Math.min(pStack.getCount(), freeSpace);
         content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);

@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.data.loot;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.blocks.DawnberryVineBlock;
+import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
@@ -10,13 +11,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,22 +47,45 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.DAWNBERRY_VINE.get())
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(DawnberryVineBlock.AGE, 4)))));
+
         add(ModBlocks.AMBER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .when(HAS_SILK_TOUCH)
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .when(HAS_NO_SILK_TOUCH)
-                        //.add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()))
-                        .add(LootItem.lootTableItem(ModItems.AMBER_SHARD.get()))
-                        .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()))
-                        .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get()))
-                        .add(LootItem.lootTableItem(ModItems.AMBUSH_SEEDS.get()))
-                        .add(LootItem.lootTableItem(ModItems.DAWNBERRY_VINE_SEEDS.get()))
-                        .add(LootItem.lootTableItem(ModBlocks.CAULORFLOWER.get().asItem()))
-                        .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get()))
-                        .add(LootItem.lootTableItem(Items.TORCHFLOWER_SEEDS))
-                        .add(LootItem.lootTableItem(Items.PITCHER_POD))));
+                        //COMMON
+                                .add(LootItem.lootTableItem(Items.COAL).setWeight(100))
+                                .add(LootItem.lootTableItem(Items.EMERALD).setWeight(100))
+                                .add(LootItem.lootTableItem(Items.STICK).setWeight(100))
+                                .add(LootItem.lootTableItem(ModItems.AMBER_SHARD.get()).setWeight(100))
+                        //UNCOMMON
+                                .add(LootItem.lootTableItem(Items.CARROT).setWeight(50))
+                                .add(LootItem.lootTableItem(Items.POTATO).setWeight(50))
+                                .add(LootItem.lootTableItem(Items.BEETROOT).setWeight(50))
+                                .add(LootItem.lootTableItem(Items.BEETROOT_SEEDS).setWeight(50))
+                                .add(LootItem.lootTableItem(Items.NETHER_WART).setWeight(50))
+                                .add(LootItem.lootTableItem(Items.WHEAT).setWeight(50))
+                                .add(LootItem.lootTableItem(Items.WHEAT_SEEDS).setWeight(50))
+                                .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()).setWeight(50))
+                        //RARE
+                                .add(LootItem.lootTableItem(Items.SNORT_POTTERY_SHERD).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_BELT.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_ENGINE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_SCRAP.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_TUBE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.EXTRACTION_BOTTLE.get()).setWeight(25))
+                        //VERY RARE
+                                .add(LootItem.lootTableItem(Items.TORCHFLOWER_SEEDS).setWeight(12))
+                                .add(LootItem.lootTableItem(Items.PITCHER_POD).setWeight(12))
+                                .add(LootItem.lootTableItem(Items.SNIFFER_EGG).setWeight(12))
+                                .add(LootItem.lootTableItem(ModItems.DAWNBERRY_VINE_SEEDS.get()).setWeight(12))
+                                .add(LootItem.lootTableItem(ModItems.AMBUSH_SEEDS.get()).setWeight(12))
+                                .add(LootItem.lootTableItem(ModItems.DYESPRIA_SEEDS.get()).setWeight(12))
+                                .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get()).setWeight(12))));
+                                
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         dropSelf(ModBlocks.AMBUSH.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
@@ -80,9 +109,9 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BonmeeliaBlock.AGE, BonmeeliaBlock.MAX_AGE))
                                 .invert()
-                        .and(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BONMEELIA.get())
-                                .setProperties((StatePropertiesPredicate.Builder.properties()
-                                        .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true)))))));
+                                .and(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.BONMEELIA.get())
+                                        .setProperties((StatePropertiesPredicate.Builder.properties()
+                                                .hasProperty(BonmeeliaBlock.HAS_BOTTLE, true)))))));
         dropSelf(ModBlocks.CROPRESSOR_OUT.get());
         dropSelf(ModBlocks.CROPRESSOR_CENTER.get());
         dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
@@ -90,21 +119,6 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropOther(ModBlocks.REBREWING_STAND_TOP.get(), Items.AIR);
         dropSelf(ModBlocks.DYESPRIA_PLANT.get());
     }
-
-    /*private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem) {
-        return createGiantCropBuilder(block, pItem, Items.AIR);
-    }
-
-    private LootTable.Builder createGiantCropBuilder(Block block, ItemLike pItem, ItemLike specialDrop) {
-        return LootTable.lootTable()
-                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-                        .add(this.applyExplosionDecay(pItem, LootItem.lootTableItem(pItem)))
-                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
-                                .setProperties(StatePropertiesPredicate.Builder.properties()
-                                        .hasProperty(GiantCropBlock.IS_CENTER, true))))
-                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-                        .add(this.applyExplosionDecay(specialDrop, LootItem.lootTableItem(specialDrop))));
-    }*/
 
     @Override
     protected Iterable<Block> getKnownBlocks() {

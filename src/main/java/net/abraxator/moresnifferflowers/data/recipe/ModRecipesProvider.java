@@ -33,8 +33,7 @@ public class ModRecipesProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get()).pattern("ABA").pattern("ACA").pattern("AAA").define('A', Items.DIAMOND).define('B', ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get()).define('C', ModItems.CROPRESSED_WHEAT.get()).unlockedBy("has_crop_smithing_templates", has(ModTags.ModItemTags.CROP_SMITHING_TEMPLATES)).save(pWriter);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get()).pattern("ABA").pattern("ACA").pattern("AAA").define('A', Items.DIAMOND).define('B', ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get()).define('C', ModItems.CROPRESSED_BEETROOT.get()).unlockedBy("has_crop_smithing_templates", has(ModTags.ModItemTags.CROP_SMITHING_TEMPLATES)).save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DYESPRIA.get()).pattern("AA").pattern("BA").define('A', Items.PAPER).define('B', ModBlocks.CAULORFLOWER.get().asItem()).unlockedBy("has_caulorflower", has(ModBlocks.CAULORFLOWER.get())).save(pWriter);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.EXTRACTION_BOTTLE.get()).pattern(" A ").pattern("BAB").pattern(" B ").define('A', Items.AMETHYST_SHARD).define('B', Items.GLASS).unlockedBy("has_amethyst", has(Items.AMETHYST_SHARD)).save(pWriter);
+         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.EXTRACTION_BOTTLE.get()).pattern(" A ").pattern("BAB").pattern(" B ").define('A', Items.AMETHYST_SHARD).define('B', Items.GLASS).unlockedBy("has_amethyst", has(Items.AMETHYST_SHARD)).save(pWriter);
         
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.AMBUSH_BANNER_PATTERN.get()).requires(Items.PAPER).requires(ModItems.AMBER_SHARD.get()).unlockedBy("has_amber_shard", has(ModItems.AMBER_SHARD.get())).save(pWriter);
         

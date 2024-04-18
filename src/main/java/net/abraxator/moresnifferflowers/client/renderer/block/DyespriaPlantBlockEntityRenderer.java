@@ -22,7 +22,7 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
 
     @Override
     public void render(DyespriaPlantBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-        if(pBlockEntity.getBlockState().getValue(ModStateProperties.AGE_3) != 3) return;  
+        if(pBlockEntity.getBlockState().getValue(ModStateProperties.AGE_3) != 3 && pBlockEntity.dye.isEmpty()) return;
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         DyeItem dyeItem = DyeItem.byColor(pBlockEntity.getBlockState().getValue(ModStateProperties.COLOR));
         pPoseStack.pushPose();

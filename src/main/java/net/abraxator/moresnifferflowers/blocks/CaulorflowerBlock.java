@@ -1,11 +1,15 @@
 package net.abraxator.moresnifferflowers.blocks;
 
+import com.google.common.collect.Maps;
+import net.abraxator.moresnifferflowers.colors.Colorable;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -21,11 +25,12 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static net.abraxator.moresnifferflowers.init.ModStateProperties.*;
 
-public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock {
+public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock, Colorable {
     public CaulorflowerBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState()
@@ -135,5 +140,32 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     @Override
     public IntegerProperty getAgeProperty() {
         return null;
+    }
+
+    @Override
+    public Map<DyeColor, Integer> colorValues() {
+        return Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
+            dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFFFFFFF);
+            dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF9d979b);
+            dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF474f52);
+            dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1d1d21);
+            dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF835432);
+            dyeColorHexFormatMap.put(DyeColor.RED, 0xFFb5432e);
+            dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFf89635);
+            dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFffee53);
+            dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF80c71f);
+            dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF5e7c16);
+            dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
+            dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF70d9e4);
+            dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF4753ac);
+            dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFFb15fc2);
+            dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFd276b9);
+            dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFf8b0c4);
+        });
+    }
+
+    @Override
+    public void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {
+
     }
 }

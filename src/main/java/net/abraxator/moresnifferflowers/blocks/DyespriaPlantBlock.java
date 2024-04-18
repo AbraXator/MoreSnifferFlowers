@@ -5,11 +5,13 @@ import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -37,8 +39,8 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pPlayer.getItemInHand(pHand).getItem() instanceof DyeItem dyeItem && !pLevel.isClientSide) {
-            pLevel.setBlockAndUpdate(pPos, pState.setValue(ModStateProperties.COLOR, dyeItem.getDyeColor()));
+        if(!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof DyespriaPlantBlockEntity entity) {
+            entity.add(null, pPlayer.getItemInHand(pHand));
             
             return InteractionResult.sidedSuccess(pLevel.isClientSide());
         }

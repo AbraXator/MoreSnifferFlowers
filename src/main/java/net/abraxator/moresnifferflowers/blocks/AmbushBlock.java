@@ -194,7 +194,7 @@ public class AmbushBlock extends DoublePlantBlock implements ModEntityBlock, Mod
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
         PosAndState posAndState = this.getLowerHalf(pLevel, pPos, pState);
-        if(posAndState != null) {
+        if(posAndState != null && pState.getValue(ModStateProperties.AGE_8) < 8) {
             this.grow(pLevel, posAndState.state(), posAndState.blockPos(), 1);
         }
     }

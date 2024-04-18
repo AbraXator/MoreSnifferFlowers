@@ -17,6 +17,7 @@ import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlock
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
+import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
@@ -88,27 +89,20 @@ public class ClientEvents {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
             if(pTintIndex == 1) {
-                return DyespriaItem.colorForDye(pState.getValue(ModStateProperties.COLOR));
+                return Dye.colorForDye(((CaulorflowerBlock) pState.getBlock()), pState.getValue(ModStateProperties.COLOR));
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());
-        event.register((pState, pLevel, pPos, pTintIndex) -> {
-            if(pTintIndex == 0) {
-                return DyespriaItem.colorForDye(pState.getValue(ModStateProperties.COLOR));
-            }
-            
-            return -1;
-        });
     }
 
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-            DyespriaItem.Dye dye = DyespriaItem.getDye(pStack);
+            Dye dye = Dye.getDyeFromStack(pStack);
             if(pTintIndex != 0 || dye.isEmpty()) {
                 return -1;
             } else {
-                return DyespriaItem.colorForDye(dye.color());
+                return Dye.colorForDye(((DyespriaItem) pStack.getItem()), dye.color());
             }
         }, ModItems.DYESPRIA.get());
         event.register((pStack, pTintIndex) -> 
