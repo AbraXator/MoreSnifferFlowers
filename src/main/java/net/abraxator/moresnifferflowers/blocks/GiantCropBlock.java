@@ -22,7 +22,9 @@ public class GiantCropBlock extends Block implements EntityBlock {
         super(pProperties);
         registerDefaultState(defaultBlockState().setValue(MODEL_POSITION, ModelPos.NONE));
     }
-
+    
+    
+    
     @Override
     public VoxelShape getBlockSupportShape(BlockState pState, BlockGetter pReader, BlockPos pPos) {
         return super.getBlockSupportShape(pState, pReader, pPos);

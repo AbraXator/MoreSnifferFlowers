@@ -29,6 +29,9 @@ public class ModDatagen{
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> completableFuture = event.getLookupProvider();
 
+        //BLOCKMODELS
+        generator.addProvider(event.includeClient(), new ModBlockModelGenerator(packOutput, existingFileHelper));
+        
         //DATAPACK REGISTRIES
         generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, completableFuture));
 

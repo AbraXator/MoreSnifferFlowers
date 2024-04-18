@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 public class ModModelLayerLocations {
     //ENTITY
     public static final ModelLayerLocation BOBLING = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "boblingmodel"), "main");
+    public static final ModelLayerLocation DRAGONFLY = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "dragonfly"), "main");
 
     //BLOCK
     public static final ModelLayerLocation GIANT_CARROT = new ModelLayerLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "giant_carrot"), "main");

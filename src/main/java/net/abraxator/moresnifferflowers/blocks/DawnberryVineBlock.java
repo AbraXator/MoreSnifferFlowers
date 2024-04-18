@@ -80,8 +80,6 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
         if(itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
             return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
-        } else if(itemStack.is(Items.BONE_MEAL)) {
-            performBonemeal(((ServerLevel) pLevel), pLevel.getRandom(), pPos, pState);
         } else if(this.isMaxAge(pState)) {
             return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
         } else if(pState.getValue(AGE) == 3) {

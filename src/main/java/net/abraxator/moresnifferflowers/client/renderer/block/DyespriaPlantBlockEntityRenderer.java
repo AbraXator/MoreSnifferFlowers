@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.joml.AxisAngle4d;
 
 public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<DyespriaPlantBlockEntity> {
     private final EntityRenderDispatcher entityRenderDispatcher;
@@ -23,6 +22,7 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
 
     @Override
     public void render(DyespriaPlantBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+        if(pBlockEntity.getBlockState().getValue(ModStateProperties.AGE_3) != 3) return;  
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         DyeItem dyeItem = DyeItem.byColor(pBlockEntity.getBlockState().getValue(ModStateProperties.COLOR));
         pPoseStack.pushPose();

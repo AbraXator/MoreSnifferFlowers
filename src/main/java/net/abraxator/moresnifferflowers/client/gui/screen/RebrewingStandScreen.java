@@ -21,7 +21,7 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
     public void render(GuiGraphics p_283479_, int p_283661_, int p_281248_, float p_281886_) {
         this.renderBackground(p_283479_);
         super.render(p_283479_, p_283661_, p_281248_, p_281886_);
-        this.renderTooltip(p_283479_, p_281248_, p_281248_);
+        this.renderTooltip(p_283479_, p_283661_, p_281248_);
     }
 
     @Override
@@ -40,8 +40,11 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         }
         
         if(progress > 0) {
+            int arrowScale = (int) Mth.lerp((float) progress / 100, 0, 27);
+            System.out.println(arrowScale);
+            guiGraphics.blit(TEXTURE, x + 124, y + 18, 177, 1, 8, arrowScale);
+
             var bubbleFactor = BUBBLELENGTHS[progress / 2 % 7];
-            System.out.println(bubbleFactor);
             guiGraphics.blit(TEXTURE, x + 59, y + 37 - bubbleFactor, 186, 28 - bubbleFactor, 11, bubbleFactor);   
         }
     }

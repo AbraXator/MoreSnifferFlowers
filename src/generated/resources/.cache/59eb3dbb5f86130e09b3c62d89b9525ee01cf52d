@@ -1,4 +1,4 @@
-// 1.20.1	2024-04-11T21:11:28.7974184	Loot Tables
+// 1.20.1	2024-04-17T13:56:40.5039169	Loot Tables
 4f0e69789398dad6c1e4e7d1ace9883c11698d49 data/moresnifferflowers/loot_tables/blocks/amber.json
 5ac9bbddbed89b296212216f03a86d2a1778a5fb data/moresnifferflowers/loot_tables/blocks/ambush.json
 68ec98b280e3788ac2d74e87d5a77d34c0c796dc data/moresnifferflowers/loot_tables/blocks/bobling_head.json
@@ -7,6 +7,7 @@
 37af3f3dac2c78281633f683655a68bb8c14da21 data/moresnifferflowers/loot_tables/blocks/cropressor_center.json
 c9d1c42f59fe168d69df20f9bd8e887032077322 data/moresnifferflowers/loot_tables/blocks/cropressor_out.json
 e33cb65db844cac49b4511f4adee00e35a593fe7 data/moresnifferflowers/loot_tables/blocks/dawnberry_vine.json
+be3bd7e260a6c3de88d908fbf305e48e55bece8d data/moresnifferflowers/loot_tables/blocks/dyespria_plant.json
 234234be6f4b40ebc120d825a90baa7a42aeab1f data/moresnifferflowers/loot_tables/blocks/giant_beetroot.json
 9e632ee99b0034df42ca5d6b561319a01e5617d3 data/moresnifferflowers/loot_tables/blocks/giant_carrot.json
 b1d48ce993f1b4f3a9856a65774715de074efdb6 data/moresnifferflowers/loot_tables/blocks/giant_netherwart.json

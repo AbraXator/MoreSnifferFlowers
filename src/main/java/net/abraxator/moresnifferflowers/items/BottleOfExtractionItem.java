@@ -4,6 +4,7 @@ import com.ibm.icu.impl.units.MeasureUnitImpl;
 import mezz.jei.api.runtime.IEditModeConfig;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMobEffects;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.ByteTag;
@@ -68,7 +69,6 @@ public class BottleOfExtractionItem extends Item {
     private ItemStack initPotion(Player player) {
         ItemStack itemStack1 = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
         PotionUtils.setCustomEffects(itemStack1, player.getActiveEffects());
-        itemStack1.addTagElement("extractedBottle", ByteTag.ZERO);
         return itemStack1;
     }
     
@@ -88,6 +88,6 @@ public class BottleOfExtractionItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.translatableWithFallback("bottle_of_extraction.tooltip.usage", "Drink to extract all effects into single potion"));
+        pTooltipComponents.add(Component.translatableWithFallback("bottle_of_extraction.tooltip.usage", "Drink to extract all effects into single potion").withStyle(ChatFormatting.GOLD));
     }
 }

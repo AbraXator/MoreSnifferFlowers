@@ -21,6 +21,8 @@ import net.minecraftforge.common.Tags;
 import org.checkerframework.checker.optional.qual.MaybePresent;
 import org.openjdk.nashorn.internal.ir.ReturnNode;
 
+import java.util.Optional;
+
 public class RebrewingStandMenu extends AbstractContainerMenu {
     private final Container rebrewingStand;
     private final ContainerData rebrewingStandData;
@@ -210,7 +212,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
 
             super.onTake(pPlayer, pStack);
         }
-        
+
         @Override
         public int getMaxStackSize() {
             return 1;

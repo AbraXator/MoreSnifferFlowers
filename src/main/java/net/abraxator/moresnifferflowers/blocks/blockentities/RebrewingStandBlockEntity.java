@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks.blockentities;
 
 import com.google.common.collect.Lists;
+import net.abraxator.moresnifferflowers.blocks.RebrewingStandBlockBase;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModItems;
@@ -25,9 +26,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BrewingStandBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.lwjgl.opengl.INTELMapTexture;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +45,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     private NonNullList<ItemStack> inv = NonNullList.withSize(6, ItemStack.EMPTY);
     int brewProgress;
     int fuel;
+    private boolean[] lastPotionCount;
     public final ContainerData containerData = new ContainerData() {
         @Override
         public int get(int pIndex) {
@@ -88,64 +92,100 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         var fuelStack = inv.get(0);
         var ogPotionStack = inv.get(1);
         var ingredientStack = inv.get(2);
+        var potionBits = getPotionBits();
+                
         if(fuel < MAX_FUEL && fuelStack.is(ModItems.CROPRESSED_NETHERWART.get())) {
             fuel++;
             fuelStack.shrink(1);
             setChanged();
         }
         
+        if(!canBrew()) {
+            brewProgress = 0;
+        }
+        
         if(canBrew()) {
             brewProgress++;
             if(brewProgress >= MAX_PROGRESS) {
                 var effects = getEffect(ogPotionStack, ingredientStack);
-                List<Integer> index = Util.make(Lists.newArrayList(), integers -> integers.addAll(Arrays.asList(3, 4, 5)));
-                
-                for(int i : index) {
-                    ItemStack itemStack = inv.get(i);
-                    if (!itemStack.is(ItemStack.EMPTY.getItem())) {
-                        ItemStack itemStack1 = Items.POTION.getDefaultInstance();
-                        PotionUtils.setCustomEffects(itemStack1, effects);
-                        itemStack1.addTagElement("rebrewedPotion", ByteTag.ZERO);
-                        inv.set(i, itemStack1);
+                if(effects != null) {
+                    List<Integer> index = Util.make(Lists.newArrayList(), integers -> integers.addAll(Arrays.asList(3, 4, 5)));
+                    for (int i : index) {
+                        ItemStack itemStack = inv.get(i);
+                        if (!itemStack.is(ItemStack.EMPTY.getItem())) {
+                            ItemStack itemStack1 = new ItemStack(ModItems.REBREWED_POTION.get());
+                            PotionUtils.setCustomEffects(itemStack1, effects);
+                            inv.set(i, itemStack1);
+                        }
                     }
+
+                    ingredientStack.shrink(1);
+                    inv.set(1, Items.GLASS_BOTTLE.getDefaultInstance());
+                    fuel -= 4;
+                    brewProgress = 0;
                 }
-                
-                ingredientStack.shrink(1);
-                inv.set(1, Items.GLASS_BOTTLE.getDefaultInstance());
-                fuel -= 4;
-                brewProgress = 0;
             }
+        }
+        
+        if(!Arrays.equals(potionBits, lastPotionCount)) {
+            lastPotionCount = potionBits;
+            BlockState blockstate = level.getBlockState(getBlockPos().below());
+            if (!(blockstate.getBlock() instanceof RebrewingStandBlockBase)) {
+                return;
+            }
+
+            for(int i = 0; i < RebrewingStandBlockBase.HAS_BOTTLE.length; ++i) {
+                blockstate = blockstate.setValue(RebrewingStandBlockBase.HAS_BOTTLE[i], potionBits[i]);
+            }
+
+            level.setBlock(getBlockPos().below(), blockstate, 2);
         }
     }
 
+    private boolean canBrew() {
+        boolean ret = false;
+
+        for(int i = 3; i <= 5; i++) {
+            if(!inv.get(i).isEmpty() && !inv.get(i).is(ModItems.REBREWED_POTION.get())) {
+                ret = true;
+            }
+        }
+
+        return ret && !inv.get(1).isEmpty() && fuel >= 1;
+    }
+    
+    private boolean[] getPotionBits() {
+        boolean[] ret = new boolean[3];
+
+        for(int i = 3; i <= 5; ++i) {
+            if (!this.inv.get(i).isEmpty()) {
+                ret[i - 3] = true;
+            }
+        }
+
+        return ret;
+    }
+    
     private List<MobEffectInstance> getEffect(ItemStack inputPotion, ItemStack ingredient) {
         List<MobEffectInstance> ret = new ArrayList<>();
         ListTag listTag = ((ListTag) inputPotion.getOrCreateTag().get("CustomPotionEffects"));
-        
-        for(int i = 0; i <  listTag.size(); i++) {
+
+        if (listTag == null) {
+            return null;
+        }
+
+        for (int i = 0; i < listTag.size(); i++) {
             var potion = listTag.getCompound(i);
             var id = potion.getString("forge:id");
             var amp = potion.getByte("Amplifier") + (ingredient.is(Items.REDSTONE) ? 2 : 1);
             var dur = potion.getInt("Duration") + (ingredient.is(Items.GLOWSTONE_DUST) ? 12000 : 6000);
             var instance = new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(id.split(":")[1])), dur, amp);
-            
+
             ret.add(instance);
         }
-        
-        
+
+
         return ret;
-    }
-    
-    private boolean canBrew() {
-        boolean ret = false;
-        
-        for(int i = 3; i <= 5; i++) {
-            if(PotionUtils.getAllEffects(inv.get(i).getTag()).isEmpty()) {
-                ret = true;
-            }
-        }
-        
-        return ret && !inv.get(1).isEmpty() && fuel >= 1;
     }
     
     @Override
