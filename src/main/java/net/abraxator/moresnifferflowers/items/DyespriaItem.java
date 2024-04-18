@@ -41,22 +41,22 @@ import java.util.Map;
 
 public class DyespriaItem extends Item {
     public static final Map<DyeColor, Integer> COLORS = Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
-        dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFD9D9D9);
-        dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF696969);
-        dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF4C4C4C);
-        dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1E1E1E);
-        dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF724727);
-        dyeColorHexFormatMap.put(DyeColor.RED, 0xFFD0021B);
-        dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFFF8300);
-        dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFFFE100);
-        dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF41CD34);
-        dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF287C23);
+        dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFFFFFFF);
+        dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF9d979b);
+        dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF474f52);
+        dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1d1d21);
+        dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF835432);
+        dyeColorHexFormatMap.put(DyeColor.RED, 0xFFb5432e);
+        dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFf89635);
+        dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFffee53);
+        dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF80c71f);
+        dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF5e7c16);
         dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
-        dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF4F3FE0);
-        dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF2E388D);
-        dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFF963EC9);
-        dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFD73EDA);
-        dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFF38BAA);
+        dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF70d9e4);
+        dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF4753ac);
+        dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFFb15fc2);
+        dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFd276b9);
+        dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFf8b0c4);
     });
 
     public DyespriaItem(Properties pProperties) {

@@ -1,12 +1,162 @@
 {
   "variants": {
-    "age=3": [
+    "age=3,color=white": [
       {
         "model": "moresnifferflowers:block/dyespria_plant_stage3",
         "weight": 1
       },
       {
         "model": "moresnifferflowers:block/dyespria_plant_stage3_rotated",
+        "weight": 1
+      }
+    ],
+    "age=3,color=light_gray": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/lightgray",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/lightgray_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=gray": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/gray",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/gray_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=black": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/black",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/black_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=brown": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/brown",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/brown_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=red": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/red",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/red_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=orange": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/orange",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/orange_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=yellow": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/yellow",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/yellow_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=lime": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/lime",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/lime_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=green": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/green",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/green_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=cyan": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/cyan",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/cyan_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=light_blue": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/lightblue",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/lightblue_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=blue": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/blue",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/blue_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=purple": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/purple",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/purple_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=magenta": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/magenta",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/magenta_r",
+        "weight": 1
+      }
+    ],
+    "age=3,color=pink": [
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/pink",
+        "weight": 1
+      },
+      {
+        "model": "moresnifferflowers:block/dyespria_plant_colors/pink_r",
         "weight": 1
       }
     ],
