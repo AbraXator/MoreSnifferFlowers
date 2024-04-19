@@ -114,22 +114,27 @@
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:cropressor_belt",
+          "name": "moresnifferflowers:belt_piece",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:cropressor_engine",
+          "name": "moresnifferflowers:engine_piece",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:cropressor_scrap",
+          "name": "moresnifferflowers:scrap_piece",
           "weight": 25
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:cropressor_tube",
+          "name": "moresnifferflowers:tube_piece",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:press_piece",
           "weight": 25
         },
         {

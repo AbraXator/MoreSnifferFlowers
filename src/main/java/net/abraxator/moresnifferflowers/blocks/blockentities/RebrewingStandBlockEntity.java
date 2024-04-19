@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.blocks.RebrewingStandBlockBase;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -32,10 +33,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.opengl.INTELMapTexture;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     public static final double MAX_FUEL = 16;
@@ -113,7 +113,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                     for (int i : index) {
                         ItemStack itemStack = inv.get(i);
                         if (!itemStack.is(ItemStack.EMPTY.getItem())) {
-                            ItemStack itemStack1 = new ItemStack(ModItems.REBREWED_POTION.get());
+                            ItemStack itemStack1 = ModItems.REBREWED_POTION.get().getDefaultInstance();
                             PotionUtils.setCustomEffects(itemStack1, effects);
                             inv.set(i, itemStack1);
                         }
@@ -151,7 +151,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             }
         }
 
-        return ret && !inv.get(1).isEmpty() && fuel >= 1;
+        return ret && !inv.get(1).isEmpty() && fuel >= 1 && !inv.get(2).isEmpty();
     }
     
     private boolean[] getPotionBits() {
@@ -168,6 +168,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     
     private List<MobEffectInstance> getEffect(ItemStack inputPotion, ItemStack ingredient) {
         List<MobEffectInstance> ret = new ArrayList<>();
+        List<Integer> durList = new ArrayList<>();
         ListTag listTag = ((ListTag) inputPotion.getOrCreateTag().get("CustomPotionEffects"));
 
         if (listTag == null) {
@@ -180,11 +181,14 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             var amp = potion.getByte("Amplifier") + (ingredient.is(Items.REDSTONE) ? 2 : 1);
             var dur = potion.getInt("Duration") + (ingredient.is(Items.GLOWSTONE_DUST) ? 12000 : 6000);
             var instance = new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(id.split(":")[1])), dur, amp);
-
+            
+            durList.add(dur);
             ret.add(instance);
         }
-
-
+        
+        int maxInt = Collections.max(durList);
+        ret.add(new MobEffectInstance(ModMobEffects.EXTRACTED.get(), maxInt));
+        
         return ret;
     }
     

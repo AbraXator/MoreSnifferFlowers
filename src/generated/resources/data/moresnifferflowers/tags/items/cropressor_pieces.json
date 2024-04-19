@@ -1,8 +1,9 @@
 {
   "values": [
-    "moresnifferflowers:cropressor_scrap",
-    "moresnifferflowers:cropressor_belt",
-    "moresnifferflowers:cropressor_engine",
-    "moresnifferflowers:cropressor_tube"
+    "moresnifferflowers:scrap_piece",
+    "moresnifferflowers:belt_piece",
+    "moresnifferflowers:engine_piece",
+    "moresnifferflowers:tube_piece",
+    "moresnifferflowers:press_piece"
   ]
 }

@@ -1,6 +1,5 @@
 package net.abraxator.moresnifferflowers.data.tag;
 
-import com.mojang.realmsclient.client.Request;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
@@ -14,7 +13,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,7 +35,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         this.tag(ModTags.ModItemTags.CROPRESSABLE_CROPS).add(Items.POTATO, Items.CARROT, Items.BEETROOT, Items.NETHER_WART, Items.WHEAT);
         this.tag(ModTags.ModItemTags.CROP_SMITHING_TEMPLATES).add(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
-        this.tag(ModTags.ModItemTags.CROPRESSOR_PIECES).add(ModItems.CROPRESSOR_SCRAP.get(), ModItems.CROPRESSOR_BELT.get(), ModItems.CROPRESSOR_ENGINE.get(), ModItems.CROPRESSOR_TUBE.get());
+        this.tag(ModTags.ModItemTags.CROPRESSOR_PIECES).add(ModItems.SCRAP_PIECE.get(), ModItems.BELT_PIECE.get(), ModItems.ENGINE_PIECE.get(), ModItems.TUBE_PIECE.get(), ModItems.PRESS_PIECE.get());
     }
 
     private Item item(RegistryObject<Block> object){

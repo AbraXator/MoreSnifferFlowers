@@ -3,7 +3,6 @@ package net.abraxator.moresnifferflowers.data.loot;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.blocks.DawnberryVineBlock;
-import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
@@ -11,18 +10,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -70,10 +64,11 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                 .add(LootItem.lootTableItem(ModItems.DRAGONFLY.get()).setWeight(50))
                         //RARE
                                 .add(LootItem.lootTableItem(Items.SNORT_POTTERY_SHERD).setWeight(25))
-                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_BELT.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_ENGINE.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_SCRAP.get()).setWeight(25))
-                                .add(LootItem.lootTableItem(ModItems.CROPRESSOR_TUBE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.BELT_PIECE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.ENGINE_PIECE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.SCRAP_PIECE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.TUBE_PIECE.get()).setWeight(25))
+                                .add(LootItem.lootTableItem(ModItems.PRESS_PIECE.get()).setWeight(25))
                                 .add(LootItem.lootTableItem(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get()).setWeight(25))
                                 .add(LootItem.lootTableItem(ModItems.AMBUSH_BANNER_PATTERN.get()).setWeight(25))
                                 .add(LootItem.lootTableItem(ModItems.EXTRACTION_BOTTLE.get()).setWeight(25))

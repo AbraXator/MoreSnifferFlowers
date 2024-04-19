@@ -9,11 +9,11 @@
       "item": "moresnifferflowers:broken_rebrewing_stand"
     },
     "C": {
-      "item": "moresnifferflowers:cropressor_tube"
+      "item": "moresnifferflowers:tube_piece"
     }
   },
   "pattern": [
-    "   ",
+    " A ",
     " A ",
     "BCB"
   ],

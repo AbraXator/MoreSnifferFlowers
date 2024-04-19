@@ -34,8 +34,8 @@ import org.jetbrains.annotations.Nullable;
 public class RebrewingStandBlockBase extends Block {
     public static final BooleanProperty[] HAS_BOTTLE = new BooleanProperty[]{BlockStateProperties.HAS_BOTTLE_0, BlockStateProperties.HAS_BOTTLE_1, BlockStateProperties.HAS_BOTTLE_2};
     public static final VoxelShape BASE = Block.box(0, 0, 0, 16, 1, 16);
-    public static VoxelShape ROD_UPPER = Block.box(6.5, 0, 6.5, 10.5, 14, 10.5);
-    public static VoxelShape ROD_LOWER = Block.box(6.5, 0, 6.5, 10.5, 16, 10.5);
+    public static VoxelShape ROD_UPPER = Block.box(6.5, 0, 6.5, 9.5, 14, 9.5);
+    public static VoxelShape ROD_LOWER = Block.box(6.5, 0, 6.5, 9.5, 16, 9.5);
     
     public RebrewingStandBlockBase(Properties pProperties) {
         super(pProperties);

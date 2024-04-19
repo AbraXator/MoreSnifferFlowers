@@ -30,10 +30,11 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.CAULORFLOWER.get());
                 output.accept(ModItems.BONMEELIA_SEEDS.get());
                 output.accept(ModItems.JAR_OF_BONMEEL.get());
-                output.accept(ModItems.CROPRESSOR_BELT.get());
-                output.accept(ModItems.CROPRESSOR_ENGINE.get());
-                output.accept(ModItems.CROPRESSOR_TUBE.get());
-                output.accept(ModItems.CROPRESSOR_SCRAP.get());
+                output.accept(ModItems.BELT_PIECE.get());
+                output.accept(ModItems.ENGINE_PIECE.get());
+                output.accept(ModItems.TUBE_PIECE.get());
+                output.accept(ModItems.SCRAP_PIECE.get());
+                output.accept(ModItems.PRESS_PIECE.get());
                 output.accept(ModItems.CROPRESSOR.get());
                 output.accept(ModItems.CROPRESSOR.get());
                 output.accept(ModItems.CROPRESSED_CARROT.get());
@@ -48,6 +49,7 @@ public class ModCreativeTabs {
                 output.accept(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get());
                 output.accept(ModItems.EXTRACTION_BOTTLE.get());
                 output.accept(ModItems.REBREWING_STAND.get());
+                output.accept(ModItems.BROKEN_REBREWING_STAND.get());
             })
             .withBackgroundLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID,  "textures/gui/container/tab_items.png"))
             .build());

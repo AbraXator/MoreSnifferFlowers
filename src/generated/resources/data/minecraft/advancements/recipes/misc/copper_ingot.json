@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_amber_shard": {
+    "has_cropressor_belt": {
       "conditions": {
         "items": [
           {
             "items": [
-              "moresnifferflowers:amber_shard"
+              "moresnifferflowers:scrap_piece"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "moresnifferflowers:amber"
+        "recipe": "minecraft:copper_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_amber_shard",
+      "has_cropressor_belt",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "moresnifferflowers:amber"
+      "minecraft:copper_ingot"
     ]
   },
   "sends_telemetry_event": false

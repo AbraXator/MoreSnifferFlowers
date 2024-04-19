@@ -105,9 +105,9 @@ public class ClientEvents {
                 return Dye.colorForDye(((DyespriaItem) pStack.getItem()), dye.color());
             }
         }, ModItems.DYESPRIA.get());
-        event.register((pStack, pTintIndex) -> 
-                pTintIndex > 0 ? -1 : PotionUtils.getColor(pStack), 
-                ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get());
+        event.register((pStack, pTintIndex) -> {
+            return pTintIndex > 0 ? -1 : PotionUtils.getColor(pStack);
+        }, ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get());
     }
 
     @SubscribeEvent

@@ -40,11 +40,13 @@ public class ModItems {
 
     public static final RegistryObject<Item> BONMEELIA_SEEDS = ITEMS.register("bonmeelia_seeds", () -> new ItemNameBlockItem(ModBlocks.BONMEELIA.get(), new Item.Properties()));
     public static final RegistryObject<Item> JAR_OF_BONMEEL = ITEMS.register("jar_of_bonmeel", () -> new JarOfBonmeelItem(new Item.Properties()));
+    
     public static final RegistryObject<Item> CROPRESSOR = ITEMS.register("cropressor", () -> new ItemNameBlockItem(ModBlocks.CROPRESSOR_OUT.get(), new Item.Properties()));
-    public static final RegistryObject<Item> CROPRESSOR_TUBE = ITEMS.register("cropressor_tube", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> CROPRESSOR_BELT = ITEMS.register("cropressor_belt", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> CROPRESSOR_SCRAP = ITEMS.register("cropressor_scrap", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> CROPRESSOR_ENGINE = ITEMS.register("cropressor_engine", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> TUBE_PIECE = ITEMS.register("tube_piece", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> BELT_PIECE = ITEMS.register("belt_piece", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SCRAP_PIECE = ITEMS.register("scrap_piece", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> ENGINE_PIECE = ITEMS.register("engine_piece", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PRESS_PIECE = ITEMS.register("press_piece", () -> new Item(new Item.Properties()));
     
     public static final RegistryObject<Item> REBREWING_STAND = ITEMS.register("rebrewing_stand", () -> new ItemNameBlockItem(ModBlocks.REBREWING_STAND_BOTTOM.get(), new Item.Properties()));
     public static final RegistryObject<Item> BROKEN_REBREWING_STAND = ITEMS.register("broken_rebrewing_stand", () -> new Item(new Item.Properties()));
