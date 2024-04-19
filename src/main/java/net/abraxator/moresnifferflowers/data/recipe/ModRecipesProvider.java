@@ -36,7 +36,11 @@ public class ModRecipesProvider extends RecipeProvider {
          ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.EXTRACTION_BOTTLE.get()).pattern(" A ").pattern("BAB").pattern(" B ").define('A', Items.AMETHYST_SHARD).define('B', Items.GLASS).unlockedBy("has_amethyst", has(Items.AMETHYST_SHARD)).save(pWriter);
         
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.AMBUSH_BANNER_PATTERN.get()).requires(Items.PAPER).requires(ModItems.AMBER_SHARD.get()).unlockedBy("has_amber_shard", has(ModItems.AMBER_SHARD.get())).save(pWriter);
-        
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.AMBER.get()).pattern("AA").pattern("AA").define('A', ModItems.AMBER_SHARD.get()).unlockedBy("has_amber_shard",has(ModItems.AMBER_SHARD.get())).save(pWriter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CROPRESSOR.get()).pattern("AB").pattern("CD").define('A', ModItems.CROPRESSOR_SCRAP.get()).define('B', ModItems.CROPRESSOR_ENGINE.get()).define('C', ModItems.CROPRESSOR_TUBE.get()).define('D', ModItems.CROPRESSOR_BELT.get()).unlockedBy("has_cropressor_piece", has(ModTags.ModItemTags.CROPRESSOR_PIECES)).save(pWriter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.REBREWING_STAND.get()).pattern("   ").pattern(" A ").pattern("BCB").define('A', ModItems.CROPRESSED_NETHERWART.get()).define('B', ModItems.BROKEN_REBREWING_STAND.get()).define('C', ModItems.CROPRESSOR_TUBE.get()).unlockedBy("has_broken_rebrewing_stand", has(ModItems.BROKEN_REBREWING_STAND.get())).save(pWriter);
+
         ModCustomRecipeProvider.createRecipes(pWriter);
     }
 }

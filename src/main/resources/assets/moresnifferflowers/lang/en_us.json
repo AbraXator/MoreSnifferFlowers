@@ -5,7 +5,6 @@
 	"item.moresnifferflowers.ambush_banner_pattern": "Banner Pattern",
 	"item.moresnifferflowers.ambush_banner_pattern.desc": "Ambush",
 	"item.moresnifferflowers.amber_shard": "Amber Shard",
-	"item.moresnifferflowers.aroma_armor_trim_smithing_table": "Smithing Template",
 	"item.moresnifferflowers.dragonfly": "Dragonfly",
 	"item.moresnifferflowers.dyespria": "Dyespria",
 	"item.moresnifferflowers.dyespria_seeds": "Dyespria Seed",
@@ -88,6 +87,8 @@
 	"block.minecraft.banner.moresnifferflowers.ambush.pink": "Pink Ambush",
 	
 	"effect.moresnifferflowers.extracted": "Extracted",
+	
+	"tooltip.extracted_bottle.obtain": "Obtainable using Bottle o' Extraction",
 
 	"death.attack.moresnifferflowersveggies": "%s has eaten their veggies",
 

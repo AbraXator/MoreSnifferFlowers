@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "moresnifferflowers:cropressor_scrap"
+    },
+    "B": {
+      "item": "moresnifferflowers:cropressor_engine"
+    },
+    "C": {
+      "item": "moresnifferflowers:cropressor_tube"
+    },
+    "D": {
+      "item": "moresnifferflowers:cropressor_belt"
+    }
+  },
+  "pattern": [
+    "AB",
+    "CD"
+  ],
+  "result": {
+    "item": "moresnifferflowers:cropressor"
+  },
+  "show_notification": true
+}

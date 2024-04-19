@@ -15,6 +15,8 @@ public class ModTags {
         public static final TagKey<Item> AROMA_TRIM_TEMPLATE_INGREDIENT = create(Registries.ITEM ,"aroma_trim_template_ingredient");
         public static final TagKey<Item> CROP_SMITHING_TEMPLATES = create(Registries.ITEM ,"crop_smithing_templates");
         public static final TagKey<Item> CROPRESSABLE_CROPS = create(Registries.ITEM ,"cropressable_crops");
+        public static final TagKey<Item> CROPRESSOR_PIECES = create(Registries.ITEM ,"cropressor_pieces");
+
     }
 
     public static class ModBlockTags {

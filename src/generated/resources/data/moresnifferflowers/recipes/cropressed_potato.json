@@ -1,24 +1,10 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "A": {
-      "item": "minecraft:diamond"
-    },
-    "B": {
-      "item": "moresnifferflowers:aroma_armor_trim_smithing_template"
-    },
-    "C": {
-      "tag": "moresnifferflowers:aroma_trim_template_ingredient"
-    }
+  "type": "moresnifferflowers:cropressing",
+  "count": 16,
+  "ingredient": {
+    "item": "minecraft:potato"
   },
-  "pattern": [
-    "ABA",
-    "ACA",
-    "AAA"
-  ],
   "result": {
     "item": "moresnifferflowers:cropressed_potato"
-  },
-  "show_notification": true
+  }
 }

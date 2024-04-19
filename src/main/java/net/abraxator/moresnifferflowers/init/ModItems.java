@@ -30,7 +30,7 @@ public class ModItems {
         @Override
         public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
             super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-            pTooltipComponents.add(Component.translatable("tooltip.amber_shard.usage"));
+            pTooltipComponents.add(Component.translatable("tooltip.amber_shard.usage").withStyle(ChatFormatting.GOLD));
         }
     });
     public static final RegistryObject<Item> AROMA_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("aroma_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(ModTrimPatterns.AROMA));
@@ -47,12 +47,13 @@ public class ModItems {
     public static final RegistryObject<Item> CROPRESSOR_ENGINE = ITEMS.register("cropressor_engine", () -> new Item(new Item.Properties()));
     
     public static final RegistryObject<Item> REBREWING_STAND = ITEMS.register("rebrewing_stand", () -> new ItemNameBlockItem(ModBlocks.REBREWING_STAND_BOTTOM.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BROKEN_REBREWING_STAND = ITEMS.register("broken_rebrewing_stand", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> EXTRACTION_BOTTLE = ITEMS.register("extraction_bottle", () -> new BottleOfExtractionItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> EXTRACTED_BOTTLE = ITEMS.register("extracted_bottle", () -> new PotionItem(new Item.Properties().stacksTo(1)) {
         @Override
         public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
             super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-            pTooltip.add(Component.translatableWithFallback("tooltip.extracted_bottle.obtain", "Obtainable using Extraction Bottle").withStyle(ChatFormatting.GOLD));
+            pTooltip.add(Component.translatableWithFallback("tooltip.extracted_bottle.obtain", "Obtainable using Bottle o' Extraction").withStyle(ChatFormatting.GOLD));
         }
     });
     public static final RegistryObject<Item> REBREWED_POTION = ITEMS.register("rebrewed_potion", () -> new PotionItem(new Item.Properties().stacksTo(1)));

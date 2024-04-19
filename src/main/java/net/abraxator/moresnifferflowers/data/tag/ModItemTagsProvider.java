@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.data.tag;
 
+import com.mojang.realmsclient.client.Request;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.concurrent.CompletableFuture;
@@ -25,26 +27,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     @Override
     @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider pProvider) {
-        this.tag(ItemTags.FLOWERS).add(item(ModBlocks.DAWNBERRY_VINE), item(ModBlocks.AMBUSH), item(ModBlocks.CAULORFLOWER));
-        this.tag(ItemTags.VILLAGER_PLANTABLE_SEEDS).add(ModItems.DAWNBERRY_VINE_SEEDS.get());
-        this.tag(Tags.Items.SEEDS).add(ModItems.DAWNBERRY_VINE_SEEDS.get());
-        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.AMBER_SHARD.get());
-        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_NETHERWART.get());
-        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_POTATO.get());
-        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_CARROT.get());
-        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_BEETROOT.get());
-        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.CROPRESSED_WHEAT.get());
-        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+        this.tag(ItemTags.FLOWERS).add(item(ModBlocks.DAWNBERRY_VINE), item(ModBlocks.AMBUSH), item(ModBlocks.CAULORFLOWER), item(ModBlocks.DYESPRIA_PLANT));
+        this.tag(Tags.Items.SEEDS).add(ModItems.DAWNBERRY_VINE_SEEDS.get(), ModItems.AMBUSH_SEEDS.get(), ModItems.BONMEELIA_SEEDS.get(), ModItems.DYESPRIA_SEEDS.get());
+
+        this.tag(ItemTags.TRIM_MATERIALS).add(ModItems.AMBER_SHARD.get(), ModItems.CROPRESSED_BEETROOT.get(), ModItems.CROPRESSED_POTATO.get(), ModItems.CROPRESSED_NETHERWART.get(), ModItems.CROPRESSED_CARROT.get(), ModItems.CROPRESSED_WHEAT.get());
+        this.tag(ItemTags.TRIM_TEMPLATES).add(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
         this.tag(ModTags.ModItemTags.AROMA_TRIM_TEMPLATE_INGREDIENT).add(ModItems.AMBER_SHARD.get(), ModBlocks.AMBER.get().asItem());
         this.tag(ModTags.ModItemTags.CROPRESSABLE_CROPS).add(Items.POTATO, Items.CARROT, Items.BEETROOT, Items.NETHER_WART, Items.WHEAT);
         this.tag(ModTags.ModItemTags.CROP_SMITHING_TEMPLATES).add(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
+
+        this.tag(ModTags.ModItemTags.CROPRESSOR_PIECES).add(ModItems.CROPRESSOR_SCRAP.get(), ModItems.CROPRESSOR_BELT.get(), ModItems.CROPRESSOR_ENGINE.get(), ModItems.CROPRESSOR_TUBE.get());
     }
 
     private Item item(RegistryObject<Block> object){

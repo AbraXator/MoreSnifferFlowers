@@ -60,7 +60,6 @@ public class MoreSnifferFlowers {
             ModPacketHandler.register();
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
-            ComposterBlock.COMPOSTABLES.put(ModBlocks.DAWNBERRY_VINE.get(), 0.85F);
         });
     }
 

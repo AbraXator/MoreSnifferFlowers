@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "moresnifferflowers:cropressed_nether_wart"
+    },
+    "B": {
+      "item": "moresnifferflowers:broken_rebrewing_stand"
+    },
+    "C": {
+      "item": "moresnifferflowers:cropressor_tube"
+    }
+  },
+  "pattern": [
+    "   ",
+    " A ",
+    "BCB"
+  ],
+  "result": {
+    "item": "moresnifferflowers:rebrewing_stand"
+  },
+  "show_notification": true
+}
