@@ -13,7 +13,7 @@ public class SnifferEggMixin extends Block {
     }
     
     @ModifyVariable(method = "onPlace", at = @At(value = "STORE"), ordinal = 0) 
-    public int injected(int x) {
+    public int moresniffeflowers$injected(int x) {
         return x / 2;
     }
 }

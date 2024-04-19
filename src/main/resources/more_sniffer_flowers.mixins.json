@@ -7,7 +7,8 @@
   "mixins": [
     "FarmBlockMixin",
     "SpriteResourceLoaderMixin",
-    "SnifferEggMixin"
+    "SnifferEggMixin",
+    "AgeableMobMixin"
   ],
    "client": [
    "SpriteResourceLoaderMixin$PalettedPermutationsAccessor"

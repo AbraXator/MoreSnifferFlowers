@@ -2,23 +2,19 @@ package net.abraxator.moresnifferflowers.compat.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.ISubtypeRegistration;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.compat.jei.cropressing.CropressingRecipeCategory;
+import net.abraxator.moresnifferflowers.compat.jei.rebrewing.JeiRebrewingRecipe;
+import net.abraxator.moresnifferflowers.compat.jei.rebrewing.RebrewingCategory;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
-import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.RecipeHolder;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.RecipeMatcher;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -34,16 +30,19 @@ public class MoreSnifferFlowersJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(ModItems.CROPRESSOR.get().getDefaultInstance(), CropressingRecipeCategory.CROPRESSING);
+        registration.addRecipeCatalyst(ModItems.REBREWING_STAND.get().getDefaultInstance(), RebrewingCategory.REBREWING);
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new CropressingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new RebrewingCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
         registration.addRecipes(CropressingRecipeCategory.CROPRESSING, recipeManager.getAllRecipesFor(ModRecipeTypes.CROPRESSING.get()));
+        registration.addRecipes(RebrewingCategory.REBREWING, JeiRebrewingRecipe.createRecipes());
     }
 }

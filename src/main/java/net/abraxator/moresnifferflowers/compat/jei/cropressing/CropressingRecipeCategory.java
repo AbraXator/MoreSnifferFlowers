@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.compat.jei;
+package net.abraxator.moresnifferflowers.compat.jei.cropressing;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
