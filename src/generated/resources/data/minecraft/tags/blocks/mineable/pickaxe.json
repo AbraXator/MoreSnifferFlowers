@@ -1,5 +1,9 @@
 {
   "values": [
-    "moresnifferflowers:amber"
+    "moresnifferflowers:amber",
+    "moresnifferflowers:cropressor_out",
+    "moresnifferflowers:cropressor_center",
+    "moresnifferflowers:rebrewing_stand_bottom",
+    "moresnifferflowers:rebrewing_stand_top"
   ]
 }

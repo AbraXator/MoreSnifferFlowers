@@ -44,7 +44,9 @@ public class ModRecipesProvider extends RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.GOLD_INGOT, 8).requires(ModItems.ENGINE_PIECE.get()).unlockedBy("has_cropressor_belt", has(ModItems.ENGINE_PIECE.get())).save(pWriter);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.IRON_INGOT, 8).requires(ModItems.TUBE_PIECE.get()).unlockedBy("has_cropressor_belt", has(ModItems.TUBE_PIECE.get())).save(pWriter);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.NETHERITE_SCRAP, 1).requires(ModItems.PRESS_PIECE.get()).unlockedBy("has_cropressor_belt", has(ModItems.PRESS_PIECE.get())).save(pWriter);
-        
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CROPRESSED_NETHERWART.get(), 1).requires(ModItems.BROKEN_REBREWING_STAND.get()).unlockedBy("has_broken_rebrewing_stand", has(ModItems.BROKEN_REBREWING_STAND.get())).save(pWriter);
+
+
         ModCustomRecipeProvider.createRecipes(pWriter);
     }
 }
