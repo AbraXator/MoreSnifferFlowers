@@ -55,6 +55,11 @@ public class RebrewingStandBlockBase extends Block {
     }
 
     @Override
+    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
+        super.destroy(pLevel, pPos, pState);
+    }
+
+    @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if(pState.is(ModBlocks.REBREWING_STAND_TOP.get())) {
             BlockState blockstate1 = pState.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
