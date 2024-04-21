@@ -20,6 +20,8 @@ public class MoreSnifferFlowersClient implements ClientModInitializer {
                 ModBlocks.GIANT_POTATO,
                 ModBlocks.GIANT_WHEAT,
                 ModBlocks.MORE_SNIFFER_FLOWER);
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
+                ModBlocks.AMBER);
 
     }
 }

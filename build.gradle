@@ -16,13 +16,6 @@ base {
 }
 
 loom {
-    splitEnvironmentSourceSets()
-    mods {
-        "moresnifferflowers" {
-            sourceSet sourceSets.main
-            sourceSet sourceSets.client
-        }
-    }
 }
 
 dependencies {
