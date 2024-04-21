@@ -1,6 +1,5 @@
 package net.abraxator.moresnifferflowers.init;
 
-import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrimMaterial;
@@ -14,6 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+
 import java.util.Map;
 
 public class ModTrimMaterials {

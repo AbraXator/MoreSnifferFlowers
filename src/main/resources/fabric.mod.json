@@ -12,7 +12,7 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "MIT",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/moresnifferflowers/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

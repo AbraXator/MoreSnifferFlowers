@@ -40,6 +40,10 @@ tasks.withType(JavaCompile).configureEach {
     it.options.release = 17
 }
 
+fabricApi {
+    configureDataGeneration()
+}
+
 java {
     withSourcesJar()
     sourceCompatibility = JavaVersion.VERSION_17
