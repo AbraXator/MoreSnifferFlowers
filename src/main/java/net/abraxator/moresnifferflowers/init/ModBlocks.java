@@ -1,6 +1,8 @@
 package net.abraxator.moresnifferflowers.init;
 
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.*;
+import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -28,7 +30,8 @@ public class ModBlocks {
     public static final Block CROPRESSOR = registerBlockNoItem("cropressor", new CropressorBlock(AbstractBlock.Settings.copy(Blocks.ANVIL)));
     public static final Block MORE_SNIFFER_FLOWER = registerBlockNoItem("more_sniffer_flower", new CropressorBlock(AbstractBlock.Settings.copy(Blocks.ANVIL)));
 
-
+    public static void registerBlockProperties() {
+    }
 
     private static Block registerBlockNoItem(String name, Block block) {
         return Registry.register(Registries.BLOCK, name, block);
@@ -39,4 +42,10 @@ public class ModBlocks {
         Registry.register(Registries.ITEM, name, new BlockItem(block, new Item.Settings()));
         return toReturn;
     }
+
+    public static void registerModBlocks() {
+        MoreSnifferFlowers.LOGGER.info("Registering Blocks for" + MoreSnifferFlowers.MOD_ID);
+
+    }
+
 }

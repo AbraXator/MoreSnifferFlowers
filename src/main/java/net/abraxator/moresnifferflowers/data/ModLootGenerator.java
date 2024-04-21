@@ -11,14 +11,17 @@ import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.util.Identifier;
 
 public class ModLootGenerator extends LootTableProvider {
-    public ModLootGenerator(DataOutput pOutput) {
-        super(pOutput, Set.of(), List.of(
-                new LootTableProvider.LootTypeGenerator(ModBlockLoottableProvider::new, LootContextTypes.BLOCK)
-        ));
+    public ModLootGenerator(DataOutput output, Set<Identifier> lootTableIds, List<LootTypeGenerator> lootTypeGenerators) {
+        super(output, lootTableIds, lootTypeGenerators);
     }
-
-    @Override
-    protected void validate(Map<Identifier, LootTable> map, LootTableReporter validationcontext) {
-
-    }
+//    public ModLootGenerator(DataOutput pOutput) {
+//        super(pOutput, Set.of(), List.of(
+//                new LootTableProvider.LootTypeGenerator(ModBlockLoottableProvider::new, LootContextTypes.BLOCK)
+//        ));
+//    }
+//
+//    @Override
+//    protected void validate(Map<Identifier, LootTable> map, LootTableReporter validationcontext) {
+//
+//    }
 }

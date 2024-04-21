@@ -12,7 +12,7 @@ public class BonmeeliaBlockEntity extends GrowingCropBlockEntity {
     private double hintDuration;
     
     public BonmeeliaBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.BONMEELIA.get(), pPos, pBlockState, 0.01F);
+        super(ModBlockEntities.BONMEELIA_BLOCK_ENTITY, pPos, pBlockState, 0.01F);
     }
 
     @Override

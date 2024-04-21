@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "moresnifferflowers",
+	"version": "${version}",
+	"name": "More Sniffer Flowers",
+	"description": "Sniffer Flowers, but there's More of them and they actually do something",
+	"authors": [
+		"Nikdo53, Abraxator"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/modid/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.abraxator.moresnifferflowers.MoreSnifferFlowers"
+		],
+		"client": [
+			"net.abraxator.moresnifferflowers.MoreSnifferFlowersClient"
+		]
+	},
+	"mixins": [
+		"moresnifferflowers.fabric.mixins.json",
+	],
+	"depends": {
+		"fabricloader": ">=0.15.9",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

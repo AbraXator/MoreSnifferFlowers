@@ -1,6 +1,6 @@
 plugins {
     id 'maven-publish'
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.6.5'
 }
 
 group = project.group
@@ -12,7 +12,7 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = 'moresnifferflowers'
 }
 
 loom {

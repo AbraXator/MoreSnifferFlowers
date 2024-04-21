@@ -26,7 +26,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.level.block.*;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
@@ -35,11 +34,11 @@ import java.util.stream.StreamSupport;
 
 public class JarOfBonmeelItem extends Item {
     public final Map<Block, Pair<Block, Pair<IntProperty, Integer>>> MAP = Map.of(
-            Blocks.CARROTS, new Pair<>(ModBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-            Blocks.POTATOES, new Pair<>(ModBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-            Blocks.NETHER_WART, new Pair<>(ModBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
-            Blocks.BEETROOTS, new Pair<>(ModBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootsBlock.AGE, BeetrootsBlock.BEETROOTS_MAX_AGE)),
-            Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
+            Blocks.CARROTS, new Pair<>(ModBlocks.GIANT_CARROT, new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+            Blocks.POTATOES, new Pair<>(ModBlocks.GIANT_POTATO, new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+            Blocks.NETHER_WART, new Pair<>(ModBlocks.GIANT_NETHERWART, new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
+            Blocks.BEETROOTS, new Pair<>(ModBlocks.GIANT_BEETROOT, new Pair<>(BeetrootsBlock.AGE, BeetrootsBlock.BEETROOTS_MAX_AGE)),
+            Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_WHEAT, new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
     );
 
     public JarOfBonmeelItem(Settings pProperties) {
@@ -108,6 +107,6 @@ public class JarOfBonmeelItem extends Item {
     @Override
     public void appendTooltip(ItemStack pStack, @Nullable World pLevel, List<Text> pTooltipComponents, TooltipContext pIsAdvanced) {
         super.appendTooltip(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(Text.translatableWithFallback("tooltip.jar_of_bonmeel.usage", "Can be applied to a 3x3 grid of the following crops: carrot, potato, wheat, beetroot and nether wart").formatted(Formatting.GOLD));
+        pTooltipComponents.add(Text.translatableWithFallback("tooltip.jar_of_bonmeel.usage", "Can be applied to a fully grown 3x3 grid of the following crops: carrot, potato, wheat, beetroot and nether wart").formatted(Formatting.GOLD));
     }
 }

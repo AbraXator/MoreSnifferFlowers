@@ -5,17 +5,28 @@ import net.abraxator.moresnifferflowers.blocks.blockentities.AmbushBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.blockentities.BonmeeliaBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.blockentities.CropressorBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 
 public class ModBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MoreSnifferFlowers.MOD_ID);
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AmbushBlockEntity>> AMBUSH = BLOCK_ENTITIES.register("ambush", () -> BlockEntityType.Builder.of(AmbushBlockEntity::new, ModBlocks.AMBUSH.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GiantCropBlockEntity>> GIANT_CROP = BLOCK_ENTITIES.register("giant_crop", () -> BlockEntityType.Builder.of(GiantCropBlockEntity::new, ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BonmeeliaBlockEntity>> BONMEELIA = BLOCK_ENTITIES.register("bonmeelia", () -> BlockEntityType.Builder.of(BonmeeliaBlockEntity::new, ModBlocks.BONMEELIA.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CropressorBlockEntity>> CROPRESSOR = BLOCK_ENTITIES.register("cropressor", () -> BlockEntityType.Builder.of(CropressorBlockEntity::new, ModBlocks.CROPRESSOR.get()).build(null));
+    public static final BlockEntityType<AmbushBlockEntity> AMBUSH_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MoreSnifferFlowers.MOD_ID, "ambush_be"),
+            FabricBlockEntityTypeBuilder.create(AmbushBlockEntity::new, ModBlocks.AMBUSH).build());
+
+    public static final BlockEntityType<GiantCropBlockEntity> GIANT_CROP_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MoreSnifferFlowers.MOD_ID, "giant_crop_be"),
+            FabricBlockEntityTypeBuilder.create(GiantCropBlockEntity::new, ModBlocks.GIANT_BEETROOT, ModBlocks.GIANT_CARROT, ModBlocks.GIANT_NETHERWART, ModBlocks.GIANT_WHEAT, ModBlocks.GIANT_POTATO).build(null));
+
+    public static final BlockEntityType<BonmeeliaBlockEntity> BONMEELIA_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MoreSnifferFlowers.MOD_ID, "bonmeelia_be"),
+            FabricBlockEntityTypeBuilder.create(BonmeeliaBlockEntity::new, ModBlocks.BONMEELIA).build());
+
+    public static final BlockEntityType<CropressorBlockEntity> CROPRESSOR_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MoreSnifferFlowers.MOD_ID, "cropressor_be"),
+            FabricBlockEntityTypeBuilder.create(CropressorBlockEntity::new, ModBlocks.CROPRESSOR).build());
+
+    public static void registerBlockEntities() {
+        MoreSnifferFlowers.LOGGER.info("Registering BlockEntities for" + MoreSnifferFlowers.MOD_ID);
+
+    }
 }

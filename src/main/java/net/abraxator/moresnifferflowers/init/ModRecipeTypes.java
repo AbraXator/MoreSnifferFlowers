@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.init;
 
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 
@@ -13,5 +14,10 @@ public class ModRecipeTypes {
                 return id;
             }
         };
+    }
+
+    public static void registerRecipeTypes() {
+        MoreSnifferFlowers.LOGGER.info("Registering Recipetypes for" + MoreSnifferFlowers.MOD_ID);
+
     }
 }

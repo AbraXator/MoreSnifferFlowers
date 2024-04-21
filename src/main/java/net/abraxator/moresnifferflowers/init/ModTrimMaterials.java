@@ -12,14 +12,15 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import java.util.Map;
 
 public class ModTrimMaterials {
-    public static final RegistryKey<ArmorTrimMaterial> AMBER = RegistryKey.of(RegistryKeys.TRIM_MATERIAL, MoreSnifferFlowers.loc("amber"));
+    public static final RegistryKey<ArmorTrimMaterial> AMBER = RegistryKey.of(RegistryKeys.TRIM_MATERIAL, new Identifier("amber"));
 
     public static void bootstrap(Registerable<ArmorTrimMaterial> context) {
-        register(context, AMBER, Registries.ITEM.getEntry(ModItems.AMBER_SHARD.get()), Style.EMPTY.withColor(TextColor.parse("#df910b").get().orThrow()), 0.6F, Map.of());
+        register(context, AMBER, Registries.ITEM.getEntry(ModItems.AMBER_SHARD), Style.EMPTY.withColor(TextColor.parse("#df910b").get().orThrow()), 0.6F, Map.of());
     }
 
     private static void register(Registerable<ArmorTrimMaterial> p_268244_, RegistryKey<ArmorTrimMaterial> p_268139_, RegistryEntry<Item> p_268311_, Style p_268232_, float p_268197_, Map<ArmorMaterials, String> p_268352_) {

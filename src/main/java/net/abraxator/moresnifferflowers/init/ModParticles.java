@@ -1,18 +1,20 @@
 package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.registry.Registries;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 
 public class ModParticles {
-    public static final DeferredRegister<ParticleType<?>> PARTICLES =
-            DeferredRegister.create(Registries.PARTICLE_TYPE, MoreSnifferFlowers.MOD_ID);
 
-    public static final DeferredHolder<ParticleType<?>, DefaultParticleType> FLY = PARTICLES.register("fly", () -> new SimpleParticleType(false));
-    public static final DeferredHolder<ParticleType<?>, DefaultParticleType> CARROT = PARTICLES.register("carrot", () -> new SimpleParticleType(false));
-    public static final DeferredHolder<ParticleType<?>, DefaultParticleType> AMBUSH = PARTICLES.register("ambush", () -> new SimpleParticleType(false));
-    public static final DeferredHolder<ParticleType<?>, DefaultParticleType> GIANT_CROP = PARTICLES.register("giant_crop", () -> new SimpleParticleType(false));
+    public static final DefaultParticleType AMBUSH_PARTICLE = registerParticle("ambush_particle", FabricParticleTypes.simple());
+
+    private static DefaultParticleType registerParticle(String name, DefaultParticleType particleType) {
+        return Registry.register(Registries.PARTICLE_TYPE, new Identifier(MoreSnifferFlowers.MOD_ID, name), particleType);
+    }
+    public static void registerParticles() {
+        MoreSnifferFlowers.LOGGER.info("Registering Particles for" + MoreSnifferFlowers.MOD_ID);
+    }
 }

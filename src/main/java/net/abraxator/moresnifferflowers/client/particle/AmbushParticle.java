@@ -1,19 +1,16 @@
 package net.abraxator.moresnifferflowers.client.particle;
 
-import net.minecraft.client.particle.AnimatedParticle;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteProvider;
+
+import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.math.MathHelper;
-import javax.annotation.Nullable;
 
 public class AmbushParticle extends AnimatedParticle {
     private final double xModifier;
     private final double zModifier;
 
-    protected AmbushParticle(ClientWorld pLevel, double pX, double pY, double pZ, SpriteProvider pSprites) {
+    public AmbushParticle(ClientWorld pLevel, double pX, double pY, double pZ, SpriteProvider pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, -0.125F);
         this.scale(0.95F);
         this.setMaxAge(50);
@@ -29,17 +26,20 @@ public class AmbushParticle extends AnimatedParticle {
         this.z = z + MathHelper.cos((float) (world.getTime() * 0.5)) * zModifier;
     }
 
-    public static class Provider implements ParticleFactory<DefaultParticleType> {
+    @Override
+    public ParticleTextureSheet getType() {
+        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+    }
+
+    public static class Factory implements ParticleFactory<DefaultParticleType> {
         private final SpriteProvider sprites;
 
-        public Provider(SpriteProvider sprites) {
-            this.sprites = sprites;
+        public Factory(SpriteProvider spriteProvider) {
+            this.sprites = spriteProvider;
         }
-
-        @Nullable
-        @Override
-        public Particle createParticle(DefaultParticleType pType, ClientWorld pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new AmbushParticle(pLevel, pX, pY, pZ, sprites);
+        public Particle createParticle(DefaultParticleType particleType, ClientWorld clientWorld, double x, double y,
+                                       double z, double xd, double yd, double zd){
+            return new AmbushParticle(clientWorld, x, y, z, this.sprites);
         }
     }
 }

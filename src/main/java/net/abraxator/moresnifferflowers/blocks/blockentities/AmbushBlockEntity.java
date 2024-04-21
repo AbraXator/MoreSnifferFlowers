@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class AmbushBlockEntity extends GrowingCropBlockEntity {
     public AmbushBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.AMBUSH.get(), pPos, pBlockState, 0.001f);
+        super(ModBlockEntities.AMBUSH_BLOCK_ENTITY, pPos, pBlockState, 0.001f);
     }
 
     @Override

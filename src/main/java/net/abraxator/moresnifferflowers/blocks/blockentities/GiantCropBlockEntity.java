@@ -11,7 +11,7 @@ public class GiantCropBlockEntity extends ModBlockEntity {
     public BlockPos pos2;
 
     public GiantCropBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.GIANT_CROP.get(), pPos, pBlockState);
+        super(ModBlockEntities.GIANT_CROP, pPos, pBlockState);
         this.pos1 = this.getPos();
         this.pos2 = this.getPos();
     }
