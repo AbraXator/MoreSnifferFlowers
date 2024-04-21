@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
-import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModParticles;
 import net.abraxator.moresnifferflowers.init.ModTags;
@@ -94,10 +93,10 @@ public class JarOfBonmeelItem extends Item {
             for(int j = 0; j <= 3; j++) {
                 ((ServerWorld) level).spawnParticles(new DustParticleEffect(Vec3d.unpackRgb(11162034).toVector3f(), 1.0F), clickedPos.getX() + level.random.nextDouble(), clickedPos.up().getY() + level.random.nextDouble(), clickedPos.getZ() + level.random.nextDouble()   , 1, 0, 0, 0, 0.3D);
             }
-            if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
-                entity.pos1 = clickedPos.mutableCopy().move(1, 2, 1);
-                entity.pos2 = clickedPos.mutableCopy().move(-1, 0, -1);
-            }
+//            if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
+//                entity.pos1 = clickedPos.mutableCopy().move(1, 2, 1);
+//                entity.pos2 = clickedPos.mutableCopy().move(-1, 0, -1);
+//            }
         });
 
         player.getMainHandStack().decrement(1);

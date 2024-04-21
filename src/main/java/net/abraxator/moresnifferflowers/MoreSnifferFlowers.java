@@ -22,7 +22,6 @@ public class MoreSnifferFlowers implements ModInitializer {
         ModEffects.registerEffects();
         ModSounds.registerSounds();
         ModBlockEntities.registerBlockEntities();
-        ModMenuTypes.registerScreenHandlers();
         ModRecipesProvider.registerModRecipes();
         ModRecipeTypes.registerRecipeTypes();
 

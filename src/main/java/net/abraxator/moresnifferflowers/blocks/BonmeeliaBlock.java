@@ -82,7 +82,7 @@ public class BonmeeliaBlock extends PlantBlock implements ModEntityBlock {
             pPlayer.getMainHandStack().decrement(1);
         } else if (pState.get(HAS_BOTTLE) && pState.get(AGE) >= MAX_AGE) {
             pLevel.setBlockState(pPos, pState.with(AGE, 0).with(HAS_BOTTLE, false), 3);
-            pPlayer.giveItemStack(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
+            pPlayer.giveItemStack(ModItems.JAR_OF_BONMEEL.getDefaultStack());
         } else if(!pState.get(HAS_BOTTLE)) {
             entity.displayHint();
         }

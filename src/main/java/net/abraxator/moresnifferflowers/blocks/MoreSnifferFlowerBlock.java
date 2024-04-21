@@ -23,8 +23,5 @@ public class MoreSnifferFlowerBlock extends Block implements ModCropBlock {
         super.appendProperties(pBuilder);
         pBuilder.add(STALK_TYPE, LEAVES_TYPE);
     }
-    @Override
-    public BlockState getPlant(BlockView level, BlockPos pos) {
-        return null;
-    }
+
 }

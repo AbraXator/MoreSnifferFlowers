@@ -20,16 +20,19 @@
 		],
 		"client": [
 			"net.abraxator.moresnifferflowers.MoreSnifferFlowersClient"
+		],
+		"fabric-datagen": [
+			"net.abraxator.moresnifferflowers.MoreSnifferFlowersDataGenerator"
 		]
 	},
 	"mixins": [
-		"moresnifferflowers.fabric.mixins.json",
+		"moresnifferflowers.fabric.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.9",
 		"minecraft": "~1.20.4",
 		"java": ">=17",
-		"fabric-api": "*"
+		"fabric-api": "0.96.0+1.20.4"
 	},
 	"suggests": {
 		"another-mod": "*"

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.abraxator.moresnifferflowers.mixins",
+  "compatibilityLevel": "JAVA_11",
+  "mixins": [
+    "FarmBlockMixin",
+    "AgeableMobMixin",
+    "SnifferEggMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

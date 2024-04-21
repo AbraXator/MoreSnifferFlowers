@@ -37,7 +37,18 @@
                 "trims/models/armor/host",
                 "trims/models/armor/host_leggings",
                 "moresnifferflowers:trims/models/armor/aroma",
-                "moresnifferflowers:trims/models/armor/aroma_leggings"
+                "moresnifferflowers:trims/models/armor/aroma_leggings",
+                "moresnifferflowers:trims/models/armor/nether_wart",
+                "moresnifferflowers:trims/models/armor/nether_wart_leggings",
+                "moresnifferflowers:trims/models/armor/tater",
+                "moresnifferflowers:trims/models/armor/tater_leggings",
+                "moresnifferflowers:trims/models/armor/carotene",
+                "moresnifferflowers:trims/models/armor/carotene_leggings",
+                "moresnifferflowers:trims/models/armor/grain",
+                "moresnifferflowers:trims/models/armor/grain_leggings",
+                "moresnifferflowers:trims/models/armor/beat",
+                "moresnifferflowers:trims/models/armor/beat_leggings"
+
             ],
             "palette_key": "trims/color_palettes/trim_palette",
             "permutations": {
@@ -55,7 +66,13 @@
                 "gold_darker": "trims/color_palettes/gold_darker",
                 "diamond_darker": "trims/color_palettes/diamond_darker",
                 "netherite_darker": "trims/color_palettes/netherite_darker",
-                "amber": "moresnifferflowers:trims/color_palettes/amber"
+                "amber": "moresnifferflowers:trims/color_palettes/amber",
+                "nether_wart": "moresnifferflowers:trims/color_palettes/nether_wart",
+                "potato": "moresnifferflowers:trims/color_palettes/potato",
+                "carrot": "moresnifferflowers:trims/color_palettes/carrot",
+                "wheat": "moresnifferflowers:trims/color_palettes/wheat",
+                "beetroot": "moresnifferflowers:trims/color_palettes/beetroot"
+
             }
         }
     ]

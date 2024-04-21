@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
@@ -34,7 +35,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.level.*;
 import org.jetbrains.annotations.Nullable;
 
 public class AmbushBlock extends TallPlantBlock implements Fertilizable, ModEntityBlock, ModCropBlock {
@@ -65,7 +65,7 @@ public class AmbushBlock extends TallPlantBlock implements Fertilizable, ModEnti
     @Override
     public BlockState getStateForNeighborUpdate(BlockState pState, Direction pFacing, BlockState pFacingState, WorldAccess pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
         if(!pState.canPlaceAt(pLevel, pCurrentPos) && pLevel.getBlockEntity(pCurrentPos) instanceof AmbushBlockEntity entity && isHalf(pState, DoubleBlockHalf.UPPER) && entity.growProgress >= 1) {
-            dropStack((World) pLevel, pCurrentPos, new ItemStack(ModBlocks.AMBER.get()));
+            dropStack((World) pLevel, pCurrentPos, new ItemStack(ModBlocks.AMBER));
         }
         return !pState.canPlaceAt(pLevel, pCurrentPos) ? Blocks.AIR.getDefaultState() : pState;
     }
@@ -120,7 +120,6 @@ public class AmbushBlock extends TallPlantBlock implements Fertilizable, ModEnti
             double dx = pPos.getX() + pRandom.nextDouble();
             double dy = pPos.getY() + pRandom.nextDouble();
             double dz = pPos.getZ() + pRandom.nextDouble();
-            pLevel.addParticle(ModParticles.AMBUSH.get(), dx, dy, dz, 0, 0, 0);
         }
     }
 
@@ -152,7 +151,7 @@ public class AmbushBlock extends TallPlantBlock implements Fertilizable, ModEnti
         if(usedStack.isOf(Items.BONE_MEAL)) {
             return ActionResult.PASS;
         } else if(pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasGrown && isHalf(pState, DoubleBlockHalf.UPPER)) {
-            dropStack(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
+            dropStack(pLevel, pPos, new ItemStack(ModBlocks.AMBER));
 
             BlockPos lowerPos = isHalf(pState, DoubleBlockHalf.LOWER) ? pPos : pPos.down();
             BlockPos upperPos = isHalf(pState, DoubleBlockHalf.UPPER) ? pPos : pPos.up();
@@ -171,7 +170,7 @@ public class AmbushBlock extends TallPlantBlock implements Fertilizable, ModEnti
     }
 
     private boolean canGrowInto(BlockState state) {
-        return state.isAir() || state.isIn(ModBlocks.AMBUSH.get());
+        return state.isAir() || state.isIn((RegistryEntryList<Block>) ModBlocks.AMBUSH);
     }
 
     private boolean sufficientLight(WorldView pLevel, BlockPos pPos) {
@@ -179,7 +178,7 @@ public class AmbushBlock extends TallPlantBlock implements Fertilizable, ModEnti
     }
 
     private boolean isHalf(BlockState state, DoubleBlockHalf half) {
-        return state.isIn(ModBlocks.AMBUSH.get()) && state.get(HALF) == half;
+        return state.isIn((RegistryEntryList<Block>) ModBlocks.AMBUSH) && state.get(HALF) == half;
     }
 
     private boolean canGrow(WorldView pLevel, BlockPos pPos, BlockState pState, int k) {
@@ -218,10 +217,10 @@ public class AmbushBlock extends TallPlantBlock implements Fertilizable, ModEnti
     @Override
     public void onPlaced(World pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {}
 
-    @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, WorldView level, BlockPos pos, PlayerEntity player) {
-        return ModItems.AMBUSH_SEEDS.get().getDefaultInstance();
-    }
+//    @Override
+//    public ItemStack getCloneItemStack(BlockState state, HitResult target, WorldView level, BlockPos pos, PlayerEntity player) {
+//        return ModItems.AMBUSH_SEEDS.getDefaultStack();
+//    }
 
     @Nullable
     @Override

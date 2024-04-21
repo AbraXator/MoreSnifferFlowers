@@ -141,10 +141,10 @@ public class CaulorflowerBlock extends Block implements Fertilizable, ModCropBlo
         return pState.rotate(pMirror.getRotation(pState.get(FACING)));
     }
 
-    @Override
-    public BlockState getPlant(BlockView level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        if (state.getBlock() != this) return getDefaultState();
-        return state;
-    }
+//    @Override
+//    public BlockState getPlant(BlockView level, BlockPos pos) {
+//        BlockState state = level.getBlockState(pos);
+//        if (state.getBlock() != this) return getDefaultState();
+//        return state;
+//    }
 }

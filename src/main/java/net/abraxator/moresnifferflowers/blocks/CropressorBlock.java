@@ -25,17 +25,18 @@ public class CropressorBlock extends Block implements ModEntityBlock {
 
     @Override
     public ActionResult onUse(BlockState pState, World pLevel, BlockPos pPos, PlayerEntity pPlayer, Hand pHand, BlockHitResult pHit) {
-        if(!pLevel.isClient && pLevel.getBlockEntity(pPos) instanceof CropressorBlockEntity entity) {
-            if(entity.isHasFinished()) {
-                pPlayer.giveItemStack(entity.getInventory().get(0));
-            } else {
-                entity.addItem(pPlayer.getMainHandStack());
-            }
-
-            return ActionResult.SUCCESS;
-        }
-
-        return ActionResult.FAIL;
+//        if(!pLevel.isClient && pLevel.getBlockEntity(pPos) instanceof CropressorBlockEntity entity) {
+//            if(entity.isHasFinished()) {
+//                pPlayer.giveItemStack(entity.getInventory().get(0));
+//            } else {
+//                entity.addItem(pPlayer.getMainHandStack());
+//            }
+//
+//            return ActionResult.SUCCESS;
+//        }
+//
+//        return ActionResult.FAIL;
+        return null;
     }
 
     @Nullable

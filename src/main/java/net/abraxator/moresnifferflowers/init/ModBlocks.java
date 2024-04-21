@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.*;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.Identifier;
 
 public class ModBlocks {
     public static final Block DAWNBERRY_VINE = registerBlockNoItem("dawnberry_vine", new DawnberryVineBlock(AbstractBlock.Settings.create().mapColor(MapColor.LICHEN_GREEN).replaceable().noCollision().strength(0.2F).sounds(BlockSoundGroup.GLOW_LICHEN).luminance(state -> state.get(DawnberryVineBlock.AGE) >= 3 ? 3 : 0).burnable().pistonBehavior(PistonBehavior.DESTROY).ticksRandomly().nonOpaque()));
@@ -34,13 +36,17 @@ public class ModBlocks {
     }
 
     private static Block registerBlockNoItem(String name, Block block) {
-        return Registry.register(Registries.BLOCK, name, block);
+        return Registry.register(Registries.BLOCK, new Identifier(MoreSnifferFlowers.MOD_ID, name), block);
     }
 
     private static Block registerBlockWithItem(String name, Block block) {
-        var toReturn = Registry.register(Registries.BLOCK, name, block);
-        Registry.register(Registries.ITEM, name, new BlockItem(block, new Item.Settings()));
-        return toReturn;
+        registerBlockItem(name, block);
+        return Registry.register(Registries.BLOCK, new Identifier(MoreSnifferFlowers.MOD_ID, name), block);
+    }
+
+    private static void registerBlockItem(String name, Block block) {
+        Registry.register(Registries.ITEM, new Identifier(MoreSnifferFlowers.MOD_ID, name),
+                new BlockItem(block, new FabricItemSettings()));
     }
 
     public static void registerModBlocks() {

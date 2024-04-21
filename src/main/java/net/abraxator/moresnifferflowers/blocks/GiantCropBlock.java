@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import com.mojang.serialization.MapCodec;
-import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -45,7 +44,13 @@ public class GiantCropBlock extends PlantBlock implements BlockEntityProvider {
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pPos, BlockState pState) {
-        return new GiantCropBlockEntity(pPos, pState);
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return null;
     }
+
+//    @Nullable
+//    @Override
+//    public BlockEntity createBlockEntity(BlockPos pPos, BlockState pState) {
+//        return new GiantCropBlockEntity(pPos, pState);
+//    }
 }
