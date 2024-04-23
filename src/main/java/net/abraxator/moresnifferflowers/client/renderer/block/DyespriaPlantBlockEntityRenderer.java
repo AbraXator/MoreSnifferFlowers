@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.abraxator.moresnifferflowers.blocks.blockentities.DyespriaPlantBlockEntity;
+import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

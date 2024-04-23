@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_aroma_trim_template": {
+    "has_smithing_trim_template": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_aroma_trim_template",
+      "has_smithing_trim_template",
       "has_the_recipe"
     ]
   ],

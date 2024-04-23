@@ -1,6 +1,7 @@
-// 1.20.1	2024-04-19T23:07:48.6909397	Loot Tables
+// 1.20.1	2024-04-23T18:29:25.3496121	Loot Tables
 7f40a78726ef78ae52c393b821c36f5aa5c2a2ea data/moresnifferflowers/loot_tables/blocks/amber.json
-5ac9bbddbed89b296212216f03a86d2a1778a5fb data/moresnifferflowers/loot_tables/blocks/ambush.json
+82709fac129d665d29913b9da4679bcd34ba753f data/moresnifferflowers/loot_tables/blocks/ambush_bottom.json
+39b9b49d7469774aff8d068125bbfeafe0c50423 data/moresnifferflowers/loot_tables/blocks/ambush_top.json
 68ec98b280e3788ac2d74e87d5a77d34c0c796dc data/moresnifferflowers/loot_tables/blocks/bobling_head.json
 49c14599df467f5603aeceac27051f51627f71ee data/moresnifferflowers/loot_tables/blocks/bonmeelia.json
 0f82b528e63f8143de5be2aeec154447b9225328 data/moresnifferflowers/loot_tables/blocks/caulorflower.json
@@ -15,4 +16,4 @@ ff3fdf30be48896cd22c7d80b5286328f9f3ebc9 data/moresnifferflowers/loot_tables/blo
 b31fdd72ad356dadd1acb797afa0821661c21c4a data/moresnifferflowers/loot_tables/blocks/giant_wheat.json
 1bb94e133ad319060bba0747630d587c6ba7bd3f data/moresnifferflowers/loot_tables/blocks/more_sniffer_flower.json
 dd3b26c506feecf14cc7130816321481883f724d data/moresnifferflowers/loot_tables/blocks/rebrewing_stand_bottom.json
-e1a2dc26e0f69f02ed52bc1382644f6affbf92da data/moresnifferflowers/loot_tables/blocks/rebrewing_stand_top.json
+d9de98fedc8ef8c767e2615eefec9fa6c8f0650d data/moresnifferflowers/loot_tables/blocks/rebrewing_stand_top.json

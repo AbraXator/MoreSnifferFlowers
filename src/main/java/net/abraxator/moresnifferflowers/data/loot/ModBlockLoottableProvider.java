@@ -82,7 +82,8 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                 .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get()).setWeight(12))));
                                 
         dropSelf(ModBlocks.BOBLING_HEAD.get());
-        dropSelf(ModBlocks.AMBUSH.get());
+        add(ModBlocks.AMBUSH_TOP.get(), noDrop());
+        dropSelf(ModBlocks.AMBUSH_BOTTOM.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
         add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 4)));
         add(ModBlocks.GIANT_POTATO.get(), createSingleItemTable(Items.POTATO, UniformGenerator.between(1, 4)));
@@ -111,7 +112,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.CROPRESSOR_CENTER.get());
         dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
         dropSelf(ModBlocks.REBREWING_STAND_BOTTOM.get());
-        dropOther(ModBlocks.REBREWING_STAND_TOP.get(), Items.AIR);
+        add(ModBlocks.REBREWING_STAND_TOP.get(), noDrop());
         dropSelf(ModBlocks.DYESPRIA_PLANT.get());
     }
 

@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -37,6 +38,10 @@ public interface ModCropBlock extends IPlantable, BonemealableBlock {
     
     default void makeGrowOnBonemeal(Level level, BlockPos blockPos, BlockState blockState) {
         level.setBlock(blockPos, blockState.setValue(getAgeProperty(), getAge(blockState) >= 3 ? getAge(blockState) : getAge(blockState) + 1), 2);
+    }
+
+    default boolean mayPlaceOn(BlockState pState) {
+        return pState.is(Blocks.FARMLAND);
     }
     
     default float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {

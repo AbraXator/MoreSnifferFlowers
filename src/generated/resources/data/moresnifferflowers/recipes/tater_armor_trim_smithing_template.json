@@ -1,24 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "A": {
-      "item": "minecraft:diamond"
-    },
-    "B": {
-      "item": "moresnifferflowers:tater_armor_trim_smithing_template"
-    },
-    "C": {
-      "item": "moresnifferflowers:cropressed_potato"
-    }
+  "type": "minecraft:smithing_trim",
+  "addition": {
+    "tag": "minecraft:trim_materials"
   },
-  "pattern": [
-    "ABA",
-    "ACA",
-    "AAA"
-  ],
-  "result": {
+  "base": {
+    "tag": "minecraft:trimmable_armor"
+  },
+  "template": {
     "item": "moresnifferflowers:tater_armor_trim_smithing_template"
-  },
-  "show_notification": true
+  }
 }

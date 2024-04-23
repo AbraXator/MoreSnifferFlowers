@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
+import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.BlockGetter;
@@ -9,9 +9,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 

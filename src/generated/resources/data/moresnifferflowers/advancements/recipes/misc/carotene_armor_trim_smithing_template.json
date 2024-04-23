@@ -1,11 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_crop_smithing_templates": {
+    "has_smithing_trim_template": {
       "conditions": {
         "items": [
           {
-            "tag": "moresnifferflowers:crop_smithing_templates"
+            "items": [
+              "moresnifferflowers:carotene_armor_trim_smithing_template"
+            ]
           }
         ]
       },
@@ -20,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_crop_smithing_templates",
+      "has_smithing_trim_template",
       "has_the_recipe"
     ]
   ],

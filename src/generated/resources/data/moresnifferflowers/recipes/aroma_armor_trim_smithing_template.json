@@ -1,24 +1,12 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "A": {
-      "item": "minecraft:diamond"
-    },
-    "B": {
-      "item": "moresnifferflowers:aroma_armor_trim_smithing_template"
-    },
-    "C": {
-      "tag": "moresnifferflowers:aroma_trim_template_ingredient"
-    }
+  "type": "minecraft:smithing_trim",
+  "addition": {
+    "tag": "minecraft:trim_materials"
   },
-  "pattern": [
-    "ABA",
-    "ACA",
-    "AAA"
-  ],
-  "result": {
+  "base": {
+    "tag": "minecraft:trimmable_armor"
+  },
+  "template": {
     "item": "moresnifferflowers:aroma_armor_trim_smithing_template"
-  },
-  "show_notification": true
+  }
 }

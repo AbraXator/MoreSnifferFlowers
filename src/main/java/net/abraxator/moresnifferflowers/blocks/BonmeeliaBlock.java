@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import net.abraxator.moresnifferflowers.blocks.blockentities.BonmeeliaBlockEntity;
+import net.abraxator.moresnifferflowers.blockentities.BonmeeliaBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
