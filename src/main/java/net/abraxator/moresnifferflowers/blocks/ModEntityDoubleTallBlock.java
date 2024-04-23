@@ -68,10 +68,7 @@ public abstract class ModEntityDoubleTallBlock extends Block implements IModEnti
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
         if (pFacing.getAxis() != Direction.Axis.Y || isLower(pState) != (pFacing == Direction.UP) || isStateThis(pFacingState) && !areTwoHalfSame(pState, pFacingState)) {
-            var a = isLower(pState);
-            var b = pFacing == Direction.DOWN;
-            var c = canSurvive(pState, pLevel, pCurrentPos);
-            return a && b && c ? Blocks.AIR.defaultBlockState() : super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+            return isLower(pState) && pFacing == Direction.DOWN && !canSurvive(pState, pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
         } else {
             return Blocks.AIR.defaultBlockState();
         }

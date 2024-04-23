@@ -55,7 +55,7 @@ public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
                 blockPos = blockPos.above();
             }
             
-            BlockEntity entity = pLevel.getBlockEntity(ENTITY_POS);
+            BlockEntity entity = pLevel.getBlockEntity(blockPos);
             if (entity instanceof RebrewingStandBlockEntity) {
                 NetworkHooks.openScreen(((ServerPlayer) pPlayer), ((RebrewingStandBlockEntity) entity), blockPos);
             }

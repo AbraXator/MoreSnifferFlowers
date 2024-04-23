@@ -9,6 +9,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
@@ -17,8 +18,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
@@ -85,11 +88,11 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         add(ModBlocks.AMBUSH_TOP.get(), noDrop());
         dropSelf(ModBlocks.AMBUSH_BOTTOM.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());
-        add(ModBlocks.GIANT_CARROT.get(), createSingleItemTable(Items.CARROT, UniformGenerator.between(1, 4)));
-        add(ModBlocks.GIANT_POTATO.get(), createSingleItemTable(Items.POTATO, UniformGenerator.between(1, 4)));
-        add(ModBlocks.GIANT_NETHERWART.get(), createSingleItemTable(Items.NETHER_WART, UniformGenerator.between(1, 4)));
-        add(ModBlocks.GIANT_BEETROOT.get(), createSingleItemTable(Items.BEETROOT, UniformGenerator.between(1, 4)));
-        add(ModBlocks.GIANT_WHEAT.get(), createSingleItemTable(Items.WHEAT, UniformGenerator.between(1, 4)));
+        add(ModBlocks.GIANT_CARROT.get(), giantCropLoot(Items.CARROT, ModItems.CROPRESSED_CARROT.get(), Items.AIR, ModItems.BELT_PIECE.get(), ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get()));
+        add(ModBlocks.GIANT_POTATO.get(), giantCropLoot(Items.POTATO, ModItems.CROPRESSED_POTATO.get(), Items.AIR, ModItems.TUBE_PIECE.get(), ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get()));
+        add(ModBlocks.GIANT_NETHERWART.get(), giantCropLoot(Items.NETHER_WART, ModItems.CROPRESSED_NETHERWART.get(), ModItems.BROKEN_REBREWING_STAND.get(), ModItems.ENGINE_PIECE.get(), ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get()));
+        add(ModBlocks.GIANT_BEETROOT.get(), giantCropLoot(Items.BEETROOT, ModItems.CROPRESSED_BEETROOT.get(), Items.AIR, ModItems.PRESS_PIECE.get(), ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get()));
+        add(ModBlocks.GIANT_WHEAT.get(), giantCropLoot(Items.WHEAT, ModItems.CROPRESSED_WHEAT.get(), Items.AIR, ModItems.SCRAP_PIECE.get(), ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get()));
         add(ModBlocks.BONMEELIA.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get())))
@@ -115,7 +118,19 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         add(ModBlocks.REBREWING_STAND_TOP.get(), noDrop());
         dropSelf(ModBlocks.DYESPRIA_PLANT.get());
     }
-
+    
+    private LootTable.Builder giantCropLoot(Item crop, Item cropressed, Item special, Item piece, Item trim) {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 4))
+                        .add(LootItem.lootTableItem(crop)))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .when(LootItemRandomChanceCondition.randomChance(0.1F))
+                        .add(LootItem.lootTableItem(piece).setWeight(100))
+                        .add(LootItem.lootTableItem(trim).setWeight(10))
+                        .add(LootItem.lootTableItem(cropressed).setWeight(10))
+                        .add(LootItem.lootTableItem(special).setWeight(100)));
+    }
+    
     @Override
     protected Iterable<Block> getKnownBlocks() {
         return ForgeRegistries.BLOCKS.getValues()

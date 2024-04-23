@@ -10,16 +10,20 @@ import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -56,6 +60,16 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(!pState.is(pNewState.getBlock()) && isUpper(pState) && pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasGrown) {
+            ItemEntity item = new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), ModBlocks.AMBER.get().asItem().getDefaultInstance());
+            pLevel.addFreshEntity(item);
+        }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+    }
+    
+    @Override
     public boolean mayPlaceOn(BlockState pState) {
         return ModCropBlock.super.mayPlaceOn(pState) || pState.is(ModBlocks.REBREWING_STAND_BOTTOM.get());
     }
@@ -81,7 +95,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(getAge(pState) <= getMaxAge() && pRandom.nextInt(100) < 10 && isLower(pState)) {
+        if(getAge(pState) == 7 && pRandom.nextInt(100) < 10 && isLower(pState)) {
             double dx = pPos.getX() + pRandom.nextDouble();
             double dy = pPos.getY() + pRandom.nextDouble();
             double dz = pPos.getZ() + pRandom.nextDouble();
