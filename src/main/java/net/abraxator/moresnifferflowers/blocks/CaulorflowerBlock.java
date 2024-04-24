@@ -148,9 +148,9 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
             dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFFFFFFF);
             dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF9d979b);
             dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF474f52);
-            dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1d1d21);
+            dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF26262e);
             dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF835432);
-            dyeColorHexFormatMap.put(DyeColor.RED, 0xFFb5432e);
+            dyeColorHexFormatMap.put(DyeColor.RED, 0xFFd5544e);
             dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFf89635);
             dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFffee53);
             dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF80c71f);

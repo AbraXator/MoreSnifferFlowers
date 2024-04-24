@@ -52,6 +52,6 @@ public class ModCreativeTabs {
                 output.accept(ModItems.BROKEN_REBREWING_STAND.get());
             })
             .withBackgroundLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID,  "textures/gui/container/tab_items.png"))
+            .withTabsImage(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "textures/gui/container/tabs.png"))
             .build());
-
 }

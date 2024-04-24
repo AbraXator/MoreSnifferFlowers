@@ -29,9 +29,9 @@ public class ModTrimMaterials {
         register(context, AMBER, ModItems.AMBER_SHARD.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#df910b")), 0.6F, Map.of());
         register(context, NETHER_WART, ModItems.CROPRESSED_NETHERWART.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#831c20")), 0.4F, Map.of());
         register(context, POTATO, ModItems.CROPRESSED_POTATO.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#d9aa51")), 0.6F, Map.of());
-        register(context, WHEAT, ModItems.CROPRESSED_WHEAT.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#d9aa51")), 0.6F, Map.of());
-        register(context, BEETROOT, ModItems.CROPRESSED_BEETROOT.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#d9aa51")), 0.4F, Map.of());
-        register(context, CARROT, ModItems.CROPRESSED_CARROT.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#d9aa51")), 0.5F, Map.of());
+        register(context, WHEAT, ModItems.CROPRESSED_WHEAT.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#cdb159")), 0.6F, Map.of());
+        register(context, BEETROOT, ModItems.CROPRESSED_BEETROOT.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#a4272c")), 0.4F, Map.of());
+        register(context, CARROT, ModItems.CROPRESSED_CARROT.getHolder().get(), Style.EMPTY.withColor(TextColor.parseColor("#e67022")), 0.5F, Map.of());
 
 
     }
