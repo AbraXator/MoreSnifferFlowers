@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "moresnifferflowers:item/potion_overlay",
+    "layer0": "moresnifferflowers:item/rebrewed_potion_overlay",
     "layer1": "item/potion"
   }
 }
