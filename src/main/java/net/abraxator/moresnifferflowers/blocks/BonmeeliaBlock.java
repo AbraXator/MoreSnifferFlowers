@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.Nullable;
 import org.openjdk.nashorn.internal.scripts.JO;
 
@@ -69,22 +70,27 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getMainHandItem();
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-
+        
         if (!(blockEntity instanceof BonmeeliaBlockEntity entity)) {
-            return InteractionResult.FAIL;
+            return InteractionResult.PASS;
         }
-
-        if(itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
-            pLevel.setBlock(pPos, pState.setValue(HAS_BOTTLE, true), 3);
-            pPlayer.getMainHandItem().shrink(1);
-        } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
-            pLevel.setBlock(pPos, pState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
-            pPlayer.addItem(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
-        } else if(!pState.getValue(HAS_BOTTLE)) {
-            entity.displayHint();
+        
+        if(!pLevel.isClientSide) {
+            if (itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
+                pLevel.setBlock(pPos, pState.setValue(HAS_BOTTLE, true), 3);
+                pPlayer.getMainHandItem().shrink(1);
+                return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
+                pLevel.setBlock(pPos, pState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
+                pPlayer.addItem(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
+                return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
+                entity.displayHint();
+                return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            }
         }
-
-        return InteractionResult.sidedSuccess(pLevel.isClientSide);
+    
+        return InteractionResult.PASS;
     }
     
     @Override

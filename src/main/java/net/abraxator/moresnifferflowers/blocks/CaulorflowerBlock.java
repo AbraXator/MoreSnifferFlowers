@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import com.google.common.collect.Maps;
+import com.mojang.authlib.yggdrasil.request.ValidateRequest;
 import net.abraxator.moresnifferflowers.colors.Colorable;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -95,19 +96,22 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
         grow(pLevel, pPos, true);
     }
-
+    
     protected void grow(ServerLevel pLevel, BlockPos originalPos, boolean bonemeal) {
         highestPos(pLevel, originalPos, bonemeal).ifPresent(highestPos -> {
-            BlockState highestBlockState = pLevel.getBlockState(highestPos);
-            pLevel.setBlockAndUpdate(highestPos, highestBlockState.setValue(FLIPPED, highestPos.getY() % 2 == 0));
+                var state = pLevel.getBlockState(highestPos.below());
+                pLevel.setBlockAndUpdate(highestPos, this.defaultBlockState()
+                        .setValue(FLIPPED, highestPos.getY() % 2 == 0)
+                        .setValue(FACING, state.getValue(FACING))
+                        .setValue(COLOR, state.getValue(COLOR)));
         });
     }
 
     private Optional<BlockPos> highestPos(BlockGetter level, BlockPos originalPos, boolean bonemeal) {
         var lowestPos = getLowestPos(level, originalPos);
-        if(lowestPos.isEmpty()) return Optional.empty();
+        if(lowestPos.isEmpty()) { return Optional.empty(); }
         var highestPos = getLastConnectedBlock(level, lowestPos.get(), Direction.UP);
-        return highestPos.filter(blockPos1 -> bonemeal || !((lowestPos.get().getY() + 5) <= blockPos1.getY()));
+        return highestPos.filter(blockPos1 -> bonemeal || !((lowestPos.get().getY() + 5) <= blockPos1.getY())).map(BlockPos::above);
     }
 
     private Optional<BlockPos> getLowestPos(BlockGetter level, BlockPos originalPos) {

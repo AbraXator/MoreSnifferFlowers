@@ -124,7 +124,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                 .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 4))
                         .add(LootItem.lootTableItem(crop)))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                        .when(LootItemRandomChanceCondition.randomChance(0.1F))
+                        .when(LootItemRandomChanceCondition.randomChance(0.01F))
                         .add(LootItem.lootTableItem(piece).setWeight(100))
                         .add(LootItem.lootTableItem(trim).setWeight(10))
                         .add(LootItem.lootTableItem(cropressed).setWeight(10))

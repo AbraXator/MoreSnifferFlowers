@@ -4,7 +4,9 @@ import net.abraxator.moresnifferflowers.blockentities.RebrewingStandBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.ModEntityDoubleTallBlock;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -63,7 +65,15 @@ public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
             return InteractionResult.CONSUME;
         }
     }
-
+    
+    @Override
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
+        double d0 = (double)pPos.getX() + 0.4D + (double)pRandom.nextFloat() * 0.2D;
+        double d1 = (double)pPos.getY() + 0.7D + (double)pRandom.nextFloat() * 0.3D;
+        double d2 = (double)pPos.getZ() + 0.4D + (double)pRandom.nextFloat() * 0.2D;
+        pLevel.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+    }
+    
     @Override
     public Block getLowerBlock() {
         return ModBlocks.REBREWING_STAND_BOTTOM.get();

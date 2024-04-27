@@ -19,7 +19,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "chance": 0.1,
+          "chance": 0.01,
           "condition": "minecraft:random_chance"
         }
       ],

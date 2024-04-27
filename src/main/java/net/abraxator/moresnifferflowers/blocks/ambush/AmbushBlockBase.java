@@ -141,7 +141,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
             entity.reset();
             return InteractionResult.sidedSuccess(pLevel.isClientSide());
         } else {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+            return InteractionResult.PASS;
         }
     }
 

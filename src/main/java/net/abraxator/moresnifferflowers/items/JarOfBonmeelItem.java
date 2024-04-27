@@ -6,6 +6,7 @@ import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.ticks.ScheduledTick;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
@@ -73,18 +75,18 @@ public class JarOfBonmeelItem extends Item {
         }
 
         if (flag && !level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
-            return placeLogic(blockPosList, level, giantVersion, clickedPos, serverPlayer);
+            return placeLogic(blockPosList, ((ServerLevel) level), giantVersion, clickedPos, serverPlayer);
         }
 
         return InteractionResult.PASS;
     }
 
-    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos, ServerPlayer serverPlayer) {
+    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, ServerLevel level, Block giantVersion, BlockPos clickedPos, ServerPlayer serverPlayer) {
         blockPosList.forEach(pos -> {
             pos = pos.immutable();
             level.destroyBlock(pos, false);
             level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, evaulateModelPos(pos, clickedPos)));
-
+            
             for(int j = 0; j <= 3; j++) {
                 ((ServerLevel) level).sendParticles(new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 1.0F), clickedPos.getX() + level.random.nextDouble(), clickedPos.above().getY() + level.random.nextDouble(), clickedPos.getZ() + level.random.nextDouble()   , 1, 0, 0, 0, 0.3D);
             }

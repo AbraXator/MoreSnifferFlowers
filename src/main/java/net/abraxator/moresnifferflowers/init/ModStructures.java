@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.init;
 
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -27,7 +28,7 @@ public class ModStructures {
     public static final ResourceKey<Structure> DESERT_SNIFFER_TEMPLE = createKey("desert_sniffer_temple");
 
     private static ResourceKey<Structure> createKey(String pName) {
-        return ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(pName));
+        return ResourceKey.create(Registries.STRUCTURE, MoreSnifferFlowers.loc(pName));
     }
 
     private static Structure.StructureSettings structure(HolderSet<Biome> pBiomes, Map<MobCategory, StructureSpawnOverride> pSpawnOverrides, GenerationStep.Decoration pStep, TerrainAdjustment pTerrainAdaptation) {

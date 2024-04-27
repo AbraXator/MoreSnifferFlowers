@@ -7,12 +7,15 @@ import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.Util;
+import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -117,6 +120,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                     inv.set(1, Items.GLASS_BOTTLE.getDefaultInstance());
                     fuel -= 4;
                     brewProgress = 0;
+                    level.playSound(null, getBlockPos(), SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
             }
         }
@@ -127,7 +131,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             if (!(blockstate.getBlock() instanceof RebrewingStandBlockBase)) {
                 return;
             }
-
+            
             for(int i = 0; i < RebrewingStandBlockBase.HAS_BOTTLE.length; ++i) {
                 blockstate = blockstate.setValue(RebrewingStandBlockBase.HAS_BOTTLE[i], potionBits[i]);
             }
