@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -20,9 +21,10 @@ public class GiantCropBlock extends Block implements EntityBlock {
         super(pProperties);
         registerDefaultState(defaultBlockState().setValue(MODEL_POSITION, ModelPos.NONE));
     }
-    
-    
-    
+    @Override
+    public float getShadeBrightness(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return 1.0F;
+    }
     @Override
     public VoxelShape getBlockSupportShape(BlockState pState, BlockGetter pReader, BlockPos pPos) {
         return super.getBlockSupportShape(pState, pReader, pPos);

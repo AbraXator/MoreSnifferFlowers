@@ -1,17 +1,17 @@
-{	
+{
 	"credit": "Made with Blockbench",
-	"render_type": "cutout",
 	"ambientocclusion": false,
+	"render_type": "cutout",
 	"texture_size": [128, 128],
 	"textures": {
 		"0": "moresnifferflowers:block/cropressor",
 		"1": "moresnifferflowers:block/cropressor_pistons",
-		"particle": "minecraft:block/anvil"
+		"particle": "block/anvil"
 	},
 	"elements": [
 		{
 			"from": [2, 2, 13],
-			"to": [7, 7, 14],
+			"to": [6.975, 7, 14.025],
 			"faces": {
 				"north": {"uv": [6.375, 3.5, 7, 4.125], "texture": "#0"},
 				"east": {"uv": [6.25, 3.5, 6.375, 4.125], "texture": "#0"},
@@ -22,8 +22,8 @@
 			}
 		},
 		{
-			"from": [2, 2, 2],
-			"to": [7, 7, 3],
+			"from": [2, 2, 1.975],
+			"to": [7.075, 7, 3],
 			"faces": {
 				"north": {"uv": [6, 0.25, 6.625, 0.875], "texture": "#0"},
 				"east": {"uv": [5.875, 0.25, 6, 0.875], "texture": "#0"},

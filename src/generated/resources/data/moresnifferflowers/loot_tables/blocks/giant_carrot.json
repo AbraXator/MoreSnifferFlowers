@@ -19,7 +19,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "chance": 0.01,
+          "chance": 0.05,
           "condition": "minecraft:random_chance"
         }
       ],
@@ -27,22 +27,22 @@
         {
           "type": "minecraft:item",
           "name": "moresnifferflowers:belt_piece",
-          "weight": 100
+          "weight": 50
         },
         {
           "type": "minecraft:item",
           "name": "moresnifferflowers:carotene_armor_trim_smithing_template",
-          "weight": 10
+          "weight": 22
         },
         {
           "type": "minecraft:item",
           "name": "moresnifferflowers:cropressed_carrot",
-          "weight": 10
+          "weight": 100
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:air",
-          "weight": 100
+          "weight": 50
         }
       ],
       "rolls": 1.0

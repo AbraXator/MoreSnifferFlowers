@@ -1,7 +1,7 @@
 {
   "asset_name": "wheat",
   "description": {
-    "color": "#D9AA51",
+    "color": "#CDB159",
     "translate": "trim_material.moresnifferflowers.wheat"
   },
   "ingredient": "moresnifferflowers:cropressed_wheat",
