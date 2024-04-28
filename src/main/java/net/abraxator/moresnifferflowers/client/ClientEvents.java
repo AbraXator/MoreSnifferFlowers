@@ -107,7 +107,7 @@ public class ClientEvents {
         }, ModItems.DYESPRIA.get());
         event.register((pStack, pTintIndex) -> {
             return pTintIndex > 0 ? -1 : PotionUtils.getColor(pStack);
-        }, ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get());
+        }, ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get(), ModItems.REBREWED_SPLASH_POTION.get(), ModItems.REBREWED_LINGERING_POTION.get());
     }
 
     @SubscribeEvent

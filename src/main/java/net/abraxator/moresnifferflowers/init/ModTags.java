@@ -16,6 +16,9 @@ public class ModTags {
         public static final TagKey<Item> CROP_SMITHING_TEMPLATES = create(Registries.ITEM ,"crop_smithing_templates");
         public static final TagKey<Item> CROPRESSABLE_CROPS = create(Registries.ITEM ,"cropressable_crops");
         public static final TagKey<Item> CROPRESSOR_PIECES = create(Registries.ITEM ,"cropressor_pieces");
+        public static final TagKey<Item> REBREWING_STAND_INGREDIENTS = create(Registries.ITEM ,"rebrewing_stand_ingredients");
+        public static final TagKey<Item> CROPRESSED_CROPS = create(Registries.ITEM ,"cropressed_crops");
+        public static final TagKey<Item> REBREWED_POTIONS = create(Registries.ITEM ,"rebrewed_potions");
 
     }
 

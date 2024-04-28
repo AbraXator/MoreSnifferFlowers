@@ -33,9 +33,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         this.tag(ModTags.ModItemTags.AROMA_TRIM_TEMPLATE_INGREDIENT).add(ModItems.AMBER_SHARD.get(), ModBlocks.AMBER.get().asItem());
         this.tag(ModTags.ModItemTags.CROPRESSABLE_CROPS).add(Items.POTATO, Items.CARROT, Items.BEETROOT, Items.NETHER_WART, Items.WHEAT);
+        this.tag(ModTags.ModItemTags.CROPRESSED_CROPS).add(ModItems.CROPRESSED_CARROT.get(), ModItems.CROPRESSED_POTATO.get(), ModItems.CROPRESSED_WHEAT.get(), ModItems.CROPRESSED_BEETROOT.get(), ModItems.CROPRESSED_NETHERWART.get());
         this.tag(ModTags.ModItemTags.CROP_SMITHING_TEMPLATES).add(ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get());
 
         this.tag(ModTags.ModItemTags.CROPRESSOR_PIECES).add(ModItems.SCRAP_PIECE.get(), ModItems.BELT_PIECE.get(), ModItems.ENGINE_PIECE.get(), ModItems.TUBE_PIECE.get(), ModItems.PRESS_PIECE.get());
+
+        this.tag(ModTags.ModItemTags.REBREWING_STAND_INGREDIENTS).add(Items.REDSTONE, Items.GLOWSTONE_DUST, Items.GUNPOWDER, Items.DRAGON_BREATH);
+        this.tag(ModTags.ModItemTags.REBREWED_POTIONS).add(ModItems.REBREWED_POTION.get(), ModItems.REBREWED_SPLASH_POTION.get(), ModItems.REBREWED_LINGERING_POTION.get());
     }
 
     private Item item(RegistryObject<Block> object){

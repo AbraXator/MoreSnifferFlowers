@@ -24,8 +24,12 @@
 	"item.moresnifferflowers.extracted_bottle": "Extracted Potion",
 	"item.moresnifferflowers.extracted_bottle.effect.water": "Extracted Potion",
 	"item.moresnifferflowers.rebrewed_potion.effect.water": "Rebrewed Potion",
+	"item.moresnifferflowers.rebrewed_splash_potion.effect.water": "Rebrewed Splash Potion",
+	"item.moresnifferflowers.rebrewed_lingering_potion.effect.water": "Rebrewed Lingering Potion",
 	"item.moresnifferflowers.extracted_bottle.effect.empty": "Uncraftable Extracted Potion",
 	"item.moresnifferflowers.rebrewed_potion.effect.empty": "Uncraftable Rebrewed Potion",
+	"item.moresnifferflowers.rebrewed_splash_potion.effect.empty": "Uncraftable Rebrewed Splash Potion",
+	"item.moresnifferflowers.rebrewed_lingering_potion.effect.empty": "Uncraftable Rebrewed Lingering Potion",
    	"item.moresnifferflowers.rebrewing_stand": "Rebrewing Stand",
    	"item.moresnifferflowers.broken_rebrewing_stand": "Broken Rebrewing Stand",
 	"item.moresnifferflowers.cropressor": "Cropressor",
@@ -51,10 +55,18 @@
 	"tooltip.amber_shard.usage": "Can be used as an armor trim material",
 	"bottle_of_extraction.tooltip.usage": "Drink to extract current effects into a bottle",
 
-	"advancements.more_sniffer_flowers.dyespria": "Colorful plants",
+	"advancements.more_sniffer_flowers.dyespria_plant": "Colorful plants",
+	"advancements.more_sniffer_flowers.dyespria_plant.desc": "Place the Dyespria!!!",
+	"advancements.more_sniffer_flowers.dyespria": "Spriaing your dye",
 	"advancements.more_sniffer_flowers.dyespria.desc": "Bring color to Caulorflower using a Dyespria",
 	"advancements.more_sniffer_flowers.any_seed": "More Sniffer Flowers",
 	"advancements.more_sniffer_flowers.any_seed.desc": "Discover More Sniffer Flowers",
+	"advancements.more_sniffer_flowers.bonmeel": "Let It Grow!",
+	"advancements.more_sniffer_flowers.bonmeel.desc": "Enlarge your crops using the magic of Bonmeel",
+	"advancements.more_sniffer_flowers.cropressor": "Compressing with extra steps",
+	"advancements.more_sniffer_flowers.cropressor.desc": "Cropress any crop",
+	"advancements.more_sniffer_flowers.rebrew": "Local Rebrewery",
+	"advancements.more_sniffer_flowers.rebrew_desc": "Rebrew an Extracted Potion",
 
 	"trim_pattern.moresnifferflowers.aroma": "Aroma Armor Trim",
 	"trim_pattern.moresnifferflowers.nether_wart": "Nether Wart Armor Trim",
@@ -97,6 +109,5 @@
 
 	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
 
-	"hover_name.moresnifferflowers.extracted_bottle": "Extracted Potion",
-	"hover_name.moresnifferflowers.rebrewed_potion": "Rebrewed Potion"
+	"entity.moresnifferflowers.dragonfly": "Dragonfly"
 }

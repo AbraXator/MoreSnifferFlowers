@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.client.gui.menu;
 
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMenuTypes;
+import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -176,7 +177,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
 
         public static boolean mayPlaceItem(ItemStack itemStack) {
-            return itemStack.is(Items.GLOWSTONE_DUST) || itemStack.is(Items.REDSTONE);
+            return itemStack.is(ModTags.ModItemTags.REBREWING_STAND_INGREDIENTS);
         }
 
         @Override

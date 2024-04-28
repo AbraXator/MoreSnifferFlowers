@@ -1,8 +1,10 @@
 package net.abraxator.moresnifferflowers;
 
+import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
 import net.abraxator.moresnifferflowers.compat.quark.OtherModEvents;
+import net.abraxator.moresnifferflowers.config.ConfigSetup;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -23,6 +25,8 @@ public class MoreSnifferFlowers {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public MoreSnifferFlowers() {
+        Reflection.initialize(ConfigSetup.class);
+        
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.ITEMS.register(modEventBus);

@@ -86,10 +86,6 @@ public class JarOfBonmeelItem extends Item {
             pos = pos.immutable();
             level.destroyBlock(pos, false);
             level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, evaulateModelPos(pos, clickedPos)));
-            
-            for(int j = 0; j <= 3; j++) {
-                ((ServerLevel) level).sendParticles(new DustParticleOptions(Vec3.fromRGB24(11162034).toVector3f(), 1.0F), clickedPos.getX() + level.random.nextDouble(), clickedPos.above().getY() + level.random.nextDouble(), clickedPos.getZ() + level.random.nextDouble()   , 1, 0, 0, 0, 0.3D);
-            }
 
             if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
                 entity.pos1 = clickedPos.mutable().move(1, 2, 1);
