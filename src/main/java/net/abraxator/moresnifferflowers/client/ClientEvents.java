@@ -26,11 +26,9 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
@@ -39,10 +37,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -121,29 +115,32 @@ public class ClientEvents {
             IModFile modFile = iModFileInfo.getFile();
             event.addRepositorySource(pOnLoad -> {
                 Pack rtx = Pack.readMetaAndCreate(
-                        MoreSnifferFlowers.loc("rtx_moresnifferflowers").toString(),
+                        MoreSnifferFlowers.loc("more_sniffer_flowers_rtx").toString(),
                         Component.literal("RTX More Sniffer Flowers"),
                         false,
-                        pId -> new PathPackResources(pId, modFile.findResource("resourcepacks/rtx_moresnifferflowers"), true),
+                        pId -> new PathPackResources(pId, modFile.findResource("resourcepacks/more_sniffer_flowers_rtx"), true),
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,
                         PackSource.BUILT_IN);
                 if(rtx != null) {
                     pOnLoad.accept(rtx);
                 }
+            });
+            
+            event.addRepositorySource(pOnLoad -> {
 
                 Pack customStyleGUI = Pack.readMetaAndCreate(
-                        MoreSnifferFlowers.loc("custom_style_gui_moresnifferflowers").toString(),
-                        Component.literal("Custom GUI More Sniffer Flowers"),
+                        MoreSnifferFlowers.loc("more_sniffer_flowers_vanilla_style_guis").toString(),
+                        Component.literal("Vanilla style GUIs More Sniffer Flowers"),
                         false,
-                        pId -> new PathPackResources(pId, modFile.findResource("resourcepacks/custom_style_gui_moresnifferflowers"), true),
+                        pId -> new PathPackResources(pId, modFile.findResource("resourcepacks/more_sniffer_flowers_vanilla_style_guis"), true),
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,
-                        PackSource.DEFAULT);
+                        PackSource.BUILT_IN);
                 if(customStyleGUI != null) {
-                    pOnLoad.accept(rtx);
+                    pOnLoad.accept(customStyleGUI);
                 }
             });
         }
     }
-}
+} 
