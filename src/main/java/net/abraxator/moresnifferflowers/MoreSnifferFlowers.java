@@ -1,10 +1,8 @@
 package net.abraxator.moresnifferflowers;
 
-import com.google.common.reflect.Reflection;
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
 import net.abraxator.moresnifferflowers.compat.quark.OtherModEvents;
-import net.abraxator.moresnifferflowers.config.ConfigSetup;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -13,7 +11,9 @@ import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -25,7 +25,6 @@ public class MoreSnifferFlowers {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public MoreSnifferFlowers() {
-        Reflection.initialize(ConfigSetup.class);
         
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -44,7 +43,7 @@ public class MoreSnifferFlowers {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
-
+        
         if(ModList.get().isLoaded("quark")) {
             MinecraftForge.EVENT_BUS.addListener(OtherModEvents::onSimpleHarvest);
         }

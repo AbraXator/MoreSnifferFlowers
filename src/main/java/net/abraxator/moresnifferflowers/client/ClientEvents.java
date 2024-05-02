@@ -120,7 +120,7 @@ public class ClientEvents {
 
             IModFile modFile = iModFileInfo.getFile();
             event.addRepositorySource(pOnLoad -> {
-                Pack pack = Pack.readMetaAndCreate(
+                Pack rtx = Pack.readMetaAndCreate(
                         MoreSnifferFlowers.loc("rtx_moresnifferflowers").toString(),
                         Component.literal("RTX More Sniffer Flowers"),
                         false,
@@ -128,8 +128,20 @@ public class ClientEvents {
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,
                         PackSource.BUILT_IN);
-                if(pack != null) {
-                    pOnLoad.accept(pack);
+                if(rtx != null) {
+                    pOnLoad.accept(rtx);
+                }
+
+                Pack customStyleGUI = Pack.readMetaAndCreate(
+                        MoreSnifferFlowers.loc("custom_style_gui_moresnifferflowers").toString(),
+                        Component.literal("Custom GUI More Sniffer Flowers"),
+                        false,
+                        pId -> new PathPackResources(pId, modFile.findResource("resourcepacks/custom_style_gui_moresnifferflowers"), true),
+                        PackType.CLIENT_RESOURCES,
+                        Pack.Position.TOP,
+                        PackSource.DEFAULT);
+                if(customStyleGUI != null) {
+                    pOnLoad.accept(rtx);
                 }
             });
         }

@@ -1,10 +1,13 @@
 package net.abraxator.moresnifferflowers.events;
 
+import cpw.mods.jarhandling.impl.Jar;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,12 +17,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.event.entity.player.PermissionsChangedEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +35,25 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ForgeEvents {
+    @SubscribeEvent
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        var item = event.getEntity().getItemInHand(event.getHand()).getItem();
+        var isItem = item instanceof JarOfBonmeelItem;
+        var isBlock = event.getLevel().getBlockState(event.getPos()).is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM);
+
+        MoreSnifferFlowers.LOGGER.warn(item.getDescriptionId());
+        
+        if(isItem && isBlock) {
+            var context = new UseOnContext(event.getLevel(), event.getEntity(), event.getHand(), event.getItemStack(), event.getHitVec());
+            
+            event.setCanceled(true);
+            
+            MoreSnifferFlowers.LOGGER.warn("is cancelled");
+            
+            ((JarOfBonmeelItem) item).useOn(context);
+        }
+    }
+    
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if(event.getState().is(ModBlocks.AMBER.get()) && event.getLevel() instanceof ServerLevel serverLevel) {

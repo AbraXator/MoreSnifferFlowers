@@ -3,12 +3,17 @@ package net.abraxator.moresnifferflowers.blocks;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.client.particle.GiantCropParticle;
 import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -19,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
 import net.minecraft.world.ticks.ScheduledTick;
 import org.antlr.runtime.tree.TreeRuleReturnScope;
@@ -31,7 +37,7 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
         super(pProperties);
         registerDefaultState(defaultBlockState().setValue(MODEL_POSITION, ModelPos.NONE));
     }
-    
+
     @Override
     public float getShadeBrightness(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         return 1.0F;
