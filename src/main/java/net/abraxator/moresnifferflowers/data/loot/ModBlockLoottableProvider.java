@@ -3,8 +3,10 @@ package net.abraxator.moresnifferflowers.data.loot;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.blocks.DawnberryVineBlock;
+import net.abraxator.moresnifferflowers.blocks.DyespriaPlantBlock;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -116,7 +118,13 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.MORE_SNIFFER_FLOWER.get());
         dropSelf(ModBlocks.REBREWING_STAND_BOTTOM.get());
         add(ModBlocks.REBREWING_STAND_TOP.get(), noDrop());
-        dropSelf(ModBlocks.DYESPRIA_PLANT.get());
+        add(ModBlocks.DYESPRIA_PLANT.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                        .add(LootItem.lootTableItem(ModItems.DYESPRIA_SEEDS.get()))
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.DYESPRIA_PLANT.get())
+                                .setProperties(StatePropertiesPredicate.Builder.properties()
+                                    .hasProperty(ModStateProperties.AGE_3, 3))
+                                .invert())));
     }
     
     private LootTable.Builder giantCropLoot(Item crop, Item cropressed, Item special, Item piece, Item trim) {

@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
+import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.colors.Colorable;
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
@@ -62,6 +63,13 @@ public class DyespriaItem extends Item implements Colorable {
             level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
             ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
             return InteractionResult.sidedSuccess(level.isClientSide);
+        } else {
+            level.setBlockAndUpdate(blockPos.above(), ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3));
+            stack.setCount(-1);
+            if(level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
+                entity.dye = Dye.getDyeFromStack(stack);
+                entity.setChanged();
+            }
         }
         return InteractionResult.PASS;
     }
@@ -101,7 +109,7 @@ public class DyespriaItem extends Item implements Colorable {
                 pAccess.set(remove(pStack));
                 playRemoveOneSound(pPlayer);
             } else {
-                ItemStack itemStack = add(pStack, pOther);
+                ItemStack itemStack = add(pStack, Dye.getDyeFromStack(pStack), pOther);
                 pAccess.set(itemStack);
                 if(itemStack.isEmpty()) {
                     this.playInsertSound(pPlayer);

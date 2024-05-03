@@ -40,16 +40,11 @@ public class ForgeEvents {
         var item = event.getEntity().getItemInHand(event.getHand()).getItem();
         var isItem = item instanceof JarOfBonmeelItem;
         var isBlock = event.getLevel().getBlockState(event.getPos()).is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM);
-
-        MoreSnifferFlowers.LOGGER.warn(item.getDescriptionId());
         
         if(isItem && isBlock) {
             var context = new UseOnContext(event.getLevel(), event.getEntity(), event.getHand(), event.getItemStack(), event.getHitVec());
             
             event.setCanceled(true);
-            
-            MoreSnifferFlowers.LOGGER.warn("is cancelled");
-            
             ((JarOfBonmeelItem) item).useOn(context);
         }
     }

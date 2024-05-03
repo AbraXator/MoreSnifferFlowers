@@ -22,14 +22,18 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
 
     @Override
     public void render(DyespriaPlantBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-        if(pBlockEntity.getBlockState().getValue(ModStateProperties.AGE_3) != 3 && pBlockEntity.dye.isEmpty()) return;
-        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        DyeItem dyeItem = DyeItem.byColor(pBlockEntity.getBlockState().getValue(ModStateProperties.COLOR));
-        pPoseStack.pushPose();
-        pPoseStack.translate(0.5, 0.9375, 0.5);
-        pPoseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-        pPoseStack.scale(0.35F, 0.35F, 0.35F);
-        itemRenderer.renderStatic(new ItemStack(dyeItem), ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, pBlockEntity.getLevel(), ((int) pBlockEntity.getBlockPos().asLong()));
-        pPoseStack.popPose();
+        var isGrown = pBlockEntity.getBlockState().getValue(ModStateProperties.AGE_3) >= 3;
+        var hasDye = !pBlockEntity.dye.isEmpty();
+        
+        if(isGrown && hasDye) {
+            ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+            DyeItem dyeItem = DyeItem.byColor(pBlockEntity.getBlockState().getValue(ModStateProperties.COLOR));
+            pPoseStack.pushPose();
+            pPoseStack.translate(0.5, 0.9375, 0.5);
+            pPoseStack.mulPose(entityRenderDispatcher.cameraOrientation());
+            pPoseStack.scale(0.35F, 0.35F, 0.35F);
+            itemRenderer.renderStatic(new ItemStack(dyeItem), ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, pBlockEntity.getLevel(), ((int) pBlockEntity.getBlockPos().asLong()));
+            pPoseStack.popPose();
+        }
     }
 }

@@ -6,8 +6,14 @@ import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 
 public record Dye(DyeColor color, int amount) {
+    public static final Dye EMPTY = new Dye(DyeColor.WHITE, 0);
+    
     public boolean isEmpty() {
         return Dye.this.amount <= 0;
+    }
+
+    public static Dye getDyeFromDyeStack(ItemStack dyeStack) {
+        return new Dye(((DyeItem) dyeStack.getItem()).getDyeColor(), dyeStack.getCount());
     }
     
     public static Dye getDyeFromStack(ItemStack itemStack) {
@@ -19,7 +25,7 @@ public record Dye(DyeColor color, int amount) {
     }
     
     public static ItemStack stackFromDye(Dye dye) {
-        return new ItemStack(DyeItem.byColor(dye.color), dye.amount);
+        return dye.isEmpty() ? ItemStack.EMPTY : new ItemStack(DyeItem.byColor(dye.color), dye.amount);
     }    
     
     public static boolean dyeCheck(Dye dye, ItemStack dyeToInsert) {
@@ -32,8 +38,8 @@ public record Dye(DyeColor color, int amount) {
         return colorable.colorValues().getOrDefault(dyeColor, -1);
     }
 
-    public static void setDyeToStack(ItemStack stack, ItemStack dyeToInset, int amount) {
-        var dyeColor = dyeToInset.getItem() instanceof DyeItem ? ((DyeItem) dyeToInset.getItem()).getDyeColor() : DyeColor.WHITE;
+    public static void setDyeToStack(ItemStack stack, ItemStack dyeToInsert, int amount) {
+        var dyeColor = dyeToInsert.getItem() instanceof DyeItem ? ((DyeItem) dyeToInsert.getItem()).getDyeColor() : DyeColor.WHITE;
         
         CompoundTag tag = stack.getOrCreateTag();
         tag.putInt("color", dyeColor.getId());

@@ -10,18 +10,17 @@ import java.util.Map;
 public interface Colorable {
     Map<DyeColor, Integer> colorValues();
 
-    default ItemStack add(@Nullable ItemStack dyespria, ItemStack dyeToInsert) {
-        Dye dye = dyespria == null ? Dye.getDyeFromStack(dyeToInsert) : Dye.getDyeFromStack(dyespria);
+    default ItemStack add(@Nullable ItemStack dyespria, Dye dyeInside, ItemStack dyeToInsert) {
         if(dyeToInsert.getItem() instanceof DyeItem) {
-            if(!dye.isEmpty()) {
-                int amountInside = dye.amount();
+            if(!dyeInside.isEmpty()) {
+                int amountInside = dyeInside.amount();
                 int freeSpace = 64 - amountInside;
                 int totalDye = Math.min(amountInside + dyeToInsert.getCount(), 64); //AMOUNT TO INSERT INTO DYESPRIA
-                if (!Dye.dyeCheck(dye, dyeToInsert)) {
+                if (!Dye.dyeCheck(dyeInside, dyeToInsert)) {
                     //DYESPRIA HAS DIFFERENT DYE AND YOU INSERT ANOTHER 😝
                     onAddDye(dyespria, dyeToInsert, dyeToInsert.getCount());
                     dyeToInsert.shrink(totalDye);
-                    return Dye.stackFromDye(dye);
+                    return Dye.stackFromDye(dyeInside);
                 } else if(freeSpace <= 0) {
                     //DYESPRIA HAS NO SPACE 😇
                     return dyeToInsert;
