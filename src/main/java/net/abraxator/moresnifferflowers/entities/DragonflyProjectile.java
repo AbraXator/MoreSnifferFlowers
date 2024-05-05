@@ -30,46 +30,8 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
     }
 
     public DragonflyProjectile(Level pLevel, Player player) {
-        super(ModEntityTypes.DRAGONFLY.get(), pLevel);
+        super(ModEntityTypes.DRAGONFLY.get(), player, pLevel);
         this.setOwner(player);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        /*Vec3 deltaMovement = this.getDeltaMovement();
-        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        
-        if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            double horizontalDistance = deltaMovement.horizontalDistance();
-            this.setYRot((float)(Mth.atan2(deltaMovement.x, deltaMovement.z) * (double)(180F / (float)Math.PI)));
-            this.setXRot((float)(Mth.atan2(deltaMovement.y, horizontalDistance) * (double)(180F / (float)Math.PI)));
-            this.yRotO = this.getYRot();
-            this.xRotO = this.getXRot();
-        }
-        
-        if(hitResult.getType() != HitResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, hitResult)) {
-            this.onHit(hitResult);
-        }
-        
-        double deltaX = this.getX() + deltaMovement.x;
-        double deltaY = this.getY() + deltaMovement.y;
-        double deltaZ = this.getZ() + deltaMovement.z;
-        
-        //this.updateRotation();
-        
-        if(this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
-            this.discard();
-        } else if (this.isInWaterOrBubble()) {
-            this.discard();
-        } else {
-            this.setDeltaMovement(deltaMovement.scale(0.99F));
-            if(!this.isNoGravity()) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.06D, 0.0D));
-            }
-            
-            this.setPos(deltaX, deltaY, deltaZ);
-        }*/
     }
 
     @Override
@@ -78,14 +40,9 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
-        
-    }
-
-    @Override
     protected void onHitEntity(EntityHitResult pResult) {
         if(pResult.getEntity() instanceof LivingEntity entity) {
-            entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 15, 2));
+            entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 140, 2));
         }
         
         discard();
