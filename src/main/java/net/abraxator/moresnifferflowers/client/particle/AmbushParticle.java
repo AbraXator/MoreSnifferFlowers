@@ -17,7 +17,7 @@ public class AmbushParticle extends SimpleAnimatedParticle {
     protected AmbushParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet pSprites) {
         super(pLevel, pX, pY, pZ, pSprites, -0.125F);
         this.scale(0.95F);
-        this.setLifetime(50);
+        this.setLifetime(30);
         this.setSpriteFromAge(pSprites);
         this.xModifier = pLevel.random.nextDouble();
         this.zModifier = pLevel.random.nextDouble();

@@ -2,7 +2,10 @@ package net.abraxator.moresnifferflowers;
 
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.ClientEvents;
+import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
+import net.abraxator.moresnifferflowers.compat.quark.OtherModEvents;
 import net.abraxator.moresnifferflowers.init.*;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.neoforged.api.distmarker.Dist;
@@ -31,13 +34,38 @@ public class MoreSnifferFlowers {
         ModParticles.PARTICLES.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+
+
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::clientSetup);
+
+        if(ModList.get().isLoaded("quark")) {
+        MinecraftForge.EVENT_BUS.addListener(OtherModEvents::onSimpleHarvest);
+        }
+
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public void clientSetup(final FMLClientSetupEvent event) {
+        ModItemProperties.register();
+       MenuScreens.register(ModMenuTypes.REBREWING_STAND.get(), RebrewingStandScreen::new);
+    }
+    
     private void commonSetup(final FMLCommonSetupEvent event) {
+        ModAdvancementCritters.init();
+
         event.enqueueWork(() -> {
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
             ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
-            ComposterBlock.COMPOSTABLES.put(ModBlocks.DAWNBERRY_VINE.get(), 0.85F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.AMBUSH_SEEDS.get(), 0.3F);
+            ComposterBlock.COMPOSTABLES.put(ModBlocks.CAULORFLOWER.get().asItem(), 0.4F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.DYESPRIA_SEEDS.get(), 0.4F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.BONMEELIA_SEEDS.get(), 0.5F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_BEETROOT.get(), 1.0F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_NETHERWART.get(), 1.0F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_WHEAT.get(), 1.0F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_POTATO.get(), 1.0F);
+            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_CARROT.get(), 1.0F);
         });
     }
 

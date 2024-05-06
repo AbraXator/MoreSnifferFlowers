@@ -58,7 +58,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         pBuilder.add(AGE, IS_SHEARED);
     }
 
-    protected IntegerProperty getAgeProperty() {
+    public IntegerProperty getAgeProperty() {
         return AGE;
     }
 

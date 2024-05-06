@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
+import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
@@ -14,16 +15,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Quaternionf;
-import oshi.util.tuples.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
+public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implements BlockEntityRenderer<T> {
 	private final Map<Block, ModelPart> modelPartMap = new HashMap<>();
 	private final ModelPart carrot;
 	private final ModelPart potato;
@@ -50,16 +50,18 @@ public class GiantCropBlockEntityRenderer<T extends BlockEntity> implements Bloc
 	}
 
 	@Override
-	public void render(T pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+	public void render(GiantCropBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 		BlockState blockState = pBlockEntity.getBlockState();
 		String path = blockState.getBlock().getDescriptionId().replace("block." + MoreSnifferFlowers.MOD_ID + ".", "");
 		Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/" + path));
 		VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
 
-		if(blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(GiantCropBlock.MODEL_POSITION) != GiantCropBlock.ModelPos.NONE) {
+		if(pBlockEntity.growProgress > 0 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(GiantCropBlock.MODEL_POSITION) != GiantCropBlock.ModelPos.NONE) {
 			var modelPos = blockState.getValue(GiantCropBlock.MODEL_POSITION);
 			pPoseStack.pushPose();
-			pPoseStack.translate(modelPos.x, modelPos.y, modelPos.z);
+			pPoseStack.translate(modelPos.x, modelPos.y - 2 + pBlockEntity.growProgress * 2, modelPos.z);
+			var delta = Math.min(pBlockEntity.growProgress * pPartialTick, 1);
+			pPoseStack.scale(1, (float) Math.min(Mth.lerp(pBlockEntity.growProgress + pPartialTick, 0, 1), pBlockEntity.growProgress), 1);
 			pPoseStack.mulPose(new Quaternionf().rotateX((float) (Math.PI)));
 			modelPartMap.get(blockState.getBlock()).render(pPoseStack, vertexConsumer, pPackedLight, pPackedOverlay);
 			pPoseStack.popPose();

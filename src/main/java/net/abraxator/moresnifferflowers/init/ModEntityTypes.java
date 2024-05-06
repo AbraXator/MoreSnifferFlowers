@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.entities.Bobling;
+import net.abraxator.moresnifferflowers.entities.DragonflyProjectile;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -16,9 +17,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MoreSnifferFlowers.MOD_ID);
 
-    //public static final RegistryObject<EntityType<CeruleanVinePatch>> CERULEAN_VINE_PATCH = buildNoEgg("cerulean_vine_patch", makeCastedBuilder(CeruleanVinePatch.class, CeruleanVinePatch::new, 0.25F, 0.25F, 4, 10), false);
-    //public static final RegistryObject<EntityType<Bobling>> BOBLING = make(MoreSnifferFlowers.loc("bobling"), Bobling::new, MobCategory.CREATURE, 0.3F, 0.7F, 0x835E38, 0x85B931);
     public static final DeferredHolder<EntityType<?>, EntityType<Bobling>> BOBLING = buildNoEgg(MoreSnifferFlowers.loc("bobling"), makeBuilder(Bobling::new, MobCategory.CREATURE, 0.3F, 0.7F, 80, 3), false);
+    public static final DeferredHolder<EntityType<?>, EntityType<DragonflyProjectile>>DRAGONFLY = buildNoEgg(MoreSnifferFlowers.loc("dragonfly"), makeBuilder(DragonflyProjectile::new, MobCategory.MISC, 0.3F, 0.7F, 80, 3), false);
 
     private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary) {
         return make(id, factory, classification, width, height, false, primary, secondary);

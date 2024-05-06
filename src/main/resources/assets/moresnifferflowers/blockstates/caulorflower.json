@@ -1,33 +1,33 @@
 {
   "variants": {
     "facing=east,flipped=true": {
-      "model": "moresnifferflowers:block/caulorflower_0_color",
+      "model": "moresnifferflowers:block/caulorflower_0",
       "y": 90
     },
     "facing=north,flipped=true": {
-      "model": "moresnifferflowers:block/caulorflower_0_color"
+      "model": "moresnifferflowers:block/caulorflower_0"
     },
     "facing=south,flipped=true": {
-      "model": "moresnifferflowers:block/caulorflower_0_color",
+      "model": "moresnifferflowers:block/caulorflower_0",
       "y": 180
     },
     "facing=west,flipped=true": {
-      "model": "moresnifferflowers:block/caulorflower_0_color",
+      "model": "moresnifferflowers:block/caulorflower_0",
       "y": 270
     },
     "facing=east,flipped=false": {
-      "model": "moresnifferflowers:block/caulorflower_1_color",
+      "model": "moresnifferflowers:block/caulorflower_1",
       "y": 90
     },
     "facing=north,flipped=false": {
-      "model": "moresnifferflowers:block/caulorflower_1_color"
+      "model": "moresnifferflowers:block/caulorflower_1"
     },
     "facing=south,flipped=false": {
-      "model": "moresnifferflowers:block/caulorflower_1_color",
+      "model": "moresnifferflowers:block/caulorflower_1",
       "y": 180
     },
     "facing=west,flipped=false": {
-      "model": "moresnifferflowers:block/caulorflower_1_color",
+      "model": "moresnifferflowers:block/caulorflower_1",
       "y": 270
     }
   }

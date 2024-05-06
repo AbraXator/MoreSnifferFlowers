@@ -1,14 +1,16 @@
 package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
-import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
+import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
+import net.abraxator.moresnifferflowers.colors.Colorable;
+import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
@@ -34,26 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class DyespriaItem extends Item {
-    public static final Map<DyeColor, Integer> COLORS = Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
-        dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFD9D9D9);
-        dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF696969);
-        dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF4C4C4C);
-        dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1E1E1E);
-        dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF724727);
-        dyeColorHexFormatMap.put(DyeColor.RED, 0xFFD0021B);
-        dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFFF8300);
-        dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFFFE100);
-        dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF41CD34);
-        dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF287C23);
-        dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
-        dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF4F3FE0);
-        dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF2E388D);
-        dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFF963EC9);
-        dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFD73EDA);
-        dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFF38BAA);
-    });
-
+public class DyespriaItem extends Item implements Colorable {
     public DyespriaItem(Properties pProperties) {
         super(pProperties);
     }
@@ -79,20 +62,28 @@ public class DyespriaItem extends Item {
             level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
             ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
             return InteractionResult.sidedSuccess(level.isClientSide);
+        } else {
+            level.setBlockAndUpdate(blockPos.above(), ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3));
+            stack.setCount(-1);
+            if(level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
+                entity.dye = Dye.getDyeFromStack(stack);
+                entity.setChanged();
+            }
         }
         return InteractionResult.PASS;
     }
 
     public void colorOne(ItemStack stack, ServerLevel level, BlockPos blockPos, BlockState blockState) {
-        Dye dye = getDye(stack);
+        Dye dye = Dye.getDyeFromStack(stack);
         RandomSource randomSource = level.random;
 
-        if(blockState.getValue(CaulorflowerBlock.COLOR).equals(dye.color) || dye.isEmpty()) {
+        if(blockState.getValue(ModStateProperties.COLOR).equals(dye.color()) || dye.isEmpty()) {
             return;
         }
 
-        level.setBlockAndUpdate(blockPos, blockState.setValue(CaulorflowerBlock.COLOR, dye.color));
-        setDye(stack, stackFromDye(new Dye(dye.color, dye.amount - 1)));
+        level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.COLOR, dye.color()));
+        ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - 1));
+        Dye.setDyeToStack(stack, itemStack, itemStack.getCount());
         particles(randomSource, level, dye, blockPos);
     }
 
@@ -117,7 +108,7 @@ public class DyespriaItem extends Item {
                 pAccess.set(remove(pStack));
                 playRemoveOneSound(pPlayer);
             } else {
-                ItemStack itemStack = add(pStack, pOther);
+                ItemStack itemStack = add(pStack, Dye.getDyeFromStack(pStack), pOther);
                 pAccess.set(itemStack);
                 if(itemStack.isEmpty()) {
                     this.playInsertSound(pPlayer);
@@ -131,7 +122,7 @@ public class DyespriaItem extends Item {
     private void particles(RandomSource randomSource, ServerLevel level, Dye dye, BlockPos blockPos) {
         for(int i = 0; i <= randomSource.nextIntBetweenInclusive(5, 10); i++) {
             level.sendParticles(
-                    new DustParticleOptions(dye.isEmpty() ? Vec3.fromRGB24(14013909).toVector3f() : Vec3.fromRGB24(colorForDye(dye.color)).toVector3f(), 1.0F),
+                    new DustParticleOptions(dye.isEmpty() ? Vec3.fromRGB24(14013909).toVector3f() : Vec3.fromRGB24(Dye.colorForDye(this, dye.color())).toVector3f(), 1.0F),
                     blockPos.getX() + randomSource.nextDouble(),
                     blockPos.getY() + randomSource.nextDouble(),
                     blockPos.getZ() + randomSource.nextDouble(),
@@ -139,47 +130,16 @@ public class DyespriaItem extends Item {
         }
     }
 
-    private ItemStack add(ItemStack dyespria, ItemStack dyeToInsert) {
-        Dye dye = getDye(dyespria);
-        if(dyeToInsert.getItem() instanceof DyeItem) {
-            if(!dye.isEmpty()) {
-                int amountInside = dye.amount;
-                int freeSpace = 64 - amountInside;
-                int totalDye = Math.min(amountInside + dyeToInsert.getCount(), 64); //AMOUNT TO INSERT INTO DYESPRIA
-                if (!dyeCheck(dye, dyeToInsert)) {
-                    //DYESPRIA HAS DIFFERENT DYE AND YOU INSERT ANOTHER 😝
-                    setDye(dyespria, dyeToInsert);
-                    dyeToInsert.shrink(totalDye);
-                    return stackFromDye(dye);
-                } else if(freeSpace <= 0) {
-                    //DYESPRIA HAS NO SPACE 😇
-                    return dyeToInsert;
-                }
-
-                //DYESPRIA HAS DYE AND YOU INSERT SAME DYE 🥳
-                setDye(dyespria, dye.color, totalDye);
-                dyeToInsert.shrink(totalDye);
-                return dyeToInsert;
-            } else {
-                //DYESPRIA HAS NO DYE 🥸
-                setDye(dyespria, dyeToInsert);
-                return ItemStack.EMPTY;
-            }
-        }
-        return dyeToInsert;
-    }
-
-    private boolean dyeCheck(Dye dye, ItemStack dyeToInsert) {
-        DyeItem dyeToInsertItem = ((DyeItem) dyeToInsert.getItem());
-
-        return dye.color.equals(dyeToInsertItem.getDyeColor());
+    @Override
+    public void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {
+        Dye.setDyeToStack(destinationStack, dye, amount);
     }
 
     private ItemStack remove(ItemStack pStack) {
-        Dye dye = getDye(pStack);
+        Dye dye = Dye.getDyeFromStack(pStack);
         if(!dye.isEmpty()) {
-            setDye(pStack, DyeColor.WHITE, 0);
-            return stackFromDye(dye);
+            Dye.setDyeColorToStack(pStack, DyeColor.WHITE, 0);
+            return Dye.stackFromDye(dye);
         } else {
             return ItemStack.EMPTY;
         }
@@ -187,18 +147,18 @@ public class DyespriaItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        Dye dye = getDye(pStack);
+        Dye dye = Dye.getDyeFromStack(pStack);
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
 
         if(!dye.isEmpty()) {
             Component name = Component
-                    .literal(dye.amount + " - " + WordUtils.capitalizeFully(dye.color
-                                    .getName()
-                                    .toLowerCase()
-                                    .replaceAll("[^a-z_]", "")
-                                    .replaceAll("_", " ")))
+                    .literal(dye.amount() + " - " + WordUtils.capitalizeFully(dye.color()
+                            .getName()
+                            .toLowerCase()
+                            .replaceAll("[^a-z_]", "")
+                            .replaceAll("_", " ")))
                     .withStyle(Style.EMPTY
-                            .withColor(colorForDye(dye.color)));
+                            .withColor(Dye.colorForDye(this, dye.color())));
 
             pTooltipComponents.add(usage);
             pTooltipComponents.add(name);
@@ -206,35 +166,6 @@ public class DyespriaItem extends Item {
             pTooltipComponents.add(usage);
             pTooltipComponents.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
         }
-    }
-
-    public static void setDye(ItemStack stack, ItemStack dye) {
-        var count = dye.getItem() instanceof DyeItem ? dye.getCount() : 0;
-        var dyeToInset = dye.getItem() instanceof DyeItem ? ((DyeItem) dye.getItem()).getDyeColor() : DyeColor.WHITE;
-        setDye(stack, dyeToInset, count);
-    }
-
-    public static void setDye(ItemStack stack, DyeColor dyeColor, int amount) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putInt("color", dyeColor.getId());
-        tag.putInt("amount", amount);
-        stack.setTag(tag);
-    }
-
-    public static Dye getDye(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        int colorId = tag.getInt("color");
-        int amount = tag.getInt("amount");
-
-        return new Dye(DyeColor.byId(colorId), amount);
-    }
-
-    public static ItemStack stackFromDye(Dye dye) {
-        return new ItemStack(DyeItem.byColor(dye.color), dye.amount);
-    }
-
-    public static int colorForDye(DyeColor dyeColor) {
-        return COLORS.getOrDefault(dyeColor, -1);
     }
 
     private void playRemoveOneSound(Entity pEntity) {
@@ -245,9 +176,25 @@ public class DyespriaItem extends Item {
         pEntity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
     }
 
-    public record Dye(DyeColor color, int amount) {
-        public boolean isEmpty() {
-            return Dye.this.amount <= 0;
-        }
+    @Override
+    public Map<DyeColor, Integer> colorValues() {
+        return Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
+            dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFFFFFFF);
+            dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF9d979b);
+            dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF474f52);
+            dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1d1d21);
+            dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF835432);
+            dyeColorHexFormatMap.put(DyeColor.RED, 0xFFb5432e);
+            dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFf89635);
+            dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFffee53);
+            dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF80c71f);
+            dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF5e7c16);
+            dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
+            dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF70d9e4);
+            dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF4753ac);
+            dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFFb15fc2);
+            dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFd276b9);
+            dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFf8b0c4);
+        });
     }
 }

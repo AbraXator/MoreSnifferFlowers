@@ -9,6 +9,7 @@
 	"item.moresnifferflowers.dyespria": "Barvonástřikia",
 	"item.moresnifferflowers.jar_of_bonmeel": "Skleněná Nádoba Plná Lepšomoučky",
 	"item.moresnifferflowers.bonmeelia_seeds": "Semena Lepšomoučkovníku",
+	"item.moresnifferflowers.extraction_bottle": "Lahvička vytírání",
 
 	"block.moresnifferflowers.dawnberry_vine": "Liána Bobulí Úsvitu",
 	"block.moresnifferflowers.ambush": "Jantarové Křoví",
@@ -31,4 +32,6 @@
 	"trim_material.moresnifferflowers.amber": "Jantarový Materiál",
 
 	"moresnifferflowers.creative_tab": "Více Čmuchalích Květin",
+
+	"hover_name.moresnifferflowers.extracted_bottle": "Vytírací Potion"
 }

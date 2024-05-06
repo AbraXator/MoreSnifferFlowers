@@ -1,10 +1,14 @@
 package net.abraxator.moresnifferflowers.blocks;
 
+import com.google.common.collect.Maps;
+import net.abraxator.moresnifferflowers.colors.Colorable;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -16,21 +20,15 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.*;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
-public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty FLIPPED = BooleanProperty.create("flipped");
-    public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
+import static net.abraxator.moresnifferflowers.init.ModStateProperties.*;
 
-    private static final int MAX_STAGE = 5;
-
+public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock, Colorable {
     public CaulorflowerBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(defaultBlockState()
@@ -98,16 +96,19 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
 
     protected void grow(ServerLevel pLevel, BlockPos originalPos, boolean bonemeal) {
         highestPos(pLevel, originalPos, bonemeal).ifPresent(highestPos -> {
-            BlockState highestBlockState = pLevel.getBlockState(highestPos);
-            pLevel.setBlockAndUpdate(highestPos, highestBlockState.setValue(FLIPPED, highestPos.getY() % 2 == 0));
+            var state = pLevel.getBlockState(highestPos.below());
+            pLevel.setBlockAndUpdate(highestPos, this.defaultBlockState()
+                    .setValue(FLIPPED, highestPos.getY() % 2 == 0)
+                    .setValue(FACING, state.getValue(FACING))
+                    .setValue(COLOR, state.getValue(COLOR)));
         });
     }
 
     private Optional<BlockPos> highestPos(BlockGetter level, BlockPos originalPos, boolean bonemeal) {
         var lowestPos = getLowestPos(level, originalPos);
-        if(lowestPos.isEmpty()) return Optional.empty();
+        if(lowestPos.isEmpty()) { return Optional.empty(); }
         var highestPos = getLastConnectedBlock(level, lowestPos.get(), Direction.UP);
-        return highestPos.filter(blockPos1 -> bonemeal || !((lowestPos.get().getY() + 5) <= blockPos1.getY()));
+        return highestPos.filter(blockPos1 -> bonemeal || !((lowestPos.get().getY() + 5) <= blockPos1.getY())).map(BlockPos::above);
     }
 
     private Optional<BlockPos> getLowestPos(BlockGetter level, BlockPos originalPos) {
@@ -117,7 +118,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
 
     public Optional<BlockPos> getLastConnectedBlock(BlockGetter pGetter, BlockPos pPos, Direction pDirection) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = pPos.mutable();
-        
+
         while (pGetter.getBlockState(blockpos$mutableblockpos).is(this)){
             blockpos$mutableblockpos.move(pDirection);
         }
@@ -135,5 +136,37 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
         BlockState state = level.getBlockState(pos);
         if (state.getBlock() != this) return defaultBlockState();
         return state;
+    }
+
+    @Override
+    public IntegerProperty getAgeProperty() {
+        return null;
+    }
+
+    @Override
+    public Map<DyeColor, Integer> colorValues() {
+        return Util.make(Maps.newLinkedHashMap(), dyeColorHexFormatMap -> {
+            dyeColorHexFormatMap.put(DyeColor.WHITE, 0xFFFFFFFF);
+            dyeColorHexFormatMap.put(DyeColor.LIGHT_GRAY, 0xFF9d979b);
+            dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF474f52);
+            dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF26262e);
+            dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF835432);
+            dyeColorHexFormatMap.put(DyeColor.RED, 0xFFd5544e);
+            dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFf89635);
+            dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFffee53);
+            dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF80c71f);
+            dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF5e7c16);
+            dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
+            dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF70d9e4);
+            dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF4753ac);
+            dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFFb15fc2);
+            dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFd276b9);
+            dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFf8b0c4);
+        });
+    }
+
+    @Override
+    public void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {
+
     }
 }

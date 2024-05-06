@@ -14,6 +14,7 @@ import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityR
 import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
+import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
@@ -23,6 +24,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -43,7 +45,10 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onEntityRenderersRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        //ENTITY
         event.registerLayerDefinition(ModModelLayerLocations.BOBLING, BoblingModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.DRAGONFLY, DragonflyModel::createBodyLayer);
+        //BLOCK
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_CARROT, GiantCropModels::createGiantCarrotLayer);
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_POTATO, GiantCropModels::createGiantPotatoLayer);
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_NETHERWART, GiantCropModels::createNetherwartLayer);
@@ -55,6 +60,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.BOBLING.get(), BoblingRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.DRAGONFLY.get(), DragonflyRenderer::new);
     }
 
     @SubscribeEvent
@@ -62,6 +68,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.AMBUSH.get(), AmbushBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.GIANT_CROP.get(), GiantCropBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CROPRESSOR.get(), CropressorBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.DYESPRIA_PLANT.get(), DyespriaPlantBlockEntityRenderer::new);
     }
 
     @SubscribeEvent
@@ -79,7 +86,7 @@ public class ClientEvents {
                 return BiomeColors.getAverageFoliageColor(pLevel, pPos);
             }
             if(pTintIndex == 1) {
-                return DyespriaItem.colorForDye(pState.getValue(CaulorflowerBlock.COLOR));
+                return Dye.colorForDye(((CaulorflowerBlock) pState.getBlock()), pState.getValue(ModStateProperties.COLOR));
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());
@@ -88,28 +95,17 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> {
-            DyespriaItem.Dye dye = DyespriaItem.getDye(pStack);
+            Dye dye = Dye.getDyeFromStack(pStack);
             if(pTintIndex != 0 || dye.isEmpty()) {
                 return -1;
             } else {
-                return DyespriaItem.colorForDye(dye.color());
+                return Dye.colorForDye(((DyespriaItem) pStack.getItem()), dye.color());
             }
         }, ModItems.DYESPRIA.get());
+        event.register((pStack, pTintIndex) -> {
+            return pTintIndex > 0 ? -1 : PotionUtils.getColor(pStack);
+        }, ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get(), ModItems.REBREWED_SPLASH_POTION.get(), ModItems.REBREWED_LINGERING_POTION.get());
     }
-
-    /*@SubscribeEvent
-    public static void onTickClientTick(TickEvent.ClientTickEvent event) {
-        Player player = Minecraft.getInstance().player;
-        HitResult hitResult = player.pick(player.getAttributeValue(ForgeMod.BLOCK_REACH.get()), 0.0F, false);
-        if(hitResult.getType() == HitResult.Type.BLOCK) {
-            BlockPos blockPos = ((BlockHitResult) hitResult).getBlockPos();
-            if(player.level().getBlockState(blockPos).is(ModBlocks.GIANT_CARROT.get())) {
-                VoxelShape voxelShape = Block.box(0, 0, 0, 0, 0, 0);
-                voxelShape.
-            }
-        }
-    }*/
-
 
 
     @SubscribeEvent

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "moresnifferflowers:block/cropressor_out"
+    },
+    "facing=north": {
+      "model": "moresnifferflowers:block/cropressor_out",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "moresnifferflowers:block/cropressor_out",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "moresnifferflowers:block/cropressor_out",
+      "y": 90
+    }
+  }
+}

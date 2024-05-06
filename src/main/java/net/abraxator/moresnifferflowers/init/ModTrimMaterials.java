@@ -14,14 +14,29 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.neoforged.fml.common.Mod;
 
 import java.util.Map;
 
 public class ModTrimMaterials {
     public static final ResourceKey<TrimMaterial> AMBER = ResourceKey.create(Registries.TRIM_MATERIAL, MoreSnifferFlowers.loc("amber"));
+    public static final ResourceKey<TrimMaterial> NETHER_WART = ResourceKey.create(Registries.TRIM_MATERIAL, MoreSnifferFlowers.loc("nether_wart"));
+    public static final ResourceKey<TrimMaterial> POTATO = ResourceKey.create(Registries.TRIM_MATERIAL, MoreSnifferFlowers.loc("potato"));
+    public static final ResourceKey<TrimMaterial> WHEAT = ResourceKey.create(Registries.TRIM_MATERIAL, MoreSnifferFlowers.loc("wheat"));
+    public static final ResourceKey<TrimMaterial> BEETROOT = ResourceKey.create(Registries.TRIM_MATERIAL, MoreSnifferFlowers.loc("beetroot"));
+    public static final ResourceKey<TrimMaterial> CARROT = ResourceKey.create(Registries.TRIM_MATERIAL, MoreSnifferFlowers.loc("carrot"));
+
+
 
     public static void bootstrap(BootstapContext<TrimMaterial> context) {
         register(context, AMBER, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.AMBER_SHARD.get()), Style.EMPTY.withColor(TextColor.parseColor("#df910b").get().orThrow()), 0.6F, Map.of());
+        register(context, NETHER_WART, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_NETHERWART.get()), Style.EMPTY.withColor(TextColor.parseColor("#831c20").get().orThrow()), 0.4F, Map.of());
+        register(context, POTATO, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_POTATO.get()), Style.EMPTY.withColor(TextColor.parseColor("#d9aa51").get().orThrow()), 0.6F, Map.of());
+        register(context, WHEAT, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_WHEAT.get()), Style.EMPTY.withColor(TextColor.parseColor("#cdb159").get().orThrow()), 0.6F, Map.of());
+        register(context, BEETROOT, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_BEETROOT.get()), Style.EMPTY.withColor(TextColor.parseColor("#a4272c").get().orThrow()), 0.4F, Map.of());
+        register(context, CARROT, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_CARROT.get()), Style.EMPTY.withColor(TextColor.parseColor("#e67022").get().orThrow()), 0.5F, Map.of());
+
+
     }
 
     private static void register(BootstapContext<TrimMaterial> p_268244_, ResourceKey<TrimMaterial> p_268139_, Holder<Item> p_268311_, Style p_268232_, float p_268197_, Map<ArmorMaterials, String> p_268352_) {

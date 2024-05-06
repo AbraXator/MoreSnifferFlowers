@@ -1,26 +1,22 @@
 package net.abraxator.moresnifferflowers.events;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
-import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
+import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModDamageTypes;
 import net.abraxator.moresnifferflowers.init.ModParticles;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,11 +24,9 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.List;
@@ -40,14 +34,16 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ForgeEvents {
     @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        if(event.getSource().is(DamageTypes.IN_WALL)) {
-            Level level = event.getEntity().level();
-            BlockPos blockPos = BlockPos.containing(event.getEntity().getEyePosition());
-            if(level.getBlockState(blockPos).getBlock() instanceof GiantCropBlock giantCropBlock) {
-                event.setCanceled(true);
-                event.getEntity().hurt(ModDamageTypes.getDamageSource(level, ModDamageTypes.VEGGIES), 1.5F);
-            }
+    public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        var item = event.getEntity().getItemInHand(event.getHand()).getItem();
+        var isItem = item instanceof JarOfBonmeelItem;
+        var isBlock = event.getLevel().getBlockState(event.getPos()).is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM);
+
+        if(isItem && isBlock) {
+            var context = new UseOnContext(event.getLevel(), event.getEntity(), event.getHand(), event.getItemStack(), event.getHitVec());
+
+            event.setCanceled(true);
+            ((JarOfBonmeelItem) item).useOn(context);
         }
     }
 

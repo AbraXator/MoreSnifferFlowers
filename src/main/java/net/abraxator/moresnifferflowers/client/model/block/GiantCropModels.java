@@ -44,6 +44,9 @@ public class GiantCropModels {
         PartDefinition smlpotat = root.addOrReplaceChild("smlpotat", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0328F, 4.0F, -2.9899F, 6.0F, 8.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-17.9672F, -10.0F, -20.0101F, 0.1307F, 0.0F, -0.0875F));
         PartDefinition cube_r12 = smlpotat.addOrReplaceChild("cube_r12", CubeListBuilder.create().texOffs(90, 0).addBox(-4.0F, -4.0F, 0.0F, 8.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
         PartDefinition cube_r13 = smlpotat.addOrReplaceChild("cube_r13", CubeListBuilder.create().texOffs(90, 0).addBox(-3.1F, -4.5F, 0.5F, 8.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.2828F, 0.5F, -0.9899F, 0.0F, -0.7854F, 0.0F));
+        PartDefinition smlpotat3 = root.addOrReplaceChild("smlpotat3", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0219F, 1.3333F, -2.9933F, 6.0F, 8.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(21.0219F, -7.8267F, -1.697F, -0.2618F, 1.3526F, -0.1309F));
+        PartDefinition cube_r14 = smlpotat3.addOrReplaceChild("cube_r14", CubeListBuilder.create().texOffs(90, 0).addBox(-4.0F, -4.0F, 0.0F, 8.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0109F, -2.6667F, -0.0034F, 0.0F, 0.7854F, 0.0F));
+        PartDefinition cube_r15 = smlpotat3.addOrReplaceChild("cube_r15", CubeListBuilder.create().texOffs(90, 0).addBox(-3.1F, -4.5F, 0.5F, 8.0F, 8.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.2719F, -2.1667F, -0.9933F, 0.0F, -0.7854F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 256, 256);
     }

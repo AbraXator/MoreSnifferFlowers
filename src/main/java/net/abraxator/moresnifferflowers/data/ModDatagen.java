@@ -1,9 +1,13 @@
 package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.data.tags.TagsProvider;
-import net.minecraft.world.level.block.Block;
+import net.abraxator.moresnifferflowers.data.advancement.ModAdvancementGenerator;
+import net.abraxator.moresnifferflowers.data.loot.ModLootModifierProvider;
+import net.abraxator.moresnifferflowers.data.loot.ModLoottableProvider;
+import net.abraxator.moresnifferflowers.data.recipe.ModRecipesProvider;
+import net.abraxator.moresnifferflowers.data.tag.ModBannerPatternTagsProvider;
+import net.abraxator.moresnifferflowers.data.tag.ModBlockTagsProvider;
+import net.abraxator.moresnifferflowers.data.tag.ModItemTagsProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.AdvancementProvider;

@@ -1,14 +1,11 @@
 package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
-import net.abraxator.moresnifferflowers.blocks.blockentities.GiantCropBlockEntity;
+import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModParticles;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
@@ -17,7 +14,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
