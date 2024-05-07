@@ -33,7 +33,7 @@ public class DragonflyItem extends Item {
         if (pLivingEntity instanceof Player player) {
             int useDuration = getUseDuration(pStack) - pTimeCharged;
             if(useDuration >= 10) {
-                pStack.shrink(1);
+                if(!player.getAbilities().instabuild) pStack.shrink(1);
 
                 DragonflyProjectile dragonflyProjectile = new DragonflyProjectile(pLevel, player);
                 dragonflyProjectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
