@@ -1,7 +1,4 @@
-package net.abraxator.moresnifferflowers.client.model.entity;// Made with Blockbench 4.9.4
-// Exported for Minecraft version 1.17 or later with Mojang mappings
-// Paste this class into your mod and generate all required imports
-
+package net.abraxator.moresnifferflowers.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -28,14 +25,18 @@ public class DragonflyModel extends Model {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0984F, 16.7023F, -0.5624F, 1.5708F, 0.0F, 3.1416F));
-		PartDefinition wing2_r1 = root.addOrReplaceChild("wing2", CubeListBuilder.create().texOffs(0, 11).mirror().addBox(-4.5F, -8.5F, 0.0F, 9.0F, 17.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-0.1528F, 0.2996F, 0.0624F, 2.0416F, -1.5272F, -3.1416F));
-		PartDefinition cube_r1 = root.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 4).addBox(-0.5F, 0.0F, -1.5F, 2.0F, 0.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0224F, -0.0258F, -5.7004F, 0.0309F, 0.0308F, -2.3557F));
-		PartDefinition cube_r2 = root.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 6).addBox(0.0F, 0.25F, -1.5F, 2.0F, 0.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.508F, 0.151F, -5.7004F, 0.0309F, -0.0308F, -0.7859F));
-		PartDefinition wing1_r1 = root.addOrReplaceChild("wing1", CubeListBuilder.create().texOffs(0, 11).addBox(-5.0F, -8.0F, 0.0F, 9.0F, 17.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.492F, -0.074F, -0.2004F, -1.1F, 1.5272F, 0.0F));
+		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, -8.0F, -6.0F, 3.0F, 2.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 24.0F, 0.0F, 0.0F, 3.1416F, 0.0F));
+
+		PartDefinition cube_r1 = root.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 4).addBox(-0.5F, 0.0F, -1.5F, 2.0F, 0.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0303F, -7.1768F, -6.5F, 0.0F, 0.0F, -2.3562F));
+
+		PartDefinition cube_r2 = root.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 6).addBox(0.0F, 0.25F, -1.5F, 2.0F, 0.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -7.0F, -6.5F, 0.0F, 0.0F, -0.7854F));
+
 		PartDefinition cube_r3 = root.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(10, 0).addBox(-1.0F, -1.0F, -1.0F, 5.0F, 0.0F, 5.0F, new CubeDeformation(0.0F))
-				.texOffs(0, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.008F, 1.151F, 5.1996F, 0.0F, -0.829F, 0.0F));
-		PartDefinition cube_r4 = root.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -4.0F, -6.0F, 3.0F, 2.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.492F, 3.151F, 0.7996F, 0.0F, -0.0436F, 0.0F));
+				.texOffs(0, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -6.0F, 4.4F, 0.0F, -0.7854F, 0.0F));
+
+		PartDefinition wing1_r1 = root.addOrReplaceChild("wing1", CubeListBuilder.create().texOffs(0, 11).mirror().addBox(-4.5F, -8.5F, 0.0F, 9.0F, 17.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-0.0544F, -6.9982F, -0.5F, 1.7975F, -1.5708F, -2.8975F));
+
+		PartDefinition wing2_r1 = root.addOrReplaceChild("wing2", CubeListBuilder.create().texOffs(0, 11).addBox(-5.0F, -8.0F, 0.0F, 9.0F, 17.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.5F, -7.225F, -1.0F, 1.7975F, 1.5708F, 2.8975F));
 
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}

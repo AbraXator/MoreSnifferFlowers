@@ -19,7 +19,7 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
     }
 
     public DragonflyProjectile(Level pLevel, Player player) {
-        super(ModEntityTypes.DRAGONFLY.get(), (LivingEntity) player, pLevel);
+        super(ModEntityTypes.DRAGONFLY.get(), player, pLevel);
         this.setOwner(player);
     }
 
@@ -32,6 +32,7 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         if(pResult.getEntity() instanceof LivingEntity entity) {
             entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 140, 2));
+            entity.hurt(this.damageSources().thrown(this, this.getOwner()), 0.3F);
         }
         
         discard();

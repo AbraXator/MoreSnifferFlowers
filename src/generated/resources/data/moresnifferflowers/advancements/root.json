@@ -5,7 +5,8 @@
     }
   },
   "display": {
-    "background": "moresnifferflowers:textures/misc/grass_block_bg.png",
+    "announce_to_chat": false,
+    "background": "moresnifferflowers:textures/gui/grass_block_bg.png",
     "description": {
       "translate": "advancements.more_sniffer_flowers.any_seed.desc"
     },

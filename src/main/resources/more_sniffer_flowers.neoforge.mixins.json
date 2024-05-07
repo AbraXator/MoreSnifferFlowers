@@ -6,7 +6,9 @@
   "compatibilityLevel": "JAVA_11",
   "mixins": [
     "FarmBlockMixin",
-    "SpriteResourceLoaderMixin"
+    "SpriteResourceLoaderMixin",
+    "AgeableMobMixin",
+    "SnifferEggMixin"
   ],
   "client": [
     "SpriteResourceLoaderMixin$PalettedPermutationsAccessor"

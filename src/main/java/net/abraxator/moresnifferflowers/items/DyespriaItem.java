@@ -53,23 +53,26 @@ public class DyespriaItem extends Item implements Colorable {
             return InteractionResult.PASS;
         }
 
-        if(blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-            if (!player.isShiftKeyDown()) {
-                colorOne(stack, serverLevel, blockPos, blockState);
+        if(!level.isClientSide()) {
+            if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
+                if (!player.isShiftKeyDown()) {
+                    colorOne(stack, serverLevel, blockPos, blockState);
+                } else {
+                    colorColumn(stack, serverLevel, blockPos);
+                }
+                level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
+                ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
+                return InteractionResult.sidedSuccess(level.isClientSide);
             } else {
-                colorColumn(stack, serverLevel, blockPos);
-            }
-            level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
-            ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        } else {
-            level.setBlockAndUpdate(blockPos.above(), ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3));
-            stack.setCount(-1);
-            if(level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
-                entity.dye = Dye.getDyeFromStack(stack);
-                entity.setChanged();
+                level.setBlockAndUpdate(blockPos.above(), ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3));
+                stack.setCount(-1);
+                if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
+                    entity.dye = Dye.getDyeFromStack(stack);
+                    entity.setChanged();
+                }
             }
         }
+        
         return InteractionResult.PASS;
     }
 

@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.client;
 
+import com.google.errorprone.annotations.Var;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
@@ -123,15 +124,39 @@ public class ClientEvents {
     public static void addPackFinders(AddPackFindersEvent event) {
         if(event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFile iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID).getFile();
-            event.addRepositorySource(pOnLoad ->  pOnLoad.accept(
-                    Pack.readMetaAndCreate(
-                            "rtx_moresnifferflowers",
-                            Component.literal("RTX More Sniffer Flowers"),
+            event.addRepositorySource(pOnLoad -> {
+                var pack = Pack.readMetaAndCreate(
+                        "rtx_moresnifferflowers",
+                        Component.literal("RTX More Sniffer Flowers"),
+                        false,
+                        new Pack.ResourcesSupplier() {
+                            @Override
+                            public PackResources openPrimary(String pId) {
+                                return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/rtx_moresnifferflowers"), false);
+                            }
+
+                            @Override
+                            public PackResources openFull(String pId, Pack.Info pInfo) {
+                                return openPrimary(pId);
+                            }
+                        },
+                        PackType.CLIENT_RESOURCES,
+                        Pack.Position.TOP,
+                        PackSource.BUILT_IN);
+                if(pack != null) {
+                    pOnLoad.accept(pack);
+                }
+            });
+
+            event.addRepositorySource(pOnLoad -> {
+                    var pack = Pack.readMetaAndCreate(
+                            "more_sniffer_flowers_vanilla_style_guis",
+                            Component.literal("Vanilla style GUIs More Sniffer Flowers"),
                             false,
                             new Pack.ResourcesSupplier() {
                                 @Override
                                 public PackResources openPrimary(String pId) {
-                                    return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/rtx_moresnifferflowers"), false);
+                                    return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/more_sniffer_flowers_vanilla_style_guis"), false);
                                 }
 
                                 @Override
@@ -141,29 +166,11 @@ public class ClientEvents {
                             },
                             PackType.CLIENT_RESOURCES,
                             Pack.Position.TOP,
-                            PackSource.BUILT_IN)));
-        }
-        /*if(event.getPackType() == PackType.CLIENT_RESOURCES) {
-            IModFileInfo iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID);
-            if(iModFileInfo == null) {
-                MoreSnifferFlowers.LOGGER.error("Could not find More Sniffer Flowers mod file info; built-in resource packs will be missing!");
-            }
-            IModFile modFile = iModFileInfo.getFile();
-            Path path = modFile.findResource("resourcepacks/rtx_moresnifferflowers");
-            event.addRepositorySource(pOnLoad -> {
-                Pack pack = Pack.readMetaAndCreate(
-                        MoreSnifferFlowers.loc("rtx_moresnifferflowers").toString(),
-                        Component.literal("RTX More Sniffer Flowers"),
-                        false,
-                        new FilePackResources.FileResourcesSupplier(path, true),
-                        //TODO: ^^^^^^^^^^^^^^^^^^^!!!!!!!!!!!!!!!!!NOT WORKING!!!!!!!!!!!!!!!^^^^^^^^^^^^^^^^^^^
-                        PackType.CLIENT_RESOURCES,
-                        Pack.Position.TOP,
-                        PackSource.BUILT_IN);
-                if(pack != null) {
-                    pOnLoad.accept(pack);
-                }
+                            PackSource.BUILT_IN);
+                    if(pack != null) {
+                        pOnLoad.accept(pack);
+                    }
             });
-        }*/
+        }
     }
 }

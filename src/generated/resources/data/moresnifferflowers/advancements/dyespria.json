@@ -1,5 +1,5 @@
 {
-  "parent": "moresnifferflowers:root",
+  "parent": "moresnifferflowers:dyespria_plant",
   "criteria": {
     "used_dyespria": {
       "trigger": "moresnifferflowers:used_dyespria"
@@ -10,7 +10,7 @@
       "translate": "advancements.more_sniffer_flowers.dyespria.desc"
     },
     "icon": {
-      "item": "moresnifferflowers:dyespria"
+      "item": "moresnifferflowers:caulorflower"
     },
     "title": {
       "translate": "advancements.more_sniffer_flowers.dyespria"

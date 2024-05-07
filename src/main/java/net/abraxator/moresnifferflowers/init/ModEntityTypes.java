@@ -18,7 +18,7 @@ public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MoreSnifferFlowers.MOD_ID);
 
     public static final DeferredHolder<EntityType<?>, EntityType<Bobling>> BOBLING = buildNoEgg(MoreSnifferFlowers.loc("bobling"), makeBuilder(Bobling::new, MobCategory.CREATURE, 0.3F, 0.7F, 80, 3), false);
-    public static final DeferredHolder<EntityType<?>, EntityType<DragonflyProjectile>>DRAGONFLY = buildNoEgg(MoreSnifferFlowers.loc("dragonfly"), makeBuilder(DragonflyProjectile::new, MobCategory.MISC, 0.3F, 0.7F, 80, 3), false);
+    public static final DeferredHolder<EntityType<?>, EntityType<DragonflyProjectile>> DRAGONFLY = buildNoEgg(MoreSnifferFlowers.loc("dragonfly"), makeBuilder(DragonflyProjectile::new, MobCategory.MISC, 0.3F, 0.7F, 80, 3), false);
 
     private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary) {
         return make(id, factory, classification, width, height, false, primary, secondary);
