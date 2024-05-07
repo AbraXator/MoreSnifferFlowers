@@ -22,8 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import java.time.temporal.ValueRange;
 
 public abstract class ModEntityDoubleTallBlock extends Block implements IModEntityDoubleTallBlock {
-    protected BlockPos ENTITY_POS;
-    
     public ModEntityDoubleTallBlock(Properties pProperties) {
         super(pProperties);
     }

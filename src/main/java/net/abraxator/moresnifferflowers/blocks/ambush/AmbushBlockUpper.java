@@ -21,7 +21,6 @@ public class AmbushBlockUpper extends AmbushBlockBase implements ModEntityBlock 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        ENTITY_POS = pPos;
         return new AmbushBlockEntity(pPos, pState);
     }
 

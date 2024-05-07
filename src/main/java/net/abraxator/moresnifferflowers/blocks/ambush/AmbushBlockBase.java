@@ -119,7 +119,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
                 pLevel.setBlock(pPos.above(), ModBlocks.AMBUSH_TOP.get().defaultBlockState().setValue(getAgeProperty(), k), 3);
             }
 
-            if(ENTITY_POS != null && pLevel.getBlockEntity(ENTITY_POS) instanceof AmbushBlockEntity entity) {
+            if(pLevel.getBlockEntity(getLowerHalf(pLevel, pPos, pState).blockPos().above()) instanceof AmbushBlockEntity entity) {
                 entity.growProgress = 0;
             }
         }
@@ -127,7 +127,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(ENTITY_POS != null && pLevel.getBlockEntity(ENTITY_POS) instanceof AmbushBlockEntity entity && entity.hasGrown) {
+        if(pLevel.getBlockEntity(getLowerHalf(pLevel, pPos, pState).blockPos().above()) instanceof AmbushBlockEntity entity && entity.hasGrown) {
             var lowerPos = isLower(pState) ? pPos : pPos.below();
             popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
             

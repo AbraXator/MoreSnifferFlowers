@@ -16,7 +16,9 @@ public record JeiRebrewingRecipe(ItemStack extractedPotion, ItemStack rebrewedPo
         List<JeiRebrewingRecipe> ret = new ArrayList<>();
         List<ItemStack> ingredients = List.of(
                 Items.REDSTONE.getDefaultInstance(),
-                Items.GLOWSTONE_DUST.getDefaultInstance()
+                Items.GLOWSTONE_DUST.getDefaultInstance(),
+                Items.GUNPOWDER.getDefaultInstance(),
+                Items.DRAGON_BREATH.getDefaultInstance()
         );
         List<MobEffect> mobEffects = new ArrayList<>(ForgeRegistries.MOB_EFFECTS.getValues());
 
