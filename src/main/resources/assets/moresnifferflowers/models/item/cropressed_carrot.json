@@ -22,7 +22,7 @@
             "scale": [ 0.8, 0.80, 0.80 ]
         }
       },
-	"loader": "forge:obj",
+	"loader": "neoforge:obj",
 	"flip-v": true,
 	"model": "moresnifferflowers:models/item/obj/cropressed_carrot.obj",
 	"textures": {
