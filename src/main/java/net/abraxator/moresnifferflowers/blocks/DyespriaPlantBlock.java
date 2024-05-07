@@ -1,6 +1,8 @@
 package net.abraxator.moresnifferflowers.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
+import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModItems;
@@ -30,13 +32,20 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEntityBlock {
+    public static final MapCodec<DyespriaPlantBlock> CODEC = simpleCodec(DyespriaPlantBlock::new);
+
     public DyespriaPlantBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(getAgeProperty(), 0)
                 .setValue(ModStateProperties.COLOR, DyeColor.WHITE));
     }
-    
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
@@ -55,21 +64,21 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
         if(pLevel.isClientSide ) {
             return InteractionResult.FAIL;
         }
-        
+
         if (isMaxAge(pState) && pLevel.getBlockEntity(pPos) instanceof DyespriaPlantBlockEntity entity && pHand.equals(InteractionHand.MAIN_HAND)) {
             var item = pPlayer.getItemInHand(pHand).copy();
             if (item.getItem() instanceof DyeItem) {
                 pPlayer.getItemInHand(pHand).setCount(-1);
                 pPlayer.addItem(entity.add(null, entity.dye, item));
-                
+
                 return InteractionResult.sidedSuccess(pLevel.isClientSide());
             } else if (!entity.dye.isEmpty()) {
                 pPlayer.addItem(Dye.stackFromDye(entity.removeDye()));
-                
+
                 return InteractionResult.sidedSuccess(pLevel.isClientSide());
             }
         }
-            
+
         return InteractionResult.PASS;
     }
 
@@ -78,10 +87,10 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
         if(!pState.is(pNewState.getBlock()) && pLevel.getBlockEntity(pPos) instanceof DyespriaPlantBlockEntity entity && isMaxAge(pState)) {
             var dyespria = ModItems.DYESPRIA.get().getDefaultInstance();
             Dye.setDyeColorToStack(dyespria, entity.dye.color(), entity.dye.amount());
-            
-            Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), dyespria);   
+
+            Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), dyespria);
         }
-        
+
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
@@ -106,7 +115,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
         return !isMaxAge(pState);
     }
 

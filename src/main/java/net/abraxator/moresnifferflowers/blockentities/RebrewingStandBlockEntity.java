@@ -9,6 +9,7 @@ import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -26,7 +27,6 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -177,7 +177,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             var id = potion.getString("forge:id");
             var amp = potion.getByte("Amplifier") + (ingredient.is(Items.REDSTONE) ? 2 : 1);
             var dur = potion.getInt("Duration") + (ingredient.is(Items.GLOWSTONE_DUST) ? 12000 : 6000);
-            var instance = new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(id.split(":")[1])), dur, amp);
+            var instance = new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(id.split(":")[1])), dur, amp);
             
             durList.add(dur);
             ret.add(instance);

@@ -35,13 +35,13 @@ public class CropressorBlockEntity extends ModBlockEntity {
         if(content.getCount() >= INV_SIZE) {
             progress++;
             var container = new SimpleContainer(content);
-            var cropressingRecipe = quickCheck.getRecipeFor(container, level).get();
-            result = cropressingRecipe.assemble(container, level.registryAccess());
+            var cropressingRecipeOptional = quickCheck.getRecipeFor(container, level);
             if(progress % 10 == 0) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
             }
 
-            if(progress >= MAX_PROGRESS) {
+            if(progress >= MAX_PROGRESS && cropressingRecipeOptional.isPresent()) {
+                result = cropressingRecipeOptional.get().value().result();
                 Vec3 blockPos = getBlockPos().relative(getBlockState().getValue(BaseCropressorBlock.FACING).getOpposite()).getCenter();
                 ItemEntity entity = new ItemEntity(level, blockPos.x, blockPos.y + 0.5, blockPos.z, result);
                 level.addFreshEntity(entity);
@@ -70,9 +70,9 @@ public class CropressorBlockEntity extends ModBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        pTag.put("content", content.serializeNBT());
+        pTag.put("content", content.save(pTag));
         pTag.putInt("progress", progress);
-        pTag.put("result", result.serializeNBT());
+        pTag.put("result", result.save(pTag));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
 
     public CompoundTag getUpdateTag() {
         CompoundTag compoundtag = new CompoundTag();
-        compoundtag.put("result", result.serializeNBT());
+        compoundtag.put("result", result.save(compoundtag));
         compoundtag.putInt("progress", progress);
         return compoundtag;
     }

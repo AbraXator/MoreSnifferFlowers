@@ -84,15 +84,15 @@ public class ModRecipesProvider extends RecipeProvider {
         ModCustomRecipeProvider.createRecipes(pRecipeOutput);
     }
 
-    private void trimCrafting(Consumer<FinishedRecipe> pRecipeOutput, ItemLike trim, TagKey<Item> ingredient) {
+    private void trimCrafting(RecipeOutput pRecipeOutput, ItemLike trim, TagKey<Item> ingredient) {
         trimCrafting(pRecipeOutput, trim, Ingredient.of(ingredient));
     }
 
-    private void trimCrafting(Consumer<FinishedRecipe> pRecipeOutput, ItemLike trim, ItemLike ingredient) {
+    private void trimCrafting(RecipeOutput pRecipeOutput, ItemLike trim, ItemLike ingredient) {
         trimCrafting(pRecipeOutput, trim, Ingredient.of(ingredient));
     }
 
-    private void trimCrafting(Consumer<FinishedRecipe> pRecipeOutput, ItemLike trim, Ingredient ingredient) {
+    private void trimCrafting(RecipeOutput pRecipeOutput, ItemLike trim, Ingredient ingredient) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, trim)
                 .pattern("ABA")
                 .pattern("ACA")
@@ -104,7 +104,7 @@ public class ModRecipesProvider extends RecipeProvider {
                 .save(pRecipeOutput, MoreSnifferFlowers.loc(getItemName(trim) + "_from_trim_crafting"));
     }
 
-    private void partsRecycling(Consumer<FinishedRecipe> pRecipeOutput, Item part, Item result, int count) {
+    private void partsRecycling(RecipeOutput pRecipeOutput, Item part, Item result, int count) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result, count)
                 .requires(part)
                 .unlockedBy("has_" + getItemName(part), has(ModItems.BELT_PIECE.get()))

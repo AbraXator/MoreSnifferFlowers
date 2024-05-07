@@ -52,7 +52,7 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
         this.level.sendBlockUpdated(blockPos, state, state, Block.UPDATE_CLIENTS);
     }
 
-    public void reset(BlockPos blockPos, BlockState state, Level level) {
+    public void reset() {
         this.growProgress = 0;
         this.hasGrown = false;
         //level.setBlock(blockPos, state.setValue(AmbushBlock.AGE, 7), 3);

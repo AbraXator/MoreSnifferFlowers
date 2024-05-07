@@ -1,5 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks.cropressor;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.blockentities.CropressorBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
@@ -10,20 +12,21 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
 
 public class CropressorBlockBase extends HorizontalDirectionalBlock {
     public final Part PART;
@@ -36,12 +39,18 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
     protected static final VoxelShape CENTER_SOUTH = Block.box(2, 0, 1, 14, 10, 16);
     protected static final VoxelShape CENTER_WEST = Block.box(0, 0, 2, 15, 10, 14);
     protected static final VoxelShape CENTER_NORTH = Block.box(2, 0, 0, 14, 10, 15);
+    public static final MapCodec<CropressorBlockBase> CODEC = simpleCodec(properties1 -> new CropressorBlockBase(properties1, Part.CENTER));
     
     public CropressorBlockBase(Properties pProperties, Part part) {
         super(pProperties);
         PART = part;
     }
 
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
+    }
+    
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = getConnectedDirection(pState);
@@ -148,6 +157,7 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
         CENTER("center"),
         OUT("out");
 
+        public static final StringRepresentable.EnumCodec<DyeColor> CODEC = StringRepresentable.fromEnum(DyeColor::values);
         private String name;
 
         Part(String name) {

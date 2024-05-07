@@ -12,9 +12,5 @@ public class ModRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES =
             DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, MoreSnifferFlowers.MOD_ID);
 
-    public static final DeferredRegister<RecipeType<CropressingRecipe>> CROPRESSING = register("cropressing");
-
-    static <T extends Recipe<?>> DeferredHolder<RecipeType<?>, RecipeType<Recipe<?>>> register(final String id) {
-        return RECIPE_TYPES.register(id, () -> RecipeType.simple(MoreSnifferFlowers.loc(id)));
-    }
+    public static final DeferredHolder<RecipeType<?>, RecipeType<CropressingRecipe>> CROPRESSING = RECIPE_TYPES.register("cropressing", () -> RecipeType.simple(MoreSnifferFlowers.loc("cropressing")));
 }

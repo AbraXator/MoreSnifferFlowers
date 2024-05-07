@@ -11,6 +11,6 @@ public interface ModEntityBlock extends EntityBlock {
     @Nullable
      default <T extends BlockEntity> BlockEntityTicker<T> tickerHelper(Level pLevel) {
         if(pLevel.isClientSide) return null;
-        return (pLevel1, pPos, pState1, pBlockEntity) -> ((ModBlockEntity) pBlockEntity).tick();
+        return (pLevel1, pPos, pState1, pBlockEntity) -> ((ModBlockEntity) pBlockEntity).tick(pLevel);
     }
 }

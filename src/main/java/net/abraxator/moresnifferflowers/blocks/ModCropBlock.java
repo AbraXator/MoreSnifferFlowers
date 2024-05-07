@@ -9,6 +9,8 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.neoforged.neoforge.client.ClientHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.IPlantable;
 
 public interface ModCropBlock extends IPlantable, BonemealableBlock {
@@ -29,9 +31,9 @@ public interface ModCropBlock extends IPlantable, BonemealableBlock {
     default void makeGrowOnTick(Block block, BlockState blockState, Level level, BlockPos blockPos) {
         if (!isMaxAge(blockState) && level.isAreaLoaded(blockPos, 1) && level.getRawBrightness(blockPos, 0) >= 9) {
             float f = getGrowthSpeed(block, level, blockPos);
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, blockPos, blockState, level.getRandom().nextInt((int)(25.0F / f) + 1) == 0)) {
+            if (CommonHooks.onCropsGrowPre(level, blockPos, blockState, level.getRandom().nextInt((int)(25.0F / f) + 1) == 0)) {
                 level.setBlock(blockPos, blockState.setValue(getAgeProperty(), (blockState.getValue(getAgeProperty()) + 1)), 2);
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, blockPos, blockState);
+                CommonHooks.onCropsGrowPost(level, blockPos, blockState);
             }
         }
     }
@@ -52,7 +54,7 @@ public interface ModCropBlock extends IPlantable, BonemealableBlock {
             for(int j = -1; j <= 1; ++j) {
                 float f1 = 0.0F;
                 BlockState blockstate = pLevel.getBlockState(blockpos.offset(i, 0, j));
-                if (blockstate.canSustainPlant(pLevel, blockpos.offset(i, 0, j), net.minecraft.core.Direction.UP, (net.minecraftforge.common.IPlantable) pBlock)) {
+                if (blockstate.canSustainPlant(pLevel, blockpos.offset(i, 0, j), net.minecraft.core.Direction.UP, (IPlantable) pBlock)) {
                     f1 = 1.0F;
                     if (blockstate.isFertile(pLevel, pPos.offset(i, 0, j))) {
                         f1 = 3.0F;

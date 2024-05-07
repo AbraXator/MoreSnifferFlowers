@@ -1,9 +1,10 @@
-// 1.20.4	2024-02-23T17:24:45.3862822	Tags for minecraft:block mod id moresnifferflowers
-7f5df3bb9eb84c2c7113251cde1f9be4ee258462 data/minecraft/tags/blocks/flowers.json
-7f5df3bb9eb84c2c7113251cde1f9be4ee258462 data/minecraft/tags/blocks/inside_step_sound_blocks.json
-47d7b7dbf8bce02b486c66e4bd7d182d4bc72c6a data/minecraft/tags/blocks/mineable/hoe.json
-22e9367398f0a82333b1b30ea416d4609e82424d data/minecraft/tags/blocks/mineable/pickaxe.json
-22e9367398f0a82333b1b30ea416d4609e82424d data/minecraft/tags/blocks/needs_iron_tool.json
-7f5df3bb9eb84c2c7113251cde1f9be4ee258462 data/minecraft/tags/blocks/sword_efficient.json
+// 1.20.4	2024-05-07T11:48:26.7344916	Tags for minecraft:block mod id moresnifferflowers
+a35451bb68f3a8a583bedb76e58fb615112996fd data/minecraft/tags/blocks/flowers.json
+1424c10516e0b8ebd3694dc68da1cf2555b062c3 data/minecraft/tags/blocks/inside_step_sound_blocks.json
+b42f07c9e56255eb3cb6e28412a82ceb5fb3d939 data/minecraft/tags/blocks/mineable/axe.json
+e0f95ba78bc4ef2c018890f9b25dfb642ec53ff9 data/minecraft/tags/blocks/mineable/hoe.json
+0fca5a18afb2b9eadb462a2cb463e0cdfb3cfff3 data/minecraft/tags/blocks/mineable/pickaxe.json
+0fca5a18afb2b9eadb462a2cb463e0cdfb3cfff3 data/minecraft/tags/blocks/needs_iron_tool.json
+b9b16edd5a3d3b0049a343aa91031c11ae78f311 data/minecraft/tags/blocks/sword_efficient.json
 809bb8fa2c3484afac1c2329c36784f2e376a1bd data/moresnifferflowers/tags/blocks/crops_fertiable_by_fbm.json
 b42f07c9e56255eb3cb6e28412a82ceb5fb3d939 data/moresnifferflowers/tags/blocks/giant_crops.json

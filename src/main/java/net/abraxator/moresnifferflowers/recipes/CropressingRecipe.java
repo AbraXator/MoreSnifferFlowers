@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-public record CropressingRecipe(ResourceLocation id, Ingredient ingredient, int count, ItemStack result) implements Recipe<Container> {
+public record CropressingRecipe(Ingredient ingredient, int count, ItemStack result) implements Recipe<Container> {
     @Override
     public boolean matches(Container pContainer, Level pLevel) {
         ItemStack itemStack = pContainer.getItem(0);
@@ -32,11 +32,6 @@ public record CropressingRecipe(ResourceLocation id, Ingredient ingredient, int 
     @Override
     public ItemStack getResultItem(RegistryAccess p_267052_) {
         return this.result;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     @Override

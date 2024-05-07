@@ -11,9 +11,17 @@ import net.abraxator.moresnifferflowers.compat.jei.rebrewing.JeiRebrewingRecipe;
 import net.abraxator.moresnifferflowers.compat.jei.rebrewing.RebrewingCategory;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
+import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @JeiPlugin
 public class MoreSnifferFlowersJEIPlugin implements IModPlugin {
@@ -39,7 +47,9 @@ public class MoreSnifferFlowersJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
-        registration.addRecipes(CropressingRecipeCategory.CROPRESSING, recipeManager.getAllRecipesFor(ModRecipeTypes.CROPRESSING.get()));
+        List<CropressingRecipe> list = new ArrayList<>();
+        recipeManager.getAllRecipesFor(ModRecipeTypes.CROPRESSING.get()).forEach(o -> list.add(o.value()));
+        registration.addRecipes(CropressingRecipeCategory.CROPRESSING, list);
         registration.addRecipes(RebrewingCategory.REBREWING, JeiRebrewingRecipe.createRecipes());
     }
 }

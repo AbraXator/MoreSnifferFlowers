@@ -1,8 +1,11 @@
 package net.abraxator.moresnifferflowers.client.gui.menu;
 
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.ModMenuTypes;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.Holder;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -12,6 +15,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.EnchantedGoldenAppleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -201,8 +205,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         public void onTake(Player pPlayer, ItemStack pStack) {
             Potion potion = PotionUtils.getPotion(pStack);
             if (pPlayer instanceof ServerPlayer) {
-                net.minecraftforge.event.ForgeEventFactory.onPlayerBrewedPotion(pPlayer, pStack);
-                CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, potion);
+                CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, Holder.direct(potion));
             }
 
             super.onTake(pPlayer, pStack);

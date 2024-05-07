@@ -28,7 +28,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class RebrewingStandBlockBase extends Block {
@@ -60,13 +59,13 @@ public class RebrewingStandBlockBase extends Block {
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if(pState.is(ModBlocks.REBREWING_STAND_TOP.get())) {
             BlockState blockstate1 = pState.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
             pLevel.setBlock(pPos.below(), blockstate1, 35);
             pLevel.levelEvent(pPlayer, 2001, pPos.below(), Block.getId(blockstate1));
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
     
     @Override
@@ -98,10 +97,9 @@ public class RebrewingStandBlockBase extends Block {
             if(pLevel.getBlockState(pPos).is(ModBlocks.REBREWING_STAND_BOTTOM.get())) {
                 blockPos = blockPos.above();
             }
-            
-            BlockEntity entity = pLevel.getBlockEntity(blockPos);
-            if (entity instanceof RebrewingStandBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer) pPlayer), ((RebrewingStandBlockEntity) entity), blockPos);
+
+            if (pLevel.getBlockEntity(blockPos) instanceof RebrewingStandBlockEntity entity) {
+                pPlayer.openMenu(entity);
             }
 
             return InteractionResult.CONSUME;

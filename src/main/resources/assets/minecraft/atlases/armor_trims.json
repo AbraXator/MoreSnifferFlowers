@@ -1,5 +1,5 @@
 {
-  "replace": false,
+    "replace": false,
     "sources": [
         {
             "type": "paletted_permutations",
@@ -72,7 +72,6 @@
                 "carrot": "moresnifferflowers:trims/color_palettes/carrot",
                 "wheat": "moresnifferflowers:trims/color_palettes/wheat",
                 "beetroot": "moresnifferflowers:trims/color_palettes/beetroot"
-
             }
         }
     ]

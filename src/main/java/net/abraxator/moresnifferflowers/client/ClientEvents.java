@@ -2,21 +2,26 @@ package net.abraxator.moresnifferflowers.client;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
+import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.client.model.block.CropressorModel;
 import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
+import net.abraxator.moresnifferflowers.client.model.entity.DragonflyModel;
 import net.abraxator.moresnifferflowers.client.particle.AmbushParticle;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.particle.GiantCropParticle;
 import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackResources;
@@ -32,6 +37,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
@@ -42,7 +48,12 @@ public class ClientEvents {
     public static void clientSetup(final FMLClientSetupEvent event) {
         ModItemProperties.register();
     }
-
+    
+    @SubscribeEvent
+    public static void onRegisterMenuScreenEvent(RegisterMenuScreensEvent event) {
+        event.register(ModMenuTypes.REBREWING_STAND.get(), RebrewingStandScreen::new);
+    }
+    
     @SubscribeEvent
     public static void onEntityRenderersRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         //ENTITY

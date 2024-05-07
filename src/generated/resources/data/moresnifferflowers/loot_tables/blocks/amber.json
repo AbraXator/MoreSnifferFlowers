@@ -49,43 +49,143 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:ambush_banner_pattern"
+          "name": "minecraft:coal",
+          "weight": 100
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:amber_shard"
+          "name": "minecraft:emerald",
+          "weight": 100
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:dragonfly"
+          "name": "minecraft:stick",
+          "weight": 100
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:aroma_armor_trim_smithing_table"
+          "name": "moresnifferflowers:amber_shard",
+          "weight": 100
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:ambush_seeds"
+          "name": "moresnifferflowers:dragonfly",
+          "weight": 100
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:dawnberry_vine_seeds"
+          "name": "minecraft:carrot",
+          "weight": 50
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:caulorflower"
+          "name": "minecraft:potato",
+          "weight": 50
         },
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:bonmeelia_seeds"
+          "name": "minecraft:beetroot",
+          "weight": 50
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:torchflower_seeds"
+          "name": "minecraft:beetroot_seeds",
+          "weight": 50
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:pitcher_pod"
+          "name": "minecraft:nether_wart",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wheat",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wheat_seeds",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:snort_pottery_sherd",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:belt_piece",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:engine_piece",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:scrap_piece",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:tube_piece",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:press_piece",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:aroma_armor_trim_smithing_template",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:ambush_banner_pattern",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:extraction_bottle",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:torchflower_seeds",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:pitcher_pod",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:sniffer_egg",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:dawnberry_vine_seeds",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:ambush_seeds",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:dyespria_seeds",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "moresnifferflowers:bonmeelia_seeds",
+          "weight": 12
         }
       ],
       "rolls": 1.0

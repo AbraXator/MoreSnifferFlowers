@@ -1,28 +1,34 @@
 package net.abraxator.moresnifferflowers.recipes.serializers;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
 import org.jetbrains.annotations.Nullable;
 
 public class CropressingSerializer implements RecipeSerializer<CropressingRecipe> {
     @Override
-    public CropressingRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-        var count = GsonHelper.getAsInt(pSerializedRecipe, "count");
-        var ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "ingredient"));
-        var result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
-
-        return new CropressingRecipe(pRecipeId, ingredient, count, result);
+    public Codec<CropressingRecipe> codec() {
+        return RecordCodecBuilder.create(instance -> 
+                instance.group(
+                        Ingredient.CODEC.fieldOf("ingredient").forGetter(CropressingRecipe::ingredient),
+                        Codec.INT.fieldOf("count").forGetter(CropressingRecipe::count),
+                        ItemStack.CODEC.fieldOf("result").forGetter(CropressingRecipe::result)
+                ).apply(instance, CropressingRecipe::new)
+        );
     }
 
     @Override
-    public @Nullable CropressingRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-        return new CropressingRecipe(pRecipeId, Ingredient.fromNetwork(pBuffer), pBuffer.readInt(), pBuffer.readItem());
+    public CropressingRecipe fromNetwork(FriendlyByteBuf pBuffer) {
+        return new CropressingRecipe(Ingredient.fromNetwork(pBuffer), pBuffer.readInt(), pBuffer.readItem());
     }
 
     @Override

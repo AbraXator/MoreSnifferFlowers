@@ -24,7 +24,7 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
         this.renderOnboardingTooltips(guiGraphics, mouseX, mouseY, x, y);

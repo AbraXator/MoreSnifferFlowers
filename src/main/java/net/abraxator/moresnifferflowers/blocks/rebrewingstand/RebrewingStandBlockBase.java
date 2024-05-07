@@ -22,7 +22,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 
 public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
     public static final BooleanProperty[] HAS_BOTTLE = new BooleanProperty[]{BlockStateProperties.HAS_BOTTLE_0, BlockStateProperties.HAS_BOTTLE_1, BlockStateProperties.HAS_BOTTLE_2};
@@ -59,7 +58,7 @@ public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
             
             BlockEntity entity = pLevel.getBlockEntity(blockPos);
             if (entity instanceof RebrewingStandBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer) pPlayer), ((RebrewingStandBlockEntity) entity), blockPos);
+                pPlayer.openMenu((RebrewingStandBlockEntity) entity);
             }
 
             return InteractionResult.CONSUME;

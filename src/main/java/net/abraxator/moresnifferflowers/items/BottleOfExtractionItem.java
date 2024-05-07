@@ -71,7 +71,7 @@ public class BottleOfExtractionItem extends Item {
     }
 
     private boolean canExtract(Level level, Player player) {
-        return !level.isClientSide && player.getActiveEffects() != null && !player.getActiveEffects().isEmpty() && !player.hasEffect(ModMobEffects.EXTRACTED);
+        return !level.isClientSide && player.getActiveEffects() != null && !player.getActiveEffects().isEmpty() && !player.hasEffect(ModMobEffects.EXTRACTED.get());
     }
 
     @Override

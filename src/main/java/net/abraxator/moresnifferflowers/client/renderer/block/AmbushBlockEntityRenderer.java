@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.abraxator.moresnifferflowers.blocks.AmbushBlock;
 import net.abraxator.moresnifferflowers.blockentities.AmbushBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.minecraft.client.renderer.MultiBufferSource;

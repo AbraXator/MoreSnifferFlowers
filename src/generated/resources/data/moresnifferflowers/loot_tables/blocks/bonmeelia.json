@@ -18,7 +18,7 @@
           "block": "moresnifferflowers:bonmeelia",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "age": "3",
+            "age": "6",
             "bottle": "true"
           }
         }
@@ -43,7 +43,7 @@
                 "block": "moresnifferflowers:bonmeelia",
                 "condition": "minecraft:block_state_property",
                 "properties": {
-                  "age": "3"
+                  "age": "6"
                 }
               }
             },
