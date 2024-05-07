@@ -126,13 +126,13 @@ public class ClientEvents {
             IModFile iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID).getFile();
             event.addRepositorySource(pOnLoad -> {
                 var pack = Pack.readMetaAndCreate(
-                        "rtx_moresnifferflowers",
-                        Component.literal("RTX More Sniffer Flowers"),
+                        "more_sniffer_flowers_rtx",
+                        Component.literal("More Sniffer Flowers RTX"),
                         false,
                         new Pack.ResourcesSupplier() {
                             @Override
                             public PackResources openPrimary(String pId) {
-                                return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/rtx_moresnifferflowers"), false);
+                                return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/more_sniffer_flowers_rtx"), false);
                             }
 
                             @Override
@@ -151,7 +151,7 @@ public class ClientEvents {
             event.addRepositorySource(pOnLoad -> {
                     var pack = Pack.readMetaAndCreate(
                             "more_sniffer_flowers_vanilla_style_guis",
-                            Component.literal("Vanilla style GUIs More Sniffer Flowers"),
+                            Component.literal("More Sniffer Flowers Vanilla Style GUIs"),
                             false,
                             new Pack.ResourcesSupplier() {
                                 @Override
