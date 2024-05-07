@@ -24,7 +24,6 @@ public class RebrewingStandBlockTop extends RebrewingStandBlockBase implements M
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        ENTITY_POS = pPos;
         return new RebrewingStandBlockEntity(pPos, pState);
     }
 
