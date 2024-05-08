@@ -43,6 +43,7 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         if(pResult.getEntity() instanceof LivingEntity entity) {
             entity.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 140, 2));
+            entity.hurt(this.damageSources().thrown(this, this.getOwner()), 0);
         }
         
         discard();

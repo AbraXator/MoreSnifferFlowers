@@ -28,6 +28,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.text.WordUtils;
@@ -53,24 +54,32 @@ public class DyespriaItem extends Item implements Colorable {
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
-
-        if(blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-            if (!player.isShiftKeyDown()) {
-                colorOne(stack, serverLevel, blockPos, blockState);
+        
+        if(!level.isClientSide) {
+            if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
+                if (!player.isShiftKeyDown()) {
+                    colorOne(stack, serverLevel, blockPos, blockState);
+                } else {
+                    colorColumn(stack, serverLevel, blockPos);
+                }
+                level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
+                ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
+                return InteractionResult.sidedSuccess(level.isClientSide);
             } else {
-                colorColumn(stack, serverLevel, blockPos);
-            }
-            level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
-            ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        } else {
-            level.setBlockAndUpdate(blockPos.above(), ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3));
-            stack.setCount(-1);
-            if(level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
-                entity.dye = Dye.getDyeFromStack(stack);
-                entity.setChanged();
+                var posForDyespria = blockPos.above();
+                var dyespriaPlant = ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3);
+                if(dyespriaPlant.canSurvive(level, posForDyespria)) {
+                    level.setBlockAndUpdate(posForDyespria, dyespriaPlant);
+                    level.updateNeighborsAt(posForDyespria, dyespriaPlant.getBlock());
+                }
+                stack.setCount(-1);
+                if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
+                    entity.dye = Dye.getDyeFromStack(stack);
+                    entity.setChanged();
+                }
             }
         }
+        
         return InteractionResult.PASS;
     }
 

@@ -7,6 +7,7 @@ import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -20,8 +21,10 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -65,7 +68,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
                 pPlayer.addItem(entity.add(null, entity.dye, item));
                 
                 return InteractionResult.sidedSuccess(pLevel.isClientSide());
-            } else if (!entity.dye.isEmpty()) {
+            } else if (!entity.dye.isEmpty() && item.isEmpty()) {
                 pPlayer.addItem(Dye.stackFromDye(entity.removeDye()));
                 
                 return InteractionResult.sidedSuccess(pLevel.isClientSide());
@@ -73,6 +76,21 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
         }
             
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        //if(!canSurvive(pState, pLevel, pPos))
+    }
+
+    @Override
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        return canSurvive(pState, pLevel, pCurrentPos) ? pState : Blocks.AIR.defaultBlockState();
+    }
+
+    @Override
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        return mayPlaceOn(pLevel.getBlockState(pPos.below()));
     }
 
     @Override

@@ -31,12 +31,14 @@ public record JeiRebrewingRecipe(ItemStack extractedPotion, ItemStack rebrewedPo
                 MobEffectInstance rebrewedEffect = new MobEffectInstance(effect, 1200 + duration, amplifier);
 
                 ItemStack extractedPotion = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
-                ItemStack rebrewedPotion = ModItems.REBREWED_POTION.get().getDefaultInstance();
+                var rebrewedPotion = item.is(Items.GUNPOWDER) ? ModItems.REBREWED_SPLASH_POTION.get() :
+                        item.is(Items.DRAGON_BREATH) ? ModItems.REBREWED_LINGERING_POTION.get() :
+                                ModItems.REBREWED_POTION.get();
 
                 PotionUtils.setCustomEffects(extractedPotion, List.of(extractedEffect));
-                PotionUtils.setCustomEffects(rebrewedPotion, List.of(rebrewedEffect));
+                PotionUtils.setCustomEffects(rebrewedPotion.getDefaultInstance(), List.of(rebrewedEffect));
 
-                ret.add(new JeiRebrewingRecipe(extractedPotion, rebrewedPotion, item));
+                ret.add(new JeiRebrewingRecipe(extractedPotion, rebrewedPotion.getDefaultInstance(), item));
             }
         }
         return ret;
