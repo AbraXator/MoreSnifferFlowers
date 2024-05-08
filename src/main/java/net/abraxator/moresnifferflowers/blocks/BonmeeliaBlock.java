@@ -30,11 +30,14 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.Nullable;
 import org.openjdk.nashorn.internal.scripts.JO;
 
 public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCropBlock {
+    public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);
     public static final BooleanProperty HAS_BOTTLE = BooleanProperty.create("bottle");
     public static final BooleanProperty SHOW_HINT = BooleanProperty.create("hint");
@@ -48,6 +51,11 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
     public BonmeeliaBlock(Properties pProperties) {
         super(pProperties);
         registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0).setValue(HAS_JAR, false));
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return SHAPE;
     }
 
     @Override

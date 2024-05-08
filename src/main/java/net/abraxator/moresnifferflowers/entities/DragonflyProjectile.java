@@ -3,6 +3,11 @@ package net.abraxator.moresnifferflowers.entities;
 import net.abraxator.moresnifferflowers.init.ModEntityTypes;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.advancements.critereon.EffectsChangedTrigger;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,6 +28,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import org.joml.Vector3f;
 
 public class DragonflyProjectile extends ThrowableItemProjectile {
     public DragonflyProjectile(EntityType<? extends DragonflyProjectile> entityType, Level pLevel) {
@@ -51,6 +57,10 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
+        if(level() instanceof ServerLevel serverLevel) {
+            var particle = new ItemParticleOption(ParticleTypes.ITEM, ModItems.DRAGONFLY.get().getDefaultInstance());
+            serverLevel.sendParticles(particle, getX(), getY(), getZ(), 10, Mth.nextDouble(random, 0, 0.3), Mth.nextDouble(random, 0, 0.3), Mth.nextDouble(random, 0, 0.3), 0);
+        }
         super.onHitBlock(pResult);
         discard();
     }
