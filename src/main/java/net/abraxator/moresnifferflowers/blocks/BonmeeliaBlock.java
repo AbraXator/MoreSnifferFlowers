@@ -62,11 +62,6 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(Blocks.FARMLAND);
-    }
-
-    @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getMainHandItem();
         BlockEntity blockEntity = pLevel.getBlockEntity(pPos);

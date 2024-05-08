@@ -2,6 +2,9 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import net.minecraft.DefaultUncaughtExceptionHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -11,6 +14,7 @@ import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public interface ModCropBlock extends IPlantable, BonemealableBlock {
     IntegerProperty getAgeProperty();
@@ -42,7 +46,7 @@ public interface ModCropBlock extends IPlantable, BonemealableBlock {
     }
 
     default boolean mayPlaceOn(BlockState pState) {
-        return pState.is(Blocks.FARMLAND) || pState.getBlock() instanceof FarmBlock;
+        return pState.is(Blocks.FARMLAND) || pState.getBlock() instanceof FarmBlock || pState.is(TagKey.create(ForgeRegistries.Keys.BLOCKS, new ResourceLocation("supplementaries", "planters")));
     }
     
     default float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {

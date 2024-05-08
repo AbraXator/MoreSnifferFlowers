@@ -29,9 +29,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCropBlock {
+    public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
     public static final int AGE_TO_GROW_UP = 4;
 
     public AmbushBlockBase(Properties pProperties) {
@@ -41,6 +44,15 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     @Override
     public IntegerProperty getAgeProperty() {
         return ModStateProperties.AGE_8;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        if(isUpper(pState) && pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasGrown) {
+            return super.getShape(pState, pLevel, pPos, pContext);
+        } else {
+            return SHAPE;
+        }
     }
 
     @Override   

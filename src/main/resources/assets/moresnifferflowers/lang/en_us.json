@@ -36,17 +36,20 @@
 
 
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
-	"block.moresnifferflowers.ambush": "Ambush",
+	"block.moresnifferflowers.ambush_bottom": "Ambush",
+	"block.moresnifferflowers.ambush_top": "Ambush",
 	"block.moresnifferflowers.amber": "Amber",
 	"block.moresnifferflowers.caulorflower": "Caulorflower",
 	"block.moresnifferflowers.bonmeelia": "Bonmeelia",
-	"block.moresnifferflowers.cropressor": "Cropressor",
+	"block.moresnifferflowers.cropressor_out": "Cropressor",
+	"block.moresnifferflowers.cropressor_center": "Cropressor",
 	"block.moresnifferflowers.giant_potato": "Giant Potato",
 	"block.moresnifferflowers.giant_netherwart": "Giant Nether Wart",
 	"block.moresnifferflowers.giant_carrot": "Giant Carrot",
 	"block.moresnifferflowers.giant_wheat": "Giant Wheat",
 	"block.moresnifferflowers.giant_beetroot": "Giant Beetroot",
-	"block.moresnifferflowers.rebrewing_stand": "Rebrewing Stand",	
+	"block.moresnifferflowers.rebrewing_stand_bottom": "Rebrewing Stand",	
+	"block.moresnifferflowers.rebrewing_stand_top": "Rebrewing Stand",	
 	"block.moresnifferflowers.dyespria_plant": "Dyespria",
 
 	"tooltip.dyespria.usage": "Hover+Right-click to insert dye \nRight-click Caulorflower to paint \nSneak to paint whole column\n",

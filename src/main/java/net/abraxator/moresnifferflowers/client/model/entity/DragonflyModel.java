@@ -45,8 +45,8 @@ public class DragonflyModel extends Model {
 	}
 
 	public void animate(float pPartialTick) {
-		this.wing1.zRot = (float) (Mth.cos(pPartialTick * 74.48451F * Mth.PI / 180.0F) * Mth.PI * 0.25);
-		this.wing2.zRot = (float) -(Mth.cos(pPartialTick * 74.48451F * Mth.PI / 180.0F) * Mth.PI * 0.25);
+		this.wing1.zRot = (float) (Mth.cos(pPartialTick * 100F * Mth.PI / 180.0F) * Mth.PI * 0.25);
+		this.wing2.zRot = (float) -(Mth.cos(pPartialTick * 100F * Mth.PI / 180.0F) * Mth.PI * 0.25);
 	}
 	
 	@Override

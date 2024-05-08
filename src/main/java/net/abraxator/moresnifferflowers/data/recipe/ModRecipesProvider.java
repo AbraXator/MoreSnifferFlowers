@@ -32,6 +32,7 @@ public class ModRecipesProvider extends RecipeProvider {
         trimCrafting(pWriter, ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CROPRESSED_NETHERWART.get());
         trimCrafting(pWriter, ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CROPRESSED_CARROT.get());
         trimCrafting(pWriter, ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CROPRESSED_POTATO.get());
+        trimCrafting(pWriter, ModItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CROPRESSED_POTATO.get());
         trimCrafting(pWriter, ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get(), ModItems.CROPRESSED_BEETROOT.get());
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.EXTRACTION_BOTTLE.get())
@@ -89,7 +90,7 @@ public class ModRecipesProvider extends RecipeProvider {
     }
 
     private void trimCrafting(Consumer<FinishedRecipe> pWriter, ItemLike trim, Ingredient ingredient) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, trim)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, trim, 2)
                 .pattern("ABA")
                 .pattern("ACA")
                 .pattern("AAA")
