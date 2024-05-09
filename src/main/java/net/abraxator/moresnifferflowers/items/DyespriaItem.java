@@ -26,10 +26,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
@@ -38,9 +40,9 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DyespriaItem extends Item implements Colorable {
+public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
-        super(pProperties);
+        super(ModBlocks.DYESPRIA_PLANT.get(), pProperties);
     }
 
     @Override
@@ -50,37 +52,46 @@ public class DyespriaItem extends Item implements Colorable {
         BlockPos blockPos = pContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
         ItemStack stack = pContext.getItemInHand();
-
+        boolean flag = false;
+        
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
-        
-        if(!level.isClientSide) {
-            if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-                if (!player.isShiftKeyDown()) {
-                    colorOne(stack, serverLevel, blockPos, blockState);
-                } else {
-                    colorColumn(stack, serverLevel, blockPos);
-                }
-                level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
-                ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+
+        if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
+            if (!player.isShiftKeyDown()) {
+                colorOne(stack, serverLevel, blockPos, blockState);
             } else {
-                var posForDyespria = blockPos.above();
-                var dyespriaPlant = ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3);
+                colorColumn(stack, serverLevel, blockPos);
+            }
+            level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
+            ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        } else {
+                /*var dyespriaPlant = ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3);
                 if(dyespriaPlant.canSurvive(level, posForDyespria)) {
                     level.setBlockAndUpdate(posForDyespria, dyespriaPlant);
                     level.updateNeighborsAt(posForDyespria, dyespriaPlant.getBlock());
                 }
-                stack.setCount(-1);
-                if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
-                    entity.dye = Dye.getDyeFromStack(stack);
-                    entity.setChanged();
-                }
+                stack.setCount(-1);*/
+            var posForDyespria = blockPos.above();
+            var blockHitResult = new BlockHitResult(posForDyespria.getCenter(), pContext.getHorizontalDirection(), posForDyespria, false);
+            var useOnCtx = new UseOnContext(level, player, pContext.getHand(), stack, blockHitResult);
+            var result = super.useOn(useOnCtx);
+            
+            if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
+                entity.dye = Dye.getDyeFromStack(stack);
+                entity.setChanged();
             }
+            
+            return result;
         }
-        
-        return InteractionResult.PASS;
+    }
+
+    @Nullable
+    @Override
+    protected BlockState getPlacementState(BlockPlaceContext pContext) {
+        return super.getPlacementState(pContext).setValue(ModStateProperties.AGE_3, 3);
     }
 
     public void colorOne(ItemStack stack, ServerLevel level, BlockPos blockPos, BlockState blockState) {
