@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -45,13 +46,14 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
         super(pProperties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(getAgeProperty(), 0)
+                .setValue(ModStateProperties.SHEARED, false)
                 .setValue(ModStateProperties.COLOR, DyeColor.WHITE));
     }
     
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(getAgeProperty()).add(ModStateProperties.COLOR);
+        pBuilder.add(getAgeProperty()).add(ModStateProperties.COLOR).add(ModStateProperties.SHEARED);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide ) {
+        if(pLevel.isClientSide) {
             return InteractionResult.FAIL;
         }
         
@@ -77,8 +79,12 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
             if (item.getItem() instanceof DyeItem) {
                 pPlayer.getItemInHand(pHand).setCount(-1);
                 pPlayer.addItem(entity.add(null, entity.dye, item));
-                
+
                 return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            } else if (item.is(Items.SHEARS) && !pState.getValue(ModStateProperties.SHEARED)) {
+                pLevel.setBlockAndUpdate(pPos, pState.setValue(ModStateProperties.SHEARED, true));
+
+                return InteractionResult.SUCCESS;
             } else if (!entity.dye.isEmpty() && item.isEmpty()) {
                 pPlayer.addItem(Dye.stackFromDye(entity.removeDye()));
                 
@@ -103,9 +109,10 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if(!pState.is(pNewState.getBlock()) && pLevel.getBlockEntity(pPos) instanceof DyespriaPlantBlockEntity entity && isMaxAge(pState)) {
             var dyespria = ModItems.DYESPRIA.get().getDefaultInstance();
-            Dye.setDyeColorToStack(dyespria, entity.dye.color(), entity.dye.amount());
-            
+            var dye = new ItemStack(DyeItem.byColor(entity.dye.color()), entity.dye.amount());
+
             Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), dyespria);   
+            Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), dye);   
         }
         
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);

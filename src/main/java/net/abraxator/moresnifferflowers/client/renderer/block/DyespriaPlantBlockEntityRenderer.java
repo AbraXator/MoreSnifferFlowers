@@ -25,7 +25,7 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
         var isGrown = pBlockEntity.getBlockState().getValue(ModStateProperties.AGE_3) >= 3;
         var hasDye = !pBlockEntity.dye.isEmpty();
         
-        if(isGrown && hasDye) {
+        if(isGrown && hasDye && !pBlockEntity.getBlockState().getValue(ModStateProperties.SHEARED)) {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             DyeItem dyeItem = DyeItem.byColor(pBlockEntity.getBlockState().getValue(ModStateProperties.COLOR));
             pPoseStack.pushPose();
