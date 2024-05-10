@@ -19,13 +19,13 @@ import java.util.List;
 
 @Mixin(SpriteResourceLoader.class)
 public abstract class SpriteResourceLoaderMixin {
-
+/*
     @Inject(method = "load",
             at = @At("RETURN"))
     private static void moresnifferflowers$load(ResourceManager resourceManager, ResourceLocation location, CallbackInfoReturnable<SpriteResourceLoader> cir) {
         if (location.getPath().equals("armor_trims")) {
             SpriteResourceLoader ret = cir.getReturnValue();
-            for (SpriteSource source : ((SpriteResourceLoaderMixin) (Object) ret).getSources()) {
+            for (SpriteSource source : ((SpriteResourceLoaderMixin) ret).getSources()) {
                 if (source instanceof PalettedPermutationsAccessor permutations && permutations.getPaletteKey().getPath().equals("trims/color_palettes/trim_palette")) {
                     ResourceLocation trimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/aroma");
                     ResourceLocation leggingsTrimLocation = new ResourceLocation(MoreSnifferFlowers.MOD_ID, "trims/models/armor/aroma").withSuffix("_leggings");
@@ -76,5 +76,5 @@ public abstract class SpriteResourceLoaderMixin {
 
         @Accessor
         ResourceLocation getPaletteKey();
-    }
+    }*/
 }

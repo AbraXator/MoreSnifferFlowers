@@ -9,6 +9,8 @@ import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.Util;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -25,7 +27,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -128,7 +133,10 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                         outputPotion = ModItems.REBREWED_LINGERING_POTION.get().getDefaultInstance();
                     }
 
-                    PotionUtils.setCustomEffects(outputPotion, effects);
+                    Potion potion = new Potion()
+                    PotionContents potionContents = new PotionContents(Holder.direct(Potions.), PotionContents.getColorOptional(effects), effects);
+                    
+                    PotionContents.setCustomEffects(outputPotion, effects);
                     inv.set(i, outputPotion);
                 }
             }
@@ -183,6 +191,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         List<MobEffectInstance> ret = new ArrayList<>();
         List<Integer> durList = new ArrayList<>();
         ListTag listTag = ((ListTag) inputPotion.getOrCreateTag().get("CustomPotionEffects"));
+        
         int defaultAmp = 1; 
         int defaultDur = 6000; 
         
@@ -196,14 +205,14 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             var amp = potion.getByte("Amplifier") + (ingredient.is(Items.REDSTONE) ? 2 : defaultAmp);
             var dur = potion.getInt("Duration") + (ingredient.is(Items.GLOWSTONE_DUST) ? 12000 : defaultDur);
             var splitId = id.split(":");
-            var instance = new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(splitId[0], splitId[1])), dur, amp);
+            var instance = new MobEffectInstance(Holder.direct(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(splitId[0], splitId[1]))), dur, amp);
             
             durList.add(dur);
             ret.add(instance);
         }
         
         int maxInt = Collections.max(durList);
-        ret.add(new MobEffectInstance(ModMobEffects.EXTRACTED.get(), maxInt));
+        ret.add(new MobEffectInstance(Holder.direct(ModMobEffects.EXTRACTED.get()), maxInt));
         
         return ret;
     }
@@ -233,6 +242,18 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         return ContainerHelper.takeItem(inv, pSlot);
     }
 
+
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        return inv;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> nonNullList) {
+        this.inv = nonNullList;
+    }
+
+
     @Override
     public void setItem(int pSlot, ItemStack pStack) {
         if (pSlot >= 0 && pSlot < this.inv.size()) {
@@ -251,18 +272,18 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        ContainerHelper.saveAllItems(pTag, inv);
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
+        ContainerHelper.saveAllItems(pTag, inv, pRegistries);
         pTag.putByte("progress", ((byte) brewProgress));
         pTag.putByte("fuel", ((byte) fuel));
     }
-    
+
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
         inv = NonNullList.withSize(6, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(pTag, inv);
+        ContainerHelper.loadAllItems(pTag, inv, pRegistries);
         fuel = pTag.getByte("fuel");
         brewProgress = pTag.getByte("progress");
     }
