@@ -65,8 +65,12 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        pPos = pPos.below();
-        return mayPlaceOn(pLevel.getBlockState(pPos), pLevel, pPos);
+        return this.mayPlaceOn(pLevel.getBlockState(pPos.below()));
+    }
+
+    @Override
+    public boolean mayPlaceOn(BlockState pState) {
+        return ModCropBlock.super.mayPlaceOn(pState);
     }
 
     @Override
@@ -77,23 +81,29 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
         if (!(blockEntity instanceof BonmeeliaBlockEntity entity)) {
             return InteractionResult.PASS;
         }
-        
-        if(!pLevel.isClientSide) {
-            if (itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
-                pLevel.setBlock(pPos, pState.setValue(HAS_BOTTLE, true), 3);
-                pPlayer.getMainHandItem().shrink(1);
-                return InteractionResult.sidedSuccess(pLevel.isClientSide());
-            } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
-                pLevel.setBlock(pPos, pState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
-                pPlayer.addItem(ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
-                return InteractionResult.sidedSuccess(pLevel.isClientSide());
-            } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
-                entity.displayHint();
-                return InteractionResult.sidedSuccess(pLevel.isClientSide());
-            }
+
+        if (itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
+            addBottle(pLevel, pPos, pState, itemStack);
+        } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
+            takeJarOfBonmeel(pLevel, pPos, pState, pPlayer);
+        } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
+            entity.displayHint();
+            return InteractionResult.sidedSuccess(pLevel.isClientSide());
         }
     
         return InteractionResult.PASS;
+    }
+        
+    private InteractionResult addBottle(Level level, BlockPos blockPos, BlockState blockState, ItemStack stack) {
+        level.setBlock(blockPos, blockState.setValue(HAS_BOTTLE, true), 3);
+        stack.shrink(1);
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+    
+    private InteractionResult takeJarOfBonmeel(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+        level.setBlock(blockPos, blockState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
+        popResource(level, blockPos, ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
     
     @Override

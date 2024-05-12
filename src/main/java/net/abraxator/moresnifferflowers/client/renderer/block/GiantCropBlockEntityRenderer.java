@@ -7,25 +7,31 @@ import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.ModStructures;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Quaternionf;
-import oshi.util.tuples.Pair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implements BlockEntityRenderer<T> {
+	private final EntityRenderDispatcher entityRenderDispatcher;
 	private final Map<Block, ModelPart> modelPartMap = new HashMap<>();
 	private final ModelPart carrot;
 	private final ModelPart potato;
@@ -34,7 +40,9 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 	private final ModelPart wheat;
 
 	public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
-		ModelPart carrotModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_CARROT);
+        this.entityRenderDispatcher = pContext.getEntityRenderer();
+		
+        ModelPart carrotModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_CARROT);
 		this.carrot = carrotModelPart.getChild("root");
 		this.modelPartMap.put(ModBlocks.GIANT_CARROT.get(), this.carrot);
 		ModelPart potatoModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_POTATO);
@@ -57,8 +65,8 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 		String path = blockState.getBlock().getDescriptionId().replace("block." + MoreSnifferFlowers.MOD_ID + ".", "");
 		Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/" + path));
 		VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
-
-		if(pBlockEntity.growProgress > 0 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(GiantCropBlock.MODEL_POSITION) != GiantCropBlock.ModelPos.NONE) {
+		
+		if(pBlockEntity.growProgress > 0 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && !blockState.getValue(GiantCropBlock.MODEL_POSITION).equals(GiantCropBlock.ModelPos.NONE)) {
 			var modelPos = blockState.getValue(GiantCropBlock.MODEL_POSITION);
 			pPoseStack.pushPose();
 			pPoseStack.translate(modelPos.x, modelPos.y - 2 + pBlockEntity.growProgress * 2, modelPos.z);
@@ -68,5 +76,17 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 			modelPartMap.get(blockState.getBlock()).render(pPoseStack, vertexConsumer, pPackedLight, pPackedOverlay);
 			pPoseStack.popPose();
 		}
+	}
+	
+	private Double getLowest(List<Double> list) {
+		double ret = 0;
+		
+		for (double num : list) {
+			if (num < ret) {
+				ret = num;
+			}
+		}
+		
+		return ret;
 	}
 }

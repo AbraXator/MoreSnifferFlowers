@@ -1,14 +1,12 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
+import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,12 +21,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.ticks.ScheduledTick;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.StreamSupport;
 
 public class JarOfBonmeelItem extends Item {
@@ -93,7 +91,10 @@ public class JarOfBonmeelItem extends Item {
             }
         });
 
-        serverPlayer.getMainHandItem().shrink(1);
+        if(!serverPlayer.getAbilities().instabuild) {
+            serverPlayer.getMainHandItem().shrink(1);
+        }
+        
         ModAdvancementCritters.USED_BONMEEL.trigger(serverPlayer);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -101,23 +102,36 @@ public class JarOfBonmeelItem extends Item {
     private GiantCropBlock.ModelPos evaulateModelPos(BlockPos pos, BlockPos posToCompare) {
         var value = GiantCropBlock.ModelPos.NONE;
 
-        if(pos.equals(posToCompare.mutable().move(1, 1, 0))) {
-            value = GiantCropBlock.ModelPos.X;
+        posToCompare = posToCompare.above();
+        pos = pos.above();
+        
+        if(pos.equals(posToCompare.north().east())) {
+            value = GiantCropBlock.ModelPos.NEU;
         }
-        if(pos.equals(posToCompare.mutable().move(-1, 1, 0))) {
-            value = GiantCropBlock.ModelPos.IX;
+        if(pos.equals(posToCompare.north().west())) {
+            value = GiantCropBlock.ModelPos.NWU;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 1, 1))) {
-            value = GiantCropBlock.ModelPos.Z;
+        if(pos.equals(posToCompare.south().east())) {
+            value = GiantCropBlock.ModelPos.SEU;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 1, -1))) {
-            value = GiantCropBlock.ModelPos.IZ;
+        if(pos.equals(posToCompare.south().west())) {
+            value = GiantCropBlock.ModelPos.SWU;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 2, 0))) {
-            value = GiantCropBlock.ModelPos.Y;
+
+        posToCompare.below(2);
+        pos = pos.below(2);
+
+        if(pos.equals(posToCompare.north().east())) {
+            value = GiantCropBlock.ModelPos.NED;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 0, 0))) {
-            value = GiantCropBlock.ModelPos.IY;
+        if(pos.equals(posToCompare.north().west())) {
+            value = GiantCropBlock.ModelPos.NWD;
+        }
+        if(pos.equals(posToCompare.south().east())) {
+            value = GiantCropBlock.ModelPos.SED;
+        }
+        if(pos.equals(posToCompare.south().west())) {
+            value = GiantCropBlock.ModelPos.SWD;
         }
 
         return value;

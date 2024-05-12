@@ -91,7 +91,8 @@ public class DyespriaItem extends BlockItem implements Colorable {
     @Nullable
     @Override
     protected BlockState getPlacementState(BlockPlaceContext pContext) {
-        return super.getPlacementState(pContext).setValue(ModStateProperties.AGE_3, 3);
+        var state = super.getPlacementState(pContext);
+        return state == null ? null : state.setValue(ModStateProperties.AGE_3, 3);
     }
 
     public void colorOne(ItemStack stack, ServerLevel level, BlockPos blockPos, BlockState blockState) {

@@ -54,8 +54,8 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         if(!pState.getValue(MODEL_POSITION).equals(ModelPos.NONE)) {
             pLevel.getBlockTicks().schedule(new ScheduledTick<>(this, pPos, pLevel.getGameTime() + 7, pLevel.nextSubTickCount()));
-            if(pState.getValue(MODEL_POSITION).equals(ModelPos.IY) && pLevel instanceof ServerLevel level) {
-                level.sendParticles(ModParticles.GIANT_CROP.get(), pPos.getCenter().x, pPos.getCenter().y + 1, pPos.getCenter().z, 1, 0, 0, 0, 0);
+            if(pState.getValue(MODEL_POSITION).equals(ModelPos.NED) && pLevel instanceof ServerLevel level) {
+                level.sendParticles(ModParticles.GIANT_CROP.get(), pPos.getCenter().x - 1, pPos.getCenter().y - 1, pPos.getCenter().z + 1, 1, 0, 0, 0, 0);
             }
         }
     }
@@ -79,12 +79,14 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
     }
     
     public static enum ModelPos implements StringRepresentable {
-        X("x", -0.5006, 0.5006, 0.5006),
-        IX("ix", 1.5003, 0.5003, 0.5003),
-        Z("z", 0.4991, 0.4991, -0.4991),
-        IZ("iz", 0.4994, 0.4994, 1.4994),
-        Y("y", 0.4997, -0.4997, 0.4997),
-        IY("iy", 0.5, 1.5, 0.5),
+        NED("ned"),
+        NEU("neu"),
+        NWD("nwd"),
+        NWU("nwu"),
+        SED("sed"),
+        SEU("seu"),
+        SWD("swd"),
+        SWU("swu"),
         NONE("none");
 
         public final String name;

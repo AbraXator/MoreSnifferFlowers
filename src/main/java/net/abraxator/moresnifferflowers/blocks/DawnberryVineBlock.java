@@ -5,10 +5,13 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.QuartPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,6 +33,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.Tags;
 import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,18 +79,18 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     @SuppressWarnings("deprecated")
     public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
-
-        if(pLevel.isClientSide()) return InteractionResult.PASS;
-
-        if(itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
-            return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
-        } else if(this.isMaxAge(pState)) {
-            return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
-        } else if(pState.getValue(AGE) == 3) {
-            return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
+        
+        if(!itemStack.is(Items.BONE_MEAL)) {
+            if (itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
+                return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
+            } else if (this.isMaxAge(pState)) {
+                return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
+            } else if (pState.getValue(AGE) == 3) {
+                return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
+            }
         }
 
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return InteractionResult.PASS;
     }
 
     private InteractionResult shearAction(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
