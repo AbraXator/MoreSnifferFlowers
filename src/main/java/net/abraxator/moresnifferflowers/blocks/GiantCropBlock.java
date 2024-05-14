@@ -79,15 +79,25 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
     }
     
     public static enum ModelPos implements StringRepresentable {
-        NED("ned"),
-        NEU("neu"),
-        NWD("nwd"),
-        NWU("nwu"),
-        SED("sed"),
-        SEU("seu"),
-        SWD("swd"),
-        SWU("swu"),
+        NED("ned",-0.4992, -0.4992, 1.4992 ),
+        NEU("neu",-0.4994, 1.4994, 1.4994 ),
+        NWD("nwd",1.4996, -0.4996, 1.4996 ),
+        NWU("nwu",1.4998, 1.4998, 1.4998 ),
+        SED("sed",-0.5, -0.5, -0.5 ),
+        SEU("seu",-0.4990, 1.4990, -0.4990 ),
+        SWD("swd",1.4988, -0.4988, -0.4988 ),
+        SWU("swu",1.4986, 1.4986, -0.4986 ),
         NONE("none");
+
+//        NED("ned",-0.4988, -0.4988, 1.4988 ),
+//        NEU("neu",-0.4991, 1.4991, 1.4991 ),
+//        NWD("nwd",1.4994, -0.4994, 1.4994 ),
+//        NWU("nwu",1.4997, 1.4997, 1.4997 ),
+//        SED("sed",-0.5, -0.5, -0.5 ),
+//        SEU("seu",-0.4985, 1.4985, -0.4985 ),
+//        SWD("swd",1.4982, -0.4982, -0.4982 ),
+//        SWU("swu",1.4979, 1.4979, -0.4979 ),
+//        NONE("none");
 
         public final String name;
         public final double x;
