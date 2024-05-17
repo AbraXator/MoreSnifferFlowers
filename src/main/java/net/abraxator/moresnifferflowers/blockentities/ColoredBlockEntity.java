@@ -60,13 +60,13 @@ public class ColoredBlockEntity extends ModBlockEntity implements Colorable {
     public void load(CompoundTag pTag) {
         super.load(pTag);
         dye = Dye.EMPTY;
-        this.dye = new Dye(DyeColor.byId(pTag.getInt("id")), pTag.getInt("amount"));
+        this.dye = new Dye(DyeColor.byId(pTag.getInt("dyeId")), pTag.getInt("amount"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        pTag.putInt("id", dye.color().getId());
+        pTag.putInt("dyeId", dye.color().getId());
         pTag.putInt("amount", dye.amount());
     }
 

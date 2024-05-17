@@ -6,6 +6,8 @@ import net.abraxator.moresnifferflowers.blocks.ambush.AmbushBlockBase;
 import net.abraxator.moresnifferflowers.blocks.ambush.AmbushBlockUpper;
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockOut;
+import net.abraxator.moresnifferflowers.blocks.rebrewingstand.RebrewingStandBlockBase;
+import net.abraxator.moresnifferflowers.blocks.rebrewingstand.RebrewingStandBlockTop;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;

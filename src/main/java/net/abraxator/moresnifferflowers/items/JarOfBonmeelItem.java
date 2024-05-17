@@ -101,23 +101,36 @@ public class JarOfBonmeelItem extends Item {
     private GiantCropBlock.ModelPos evaulateModelPos(BlockPos pos, BlockPos posToCompare) {
         var value = GiantCropBlock.ModelPos.NONE;
 
-        if(pos.equals(posToCompare.mutable().move(1, 1, 0))) {
-            value = GiantCropBlock.ModelPos.X;
+        posToCompare = posToCompare.above();
+        pos = pos.above();
+
+        if(pos.equals(posToCompare.north().east())) {
+            value = GiantCropBlock.ModelPos.NEU;
         }
-        if(pos.equals(posToCompare.mutable().move(-1, 1, 0))) {
-            value = GiantCropBlock.ModelPos.IX;
+        if(pos.equals(posToCompare.north().west())) {
+            value = GiantCropBlock.ModelPos.NWU;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 1, 1))) {
-            value = GiantCropBlock.ModelPos.Z;
+        if(pos.equals(posToCompare.south().east())) {
+            value = GiantCropBlock.ModelPos.SEU;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 1, -1))) {
-            value = GiantCropBlock.ModelPos.IZ;
+        if(pos.equals(posToCompare.south().west())) {
+            value = GiantCropBlock.ModelPos.SWU;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 2, 0))) {
-            value = GiantCropBlock.ModelPos.Y;
+
+        posToCompare.below(2);
+        pos = pos.below(2);
+
+        if(pos.equals(posToCompare.north().east())) {
+            value = GiantCropBlock.ModelPos.NED;
         }
-        if(pos.equals(posToCompare.mutable().move(0, 0, 0))) {
-            value = GiantCropBlock.ModelPos.IY;
+        if(pos.equals(posToCompare.north().west())) {
+            value = GiantCropBlock.ModelPos.NWD;
+        }
+        if(pos.equals(posToCompare.south().east())) {
+            value = GiantCropBlock.ModelPos.SED;
+        }
+        if(pos.equals(posToCompare.south().west())) {
+            value = GiantCropBlock.ModelPos.SWD;
         }
 
         return value;

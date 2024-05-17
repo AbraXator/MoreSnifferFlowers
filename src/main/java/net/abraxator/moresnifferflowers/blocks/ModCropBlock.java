@@ -1,6 +1,10 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -43,7 +47,7 @@ public interface ModCropBlock extends IPlantable, BonemealableBlock {
     }
 
     default boolean mayPlaceOn(BlockState pState) {
-        return pState.is(Blocks.FARMLAND) || pState.getBlock() instanceof FarmBlock;
+        return pState.is(Blocks.FARMLAND) || pState.getBlock() instanceof FarmBlock || pState.is(TagKey.create(Registries.BLOCK, new ResourceLocation("supplementaries", "planters")));
     }
 
     default float getGrowthSpeed(Block pBlock, BlockGetter pLevel, BlockPos pPos) {

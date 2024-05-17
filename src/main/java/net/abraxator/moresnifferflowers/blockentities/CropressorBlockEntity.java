@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.blocks.BaseCropressorBlock;
+import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
@@ -42,7 +42,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
 
             if(progress >= MAX_PROGRESS && cropressingRecipeOptional.isPresent()) {
                 result = cropressingRecipeOptional.get().value().result();
-                Vec3 blockPos = getBlockPos().relative(getBlockState().getValue(BaseCropressorBlock.FACING).getOpposite()).getCenter();
+                Vec3 blockPos = getBlockPos().relative(getBlockState().getValue(CropressorBlockBase.FACING).getOpposite()).getCenter();
                 ItemEntity entity = new ItemEntity(level, blockPos.x, blockPos.y + 0.5, blockPos.z, result);
                 level.addFreshEntity(entity);
                 content = ItemStack.EMPTY;

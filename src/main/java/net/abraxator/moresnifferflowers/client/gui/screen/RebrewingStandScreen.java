@@ -47,7 +47,6 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         
         if(progress > 0) {
             int arrowScale = (int) Mth.lerp((float) progress / 100, 0, 27);
-            System.out.println(arrowScale);
             guiGraphics.blit(TEXTURE, x + 124, y + 18, 177, 1, 8, arrowScale);
 
             var bubbleFactor = BUBBLELENGTHS[progress / 2 % 7];
@@ -66,10 +65,8 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
             switch (hoveredSlot.index) {
                 case 0 -> optional = Optional.of(component("fuel", "Add Cropressed Nether Wart"));
                 case 1 -> optional = Optional.of(component("og_potion", "Add Extracted Potion"));
-                case 2 -> optional = Optional.of(component("ingredient", "Add Glowstone Dust or Redstone"));
-                case 3 -> optional = Optional.of(component("potion", "Add Water Bottle"));
-                case 4 -> optional = Optional.of(component("potion", "Add Water Bottle"));
-                case 5 -> optional = Optional.of(component("potion", "Add Water Bottle"));
+                case 2 -> optional = Optional.of(component("ingredient", "Add Ingredient"));
+                case 3, 5, 4 -> optional = Optional.of(component("potion", "Add Water Bottle"));
                 default -> {
                     return;
                 }

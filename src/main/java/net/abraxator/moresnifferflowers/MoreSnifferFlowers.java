@@ -32,6 +32,7 @@ public class MoreSnifferFlowers {
         ModParticles.PARTICLES.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        ModMobEffects.EFFECTS.register(modEventBus);
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {

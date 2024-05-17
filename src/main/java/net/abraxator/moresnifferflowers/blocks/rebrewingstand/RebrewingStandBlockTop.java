@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RebrewingStandBlockTop extends RebrewingStandBlockBase implements ModEntityBlock {
@@ -23,7 +24,6 @@ public class RebrewingStandBlockTop extends RebrewingStandBlockBase implements M
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        ENTITY_POS = pPos;
         return new RebrewingStandBlockEntity(pPos, pState);
     }
 

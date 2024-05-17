@@ -29,6 +29,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
@@ -36,9 +37,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class DyespriaItem extends Item implements Colorable {
+public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
-        super(pProperties);
+        super(ModBlocks.DYESPRIA_PLANT.get(), pProperties);
     }
 
     @Override
@@ -64,12 +65,17 @@ public class DyespriaItem extends Item implements Colorable {
                 ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             } else {
-                level.setBlockAndUpdate(blockPos.above(), ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3));
-                stack.setCount(-1);
+                var posForDyespria = blockPos.above();
+                var blockHitResult = new BlockHitResult(posForDyespria.getCenter(), pContext.getHorizontalDirection(), posForDyespria, false);
+                var useOnCtx = new UseOnContext(level, player, pContext.getHand(), stack, blockHitResult);
+                var result = super.useOn(useOnCtx);
+
                 if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
                     entity.dye = Dye.getDyeFromStack(stack);
                     entity.setChanged();
                 }
+
+                return result;
             }
         }
         

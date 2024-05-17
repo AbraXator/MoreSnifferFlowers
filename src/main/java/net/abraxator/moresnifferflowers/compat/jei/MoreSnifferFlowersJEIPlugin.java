@@ -2,10 +2,12 @@ package net.abraxator.moresnifferflowers.compat.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
 import net.abraxator.moresnifferflowers.compat.jei.cropressing.CropressingRecipeCategory;
 import net.abraxator.moresnifferflowers.compat.jei.rebrewing.JeiRebrewingRecipe;
 import net.abraxator.moresnifferflowers.compat.jei.rebrewing.RebrewingCategory;
@@ -38,6 +40,11 @@ public class MoreSnifferFlowersJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(ModItems.REBREWING_STAND.get().getDefaultInstance(), RebrewingCategory.REBREWING);
     }
 
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(RebrewingStandScreen.class, 123, 17, 9, 28, RebrewingCategory.REBREWING);
+    }
+    
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new CropressingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));

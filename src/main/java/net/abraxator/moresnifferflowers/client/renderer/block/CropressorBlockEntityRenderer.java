@@ -21,19 +21,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class CropressorBlockEntityRenderer implements BlockEntityRenderer<CropressorBlockEntity> {
     private static final Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/cropressor"));
-    private final ModelPart root;
-    private final ModelPart pistons;
-    private final ModelPart piston_1;
-    private final ModelPart piston_2;
-    private final ModelPart piston_3;
 
     public CropressorBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
         ModelPart modelPart = pContext.bakeLayer(ModModelLayerLocations.CROPRESSOR);
-        this.root = modelPart.getChild("root");
-        this.pistons = root.getChild("pistons");
-        this.piston_1 = pistons.getChild("piston_1");
-        this.piston_2 = pistons.getChild("piston_2");
-        this.piston_3 = pistons.getChild("piston_3");
     }
 
     @Override

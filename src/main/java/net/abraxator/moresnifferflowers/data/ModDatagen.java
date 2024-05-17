@@ -24,6 +24,10 @@ public class ModDatagen {
         var registries = event.getLookupProvider();
         var packOutput = generator.getPackOutput();
         var future = event.getLookupProvider();
+        
+        //BLOCKMODELS
+        generator.addProvider(event.includeClient(), new ModBlockModelGenerator(packOutput, existingFileHelper));
+        
         //DATAPACK REGISTRIES
         generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, future));
 

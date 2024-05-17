@@ -13,10 +13,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ModEntityDoubleTallBlock extends Block implements IModEntityDoubleTallBlock {
@@ -52,13 +54,9 @@ public abstract class ModEntityDoubleTallBlock extends Block implements IModEnti
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(!pState.is(pNewState.getBlock()) && isUpper(pState)) {
-            BlockEntity blockentity = pLevel.getBlockEntity(pPos);
-            if (blockentity instanceof Container) {
-                Containers.dropContents(pLevel, pPos, (Container)blockentity);
-                pLevel.updateNeighbourForOutputSignal(pPos, this);
-            }
+    public void onRemove(@NotNull BlockState pState, Level pLevel, BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+        if(isUpper(pState)) {
+            Containers.dropContentsOnDestroy(pState, pNewState, pLevel, pPos);
         }
 
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
