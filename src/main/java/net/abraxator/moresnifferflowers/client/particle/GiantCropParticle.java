@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 public class GiantCropParticle extends TextureSheetParticle {
     protected GiantCropParticle(ClientLevel pLevel, double pX, double pY, double pZ) {
         super(pLevel, pX, pY, pZ);
-        this.scale(15);
+        this.scale(5);
         this.setLifetime(50);
     }
 

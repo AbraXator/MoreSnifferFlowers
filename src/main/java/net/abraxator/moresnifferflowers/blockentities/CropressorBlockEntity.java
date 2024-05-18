@@ -32,16 +32,18 @@ public class CropressorBlockEntity extends ModBlockEntity {
 
     @Override
     public void tick(Level level) {
-        if(content.getCount() >= INV_SIZE) {
+        var container = new SimpleContainer(content);
+        var cropressingRecipeOptional = quickCheck.getRecipeFor(container, level);
+        
+        if(content.getCount() >= INV_SIZE && cropressingRecipeOptional.isPresent()) {
+            result = cropressingRecipeOptional.get().value().result();
             progress++;
-            var container = new SimpleContainer(content);
-            var cropressingRecipeOptional = quickCheck.getRecipeFor(container, level);
+            
             if(progress % 10 == 0) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
             }
 
-            if(progress >= MAX_PROGRESS && cropressingRecipeOptional.isPresent()) {
-                result = cropressingRecipeOptional.get().value().result();
+            if(progress >= MAX_PROGRESS) {
                 Vec3 blockPos = getBlockPos().relative(getBlockState().getValue(CropressorBlockBase.FACING).getOpposite()).getCenter();
                 ItemEntity entity = new ItemEntity(level, blockPos.x, blockPos.y + 0.5, blockPos.z, result);
                 level.addFreshEntity(entity);

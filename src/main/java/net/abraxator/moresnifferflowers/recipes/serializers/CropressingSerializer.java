@@ -28,7 +28,7 @@ public class CropressingSerializer implements RecipeSerializer<CropressingRecipe
 
     @Override
     public CropressingRecipe fromNetwork(FriendlyByteBuf pBuffer) {
-        return new CropressingRecipe(Ingredient.fromNetwork(pBuffer), pBuffer.readInt(), pBuffer.readItem());
+        return new CropressingRecipe(Ingredient.fromNetwork(pBuffer), pBuffer.readVarInt(), pBuffer.readItem());
     }
 
     @Override

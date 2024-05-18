@@ -33,12 +33,12 @@
    	"item.moresnifferflowers.rebrewing_stand": "Rebrewing Stand",
    	"item.moresnifferflowers.broken_rebrewing_stand": "Broken Rebrewing Stand",
 	"item.moresnifferflowers.cropressor": "Cropressor",
-	"item.moresnifferflowers.aroma_armor_trim_smithing_template": "Aroma Armor Trim",
-	"item.moresnifferflowers.nether_wart_armor_trim_smithing_template": "Nether Wart Armor Trim",
-	"item.moresnifferflowers.tater_armor_trim_smithing_template": "Tater Armor Trim",
-	"item.moresnifferflowers.carotene_armor_trim_smithing_template": "Carotene Armor Trim",
-	"item.moresnifferflowers.grain_armor_trim_smithing_template": "Grain Armor Trim",
-	"item.moresnifferflowers.beat_armor_trim_smithing_template": "Beat Armor Trim",
+	"item.moresnifferflowers.aroma_armor_trim_smithing_template": "Smithing Template",
+	"item.moresnifferflowers.nether_wart_armor_trim_smithing_template": "Nether Smithing Template",
+	"item.moresnifferflowers.tater_armor_trim_smithing_template": "Smithing Template",
+	"item.moresnifferflowers.carotene_armor_trim_smithing_template": "Smithing Template",
+	"item.moresnifferflowers.grain_armor_trim_smithing_template": "Smithing Template",
+	"item.moresnifferflowers.beat_armor_trim_smithing_template": "Smithing Template",
 
 
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",

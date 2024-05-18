@@ -24,8 +24,8 @@ public record JeiRebrewingRecipe(ItemStack extractedPotion, ItemStack rebrewedPo
 
         for (ItemStack item : ingredients) {
             BuiltInRegistries.MOB_EFFECT.stream().forEach(effect -> {
-                int duration = item.is(Items.GLOWSTONE_DUST) ? 12000 : 6000;
-                int amplifier = item.is(Items.REDSTONE) ? 2 : 1;
+                int duration = item.is(Items.REDSTONE) ? 12000 : 6000;
+                int amplifier = item.is(Items.GLOWSTONE_DUST) ? 2 : 1;
 
                 MobEffectInstance extractedEffect = new MobEffectInstance(effect, 1200, 0);
                 MobEffectInstance rebrewedEffect = new MobEffectInstance(effect, 1200 + duration, amplifier);

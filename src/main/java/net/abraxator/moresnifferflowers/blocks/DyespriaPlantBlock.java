@@ -66,7 +66,6 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
     }
-    
 
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
@@ -106,7 +105,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
         return canSurvive(pState, pLevel, pCurrentPos) ? pState : Blocks.AIR.defaultBlockState();
     }
-    
+
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         return mayPlaceOn(pLevel.getBlockState(pPos.below()));
@@ -145,12 +144,11 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
         makeGrowOnTick(this, pState, pLevel, pPos);
     }
 
-
     @Override
-    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
-        return !isMaxAge(blockState);
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
+        return !isMaxAge(pState);
     }
-    
+
     @Override
     public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState) {
         return true;
