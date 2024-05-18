@@ -125,14 +125,15 @@ public class ClientEvents {
         if(event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFile iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID).getFile();
             event.addRepositorySource(pOnLoad -> {
+                String name = "more_sniffer_flowers_rtx";
                 var pack = Pack.readMetaAndCreate(
-                        "more_sniffer_flowers_rtx",
+                        name,
                         Component.literal("More Sniffer Flowers RTX"),
                         false,
                         new Pack.ResourcesSupplier() {
                             @Override
                             public PackResources openPrimary(String pId) {
-                                return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/more_sniffer_flowers_rtx"), false);
+                                return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/" + name), false);
                             }
 
                             @Override
@@ -149,14 +150,15 @@ public class ClientEvents {
             });
 
             event.addRepositorySource(pOnLoad -> {
+                String name = "more_sniffer_flowers_boring";
                     var pack = Pack.readMetaAndCreate(
-                            "more_sniffer_flowers_vanilla_style_guis",
-                            Component.literal("More Sniffer Flowers Vanilla Style GUIs"),
+                            name,
+                            Component.literal("More Sniffer Flowers Boring"),
                             false,
                             new Pack.ResourcesSupplier() {
                                 @Override
                                 public PackResources openPrimary(String pId) {
-                                    return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/more_sniffer_flowers_vanilla_style_guis"), false);
+                                    return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/" + name), false);
                                 }
 
                                 @Override

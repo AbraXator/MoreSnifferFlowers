@@ -187,14 +187,14 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
             return 64;
         }
     }
-    
+
     static class PotionSlot extends Slot {
         public PotionSlot(Container pContainer, int pSlot, int pX, int pY) {
             super(pContainer, pSlot, pX, pY);
         }
 
         public static boolean mayPlaceItem(ItemStack itemStack) {
-            return itemStack.is(PotionUtils.setPotion(Items.POTION.getDefaultInstance(), Potions.WATER).getItem());
+            return itemStack.getOrCreateTag().getString("Potion").equals("minecraft:water");
         }
 
         @Override
@@ -204,8 +204,8 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
 
         public void onTake(Player pPlayer, ItemStack pStack) {
             Potion potion = PotionUtils.getPotion(pStack);
-            if (pPlayer instanceof ServerPlayer) {
-                CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, Holder.direct(potion));
+            if (pPlayer instanceof ServerPlayer && pStack.is(ModTags.ModItemTags.REBREWED_POTIONS)) {
+                CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, (Holder<Potion>) potion);
             }
 
             super.onTake(pPlayer, pStack);
