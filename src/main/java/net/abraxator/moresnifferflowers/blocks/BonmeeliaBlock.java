@@ -1,9 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import com.sun.jna.platform.win32.Variant;
-import net.abraxator.moresnifferflowers.blockentities.BonmeeliaBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -17,12 +14,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.NetherrackBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -32,11 +25,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.checkerframework.checker.units.qual.A;
-import org.jetbrains.annotations.Nullable;
-import org.openjdk.nashorn.internal.scripts.JO;
+import net.minecraft.world.ticks.ScheduledTick;
 
-public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCropBlock {
+public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);
     public static final BooleanProperty HAS_BOTTLE = BooleanProperty.create("bottle");
@@ -76,22 +67,21 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getMainHandItem();
-        BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-        
-        if (!(blockEntity instanceof BonmeeliaBlockEntity entity)) {
-            return InteractionResult.PASS;
-        }
 
         if (itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
             addBottle(pLevel, pPos, pState, itemStack);
         } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
             takeJarOfBonmeel(pLevel, pPos, pState, pPlayer);
         } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
-            entity.displayHint();
-            return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            hint(pLevel, pPos, pState);
         }
     
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+        pLevel.setBlock(pPos, pState.setValue(SHOW_HINT, false), 3);
     }
         
     private InteractionResult addBottle(Level level, BlockPos blockPos, BlockState blockState, ItemStack stack) {
@@ -103,6 +93,12 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
     private InteractionResult takeJarOfBonmeel(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         level.setBlock(blockPos, blockState.setValue(AGE, 0).setValue(HAS_BOTTLE, false), 3);
         popResource(level, blockPos, ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    private InteractionResult hint(Level level, BlockPos blockPos, BlockState blockState) {
+        level.setBlock(blockPos, blockState.setValue(SHOW_HINT, true), 3);
+        level.getBlockTicks().schedule(new ScheduledTick<>(this, blockPos, level.getGameTime() + 40, level.nextSubTickCount()));
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
     
@@ -133,22 +129,6 @@ public class BonmeeliaBlock extends BushBlock implements ModEntityBlock, ModCrop
                 }
             }   
         }
-    }
-    
-    public static void displayHint(Level level, BlockPos blockPos, BlockState blockState, boolean show) {
-        level.setBlock(blockPos, blockState.setValue(SHOW_HINT, show), 3);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return tickerHelper(pLevel);
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new BonmeeliaBlockEntity(pPos, pState);
     }
 
     @Override

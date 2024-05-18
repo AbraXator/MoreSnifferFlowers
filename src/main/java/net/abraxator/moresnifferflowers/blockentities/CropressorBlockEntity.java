@@ -32,11 +32,13 @@ public class CropressorBlockEntity extends ModBlockEntity {
 
     @Override
     public void tick(Level level) {
-        if(content.getCount() >= INV_SIZE) {
+        var container = new SimpleContainer(content);
+        var cropressingRecipeOptional = quickCheck.getRecipeFor(container, level);
+
+        if(content.getCount() >= INV_SIZE && cropressingRecipeOptional.isPresent()) {
+            result = cropressingRecipeOptional.get().result();
             progress++;
-            var container = new SimpleContainer(content);
-            var cropressingRecipe = quickCheck.getRecipeFor(container, level).get();
-            result = cropressingRecipe.assemble(container, level.registryAccess());
+
             if(progress % 10 == 0) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
             }

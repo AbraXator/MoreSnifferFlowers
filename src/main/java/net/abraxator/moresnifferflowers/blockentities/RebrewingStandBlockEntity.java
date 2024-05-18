@@ -193,8 +193,8 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         for (int i = 0; i < listTag.size(); i++) {
             var potion = listTag.getCompound(i);
             var id = potion.getString("forge:id");
-            var amp = potion.getByte("Amplifier") + (ingredient.is(Items.REDSTONE) ? 2 : defaultAmp);
-            var dur = potion.getInt("Duration") + (ingredient.is(Items.GLOWSTONE_DUST) ? 12000 : defaultDur);
+            var amp = potion.getByte("Amplifier") + (ingredient.is(Items.GLOWSTONE_DUST) ? 2 : defaultAmp);
+            var dur = potion.getInt("Duration") + (ingredient.is(Items.REDSTONE) ? 12000 : defaultDur);
             var splitId = id.split(":");
             var instance = new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(splitId[0], splitId[1])), dur, amp);
             

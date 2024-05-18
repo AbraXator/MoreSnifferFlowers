@@ -4,6 +4,8 @@ import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMenuTypes;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
@@ -196,7 +198,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
 
         public static boolean mayPlaceItem(ItemStack itemStack) {
-            return itemStack.is(PotionUtils.setPotion(Items.POTION.getDefaultInstance(), Potions.WATER).getItem());
+            return itemStack.getOrCreateTag().getString("Potion").equals("minecraft:water");
         }
 
         @Override
@@ -206,8 +208,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
 
         public void onTake(Player pPlayer, ItemStack pStack) {
             Potion potion = PotionUtils.getPotion(pStack);
-            if (pPlayer instanceof ServerPlayer) {
-                net.minecraftforge.event.ForgeEventFactory.onPlayerBrewedPotion(pPlayer, pStack);
+            if (pPlayer instanceof ServerPlayer && pStack.is(ModTags.ModItemTags.REBREWED_POTIONS)) {
                 CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, potion);
             }
 

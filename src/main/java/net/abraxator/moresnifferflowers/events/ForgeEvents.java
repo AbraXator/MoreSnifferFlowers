@@ -3,10 +3,7 @@ package net.abraxator.moresnifferflowers.events;
 import cpw.mods.jarhandling.impl.Jar;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
-import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModParticles;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -38,15 +35,16 @@ import java.util.List;
 public class ForgeEvents {
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        var item = event.getEntity().getItemInHand(event.getHand()).getItem();
-        var isItem = item instanceof JarOfBonmeelItem;
-        var isBlock = event.getLevel().getBlockState(event.getPos()).is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM);
-        
-        if(isItem && isBlock) {
+        var itemStack = event.getEntity().getItemInHand(event.getHand()).getItem().getDefaultInstance();
+        var block = event.getLevel().getBlockState(event.getPos());
+
+        if(itemStack.getItem() instanceof JarOfBonmeelItem && block.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) {
             var context = new UseOnContext(event.getLevel(), event.getEntity(), event.getHand(), event.getItemStack(), event.getHitVec());
             
             event.setCanceled(true);
-            ((JarOfBonmeelItem) item).useOn(context);
+            ((JarOfBonmeelItem) itemStack.getItem()).useOn(context);
+        } else if((itemStack.is(ModItems.REBREWED_POTION.get()) || itemStack.is(ModItems.EXTRACTED_BOTTLE.get())) && block.is(Blocks.DIRT)) {
+            event.setCanceled(true);
         }
     }
     
