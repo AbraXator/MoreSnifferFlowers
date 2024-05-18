@@ -130,10 +130,10 @@ public class ClientEvents {
             event.addRepositorySource(pOnLoad -> {
 
                 Pack customStyleGUI = Pack.readMetaAndCreate(
-                        MoreSnifferFlowers.loc("more_sniffer_flowers_vanilla_style_guis").toString(),
-                        Component.literal("Vanilla style GUIs More Sniffer Flowers"),
+                        MoreSnifferFlowers.loc("more_sniffer_flowers_boring").toString(),
+                        Component.literal("Boring More Sniffer Flowers"),
                         false,
-                        pId -> new PathPackResources(pId, modFile.findResource("resourcepacks/more_sniffer_flowers_vanilla_style_guis"), true),
+                        pId -> new PathPackResources(pId, modFile.findResource("resourcepacks/more_sniffer_flowers_boring"), true),
                         PackType.CLIENT_RESOURCES,
                         Pack.Position.TOP,
                         PackSource.BUILT_IN);
