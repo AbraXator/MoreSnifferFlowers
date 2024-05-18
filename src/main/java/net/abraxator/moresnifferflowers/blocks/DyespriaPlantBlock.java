@@ -7,10 +7,13 @@ import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
@@ -34,6 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -88,7 +92,16 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
 
                 return InteractionResult.sidedSuccess(pLevel.isClientSide());
             } else if (item.is(Items.SHEARS) && !pState.getValue(ModStateProperties.SHEARED)) {
+                if (pPlayer instanceof ServerPlayer) {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)pPlayer, pPos, pPlayer.getItemInHand(pHand));
+                }
+
+                pLevel.playSound(pPlayer, pPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 1.0F);
                 pLevel.setBlockAndUpdate(pPos, pState.setValue(ModStateProperties.SHEARED, true));
+                pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, pLevel.getBlockState(pPos)));
+                pPlayer.getItemInHand(pHand).hurtAndBreak(1, pPlayer, (p_186374_) -> {
+                    p_186374_.broadcastBreakEvent(pHand);
+                });
 
                 return InteractionResult.SUCCESS;
             } else if (!entity.dye.isEmpty() && item.isEmpty()) {
