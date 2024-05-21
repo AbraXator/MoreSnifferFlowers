@@ -10,6 +10,7 @@ import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -42,7 +43,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
         super(ModBlocks.DYESPRIA_PLANT.get(), pProperties);
     }
-
+    
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         Player player = pContext.getPlayer();
@@ -67,7 +68,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
             var posForDyespria = blockPos.above();
-            var blockHitResult = new BlockHitResult(posForDyespria.getCenter(), pContext.getHorizontalDirection(), posForDyespria, false);
+            var blockHitResult = new BlockHitResult(posForDyespria.below().getCenter(), Direction.UP, posForDyespria.below(), false);
             var useOnCtx = new UseOnContext(level, player, pContext.getHand(), stack, blockHitResult);
             var result = super.useOn(useOnCtx);
 

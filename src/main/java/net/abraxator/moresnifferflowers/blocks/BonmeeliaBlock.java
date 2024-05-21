@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -74,13 +73,13 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getMainHandItem();
-
+        
         if (itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
-            addBottle(pLevel, pPos, pState, itemStack);
+            return addBottle(pLevel, pPos, pState, itemStack);
         } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
-            takeJarOfBonmeel(pLevel, pPos, pState, pPlayer);
+            return takeJarOfBonmeel(pLevel, pPos, pState);
         } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
-            hint(pLevel, pPos, pState);
+            return hint(pLevel, pPos, pState);
         }
 
         return InteractionResult.PASS;
@@ -97,7 +96,7 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    private InteractionResult takeJarOfBonmeel(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+    private InteractionResult takeJarOfBonmeel(Level level, BlockPos blockPos, BlockState blockState) {
         level.setBlock(blockPos, blockState.setValue(AGE, 3).setValue(HAS_BOTTLE, false), 3);
         popResource(level, blockPos, ModItems.JAR_OF_BONMEEL.get().getDefaultInstance());
         return InteractionResult.sidedSuccess(level.isClientSide());
