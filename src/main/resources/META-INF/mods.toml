@@ -18,12 +18,12 @@ description='''Sniffer Flowers, but there's More of them and they actually do so
 [[dependencies.moresnifferflowers]]
     modId="neoforge"
     type="required"
-    versionRange="[20.4,)"
+    versionRange="[1.20.6]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.moresnifferflowers]]
     modId="minecraft"
     type="required"
-    versionRange="[1.20.4]"
+    versionRange="[1.20.6]"
     ordering="NONE"
     side="BOTH"

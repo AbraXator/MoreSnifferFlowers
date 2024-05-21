@@ -27,7 +27,11 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+}
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
@@ -89,9 +93,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation("net.neoforged:neoforge:${neoforge_version}")
-    compileOnly("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    compileOnly("mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}")
-    runtimeOnly("mezz.jei:jei-${mc_version}-neoforge:${jei_version}")
+    //compileOnly("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
+    //compileOnly("mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"  )
+    //runtimeOnly("mezz.jei:jei-${mc_version}-neoforge:${jei_version}")
 }
 
 /*mixin {
