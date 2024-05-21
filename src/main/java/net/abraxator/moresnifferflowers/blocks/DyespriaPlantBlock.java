@@ -96,8 +96,8 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
                     CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)pPlayer, pPos, pPlayer.getItemInHand(pHand));
                 }
 
-                pLevel.playSound(pPlayer, pPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 1.0F);
                 pLevel.setBlockAndUpdate(pPos, pState.setValue(ModStateProperties.SHEARED, true));
+                pLevel.playSound(null, pPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
                 pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, pLevel.getBlockState(pPos)));
                 pPlayer.getItemInHand(pHand).hurtAndBreak(1, pPlayer, (p_186374_) -> {
                     p_186374_.broadcastBreakEvent(pHand);

@@ -113,7 +113,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
         }
     }
 
-    void grow(ServerLevel pLevel, BlockState pState, BlockPos pPos, int i) {
+    public void grow(ServerLevel pLevel, BlockState pState, BlockPos pPos, int i) {
         int k = Math.min(getAge(pState) + i, getMaxAge());
         if(this.canGrow(pLevel, pPos, pState, k)) {
             pLevel.setBlock(pPos, pState.setValue(getAgeProperty(), k), 2);
@@ -121,7 +121,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
                 pLevel.setBlock(pPos.above(), ModBlocks.AMBUSH_TOP.get().defaultBlockState().setValue(getAgeProperty(), k), 3);
             }
 
-            if(ENTITY_POS != null && pLevel.getBlockEntity(ENTITY_POS) instanceof AmbushBlockEntity entity) {
+            if(pLevel.getBlockEntity(getLowerHalf(pLevel, pPos, pState).blockPos().above()) instanceof AmbushBlockEntity entity) {
                 entity.growProgress = 0;
             }
         }
@@ -129,10 +129,10 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(ENTITY_POS != null && pLevel.getBlockEntity(ENTITY_POS) instanceof AmbushBlockEntity entity && entity.hasGrown) {
+        if(pLevel.getBlockEntity(getLowerHalf(pLevel, pPos, pState).blockPos().above()) instanceof AmbushBlockEntity entity && entity.hasGrown) {
             var lowerPos = isLower(pState) ? pPos : pPos.below();
             popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
-            
+
             for(int i = 0; i <= 1; i++) {
                 var halfPos = i == 0 ? lowerPos : lowerPos.above();
                 var state = pLevel.getBlockState(halfPos).setValue(getAgeProperty(), 7);

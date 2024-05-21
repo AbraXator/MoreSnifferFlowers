@@ -84,19 +84,17 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
 
-        if(pLevel.isClientSide()) return InteractionResult.PASS;
-
-        if(itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
-            return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
-        } else if(itemStack.is(Items.BONE_MEAL)) {
-            performBonemeal(((ServerLevel) pLevel), pLevel.getRandom(), pPos, pState);
-        } else if(this.isMaxAge(pState)) {
-            return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
-        } else if(pState.getValue(AGE) == 3) {
-            return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
+        if(!itemStack.is(Items.BONE_MEAL)) {
+            if (itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
+                return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
+            } else if (this.isMaxAge(pState)) {
+                return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
+            } else if (pState.getValue(AGE) == 3) {
+                return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
+            }
         }
 
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return InteractionResult.PASS;
     }
 
     private InteractionResult shearAction(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
