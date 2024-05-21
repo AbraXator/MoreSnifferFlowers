@@ -3,16 +3,19 @@ package net.abraxator.moresnifferflowers.data.recipe;
 import net.abraxator.moresnifferflowers.data.recipe.builder.CropressingRecipeBuilder;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 
+import java.util.concurrent.CompletableFuture;
+
 public class ModCustomRecipeProvider extends RecipeProvider {
 
-    public ModCustomRecipeProvider(PackOutput pOutput) {
-        super(pOutput);
+    public ModCustomRecipeProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> future) {
+        super(pOutput, future);
     }
 
     @Override

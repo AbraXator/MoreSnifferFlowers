@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.entities.Bobling;
 import net.abraxator.moresnifferflowers.entities.DragonflyProjectile;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +16,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MoreSnifferFlowers.MOD_ID);
 
-    public static final DeferredHolder<EntityType<?>, EntityType<Bobling>> BOBLING = buildNoEgg(MoreSnifferFlowers.loc("bobling"), makeBuilder(Bobling::new, MobCategory.CREATURE, 0.3F, 0.7F, 80, 3), false);
     public static final DeferredHolder<EntityType<?>, EntityType<DragonflyProjectile>> DRAGONFLY = buildNoEgg(MoreSnifferFlowers.loc("dragonfly"), makeBuilder(DragonflyProjectile::new, MobCategory.MISC, 0.3F, 0.7F, 80, 3), false);
 
     private static <E extends Entity> DeferredHolder<EntityType<?>, EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary) {

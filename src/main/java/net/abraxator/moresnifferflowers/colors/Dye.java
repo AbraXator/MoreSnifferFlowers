@@ -1,11 +1,23 @@
 package net.abraxator.moresnifferflowers.colors;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.abraxator.moresnifferflowers.init.ModDataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 
 public record Dye(DyeColor color, int amount) {
+    public static final Codec<Dye> CODEC = RecordCodecBuilder.create(
+            dyeInstance -> dyeInstance.group(
+                    Codec.INT.fieldOf("color").forGetter(Dye::colorId),
+                    Codec.INT.fieldOf("amount").forGetter(Dye::amount)
+            ).apply(dyeInstance, (colorId, amount) -> new Dye(colorFromId(colorId), amount))
+    );
+    
     public static final Dye EMPTY = new Dye(DyeColor.WHITE, 0);
     
     public boolean isEmpty() {
@@ -17,11 +29,7 @@ public record Dye(DyeColor color, int amount) {
     }
     
     public static Dye getDyeFromStack(ItemStack itemStack) {
-        CompoundTag tag = itemStack.getOrCreateTag();
-        int colorId = tag.getInt("color");
-        int amount = tag.getInt("amount");
-
-        return new Dye(DyeColor.byId(colorId), amount);
+        return itemStack.getOrDefault(ModDataComponents.DYE, EMPTY);
     }
     
     public static ItemStack stackFromDye(Dye dye) {
@@ -40,17 +48,18 @@ public record Dye(DyeColor color, int amount) {
 
     public static void setDyeToStack(ItemStack stack, ItemStack dyeToInsert, int amount) {
         var dyeColor = dyeToInsert.getItem() instanceof DyeItem ? ((DyeItem) dyeToInsert.getItem()).getDyeColor() : DyeColor.WHITE;
-        
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putInt("color", dyeColor.getId());
-        tag.putInt("amount", amount);
-        stack.setTag(tag);
+        stack.set(ModDataComponents.DYE, new Dye(dyeColor, amount));
     }
     
     public static void setDyeColorToStack(ItemStack stack, DyeColor color, int amount) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putInt("color", color.getId());
-        tag.putInt("amount", amount);
-        stack.setTag(tag);
+        stack.set(ModDataComponents.DYE, new Dye(color, amount));
+    }
+    
+    public static DyeColor colorFromId(int id) {
+        return DyeColor.byId(id);
+    }
+    
+    public int colorId() {
+        return color.getId();
     }
 }

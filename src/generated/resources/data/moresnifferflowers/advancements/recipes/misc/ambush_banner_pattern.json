@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "moresnifferflowers:amber_shard"
-            ]
+            "items": "moresnifferflowers:amber_shard"
           }
         ]
       },

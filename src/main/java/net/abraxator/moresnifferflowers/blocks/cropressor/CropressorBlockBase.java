@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -123,17 +124,18 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         ENTITY_POS = PART == Part.OUT ? pPos : getEntityPos(pLevel, pPos);
+        
         if (!pLevel.isClientSide && pLevel.getBlockEntity(ENTITY_POS) instanceof CropressorBlockEntity entity && entity.canInteract() && pPlayer.getMainHandItem().is(ModTags.ModItemTags.CROPRESSABLE_CROPS)) {
             entity.addItem(pPlayer.getMainHandItem(), pLevel);
 
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-
-        return InteractionResult.FAIL;
+        
+        return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
-
+    
     private BlockPos getEntityPos(Level level, BlockPos blockPos) {
         if(PART == Part.OUT) {
             return blockPos;

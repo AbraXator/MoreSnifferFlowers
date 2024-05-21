@@ -4,6 +4,7 @@ import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -15,11 +16,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BottleOfExtractionItem extends Item {
     public BottleOfExtractionItem(Properties pProperties) {
@@ -55,9 +58,10 @@ public class BottleOfExtractionItem extends Item {
     }
 
     private ItemStack initPotion(Player player) {
-        ItemStack itemStack1 = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
-        PotionUtils.setCustomEffects(itemStack1, player.getActiveEffects());
-        return itemStack1;
+        var stack = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
+        var effects = player.getActiveEffects();
+        stack.set(DataComponents.POTION_CONTENTS, new PotionContents(Optional.empty(), Optional.of(PotionContents.getColor(effects)), new ArrayList<>(effects)));
+        return stack;
     }
     
     @Override
@@ -71,11 +75,12 @@ public class BottleOfExtractionItem extends Item {
     }
 
     private boolean canExtract(Level level, Player player) {
-        return !level.isClientSide && player.getActiveEffects() != null && !player.getActiveEffects().isEmpty() && !player.hasEffect(ModMobEffects.EXTRACTED.get());
+        return !level.isClientSide && player.getActiveEffects() != null && !player.getActiveEffects().isEmpty() && !player.hasEffect(ModMobEffects.EXTRACTED);
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         pTooltipComponents.add(Component.translatableWithFallback("bottle_of_extraction.tooltip.usage", "Drink to extract all effects into single potion").withStyle(ChatFormatting.GOLD));
     }
 }

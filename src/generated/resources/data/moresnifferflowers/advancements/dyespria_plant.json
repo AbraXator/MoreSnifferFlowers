@@ -10,7 +10,8 @@
       "translate": "advancements.more_sniffer_flowers.dyespria_plant.desc"
     },
     "icon": {
-      "item": "moresnifferflowers:dyespria"
+      "count": 1,
+      "id": "moresnifferflowers:dyespria"
     },
     "title": {
       "translate": "advancements.more_sniffer_flowers.dyespria_plant"

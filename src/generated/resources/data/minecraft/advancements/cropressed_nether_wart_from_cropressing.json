@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "moresnifferflowers:cropressor"
-            ]
+            "items": "moresnifferflowers:cropressor"
           }
         ]
       },

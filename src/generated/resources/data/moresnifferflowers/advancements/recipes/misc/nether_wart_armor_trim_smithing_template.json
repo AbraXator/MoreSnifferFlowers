@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "moresnifferflowers:nether_wart_armor_trim_smithing_template"
-            ]
+            "items": "moresnifferflowers:nether_wart_armor_trim_smithing_template"
           }
         ]
       },

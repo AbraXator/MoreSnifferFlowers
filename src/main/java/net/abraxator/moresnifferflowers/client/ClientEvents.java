@@ -1,13 +1,11 @@
 package net.abraxator.moresnifferflowers.client;
 
-import com.google.errorprone.annotations.Var;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.client.model.block.CropressorModel;
 import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
-import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.client.model.entity.DragonflyModel;
 import net.abraxator.moresnifferflowers.client.particle.AmbushParticle;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
@@ -17,33 +15,23 @@ import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityR
 import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforgespi.locating.IModFile;
 
-@Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
@@ -58,7 +46,6 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onEntityRenderersRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         //ENTITY
-        event.registerLayerDefinition(ModModelLayerLocations.BOBLING, BoblingModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayerLocations.DRAGONFLY, DragonflyModel::createBodyLayer);
         //BLOCK
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_CARROT, GiantCropModels::createGiantCarrotLayer);
@@ -71,7 +58,6 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.BOBLING.get(), BoblingRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.DRAGONFLY.get(), DragonflyRenderer::new);
     }
 
@@ -115,12 +101,12 @@ public class ClientEvents {
             }
         }, ModItems.DYESPRIA.get());
         event.register((pStack, pTintIndex) -> {
-            return pTintIndex > 0 ? -1 : PotionUtils.getColor(pStack);
+            return pTintIndex > 0 ? -1 : pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor();
         }, ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get(), ModItems.REBREWED_SPLASH_POTION.get(), ModItems.REBREWED_LINGERING_POTION.get());
     }
 
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
         if(event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFile iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID).getFile();
@@ -174,5 +160,5 @@ public class ClientEvents {
                     }
             });
         }
-    }
+    }*/
 }

@@ -19,8 +19,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class ModRecipesProvider extends RecipeProvider {
-    public ModRecipesProvider(PackOutput pOutput) {
-        super(pOutput);
+    public ModRecipesProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> future) {
+        super(pOutput, future);
     }
 
     @Override

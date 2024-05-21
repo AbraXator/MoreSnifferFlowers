@@ -11,7 +11,8 @@
       "translate": "advancements.more_sniffer_flowers.any_seed.desc"
     },
     "icon": {
-      "item": "minecraft:sniffer_egg"
+      "count": 1,
+      "id": "minecraft:sniffer_egg"
     },
     "title": {
       "translate": "advancements.more_sniffer_flowers.any_seed"

@@ -10,15 +10,19 @@ import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
@@ -128,7 +132,16 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(
+            ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult
+    ) {
+        return pStack.is(Items.BONE_MEAL)
+                ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION
+                : super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if(pLevel.getBlockEntity(getLowerHalf(pLevel, pPos, pState).blockPos().above()) instanceof AmbushBlockEntity entity && entity.hasGrown) {
             var lowerPos = isLower(pState) ? pPos : pPos.below();
             popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));

@@ -10,6 +10,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.slf4j.Logger;
 
 @Mod(MoreSnifferFlowers.MOD_ID)
@@ -33,6 +34,7 @@ public class MoreSnifferFlowers {
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         ModMobEffects.EFFECTS.register(modEventBus);
+        ModDataComponents.DATA_COMPONENTS.register(modEventBus);
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -58,5 +60,4 @@ public class MoreSnifferFlowers {
     public static String sLoc(String path) {
         return loc(path).toString();
     }
-
 }

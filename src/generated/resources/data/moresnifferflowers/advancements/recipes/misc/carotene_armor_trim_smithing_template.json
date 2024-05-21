@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "moresnifferflowers:carotene_armor_trim_smithing_template"
-            ]
+            "items": "moresnifferflowers:carotene_armor_trim_smithing_template"
           }
         ]
       },

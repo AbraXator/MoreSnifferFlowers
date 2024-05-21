@@ -9,13 +9,14 @@ import net.abraxator.moresnifferflowers.data.tag.ModBannerPatternTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModBlockTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModItemTagsProvider;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ModDatagen {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event){
@@ -32,18 +33,18 @@ public class ModDatagen {
         generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, future));
 
         //LOOT
-        generator.addProvider(event.includeServer(), new ModLoottableProvider(packOutput));
-        generator.addProvider(event.includeClient(), new ModLootModifierProvider(packOutput));
+        generator.addProvider(event.includeServer(), new ModLoottableProvider(packOutput, future));
+        generator.addProvider(event.includeClient(), new ModLootModifierProvider(packOutput, future));
 
         //TAGS
         var blockTagsProvider = generator.addProvider(event.includeServer(), new ModBlockTagsProvider(packOutput, registries, existingFileHelper));
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, future, blockTagsProvider.contentsGetter(), existingFileHelper));
-        generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, future, existingFileHelper));
+        //generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, future, existingFileHelper));
 
         //ADVANCEMENTS
         generator.addProvider(event.includeServer(), new AdvancementProvider(packOutput, registries, existingFileHelper, List.of(new ModAdvancementGenerator())));
 
         //RECIPES
-        generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput));
+        generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput, future));
     }
 }

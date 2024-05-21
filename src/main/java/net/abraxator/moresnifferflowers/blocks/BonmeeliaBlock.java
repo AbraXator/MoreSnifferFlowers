@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -71,12 +72,19 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        ItemStack itemStack = pPlayer.getMainHandItem();
-        
-        if (itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
-            return addBottle(pLevel, pPos, pState, itemStack);
-        } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+        if(pStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
+            return addBottle(pLevel, pPos, pState, pStack);
+        } else if(pStack.is(Items.BONE_MEAL)) {
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        } 
+            
+        return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
             return takeJarOfBonmeel(pLevel, pPos, pState);
         } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
             return hint(pLevel, pPos, pState);
@@ -90,10 +98,13 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
         pLevel.setBlock(pPos, pState.setValue(SHOW_HINT, false), 3);
     }
     
-    private InteractionResult addBottle(Level level, BlockPos blockPos, BlockState blockState, ItemStack stack) {
-        level.setBlock(blockPos, blockState.setValue(HAS_BOTTLE, true), 3);
-        stack.shrink(1);
-        return InteractionResult.sidedSuccess(level.isClientSide());
+    private ItemInteractionResult addBottle(Level level, BlockPos blockPos, BlockState blockState, ItemStack stack) {
+        if(!level.isClientSide) {
+            level.setBlock(blockPos, blockState.setValue(HAS_BOTTLE, true), 3);
+            stack.shrink(1);
+        }
+
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     private InteractionResult takeJarOfBonmeel(Level level, BlockPos blockPos, BlockState blockState) {

@@ -5,22 +5,24 @@ import net.abraxator.moresnifferflowers.init.ModMenuTypes;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.EnchantedGoldenAppleItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+
+import java.util.stream.StreamSupport;
 
 public class RebrewingStandMenu extends AbstractContainerMenu {
     private final Container rebrewingStand;
@@ -194,7 +196,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
 
         public static boolean mayPlaceItem(ItemStack itemStack) {
-            return itemStack.getOrCreateTag().getString("Potion").equals("minecraft:water");
+            return itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
         }
 
         @Override
@@ -203,9 +205,11 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
 
         public void onTake(Player pPlayer, ItemStack pStack) {
-            Potion potion = PotionUtils.getPotion(pStack);
             if (pPlayer instanceof ServerPlayer && pStack.is(ModTags.ModItemTags.REBREWED_POTIONS)) {
-                CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, (Holder<Potion>) potion);
+                var potion = pStack.get(DataComponents.POTION_CONTENTS).potion();
+                potion.ifPresent(potionHolder -> {
+                    CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, potionHolder);
+                });
             }
 
             super.onTake(pPlayer, pStack);

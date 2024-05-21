@@ -1,8 +1,15 @@
 package net.abraxator.moresnifferflowers.recipes;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.init.ModRecipeSerializers;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +20,14 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 public record CropressingRecipe(Ingredient ingredient, int count, ItemStack result) implements Recipe<Container> {
+    public static final MapCodec<CropressingRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> {
+        return builder.group(
+                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CropressingRecipe::ingredient),
+                Codec.INT.fieldOf("count").forGetter(CropressingRecipe::count),
+                ItemStack.CODEC.fieldOf("result").forGetter(CropressingRecipe::result)
+        ).apply(builder, CropressingRecipe::new);
+    });
+    
     @Override
     public boolean matches(Container pContainer, Level pLevel) {
         ItemStack itemStack = pContainer.getItem(0);
@@ -20,7 +35,7 @@ public record CropressingRecipe(Ingredient ingredient, int count, ItemStack resu
     }
 
     @Override
-    public ItemStack assemble(Container p_44001_, RegistryAccess p_267165_) {
+    public ItemStack assemble(Container pCraftingContainer, HolderLookup.Provider pRegistries) {
         return this.result.copy();
     }
 
@@ -30,7 +45,7 @@ public record CropressingRecipe(Ingredient ingredient, int count, ItemStack resu
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess p_267052_) {
+    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
         return this.result;
     }
 

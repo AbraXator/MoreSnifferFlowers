@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "moresnifferflowers:cropressed_crops"
+            "items": "#moresnifferflowers:cropressed_crops"
           }
         ]
       },
@@ -18,7 +18,8 @@
       "translate": "advancements.more_sniffer_flowers.cropressor.desc"
     },
     "icon": {
-      "item": "moresnifferflowers:cropressed_beetroot"
+      "count": 1,
+      "id": "moresnifferflowers:cropressed_beetroot"
     },
     "title": {
       "fallback": "Compressing with extra steps",

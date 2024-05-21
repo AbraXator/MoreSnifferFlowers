@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -42,9 +43,9 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+        CompoundTag tag = super.getUpdateTag(pRegistries);
+        saveAdditional(tag, pRegistries);
         return tag;
     }
 
@@ -58,17 +59,17 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
         this.hasGrown = false;
         //level.setBlock(blockPos, state.setValue(AmbushBlock.AGE, 7), 3);
     }
-    
+
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
         this.hasGrown = pTag.getBoolean("hasGrown");
         this.growProgress = pTag.getFloat("progress");
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
         pTag.putBoolean("hasGrown", this.hasGrown);
         pTag.putFloat("progress", this.growProgress);
     }

@@ -4,6 +4,7 @@ import net.abraxator.moresnifferflowers.colors.Colorable;
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -57,23 +58,24 @@ public class ColoredBlockEntity extends ModBlockEntity implements Colorable {
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
         dye = Dye.EMPTY;
         this.dye = new Dye(DyeColor.byId(pTag.getInt("dyeId")), pTag.getInt("amount"));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
         pTag.putInt("dyeId", dye.color().getId());
         pTag.putInt("amount", dye.amount());
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+        super.getUpdateTag(pRegistries);
+        CompoundTag tag = super.getUpdateTag(pRegistries);
+        saveAdditional(tag, pRegistries);
         return tag;
     }
 

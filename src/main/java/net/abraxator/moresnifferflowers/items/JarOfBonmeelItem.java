@@ -136,11 +136,9 @@ public class JarOfBonmeelItem extends Item {
         return value;
     }
 
-
-
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         pTooltipComponents.add(Component.translatableWithFallback("tooltip.jar_of_bonmeel.usage", "Can be applied to a 3x3 grid of the following crops: carrot, potato, wheat, beetroot and nether wart").withStyle(ChatFormatting.GOLD));
     }
 }

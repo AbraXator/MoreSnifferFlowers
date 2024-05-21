@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "moresnifferflowers:cropressor_pieces"
+            "items": "#moresnifferflowers:cropressor_pieces"
           }
         ]
       },

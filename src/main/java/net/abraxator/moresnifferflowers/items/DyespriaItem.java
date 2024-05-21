@@ -161,7 +161,8 @@ public class DyespriaItem extends BlockItem implements Colorable {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         Dye dye = Dye.getDyeFromStack(pStack);
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
 

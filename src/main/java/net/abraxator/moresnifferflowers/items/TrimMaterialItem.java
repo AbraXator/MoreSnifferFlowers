@@ -16,8 +16,8 @@ public class TrimMaterialItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         pTooltipComponents.add(Component.translatableWithFallback("tooltip.trim_material_item.usage", "Can be used as an armor trim material").withStyle(ChatFormatting.GOLD));
     }
 }

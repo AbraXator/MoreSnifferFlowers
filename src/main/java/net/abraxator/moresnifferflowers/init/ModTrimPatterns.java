@@ -4,7 +4,7 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -20,7 +20,7 @@ public class ModTrimPatterns {
 
 
 
-    public static void bootstrap(BootstapContext<TrimPattern> context) {
+    public static void bootstrap(BootstrapContext<TrimPattern> context) {
         register(context, ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get(), AROMA);
         register(context, ModItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), NETHER_WART);
         register(context, ModItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE.get(), TATER);
@@ -29,7 +29,7 @@ public class ModTrimPatterns {
         register(context, ModItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get(), BEAT);
     }
 
-    private static void register(BootstapContext<TrimPattern> context, Item item, ResourceKey<TrimPattern> key) {
+    private static void register(BootstrapContext<TrimPattern> context, Item item, ResourceKey<TrimPattern> key) {
         TrimPattern trimPattern = new TrimPattern(key.location(), BuiltInRegistries.ITEM.wrapAsHolder(item), Component.translatable(Util.makeDescriptionId("trim_pattern", key.location())), false);
         context.register(key, trimPattern);
     }

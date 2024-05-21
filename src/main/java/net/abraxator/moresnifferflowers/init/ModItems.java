@@ -6,8 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -20,7 +18,7 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = 
             DeferredRegister.createItems(MoreSnifferFlowers.MOD_ID);
     public static final DeferredItem<Item> DAWNBERRY_VINE_SEEDS = ITEMS.register("dawnberry_vine_seeds", () -> new ItemNameBlockItem(ModBlocks.DAWNBERRY_VINE.get(), new Item.Properties()));
-    public static final DeferredItem<Item> DAWNBERRY = ITEMS.register("dawnberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.6F).fast().build())));
+    public static final DeferredItem<Item> DAWNBERRY = ITEMS.register("dawnberry", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6F).fast().build())));
 
     public static final DeferredItem<Item> AMBUSH_SEEDS = ITEMS.register("ambush_seeds", () -> new ItemNameBlockItem(ModBlocks.AMBUSH_BOTTOM.get(), new Item.Properties()));
     public static final DeferredItem<Item> AMBUSH_BANNER_PATTERN = ITEMS.register("ambush_banner_pattern", () -> new BannerPatternItem(ModTags.ModBannerPatternTags.AMBUSH_BANNER_PATTERN, new Item.Properties().stacksTo(1)));
@@ -30,9 +28,9 @@ public class ModItems {
     public static final DeferredItem<Item> DYESPRIA = ITEMS.register("dyespria", () -> new DyespriaItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<Item> DYESPRIA_SEEDS = ITEMS.register("dyespria_seeds", () -> new ItemNameBlockItem(ModBlocks.DYESPRIA_PLANT.get(), new Item.Properties()) {
         @Override
-        public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-            super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-            pTooltip.add(Component.translatableWithFallback("dyespria_seeds.tooltip", "Use shears to hide the dye item").withStyle(ChatFormatting.GOLD));
+        public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+            super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
+            pTooltipComponents.add(Component.translatableWithFallback("dyespria_seeds.tooltip", "Use shears to hide the dye item").withStyle(ChatFormatting.GOLD));
         }
     });
 
@@ -51,8 +49,8 @@ public class ModItems {
     public static final DeferredItem<Item> EXTRACTION_BOTTLE = ITEMS.register("extraction_bottle", () -> new BottleOfExtractionItem(new Item.Properties().stacksTo(1)));
     public static final DeferredItem<Item> EXTRACTED_BOTTLE = ITEMS.register("extracted_bottle", () -> new PotionItem(new Item.Properties().stacksTo(1)) {
         @Override
-        public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<net.minecraft.network.chat.Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-            super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
+            super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
             pTooltipComponents.add(Component.translatableWithFallback("tooltip.extracted_bottle.obtain", "Obtainable using Bottle o' Extraction").withStyle(ChatFormatting.GOLD));
         }
     });

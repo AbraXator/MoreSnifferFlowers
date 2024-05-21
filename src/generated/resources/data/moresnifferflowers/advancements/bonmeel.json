@@ -11,7 +11,8 @@
       "translate": "advancements.more_sniffer_flowers.bonmeel.desc"
     },
     "icon": {
-      "item": "moresnifferflowers:jar_of_bonmeel"
+      "count": 1,
+      "id": "moresnifferflowers:jar_of_bonmeel"
     },
     "title": {
       "fallback": "Let It Grow!",

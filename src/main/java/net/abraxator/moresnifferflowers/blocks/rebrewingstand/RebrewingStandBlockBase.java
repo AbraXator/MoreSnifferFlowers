@@ -54,7 +54,7 @@ public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if (pLevel.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -62,7 +62,7 @@ public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
             if(pLevel.getBlockState(pPos).is(ModBlocks.REBREWING_STAND_BOTTOM.get())) {
                 blockPos = blockPos.above();
             }
-            
+
             BlockEntity entity = pLevel.getBlockEntity(blockPos);
             if (entity instanceof RebrewingStandBlockEntity) {
                 pPlayer.openMenu((RebrewingStandBlockEntity) entity);

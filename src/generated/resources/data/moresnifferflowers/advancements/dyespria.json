@@ -10,7 +10,8 @@
       "translate": "advancements.more_sniffer_flowers.dyespria.desc"
     },
     "icon": {
-      "item": "moresnifferflowers:caulorflower"
+      "count": 1,
+      "id": "moresnifferflowers:caulorflower"
     },
     "title": {
       "translate": "advancements.more_sniffer_flowers.dyespria"

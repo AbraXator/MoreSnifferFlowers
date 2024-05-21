@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "moresnifferflowers:belt_piece"
-            ]
+            "items": "moresnifferflowers:belt_piece"
           }
         ]
       },

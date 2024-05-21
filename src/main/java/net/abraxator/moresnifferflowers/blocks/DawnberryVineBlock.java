@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -80,34 +83,30 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     }
 
     @Override
-    @SuppressWarnings("deprecated")
-    public @NotNull InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+        if(pStack.is(Items.SHEARS) && !(getAge(pState) >= 4)) {
+            return shearAction(pState, pLevel, pPos, pPlayer, pHand, pStack);
+        } else if(pStack.is(Items.BONE_MEAL)) {
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        }
+        
+        return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
+    }
 
-        if(!itemStack.is(Items.BONE_MEAL)) {
-            if (itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
-                return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
-            } else if (this.isMaxAge(pState)) {
-                return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
-            } else if (pState.getValue(AGE) == 3) {
-                return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
-            }
+    @Override
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (this.isMaxAge(pState)) {
+            return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
+        } else if (pState.getValue(AGE) == 3) {
+            return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
         }
 
         return InteractionResult.PASS;
     }
 
-    private InteractionResult shearAction(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        if(player instanceof ServerPlayer serverPlayer) {
-            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
-        }
-
-        level.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS);
-        BlockState state = blockState.setValue(IS_SHEARED, !blockState.getValue(IS_SHEARED));
-        level.setBlockAndUpdate(pos, state);
-        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
-        stack.hurtAndBreak(1, player, o -> o.broadcastBreakEvent(hand));
-        return InteractionResult.sidedSuccess(level.isClientSide);
+    private ItemInteractionResult shearAction(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        shear(player, level, pos, blockState, hand);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     private InteractionResult dropMaxAgeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
