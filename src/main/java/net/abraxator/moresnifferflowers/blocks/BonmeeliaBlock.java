@@ -69,11 +69,11 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
         ItemStack itemStack = pPlayer.getMainHandItem();
 
         if (itemStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
-            addBottle(pLevel, pPos, pState, itemStack);
+            return addBottle(pLevel, pPos, pState, itemStack);
         } else if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
-            takeJarOfBonmeel(pLevel, pPos, pState, pPlayer);
+            return takeJarOfBonmeel(pLevel, pPos, pState, pPlayer);
         } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
-            hint(pLevel, pPos, pState);
+            return hint(pLevel, pPos, pState);
         }
     
         return InteractionResult.PASS;

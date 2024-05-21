@@ -10,6 +10,7 @@ import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -68,14 +69,8 @@ public class DyespriaItem extends BlockItem implements Colorable {
             ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
-                /*var dyespriaPlant = ModBlocks.DYESPRIA_PLANT.get().defaultBlockState().setValue(ModStateProperties.AGE_3, 3);
-                if(dyespriaPlant.canSurvive(level, posForDyespria)) {
-                    level.setBlockAndUpdate(posForDyespria, dyespriaPlant);
-                    level.updateNeighborsAt(posForDyespria, dyespriaPlant.getBlock());
-                }
-                stack.setCount(-1);*/
             var posForDyespria = blockPos.above();
-            var blockHitResult = new BlockHitResult(posForDyespria.getCenter(), pContext.getHorizontalDirection(), posForDyespria, false);
+            var blockHitResult = new BlockHitResult(posForDyespria.below().getCenter(), Direction.UP, posForDyespria.below(), false);
             var useOnCtx = new UseOnContext(level, player, pContext.getHand(), stack, blockHitResult);
             var result = super.useOn(useOnCtx);
             
