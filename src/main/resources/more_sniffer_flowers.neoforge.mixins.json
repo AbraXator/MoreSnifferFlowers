@@ -8,6 +8,7 @@
     "FarmBlockMixin",
     "SpriteResourceLoaderMixin",
     "AgeableMobMixin",
+    "ThrownPotionMixin",
     "SnifferEggMixin"
   ],
   "client": [

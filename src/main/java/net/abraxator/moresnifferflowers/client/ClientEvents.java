@@ -153,7 +153,7 @@ public class ClientEvents {
                 String name = "more_sniffer_flowers_boring";
                     var pack = Pack.readMetaAndCreate(
                             name,
-                            Component.literal("More Sniffer Flowers Boring"),
+                            Component.literal("Boring More Sniffer Flowers"),
                             false,
                             new Pack.ResourcesSupplier() {
                                 @Override
