@@ -115,5 +115,8 @@
 
 	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
 
-	"entity.moresnifferflowers.dragonfly": "Dragonfly"
+	"entity.moresnifferflowers.dragonfly": "Dragonfly",
+
+	"sound.moresnifferflowers.block.cropressor.belt": "Cropressor Belt",
+	"sound.moresnifferflowers.item.dyespria.paint": "Dyespria Paint"
 }

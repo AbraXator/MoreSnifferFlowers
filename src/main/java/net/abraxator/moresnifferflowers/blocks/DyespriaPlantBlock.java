@@ -112,7 +112,8 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
             dye.setCount(-1);
             player.addItem(entity.add(null, entity.dye, stack));
         }
-
+        
+        level.playSound(null, entity.getBlockPos(), SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
         return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 

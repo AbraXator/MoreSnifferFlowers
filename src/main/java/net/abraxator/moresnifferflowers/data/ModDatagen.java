@@ -5,12 +5,10 @@ import net.abraxator.moresnifferflowers.data.advancement.ModAdvancementGenerator
 import net.abraxator.moresnifferflowers.data.loot.ModLootModifierProvider;
 import net.abraxator.moresnifferflowers.data.loot.ModLoottableProvider;
 import net.abraxator.moresnifferflowers.data.recipe.ModRecipesProvider;
-import net.abraxator.moresnifferflowers.data.tag.ModBannerPatternTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModBlockTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModItemTagsProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -29,6 +27,9 @@ public class ModDatagen {
         //BLOCKMODELS
         generator.addProvider(event.includeClient(), new ModBlockModelGenerator(packOutput, existingFileHelper));
         
+        //SOUNDS
+        generator.addProvider(event.includeClient(), new ModSoundProvider(packOutput, existingFileHelper));
+        
         //DATAPACK REGISTRIES
         generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, future));
 
@@ -46,5 +47,8 @@ public class ModDatagen {
 
         //RECIPES
         generator.addProvider(event.includeServer(), new ModRecipesProvider(packOutput, future));
+        
+        //LANG
+        //generator.addProvider(event.includeClient(), new ModLangProvider(packOutput));
     }
 }
