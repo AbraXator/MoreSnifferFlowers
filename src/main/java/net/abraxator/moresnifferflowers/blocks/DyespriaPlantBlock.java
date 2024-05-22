@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
+import net.abraxator.moresnifferflowers.init.ModDataComponents;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -40,6 +41,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -173,6 +175,17 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     @Override
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
         makeGrowOnBonemeal(pLevel, pPos, pState);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        if(player.isShiftKeyDown() && isMaxAge(state) && level.getBlockEntity(pos) instanceof DyespriaPlantBlockEntity entity) {
+            var stack =  ModItems.DYESPRIA.toStack();
+            stack.set(ModDataComponents.DYE, entity.dye);
+            return stack;
+        }
+        
+        return ModItems.DYESPRIA_SEEDS.toStack();
     }
 
     @Nullable

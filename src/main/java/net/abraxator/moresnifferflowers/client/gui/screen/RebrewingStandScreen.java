@@ -2,12 +2,15 @@ package net.abraxator.moresnifferflowers.client.gui.screen;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import org.apache.commons.io.output.ThresholdingOutputStream;
 
 import java.util.Optional;
 
@@ -31,7 +34,7 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
     }
     
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float p_97788_, int p_97789_, int p_97790_) {
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         int fuel = menu.getFuel();
@@ -39,6 +42,14 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         int renderFuel;
 
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        if(menu.getCost() <= 16 && menu.getCost() != 0) {
+            var cost = String.valueOf(menu.getCost());
+            var color = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(packResources -> packResources.packId().equals("more_sniffer_flowers_boring")) ? 0x00373737 : 0x00af3941;
+            this.font.drawInBatch(cost, x + 42 - this.font.width(cost) / 2, y + 48, color, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.POLYGON_OFFSET, 0, 15728880, this.font.isBidirectional());
+            //guiGraphics.drawString(this.font, String.valueOf(menu.getCost()), x + 35, y + 47, color);
+        } else {
+            guiGraphics.blit(TEXTURE, x + 35, y + 47, 198, 1, 13, 9);
+        }
         
         if(fuel > 0) { 
             renderFuel = fuel == 1 ? 2 : fuel == 16 ? 18 : fuel + 1;
