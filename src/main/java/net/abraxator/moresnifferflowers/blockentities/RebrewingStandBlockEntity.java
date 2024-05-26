@@ -107,7 +107,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     
         if(!ogPotionStack.isEmpty()) {
             var potionContent = getPotionContents(ogPotionStack, ingredientStack);
-            this.cost = 4 + ((potionContent.getB().size() - 2)) * 2;
+            this.cost = potionContent != null ? 4 + ((potionContent.getB().size() - 2)) * 2 : 17;
             
             if(canBrew()) {
                 brewProgress++;

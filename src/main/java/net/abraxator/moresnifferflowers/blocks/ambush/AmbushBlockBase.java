@@ -145,6 +145,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
         if(pLevel.getBlockEntity(getLowerHalf(pLevel, pPos, pState).blockPos().above()) instanceof AmbushBlockEntity entity && entity.hasGrown) {
             var lowerPos = isLower(pState) ? pPos : pPos.below();
             popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
+            pLevel.playSound((Player)null, pPos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
 
             for(int i = 0; i <= 1; i++) {
                 var halfPos = i == 0 ? lowerPos : lowerPos.above();

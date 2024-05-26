@@ -4,6 +4,7 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.recipes.RebrewedTippedArrowRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -82,6 +83,8 @@ public class ModRecipesProvider extends RecipeProvider {
         partsRecycling(pRecipeOutput, ModItems.PRESS_PIECE.get(), Items.NETHERITE_SCRAP, 1);
         partsRecycling(pRecipeOutput, ModItems.BROKEN_REBREWING_STAND.get(), ModItems.CROPRESSED_NETHERWART.get(), 4);
 
+        SpecialRecipeBuilder.special(RebrewedTippedArrowRecipe::new).save(pRecipeOutput, "rebrewed_tipped_arrow");
+        
         ModCustomRecipeProvider.createRecipes(pRecipeOutput);
     }
 

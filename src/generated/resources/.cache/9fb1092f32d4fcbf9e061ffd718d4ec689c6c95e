@@ -1,4 +1,4 @@
-// 1.20.6	2024-05-21T23:23:13.4196189	Recipes
+// 1.20.6	2024-05-25T19:27:09.553958	Recipes
 5c4e316fac174e686ab6c8b8b95d586de669062d data/minecraft/advancements/cropressed_beetroot_from_cropressing.json
 a37281f3e2dbdb906650d1df1f694cb2a98324e6 data/minecraft/advancements/cropressed_carrot_from_cropressing.json
 37abd3022e832bfa7e5d07d3a8dc5ac026895683 data/minecraft/advancements/cropressed_nether_wart_from_cropressing.json
@@ -9,6 +9,7 @@ afb544b352edfbec081543c7b689b1bcc0a25279 data/minecraft/advancements/cropressed_
 d8c07968dd983dee001fb00013c738cd19cb2068 data/minecraft/recipes/cropressed_nether_wart_from_cropressing.json
 e1c4ca9aa63172d044c4c5d9070ae162b7531b7f data/minecraft/recipes/cropressed_potato_from_cropressing.json
 aad96fff98ddb8cf3c98dd45ef2c41bd814fe1a3 data/minecraft/recipes/cropressed_wheat_from_cropressing.json
+281d40dd2c0361b028a2c133f139c68b9fb781d8 data/minecraft/recipes/rebrewed_tipped_arrow.json
 01fffb3fd307a21c18a9752886ce82d0cc0b5d67 data/moresnifferflowers/advancements/recipes/building_blocks/amber.json
 10493a738820f316f3f9f1ac9fff6f757e86ab55 data/moresnifferflowers/advancements/recipes/misc/ambush_banner_pattern.json
 1d24b092a1965f755ebd0ee67afdfd45a4629724 data/moresnifferflowers/advancements/recipes/misc/aroma_armor_trim_smithing_template.json

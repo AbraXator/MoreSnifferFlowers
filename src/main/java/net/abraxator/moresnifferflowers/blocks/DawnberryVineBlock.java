@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -84,7 +85,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        if(pStack.is(Items.SHEARS) && !(getAge(pState) >= 4)) {
+        if(pStack.is(Items.SHEARS) && !(getAge(pState) >= 4) && !pState.getValue(ModStateProperties.SHEARED)) {
             return shearAction(pState, pLevel, pPos, pPlayer, pHand, pStack);
         } else if(pStack.is(Items.BONE_MEAL)) {
             return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
