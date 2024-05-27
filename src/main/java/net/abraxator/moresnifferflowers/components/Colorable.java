@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.colors;
+package net.abraxator.moresnifferflowers.components;
 
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;

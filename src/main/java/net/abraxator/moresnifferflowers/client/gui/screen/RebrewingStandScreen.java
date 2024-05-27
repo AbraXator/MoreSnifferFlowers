@@ -44,9 +44,13 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
         if(menu.getCost() <= 16 && menu.getCost() != 0) {
             var cost = String.valueOf(menu.getCost());
-            var color = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(packResources -> packResources.packId().equals("more_sniffer_flowers_boring")) ? 0x00373737 : 0x00af3941;
-            this.font.drawInBatch(cost, x + 42 - this.font.width(cost) / 2, y + 48, color, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.POLYGON_OFFSET, 0, 15728880, this.font.isBidirectional());
-            //guiGraphics.drawString(this.font, String.valueOf(menu.getCost()), x + 35, y + 47, color);
+            var color = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(packResources -> packResources.packId().equals("more_sniffer_flowers_boring")) ? 0x00373737 : 0x00933c4d;
+            var colorOutline = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(packResources -> packResources.packId().equals("more_sniffer_flowers_boring")) ? 0x006d294a : 0x005e224f;
+            drawCost(guiGraphics, cost, x, y, colorOutline, -1, 0);
+            drawCost(guiGraphics, cost, x, y, colorOutline, +1, 0);
+            drawCost(guiGraphics, cost, x, y, colorOutline, 0, -1);
+            drawCost(guiGraphics, cost, x, y, colorOutline, 0, +1);
+            drawCost(guiGraphics, cost, x, y, color, 0, 0);
         } else {
             guiGraphics.blit(TEXTURE, x + 35, y + 47, 198, 1, 13, 9);
         }
@@ -85,6 +89,10 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         }
         
         optional.ifPresent(component -> guiGraphics.renderTooltip(this.font, this.font.split(component, 115), mouseX, mouseY));
+    }
+    
+    private void drawCost(GuiGraphics guiGraphics, String cost, int x, int y, int color, int xOffset, int yOffset) {
+        this.font.drawInBatch(cost, (x + 42 - this.font.width(cost) / 2) + xOffset, (y + 48) + yOffset, color, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880, this.font.isBidirectional());
     }
     
     private Component component(String id, String fallback) {

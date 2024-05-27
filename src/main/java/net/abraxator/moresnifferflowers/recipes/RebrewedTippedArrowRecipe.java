@@ -1,12 +1,14 @@
 package net.abraxator.moresnifferflowers.recipes;
 
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.ModRecipeSerializers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.TippedArrowRecipe;
 import net.minecraft.world.level.Level;
 
@@ -51,5 +53,10 @@ public class RebrewedTippedArrowRecipe extends TippedArrowRecipe {
             itemstack1.set(DataComponents.POTION_CONTENTS, itemstack.get(DataComponents.POTION_CONTENTS));
             return itemstack1;
         }
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return ModRecipeSerializers.REBREWED_TIPPED_ARROW.get();
     }
 }

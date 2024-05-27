@@ -18,7 +18,7 @@ description='''Sniffer Flowers, but there's More of them and they actually do so
 [[dependencies.moresnifferflowers]]
     modId="neoforge"
     type="required"
-    versionRange="[20.6.60-beta]"
+    versionRange="[20.6.60-beta,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.moresnifferflowers]]

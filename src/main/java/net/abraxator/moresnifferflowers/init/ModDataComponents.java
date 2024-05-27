@@ -1,16 +1,12 @@
 package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.colors.Dye;
+import net.abraxator.moresnifferflowers.components.Dye;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.awt.dnd.DropTargetAdapter;
-import java.util.Map;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 
 public class ModDataComponents {
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = 

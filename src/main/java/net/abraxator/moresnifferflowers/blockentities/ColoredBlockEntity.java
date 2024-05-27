@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.colors.Colorable;
-import net.abraxator.moresnifferflowers.colors.Dye;
+import net.abraxator.moresnifferflowers.components.Colorable;
+import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

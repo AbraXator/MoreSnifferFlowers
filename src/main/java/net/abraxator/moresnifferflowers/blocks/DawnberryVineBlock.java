@@ -134,21 +134,11 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    protected void grow(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
-        if (!isMaxAge(pState)) {
-            float f = getGrowthSpeed(this, pLevel, pPos);
-            if (CommonHooks.onCropsGrowPre(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
-                pLevel.setBlock(pPos, pState.setValue(AGE, (pState.getValue(AGE) + 1)), 2);
-                CommonHooks.onCropsGrowPost(pLevel, pPos, pState);
-            }
-        }
-    }
-
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         if (!pLevel.isAreaLoaded(pPos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
         if (pLevel.getRawBrightness(pPos, 0) >= 9) {
-            grow(pState, pLevel, pPos, pRandom);
+            makeGrowOnTick(this, pState, pLevel, pPos);
         }
     }
 

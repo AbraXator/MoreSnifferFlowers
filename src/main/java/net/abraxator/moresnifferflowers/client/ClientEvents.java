@@ -16,7 +16,7 @@ import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEnt
 import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
-import net.abraxator.moresnifferflowers.colors.Dye;
+import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;

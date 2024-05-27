@@ -286,4 +286,8 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         fuel = pTag.getByte("fuel");
         brewProgress = pTag.getByte("progress");
     }
+    
+    public static void addPotionListToStack(List<MobEffectInstance> list, ItemStack itemStack) {
+        itemStack.set(DataComponents.POTION_CONTENTS, new PotionContents(Optional.of(Potions.WATER), Optional.of(PotionContents.getColor(list)), list));
+    }
 }

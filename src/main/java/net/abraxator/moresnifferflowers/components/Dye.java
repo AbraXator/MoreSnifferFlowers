@@ -1,11 +1,8 @@
-package net.abraxator.moresnifferflowers.colors;
+package net.abraxator.moresnifferflowers.components;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.init.ModDataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;

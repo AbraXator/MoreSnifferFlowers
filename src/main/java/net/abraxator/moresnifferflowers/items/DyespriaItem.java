@@ -2,8 +2,8 @@ package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
-import net.abraxator.moresnifferflowers.colors.Colorable;
-import net.abraxator.moresnifferflowers.colors.Dye;
+import net.abraxator.moresnifferflowers.components.Colorable;
+import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModSoundEvents;

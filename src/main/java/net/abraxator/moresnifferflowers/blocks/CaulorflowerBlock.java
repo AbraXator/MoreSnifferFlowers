@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import com.google.common.collect.Maps;
-import net.abraxator.moresnifferflowers.colors.Colorable;
+import net.abraxator.moresnifferflowers.components.Colorable;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
