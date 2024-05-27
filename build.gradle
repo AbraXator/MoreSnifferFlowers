@@ -21,8 +21,8 @@ repositories {
     maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://maven.blamejared.com/" }
     maven { url = "https://modmaven.dev" }
-    maven { url "<https://maven.shedaniel.me/>" }
-    maven { url "<https://maven.architectury.dev/>" }
+    maven { url = "https://maven.shedaniel.me/" }
+    maven { url = "https://maven.architectury.dev/" }
 }
 
 base {
@@ -98,8 +98,9 @@ dependencies {
     //compileOnly("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}")
     //compileOnly("mezz.jei:jei-${jei_mc_version}-neoforge-api:${jei_version}")
     //runtimeOnly("mezz.jei:jei-${jei_mc_version}-neoforge:${jei_version}")
-    runtimeOnly("me.shedaniel.cloth:cloth-config-neoforge:${cloth_version}")
-    runtimeOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}")
+    //implementation("me.shedaniel.cloth:cloth-config-neoforge:${cloth_version}")
+    //implementation("dev.architectury:architectury-neoforge:${architectury_version}")
+    //runtimeOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}")
 }
 
 /*mixin {
