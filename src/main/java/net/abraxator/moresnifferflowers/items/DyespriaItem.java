@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
+import com.ibm.icu.impl.Trie;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Colorable;
@@ -8,6 +9,7 @@ import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -44,7 +46,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
         super(ModBlocks.DYESPRIA_PLANT.get(), pProperties);
     }
-    
+
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         Player player = pContext.getPlayer();
@@ -59,7 +61,14 @@ public class DyespriaItem extends BlockItem implements Colorable {
 
         if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
             handleCaulorflower(player, stack, level, blockPos, blockState);
+
+            return InteractionResult.sidedSuccess(level.isClientSide);
         } else if (blockState.getBlock() instanceof ColorableVivicusBlock colorable) {
+             if (blockState.is(ModTags.ModBlockTags.VIVICUS_BLOCKS) && player.isShiftKeyDown()) {
+                 colorTree(stack, level, blockPos, blockState);
+
+                 return InteractionResult.sidedSuccess(level.isClientSide);
+             }
             colorable.addDye(level, blockPos, blockState, player);
 
             return InteractionResult.sidedSuccess(level.isClientSide);
@@ -101,15 +110,15 @@ public class DyespriaItem extends BlockItem implements Colorable {
         return state == null ? null : state.setValue(ModStateProperties.AGE_3, 3);
     }
     
-    public void colorTree(ItemStack dyespria, ServerLevel level, BlockPos blockPos, BlockState blockState) {
-        BlockPos.withinManhattanStream(blockPos, 5, 5, 5)
-                .filter(blockPos1 -> level.getBlockState(blockPos1).is(ModTags.ModBlockTags.VIVICUS_BLOCKS))
+    public void colorTree(ItemStack dyespria, Level level, BlockPos blockPos, BlockState blockState) {
+        BlockPos.withinManhattanStream(blockPos, 4, 4, 4)
+                .filter(blockPos1 -> level.getBlockState(blockPos1).is(blockState.getBlock()))
                 .forEach(pos -> {
                     colorOne(dyespria, level, pos, level.getBlockState(pos));   
                 });
     }
 
-    public void colorOne(ItemStack stack, ServerLevel level, BlockPos blockPos, BlockState blockState) {
+    public void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
         Dye dye = Dye.getDyeFromStack(stack);
         RandomSource randomSource = level.random;
 
@@ -118,9 +127,11 @@ public class DyespriaItem extends BlockItem implements Colorable {
         }
 
         level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.COLOR, dye.color()));
-        ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - 1));
+        ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - randomSource.nextIntBetweenInclusive(0, 1)));
         Dye.setDyeToStack(stack, itemStack, itemStack.getCount());
-        particles(randomSource, level, dye, blockPos);
+        if(level instanceof ServerLevel serverLevel) {
+            particles(randomSource, serverLevel, dye, blockPos);
+        }
     }
 
     private void colorColumn(ItemStack stack, ServerLevel level, BlockPos blockPos) {

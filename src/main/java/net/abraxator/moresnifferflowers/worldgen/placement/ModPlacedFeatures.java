@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.worldgen.placement;
 
-import net.abraxator.moresnifferflowers.worldgen.features.ModConfiguredFeatures;
-import net.minecraft.core.Holder;
+import net.abraxator.moresnifferflowers.worldgen.configurations.ModConfiguredFeatures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;

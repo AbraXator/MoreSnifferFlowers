@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.ClientEvents;
 import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Blocks;
@@ -37,6 +38,7 @@ public class MoreSnifferFlowers {
         ModParticles.PARTICLES.register(modEventBus);
         ModMenuTypes.MENU_TYPES.register(modEventBus);
         ModEntityTypes.ENTITIES.register(modEventBus);
+        ModTrunkPlacerTypes.TRUNKS.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);

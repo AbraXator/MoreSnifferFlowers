@@ -83,6 +83,52 @@ public class ModRecipesProvider extends RecipeProvider {
         partsRecycling(pRecipeOutput, ModItems.PRESS_PIECE.get(), Items.NETHERITE_SCRAP, 1);
         partsRecycling(pRecipeOutput, ModItems.BROKEN_REBREWING_STAND.get(), ModItems.CROPRESSED_NETHERWART.get(), 4);
 
+        woodFromLogs(pRecipeOutput, ModBlocks.CORRUPTED_WOOD, ModBlocks.CORRUPTED_LOG);
+        woodFromLogs(pRecipeOutput, ModBlocks.STRIPPED_CORRUPTED_WOOD, ModBlocks.STRIPPED_CORRUPTED_LOG);
+        stairBuilder(ModBlocks.CORRUPTED_STAIRS, Ingredient.of(ModBlocks.CORRUPTED_PLANKS))
+                .unlockedBy("has_corrupted_planks", has(ModBlocks.CORRUPTED_PLANKS))
+                .save(pRecipeOutput);
+        slab(pRecipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.CORRUPTED_SLAB, ModBlocks.CORRUPTED_PLANKS);
+        fenceBuilder(ModBlocks.CORRUPTED_FENCE, Ingredient.of(ModBlocks.CORRUPTED_PLANKS))
+                .unlockedBy("has_corrupted_planks", has(ModBlocks.CORRUPTED_PLANKS))
+                .save(pRecipeOutput);
+        fenceGateBuilder(ModBlocks.CORRUPTED_FENCE_GATE, Ingredient.of(ModBlocks.CORRUPTED_PLANKS))
+                .unlockedBy("has_corrupted_planks", has(ModBlocks.CORRUPTED_PLANKS))
+                .save(pRecipeOutput);
+        doorBuilder(ModBlocks.CORRUPTED_DOOR, Ingredient.of(ModBlocks.CORRUPTED_PLANKS))
+                .unlockedBy("has_corrupted_planks", has(ModBlocks.CORRUPTED_PLANKS))
+                .save(pRecipeOutput);
+        trapdoorBuilder(ModBlocks.CORRUPTED_TRAPDOOR, Ingredient.of(ModBlocks.CORRUPTED_PLANKS))
+                .unlockedBy("has_corrupted_planks", has(ModBlocks.CORRUPTED_PLANKS))
+                .save(pRecipeOutput);
+        pressurePlate(pRecipeOutput, ModBlocks.CORRUPTED_PRESSURE_PLATE, ModBlocks.CORRUPTED_PLANKS);
+        buttonBuilder(ModBlocks.CORRUPTED_BUTTON, Ingredient.of(ModBlocks.CORRUPTED_PLANKS))
+                .unlockedBy("has_corrupted_planks", has(ModBlocks.CORRUPTED_PLANKS))
+                .save(pRecipeOutput);
+
+        woodFromLogs(pRecipeOutput, ModBlocks.VIVICUS_WOOD, ModBlocks.VIVICUS_LOG);
+        woodFromLogs(pRecipeOutput, ModBlocks.STRIPPED_VIVICUS_WOOD, ModBlocks.STRIPPED_VIVICUS_LOG);
+        stairBuilder(ModBlocks.VIVICUS_STAIRS, Ingredient.of(ModBlocks.VIVICUS_PLANKS))
+                .unlockedBy("has_VIVICUS_planks", has(ModBlocks.VIVICUS_PLANKS))
+                .save(pRecipeOutput);
+        slab(pRecipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.VIVICUS_SLAB, ModBlocks.VIVICUS_PLANKS);
+        fenceBuilder(ModBlocks.VIVICUS_FENCE, Ingredient.of(ModBlocks.VIVICUS_PLANKS))
+                .unlockedBy("has_VIVICUS_planks", has(ModBlocks.VIVICUS_PLANKS))
+                .save(pRecipeOutput);
+        fenceGateBuilder(ModBlocks.VIVICUS_FENCE_GATE, Ingredient.of(ModBlocks.VIVICUS_PLANKS))
+                .unlockedBy("has_VIVICUS_planks", has(ModBlocks.VIVICUS_PLANKS))
+                .save(pRecipeOutput);
+        doorBuilder(ModBlocks.VIVICUS_DOOR, Ingredient.of(ModBlocks.VIVICUS_PLANKS))
+                .unlockedBy("has_VIVICUS_planks", has(ModBlocks.VIVICUS_PLANKS))
+                .save(pRecipeOutput);
+        trapdoorBuilder(ModBlocks.VIVICUS_TRAPDOOR, Ingredient.of(ModBlocks.VIVICUS_PLANKS))
+                .unlockedBy("has_VIVICUS_planks", has(ModBlocks.VIVICUS_PLANKS))
+                .save(pRecipeOutput);
+        pressurePlate(pRecipeOutput, ModBlocks.VIVICUS_PRESSURE_PLATE, ModBlocks.VIVICUS_PLANKS);
+        buttonBuilder(ModBlocks.VIVICUS_BUTTON, Ingredient.of(ModBlocks.VIVICUS_PLANKS))
+                .unlockedBy("has_VIVICUS_planks", has(ModBlocks.VIVICUS_PLANKS))
+                .save(pRecipeOutput);
+
         SpecialRecipeBuilder.special(RebrewedTippedArrowRecipe::new).save(pRecipeOutput, "rebrewed_tipped_arrow");
         
         ModCustomRecipeProvider.createRecipes(pRecipeOutput);

@@ -35,6 +35,11 @@ public class ModCreativeTabs {
                 output.accept(ModItems.TUBE_PIECE.get());
                 output.accept(ModItems.SCRAP_PIECE.get());
                 output.accept(ModItems.PRESS_PIECE.get());
+                output.accept(ModBlocks.GIANT_CARROT);
+                output.accept(ModBlocks.GIANT_POTATO);
+                output.accept(ModBlocks.GIANT_WHEAT);
+                output.accept(ModBlocks.GIANT_BEETROOT);
+                output.accept(ModBlocks.GIANT_NETHERWART);
                 output.accept(ModItems.CROPRESSOR.get());
                 output.accept(ModItems.CROPRESSED_CARROT.get());
                 output.accept(ModItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE.get());

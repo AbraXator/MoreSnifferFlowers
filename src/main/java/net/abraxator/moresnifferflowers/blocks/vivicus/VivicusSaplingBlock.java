@@ -4,7 +4,7 @@ import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.init.ModTreeGrowers;
-import net.abraxator.moresnifferflowers.worldgen.features.tree.VivicusTreeGrower;
+import net.abraxator.moresnifferflowers.worldgen.configurations.tree.VivicusTreeGrower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
