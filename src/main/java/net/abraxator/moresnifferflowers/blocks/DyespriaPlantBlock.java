@@ -80,40 +80,34 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide) {
-            return InteractionResult.FAIL;
-        }
-
-        if (isMaxAge(pState) && pLevel.getBlockEntity(pPos) instanceof DyespriaPlantBlockEntity entity && pHand.equals(InteractionHand.MAIN_HAND)) {
-            var item = pPlayer.getItemInHand(pHand).copy();
-            if (item.getItem() instanceof DyeItem) {
-                pPlayer.getItemInHand(pHand).setCount(-1);
-                pPlayer.addItem(entity.add(null, entity.dye, item));
-
-                return InteractionResult.sidedSuccess(pLevel.isClientSide());
-            } else if (item.is(Items.SHEARS) && !pState.getValue(ModStateProperties.SHEARED)) {
-                if (pPlayer instanceof ServerPlayer) {
-                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)pPlayer, pPos, pPlayer.getItemInHand(pHand));
-                }
-
-                pLevel.setBlockAndUpdate(pPos, pState.setValue(ModStateProperties.SHEARED, true));
-                pLevel.playSound(null, pPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
-                pLevel.gameEvent(GameEvent.BLOCK_CHANGE, pPos, GameEvent.Context.of(pPlayer, pLevel.getBlockState(pPos)));
-                pPlayer.getItemInHand(pHand).hurtAndBreak(1, pPlayer, (p_186374_) -> {
-                    p_186374_.broadcastBreakEvent(pHand);
-                });
-
-                return InteractionResult.SUCCESS;
-            } else if (!entity.dye.isEmpty() && item.isEmpty()) {
-                pPlayer.addItem(Dye.stackFromDye(entity.removeDye()));
-
+        var stack = pPlayer.getItemInHand(pHand);
+        
+        if(isMaxAge(pState) && pLevel.getBlockEntity(pPos) instanceof DyespriaPlantBlockEntity entity) {
+            if(stack.getItem() instanceof DyeItem) {
+                return addDye(stack, pPlayer, pLevel, entity);
+            } else if(stack.is(Items.SHEARS)) {
+                shear(pPlayer, pLevel, pPos, pState, pHand);
                 return InteractionResult.sidedSuccess(pLevel.isClientSide());
             }
+            
+            pPlayer.addItem(Dye.stackFromDye(entity.removeDye()));
+            return InteractionResult.sidedSuccess(pLevel.isClientSide());
         }
 
         return InteractionResult.PASS;
     }
 
+    private InteractionResult addDye(ItemStack dye, Player player, Level level, DyespriaPlantBlockEntity entity) {
+        if(!level.isClientSide) {
+            var stack = dye.copy();
+            dye.setCount(-1);
+            player.addItem(entity.add(null, entity.dye, stack));
+        }
+
+        level.playSound(null, entity.getBlockPos(), SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+    
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
         return canSurvive(pState, pLevel, pCurrentPos) ? pState : Blocks.AIR.defaultBlockState();

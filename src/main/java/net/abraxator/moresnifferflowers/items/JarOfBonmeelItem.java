@@ -11,6 +11,8 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -95,6 +97,7 @@ public class JarOfBonmeelItem extends Item {
         }
         
         ModAdvancementCritters.USED_BONMEEL.trigger(player);
+        level.playLocalSound(clickedPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
