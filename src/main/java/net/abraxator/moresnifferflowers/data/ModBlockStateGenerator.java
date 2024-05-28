@@ -13,8 +13,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import static net.abraxator.moresnifferflowers.MoreSnifferFlowers.loc;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
-public class ModBlockModelGenerator extends BlockStateProvider {
-    public ModBlockModelGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
+public class ModBlockStateGenerator extends BlockStateProvider {
+    public ModBlockStateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, MoreSnifferFlowers.MOD_ID, exFileHelper);
     }
 
@@ -35,6 +35,8 @@ public class ModBlockModelGenerator extends BlockStateProvider {
                 }
             }
         }
+        
+        block
     }
     
     private ModelFile rebrewingStandModel(String index) {

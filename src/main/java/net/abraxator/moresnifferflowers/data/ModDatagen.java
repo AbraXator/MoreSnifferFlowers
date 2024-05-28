@@ -25,7 +25,7 @@ public class ModDatagen {
         var future = event.getLookupProvider();
         
         //BLOCKMODELS
-        generator.addProvider(event.includeClient(), new ModBlockModelGenerator(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ModBlockStateGenerator(packOutput, existingFileHelper));
         
         //SOUNDS
         generator.addProvider(event.includeClient(), new ModSoundProvider(packOutput, existingFileHelper));
@@ -41,7 +41,10 @@ public class ModDatagen {
         var blockTagsProvider = generator.addProvider(event.includeServer(), new ModBlockTagsProvider(packOutput, registries, existingFileHelper));
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, future, blockTagsProvider.contentsGetter(), existingFileHelper));
         //generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, future, existingFileHelper));
-
+    
+        //DATA MAPS
+        generator.addProvider(event.includeServer(), new ModDataMapProvider(packOutput, future));
+        
         //ADVANCEMENTS
         generator.addProvider(event.includeServer(), new AdvancementProvider(packOutput, registries, existingFileHelper, List.of(new ModAdvancementGenerator())));
 

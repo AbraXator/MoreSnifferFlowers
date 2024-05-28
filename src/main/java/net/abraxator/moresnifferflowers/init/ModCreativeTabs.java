@@ -49,6 +49,21 @@ public class ModCreativeTabs {
                 output.accept(ModItems.EXTRACTION_BOTTLE.get());
                 output.accept(ModItems.REBREWING_STAND.get());
                 output.accept(ModItems.BROKEN_REBREWING_STAND.get());
+                output.accept(ModBlocks.CORRUPTED_LOG.get());
+                output.accept(ModBlocks.CORRUPTED_WOOD.get());
+                output.accept(ModBlocks.STRIPPED_CORRUPTED_LOG.get());
+                output.accept(ModBlocks.STRIPPED_CORRUPTED_WOOD.get());
+                output.accept(ModBlocks.CORRUPTED_PLANKS.get());
+                output.accept(ModBlocks.CORRUPTED_STAIRS.get());
+                output.accept(ModBlocks.CORRUPTED_SLAB.get());
+                output.accept(ModBlocks.CORRUPTED_FENCE.get());
+                output.accept(ModBlocks.CORRUPTED_FENCE_GATE.get());
+                output.accept(ModBlocks.CORRUPTED_DOOR.get());
+                output.accept(ModBlocks.CORRUPTED_TRAPDOOR.get());
+                output.accept(ModBlocks.CORRUPTED_PRESSURE_PLATE.get());
+                output.accept(ModBlocks.CORRUPTED_BUTTON.get());
+                output.accept(ModBlocks.CORRUPTED_LEAVES.get());
+                output.accept(ModBlocks.CORRUPTED_SAPLING.get());
             })
             .withBackgroundLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID,  "textures/gui/container/tab_items.png"))
             .withTabsImage(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "textures/gui/container/tabs.png"))
