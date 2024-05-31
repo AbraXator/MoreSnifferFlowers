@@ -209,7 +209,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         public void onTake(Player pPlayer, ItemStack pStack) {
             Potion potion = PotionUtils.getPotion(pStack);
             if (pPlayer instanceof ServerPlayer && pStack.is(ModTags.ModItemTags.REBREWED_POTIONS)) {
-                CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, (Holder<Potion>) potion);
+                CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)pPlayer, Holder.direct(potion));
             }
 
             super.onTake(pPlayer, pStack);

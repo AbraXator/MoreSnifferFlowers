@@ -13,8 +13,6 @@ displayTest="MATCH_VERSION"
 description='''Sniffer Flowers, but there's More of them and they actually do something'''
 [[mixins]]
     config="more_sniffer_flowers.neoforge.mixins.json"
-[[accesTransformers]]
-    file="META-INF/accesstransformer.cfg"
 [[dependencies.moresnifferflowers]]
     modId="neoforge"
     type="required"

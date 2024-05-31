@@ -1,6 +1,5 @@
 package net.abraxator.moresnifferflowers.client;
 
-import com.google.errorprone.annotations.Var;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
 import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
@@ -22,7 +21,7 @@ import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
-import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackResources;
@@ -36,10 +35,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
 
@@ -49,7 +45,7 @@ public class ClientEvents {
     public static void clientSetup(final FMLClientSetupEvent event) {
         ModItemProperties.register();
     }
-    
+
     @SubscribeEvent
     public static void onRegisterMenuScreenEvent(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.REBREWING_STAND.get(), RebrewingStandScreen::new);

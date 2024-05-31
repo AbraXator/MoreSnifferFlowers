@@ -20,11 +20,11 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer craftingContainer, Level level) {
-        if (craftingContainer.getWidth() == 3 && craftingContainer.getHeight() == 3) {
-            for (int i = 0; i < craftingContainer.getWidth(); i++) {
-                for (int j = 0; j < craftingContainer.getHeight(); j++) {
-                    ItemStack itemstack = craftingContainer.getItem(i + j * craftingContainer.getWidth());
+    public boolean matches(CraftingContainer pInv, Level pLevel) {
+        if (pInv.getWidth() == 3 && pInv.getHeight() == 3) {
+            for (int i = 0; i < pInv.getWidth(); i++) {
+                for (int j = 0; j < pInv.getHeight(); j++) {
+                    ItemStack itemstack = pInv.getItem(i + j * pInv.getWidth());
                     if (itemstack.isEmpty()) {
                         return false;
                     }
@@ -46,14 +46,13 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer craftingContainer, RegistryAccess registryAccess) {
-        ItemStack itemstack = craftingContainer.getItem(1 + craftingContainer.getWidth());
+    public ItemStack assemble(CraftingContainer pContainer, RegistryAccess pRegistryAccess) {
+        ItemStack itemstack = pContainer.getItem(1 + pContainer.getWidth());
         if (!itemstack.is(ModItems.REBREWED_LINGERING_POTION)) {
             return ItemStack.EMPTY;
         } else {
-            ItemStack itemstack1 = new ItemStack(Items.TIPPED_ARROW, 8);
-            PotionUtils.setPotion(itemstack1, PotionUtils.getPotion(itemstack));
-            PotionUtils.setCustomEffects(itemstack1, PotionUtils.getCustomEffects(itemstack));
+            ItemStack itemstack1 = new ItemStack(Items.TIPPED_ARROW, 8);   
+            itemstack1.setTag(itemstack.getOrCreateTag());
             return itemstack1;
         }
     }
@@ -62,7 +61,7 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return pWidth >= 2 && pHeight >= 2;
     }
-    
+
     @Override
     public RecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.REBREWED_TIPPED_ARROW.get();
