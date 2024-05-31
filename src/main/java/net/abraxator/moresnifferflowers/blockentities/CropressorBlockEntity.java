@@ -1,12 +1,12 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
+import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.abraxator.moresnifferflowers.init.ModSoundEvents;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -41,17 +41,16 @@ public class CropressorBlockEntity extends ModBlockEntity {
         var cropressingRecipeOptional = quickCheck.getRecipeFor(container, level);
         
         if(content.getCount() >= INV_SIZE && cropressingRecipeOptional.isPresent()) {
+            result = cropressingRecipeOptional.get().value().result();
+            progress++;
+
             if(sound) {
                 level.playSound(null, worldPosition, ModSoundEvents.CROPRESSOR_BELT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + (level.getRandom().nextFloat() * 0.2)));
                 sound = false;
             }
             
-            result = cropressingRecipeOptional.get().value().result();
-            progress++;
-            
             if(progress % 10 == 0) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
-                
             }
 
             if(progress >= MAX_PROGRESS) {
@@ -64,7 +63,6 @@ public class CropressorBlockEntity extends ModBlockEntity {
                 level.gameEvent(GameEvent.BLOCK_CHANGE, getBlockPos(), GameEvent.Context.of(getBlockState()));
                 setChanged();
                 progress = 0;
-                sound = true;
             }
         }
     }
@@ -73,40 +71,61 @@ public class CropressorBlockEntity extends ModBlockEntity {
         return 0 >= progress || content.getCount() >= INV_SIZE;
     }
 
-    public void addItem(ItemStack pStack, Level level) {
-        if(content.getCount() >= INV_SIZE || (!content.is(pStack.getItem()) && !content.isEmpty())) return;
-        var freeSpace = INV_SIZE - content.getCount();
-        var toInsert = Math.min(pStack.getCount(), freeSpace);
-        content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
-        pStack.shrink(toInsert);
-        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+    public ItemStack addItem(ItemStack pStack, Level level) {
+        if(content.getCount() >= INV_SIZE) {
+            return pStack;
+        } else if(!content.is(pStack.getItem()) && !content.isEmpty()) {
+            var ret = content.copy();
+            var toInsert = Math.min(pStack.getCount(), INV_SIZE);
+            content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
+            pStack.shrink(toInsert);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+            
+            return ret;
+        } else {
+            var freeSpace = INV_SIZE - content.getCount();
+            var toInsert = Math.min(pStack.getCount(), freeSpace);
+            content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
+            pStack.shrink(toInsert);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+            
+            return pStack;
+        }
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-        pTag.put("content", content.saveOptional(pRegistries));
+    protected void saveAdditional(CompoundTag pTag) {
+        super.saveAdditional(pTag);
+        CompoundTag tagContent = new CompoundTag();
+        content.save(tagContent);
+        CompoundTag tagResult = new CompoundTag();
+        content.save(tagResult);
+        pTag.put("content", tagContent);
         pTag.putInt("progress", progress);
-        pTag.put("result", result.save(pRegistries, pTag));
+        pTag.put("result", tagResult);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
-        content = ItemStack.parseOptional(pRegistries, pTag.getCompound("content"));
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        content = ItemStack.of(pTag.getCompound("content"));
         progress = pTag.getInt("progress");
-        result = ItemStack.parseOptional(pRegistries, pTag.getCompound("result"));
+        result = ItemStack.of(pTag.getCompound("result"));
     }
 
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+    public CompoundTag getUpdateTag() {
         CompoundTag compoundtag = new CompoundTag();
-        compoundtag.put("result", result.saveOptional(pRegistries));
+        compoundtag.put("result", result.save(compoundtag));
         compoundtag.putInt("progress", progress);
         return compoundtag;
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
     }
 }
