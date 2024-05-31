@@ -34,7 +34,7 @@
    	"item.moresnifferflowers.broken_rebrewing_stand": "Broken Rebrewing Stand",
 	"item.moresnifferflowers.cropressor": "Cropressor",
 	"item.moresnifferflowers.aroma_armor_trim_smithing_template": "Smithing Template",
-	"item.moresnifferflowers.nether_wart_armor_trim_smithing_template": "Nether Smithing Template",
+	"item.moresnifferflowers.nether_wart_armor_trim_smithing_template": "Smithing Template",
 	"item.moresnifferflowers.tater_armor_trim_smithing_template": "Smithing Template",
 	"item.moresnifferflowers.carotene_armor_trim_smithing_template": "Smithing Template",
 	"item.moresnifferflowers.grain_armor_trim_smithing_template": "Smithing Template",
@@ -59,6 +59,7 @@
 	"tooltip.dyespria.empty": "Empty",
 	"tooltip.jar_of_bonmeel.usage": "Can be applied to a fully grown 3x3 grid of the following crops: \nCarrot, Potato, Wheat, Beetroot and Nether Wart",
 	"tooltip.amber_shard.usage": "Can be used as an armor trim material",
+	"tooltip.dyespria_seeds": "Shear to hide dye",
 	"bottle_of_extraction.tooltip.usage": "Drink to extract current effects into a bottle",
 
 	"advancements.more_sniffer_flowers.dyespria_plant": "Colorful plants",
@@ -115,8 +116,5 @@
 
 	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
 
-	"entity.moresnifferflowers.dragonfly": "Dragonfly",
-
-	"sound.moresnifferflowers.block.cropressor.belt": "Cropressor Belt",
-	"sound.moresnifferflowers.item.dyespria.paint": "Dyespria Paint"
+	"entity.moresnifferflowers.dragonfly": "Dragonfly"
 }
