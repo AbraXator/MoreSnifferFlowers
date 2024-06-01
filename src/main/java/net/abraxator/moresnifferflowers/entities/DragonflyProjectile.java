@@ -31,7 +31,7 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
         super(ModEntityTypes.DRAGONFLY.get(), player, pLevel);
         this.setOwner(player);
     }
-
+    
     @Override
     protected Item getDefaultItem() {
         return ModItems.DRAGONFLY.get();
@@ -40,24 +40,6 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
     @Override
     public void tick() {
         super.tick();
-        var vec3 = this.getDeltaMovement();
-        
-        if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            double d0 = vec3.horizontalDistance();
-            this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * 180.0F / (float)Math.PI));
-            this.setXRot((float)(Mth.atan2(vec3.y, d0) * 180.0F / (float)Math.PI));
-            this.yRotO = this.getYRot();
-            this.xRotO = this.getXRot();
-        }
-
-        double d5 = vec3.x;
-        double d6 = vec3.y;
-        double d1 = vec3.z;
-        double d4 = vec3.horizontalDistance();
-        this.setYRot((float)(Mth.atan2(d5, d1) * 180.0F / (float)Math.PI));
-        this.setXRot((float)(Mth.atan2(d6, d4) * 180.0F / (float)Math.PI));
-        this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-        this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
     }
 
     @Override

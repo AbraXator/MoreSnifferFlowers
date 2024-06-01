@@ -116,13 +116,6 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                 }
             }
         }
-        
-        if(canBrew()) {
-            brewProgress++;
-            if(brewProgress >= MAX_PROGRESS) {
-                brew(level, ogPotionStack, ingredientStack);
-            }
-        }
 
         if(!Arrays.equals(potionBits, lastPotionCount)) {
             bottleStateLogic(potionBits);
@@ -181,7 +174,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             }
         }
 
-        return ret && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get()) && fuel >= 1 && !inv.get(2).isEmpty();
+        return ret && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get()) && fuel >= 1 && !inv.get(2).isEmpty() && cost <= 16;
     }
 
     private boolean[] getPotionBits() {
