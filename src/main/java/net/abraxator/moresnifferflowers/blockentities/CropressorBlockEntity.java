@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
+import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
@@ -13,12 +14,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public class CropressorBlockEntity extends ModBlockEntity {
     public ItemStack content = ItemStack.EMPTY;
@@ -60,16 +63,29 @@ public class CropressorBlockEntity extends ModBlockEntity {
     }
 
     public boolean canInteract() {
-        return 0 >= progress || content.getCount() >= INV_SIZE;
+        return progress <= 0 || content.getCount() >= INV_SIZE;
     }
+    
+    public ItemStack addItem(ItemStack pStack, Level level) {
+        if(content.getCount() >= INV_SIZE) {
+            return pStack;
+        } else if(!content.is(pStack.getItem()) && !content.isEmpty()) {
+            var ret = content.copy();
+            var toInsert = Math.min(pStack.getCount(), INV_SIZE);
+            content = new ItemStack(pStack.getItem(), toInsert);
+            pStack.shrink(toInsert);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
 
-    public void addItem(ItemStack pStack, Level level) {
-        if(content.getCount() >= INV_SIZE || (!content.is(pStack.getItem()) && !content.isEmpty())) return;
-        var freeSpace = INV_SIZE - content.getCount();
-        var toInsert = Math.min(pStack.getCount(), freeSpace);
-        content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
-        pStack.shrink(toInsert);
-        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+            return ret;
+        } else {
+            var freeSpace = INV_SIZE - content.getCount();
+            var toInsert = Math.min(pStack.getCount(), freeSpace);
+            content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
+            pStack.shrink(toInsert);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+
+            return ItemStack.EMPTY;
+        }
     }
 
     @Override
