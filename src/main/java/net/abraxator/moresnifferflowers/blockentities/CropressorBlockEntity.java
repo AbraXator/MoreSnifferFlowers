@@ -7,6 +7,7 @@ import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.abraxator.moresnifferflowers.init.ModSoundEvents;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -94,38 +95,34 @@ public class CropressorBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
         CompoundTag tagContent = new CompoundTag();
-        content.save(tagContent);
+        content.save(pRegistries, tagContent);
         CompoundTag tagResult = new CompoundTag();
-        content.save(tagResult);
+        content.save(pRegistries, tagResult);
         pTag.put("content", tagContent);
         pTag.putInt("progress", progress);
         pTag.put("result", tagResult);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        content = ItemStack.of(pTag.getCompound("content"));
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
+        content = ItemStack.parseOptional(pRegistries, pTag.getCompound("content"));
         progress = pTag.getInt("progress");
-        result = ItemStack.of(pTag.getCompound("result"));
+        result = ItemStack.parseOptional(pRegistries, pTag.getCompound("result"));
     }
 
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public CompoundTag getUpdateTag() {
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         CompoundTag compoundtag = new CompoundTag();
-        compoundtag.put("result", result.save(compoundtag));
+        compoundtag.put("result", result.save(pRegistries, compoundtag));
         compoundtag.putInt("progress", progress);
         return compoundtag;
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        super.onDataPacket(net, pkt);
     }
 }

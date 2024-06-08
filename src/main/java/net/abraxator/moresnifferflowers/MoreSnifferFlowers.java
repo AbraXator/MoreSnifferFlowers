@@ -29,7 +29,6 @@ public class MoreSnifferFlowers {
         ModEntityTypes.ENTITIES.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
-        ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
         ModParticles.PARTICLES.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
@@ -39,19 +38,7 @@ public class MoreSnifferFlowers {
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY_VINE_SEEDS.get(), 0.3F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.DAWNBERRY.get(), 0.3F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.AMBUSH_SEEDS.get(), 0.3F);
-            ComposterBlock.COMPOSTABLES.put(ModBlocks.CAULORFLOWER.get().asItem(), 0.4F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.DYESPRIA_SEEDS.get(), 0.4F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.BONMEELIA_SEEDS.get(), 0.5F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_BEETROOT.get(), 1.0F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_NETHERWART.get(), 1.0F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_WHEAT.get(), 1.0F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_POTATO.get(), 1.0F);
-            ComposterBlock.COMPOSTABLES.put(ModItems.CROPRESSED_CARROT.get(), 1.0F);
-        });
+
     }
 
     public static ResourceLocation loc(String path) {
