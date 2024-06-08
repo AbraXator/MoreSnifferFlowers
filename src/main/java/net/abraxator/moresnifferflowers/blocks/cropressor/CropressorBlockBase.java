@@ -116,7 +116,10 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ENTITY_POS = PART == Part.OUT ? pPos : getEntityPos(pLevel, pPos);
         if (!pLevel.isClientSide && pLevel.getBlockEntity(ENTITY_POS) instanceof CropressorBlockEntity entity && entity.canInteract() && pPlayer.getMainHandItem().is(ModTags.ModItemTags.CROPRESSABLE_CROPS)) {
-            entity.addItem(pPlayer.getMainHandItem(), pLevel);
+            var itemInHand = pPlayer.getItemInHand(pHand);
+            var itemToAddToPlayer = entity.addItem(itemInHand, pLevel);
+            pPlayer.addItem(itemToAddToPlayer);
+            
 
             return InteractionResult.SUCCESS;
         }

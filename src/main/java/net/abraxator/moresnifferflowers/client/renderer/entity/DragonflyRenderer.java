@@ -27,7 +27,7 @@ public class DragonflyRenderer extends EntityRenderer<DragonflyProjectile> {
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot()) - 180F));
         pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
-        pPoseStack.translate(0, -0.75, 1);
+        pPoseStack.translate(0, -1, 0.5);
         this.model.renderToBuffer(
                 pPoseStack, 
                 pBuffer.getBuffer(this.model.renderType(this.getTextureLocation(pEntity))), 

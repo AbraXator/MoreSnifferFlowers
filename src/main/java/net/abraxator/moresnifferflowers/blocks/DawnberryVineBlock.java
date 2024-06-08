@@ -69,7 +69,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     public final boolean isMaxAge(BlockState pState) {
         return this.getAge(pState) >= this.getMaxAge();
     }
-
+ 
     @Override
     public boolean isRandomlyTicking(BlockState pState) {
         return !this.isMaxAge(pState) && !pState.getValue(IS_SHEARED);

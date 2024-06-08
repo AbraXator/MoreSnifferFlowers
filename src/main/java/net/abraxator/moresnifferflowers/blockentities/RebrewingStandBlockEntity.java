@@ -42,6 +42,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     private NonNullList<ItemStack> inv = NonNullList.withSize(6, ItemStack.EMPTY);
     int brewProgress;
     int fuel;
+    int cost;
     private boolean[] lastPotionCount;
     public final ContainerData containerData = new ContainerData() {
         @Override
@@ -49,6 +50,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             return switch (pIndex) {
                 case 0 -> RebrewingStandBlockEntity.this.brewProgress;
                 case 1 -> RebrewingStandBlockEntity.this.fuel;
+                case 2 -> RebrewingStandBlockEntity.this.cost;
                 default -> 0;
             };
         }
@@ -61,12 +63,15 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                     break;
                 case 1:
                     RebrewingStandBlockEntity.this.fuel = pValue;
+                case 2:
+                    RebrewingStandBlockEntity.this.cost = pValue;
+                    break;
             }
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     };
     
@@ -90,21 +95,23 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         var ogPotionStack = inv.get(1);
         var ingredientStack = inv.get(2);
         var potionBits = getPotionBits();
+        cost = 0;
                 
         if(fuel < MAX_FUEL && fuelStack.is(ModItems.CROPRESSED_NETHERWART.get())) {
             fuel++;
             fuelStack.shrink(1);
             setChanged();
         }
-        
-        if(!canBrew()) {
-            brewProgress = 0;
-        }
-        
-        if(canBrew()) {
-            brewProgress++;
-            if(brewProgress >= MAX_PROGRESS) {
-                brew(level, ogPotionStack, ingredientStack);
+
+        if(!ogPotionStack.isEmpty()) {
+            var potionContent = getEffect(ogPotionStack, ingredientStack);
+            this.cost = potionContent != null ? 4 + (potionContent.size() - 2) * 2 : 0;
+
+            if(canBrew()) {
+                brewProgress++;
+                if(brewProgress >= MAX_PROGRESS) {
+                    brew(level, ogPotionStack, ingredientStack);
+                }
             }
         }
         
@@ -164,7 +171,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             }
         }
 
-        return ret && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get()) && fuel >= 1 && !inv.get(2).isEmpty();
+        return ret && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get()) && fuel >= 1 && !inv.get(2).isEmpty() && cost <= 16;
     }
     
     private boolean[] getPotionBits() {

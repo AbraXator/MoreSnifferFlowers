@@ -2,6 +2,8 @@ package net.abraxator.moresnifferflowers.client.gui.screen;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CyclingSlotBackground;
@@ -44,7 +46,18 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
         int renderFuel;
 
         guiGraphics.blit(BG_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        //ingredientIcon.render(this.menu, guiGraphics, pPartialTick, x, y);
+        if(menu.getCost() <= 16 && menu.getCost() != 0) {
+            var cost = String.valueOf(menu.getCost());
+            var color = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(packResources -> packResources.packId().equals("more_sniffer_flowers_boring")) ? 0x00373737 : 0x00933c4d;
+            var colorOutline = Minecraft.getInstance().getResourceManager().listPacks().anyMatch(packResources -> packResources.packId().equals("more_sniffer_flowers_boring")) ? 0x006d294a : 0x005e224f;
+            drawCost(guiGraphics, cost, x, y, colorOutline, -1, 0);
+            drawCost(guiGraphics, cost, x, y, colorOutline, +1, 0);
+            drawCost(guiGraphics, cost, x, y, colorOutline, 0, -1);
+            drawCost(guiGraphics, cost, x, y, colorOutline, 0, +1);
+            drawCost(guiGraphics, cost, x, y, color, 0, 0);
+        } else {
+            guiGraphics.blit(BG_TEXTURE, x + 35, y + 47, 198, 1, 13, 9);
+        }
         
         if(fuel > 0) { 
             renderFuel = fuel == 1 ? 2 : fuel == 16 ? 18 : fuel + 1;
@@ -94,5 +107,8 @@ public class RebrewingStandScreen extends AbstractContainerScreen<RebrewingStand
     public static boolean isMouseOver(double mouseX, double mouseY, int x, int y, int sizeX, int sizeY) {
         return (mouseX >= x && mouseX <= x + sizeX) && (mouseY >= y && mouseY <= y + sizeY);
     }
-    
+
+    private void drawCost(GuiGraphics guiGraphics, String cost, int x, int y, int color, int xOffset, int yOffset) {
+        this.font.drawInBatch(cost, (x + 42 - this.font.width(cost) / 2) + xOffset, (y + 48) + yOffset, color, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880, this.font.isBidirectional());
+    }
 }
