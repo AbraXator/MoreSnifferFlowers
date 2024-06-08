@@ -31,7 +31,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
     private final ContainerData rebrewingStandData;
 
     public RebrewingStandMenu(int id, Inventory playerInv) {
-        this(id, playerInv, new SimpleContainer(6), new SimpleContainerData(2));
+        this(id, playerInv, new SimpleContainer(6), new SimpleContainerData(3));
     }
     
     public RebrewingStandMenu(int id, Inventory playerInv, Container rebrewingStandContainer, ContainerData rebrewingStandContainerData) {
@@ -120,12 +120,16 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         return movedStack;
     }
 
+    public int getBrewingTicks() {
+        return this.rebrewingStandData.get(0);
+    }
+
     public int getFuel() {
         return this.rebrewingStandData.get(1);
     }
-
-    public int getBrewingTicks() {
-        return this.rebrewingStandData.get(0);
+    
+    public int getCost() {
+        return this.rebrewingStandData.get(2);
     }
     
     @Override

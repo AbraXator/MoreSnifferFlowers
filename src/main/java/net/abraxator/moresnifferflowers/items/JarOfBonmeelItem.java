@@ -1,15 +1,18 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
+import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,12 +24,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.StreamSupport;
 
 public class JarOfBonmeelItem extends Item {
@@ -73,29 +75,29 @@ public class JarOfBonmeelItem extends Item {
         }
 
         if (flag && !level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
-            return placeLogic(blockPosList, ((ServerLevel) level), giantVersion, clickedPos, serverPlayer);
+            return placeLogic(blockPosList, level, giantVersion, clickedPos, serverPlayer);
         }
 
         return InteractionResult.PASS;
     }
 
-    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, ServerLevel level, Block giantVersion, BlockPos clickedPos, ServerPlayer serverPlayer) {
+    private InteractionResult placeLogic(Iterable<BlockPos> blockPosList, Level level, Block giantVersion, BlockPos clickedPos, ServerPlayer player) {
         blockPosList.forEach(pos -> {
             pos = pos.immutable();
             level.destroyBlock(pos, false);
             level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, evaulateModelPos(pos, clickedPos)));
-
             if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
                 entity.pos1 = clickedPos.mutable().move(1, 2, 1);
                 entity.pos2 = clickedPos.mutable().move(-1, 0, -1);
             }
         });
 
-        if(!serverPlayer.getAbilities().instabuild) {
-            serverPlayer.getMainHandItem().shrink(1);
+        if(!player.getAbilities().instabuild) {
+            player.getMainHandItem().shrink(1);
         }
         
-        ModAdvancementCritters.USED_BONMEEL.trigger(serverPlayer);
+        ModAdvancementCritters.USED_BONMEEL.trigger(player);
+        level.playLocalSound(clickedPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
@@ -104,7 +106,7 @@ public class JarOfBonmeelItem extends Item {
 
         posToCompare = posToCompare.above();
         pos = pos.above();
-        
+
         if(pos.equals(posToCompare.north().east())) {
             value = GiantCropBlock.ModelPos.NEU;
         }
@@ -136,6 +138,8 @@ public class JarOfBonmeelItem extends Item {
 
         return value;
     }
+
+
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {

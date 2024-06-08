@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -81,7 +82,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
         
         if(!itemStack.is(Items.BONE_MEAL)) {
-            if (itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4)) {
+            if (itemStack.is(Items.SHEARS) && !(pState.getValue(AGE) >= 4) && !pState.getValue(ModStateProperties.SHEARED)) {
                 return shearAction(pState, pLevel, pPos, pPlayer, pHand, itemStack);
             } else if (this.isMaxAge(pState)) {
                 return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
@@ -98,7 +99,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
         }
 
-        level.playSound(player, pos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS);
+        level.playSound(null, pos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS);
         BlockState state = blockState.setValue(IS_SHEARED, !blockState.getValue(IS_SHEARED));
         level.setBlockAndUpdate(pos, state);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));

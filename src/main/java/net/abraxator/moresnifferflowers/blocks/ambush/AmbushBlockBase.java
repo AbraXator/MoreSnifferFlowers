@@ -8,10 +8,11 @@ import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModParticles;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -19,19 +20,19 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Ravager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.ScheduledTick;
 import org.jetbrains.annotations.Nullable;
 
 public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCropBlock {
@@ -47,6 +48,11 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
         return ModStateProperties.AGE_8;
     }
 
+    @Override   
+    public boolean isRandomlyTicking(BlockState pState) {
+        return !isMaxAge(pState);
+    }
+
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         if(isUpper(pState) && pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasGrown) {
@@ -54,11 +60,6 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
         } else {
             return SHAPE;
         }
-    }
-
-    @Override   
-    public boolean isRandomlyTicking(BlockState pState) {
-        return !isMaxAge(pState);
     }
 
     @Nullable
@@ -70,16 +71,6 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         return this.mayPlaceOn(pLevel.getBlockState(pPos.below())) && sufficientLight(pLevel, pPos) && super.canSurvive(pState, pLevel, pPos);
-    }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(!pState.is(pNewState.getBlock()) && isUpper(pState) && pLevel.getBlockEntity(pPos) instanceof AmbushBlockEntity entity && entity.hasGrown) {
-            ItemEntity item = new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), ModBlocks.AMBER.get().asItem().getDefaultInstance());
-            pLevel.addFreshEntity(item);
-        }
-
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
     
     @Override
@@ -124,7 +115,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
         }
     }
 
-    void grow(ServerLevel pLevel, BlockState pState, BlockPos pPos, int i) {
+    public void grow(ServerLevel pLevel, BlockState pState, BlockPos pPos, int i) {
         int k = Math.min(getAge(pState) + i, getMaxAge());
         if(this.canGrow(pLevel, pPos, pState, k)) {
             pLevel.setBlock(pPos, pState.setValue(getAgeProperty(), k), 2);
@@ -143,7 +134,8 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
         if(pLevel.getBlockEntity(getLowerHalf(pLevel, pPos, pState).blockPos().above()) instanceof AmbushBlockEntity entity && entity.hasGrown) {
             var lowerPos = isLower(pState) ? pPos : pPos.below();
             popResource(pLevel, pPos, new ItemStack(ModBlocks.AMBER.get()));
-            
+            pLevel.playSound(null, pPos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + pLevel.random.nextFloat() * 0.4F);
+
             for(int i = 0; i <= 1; i++) {
                 var halfPos = i == 0 ? lowerPos : lowerPos.above();
                 var state = pLevel.getBlockState(halfPos).setValue(getAgeProperty(), 7);
@@ -186,9 +178,9 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
-        PosAndState posAndState = this.getLowerHalf(pLevel, pPos, pState);
-        return posAndState != null && this.canGrow(pLevel, posAndState.blockPos(), posAndState.state(), getAge(posAndState.state()) + 1);
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean b) {
+        PosAndState posAndState = this.getLowerHalf(levelReader, blockPos, blockState);
+        return posAndState != null && this.canGrow(levelReader, posAndState.blockPos(), posAndState.state(), getAge(posAndState.state()) + 1);
     }
 
     @Override
@@ -208,7 +200,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {}
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
         return ModItems.AMBUSH_SEEDS.get().getDefaultInstance();
     }
 
@@ -223,12 +215,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     }
 
     @Override
-    public BlockState getPlant(BlockGetter level, BlockPos pos) {
-        return this.defaultBlockState();
-    }
-
-    @Override
-    public Item asItem() {
-        return ModItems.AMBUSH_SEEDS.get();
+    public BlockState getPlant(BlockGetter blockGetter, BlockPos blockPos) {
+        return blockGetter.getBlockState(blockPos);
     }
 }

@@ -31,6 +31,7 @@ public class ModDatagen{
 
         //BLOCKMODELS
         generator.addProvider(event.includeClient(), new ModBlockModelGenerator(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ModSoundProvider(packOutput, existingFileHelper));
         
         //DATAPACK REGISTRIES
         generator.addProvider(event.includeServer(), new RegistryDataGenerator(packOutput, completableFuture));

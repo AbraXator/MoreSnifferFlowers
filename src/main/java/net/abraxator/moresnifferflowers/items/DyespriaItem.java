@@ -6,6 +6,7 @@ import net.abraxator.moresnifferflowers.colors.Colorable;
 import net.abraxator.moresnifferflowers.colors.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModSoundEvents;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -65,7 +66,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
             } else {
                 colorColumn(stack, serverLevel, blockPos);
             }
-            level.playSound(player, blockPos, SoundEvents.DYE_USE, SoundSource.BLOCKS);
+            level.playSound(null, blockPos, ModSoundEvents.DYESPRIA_PAINT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
             ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {

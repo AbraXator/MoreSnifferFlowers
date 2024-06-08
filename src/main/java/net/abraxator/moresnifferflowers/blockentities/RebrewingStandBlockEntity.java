@@ -7,9 +7,9 @@ import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModMobEffects;
 import net.minecraft.Util;
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -29,9 +29,11 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
@@ -42,6 +44,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     private NonNullList<ItemStack> inv = NonNullList.withSize(6, ItemStack.EMPTY);
     int brewProgress;
     int fuel;
+    int cost;
     private boolean[] lastPotionCount;
     public final ContainerData containerData = new ContainerData() {
         @Override
@@ -49,6 +52,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             return switch (pIndex) {
                 case 0 -> RebrewingStandBlockEntity.this.brewProgress;
                 case 1 -> RebrewingStandBlockEntity.this.fuel;
+                case 2 -> RebrewingStandBlockEntity.this.cost;
                 default -> 0;
             };
         }
@@ -61,15 +65,18 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                     break;
                 case 1:
                     RebrewingStandBlockEntity.this.fuel = pValue;
+                    break;
+                case 2:
+                    RebrewingStandBlockEntity.this.cost = pValue;
             }
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     };
-    
+
     public RebrewingStandBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.REBREWING_STAND.get(), pPos, pBlockState);
     }
@@ -90,15 +97,24 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         var ogPotionStack = inv.get(1);
         var ingredientStack = inv.get(2);
         var potionBits = getPotionBits();
-                
+        cost = 0;
+
         if(fuel < MAX_FUEL && fuelStack.is(ModItems.CROPRESSED_NETHERWART.get())) {
             fuel++;
             fuelStack.shrink(1);
             setChanged();
         }
-        
-        if(!canBrew()) {
-            brewProgress = 0;
+
+        if(!ogPotionStack.isEmpty()) {
+            var potionContent = getEffect(ogPotionStack, ingredientStack);
+            this.cost = potionContent != null ? 4 + (potionContent.size() - 2) * 2 : 0;
+
+            if(canBrew()) {
+                brewProgress++;
+                if(brewProgress >= MAX_PROGRESS) {
+                    brew(level, ogPotionStack, ingredientStack);
+                }
+            }
         }
         
         if(canBrew()) {
@@ -107,12 +123,12 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                 brew(level, ogPotionStack, ingredientStack);
             }
         }
-        
+
         if(!Arrays.equals(potionBits, lastPotionCount)) {
             bottleStateLogic(potionBits);
         }
     }
-    
+
     private void brew(Level level, ItemStack ogPotionStack, ItemStack ingredientStack) {
         var effects = getEffect(ogPotionStack, ingredientStack);
         if(effects != null) {
@@ -136,11 +152,12 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             ingredientStack.shrink(1);
             inv.set(1, Items.GLASS_BOTTLE.getDefaultInstance());
             fuel -= 4;
-            brewProgress = 0;
             level.playSound(null, getBlockPos(), SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
+        
+        brewProgress = 0;
     }
-    
+
     private void bottleStateLogic(boolean[] potionBits) {
         lastPotionCount = potionBits;
         BlockState blockstate = level.getBlockState(getBlockPos().below());
@@ -154,7 +171,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
         level.setBlock(getBlockPos().below(), blockstate, 2);
     }
-    
+
     private boolean canBrew() {
         boolean ret = false;
 
@@ -166,7 +183,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
         return ret && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get()) && fuel >= 1 && !inv.get(2).isEmpty();
     }
-    
+
     private boolean[] getPotionBits() {
         boolean[] ret = new boolean[3];
 
@@ -178,33 +195,33 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
         return ret;
     }
-    
+
     private List<MobEffectInstance> getEffect(ItemStack inputPotion, ItemStack ingredient) {
         List<MobEffectInstance> ret = new ArrayList<>();
         List<Integer> durList = new ArrayList<>();
-        ListTag listTag = ((ListTag) inputPotion.getOrCreateTag().get("CustomPotionEffects"));
-        int defaultAmp = 1; 
-        int defaultDur = 6000; 
-        
+        ListTag listTag = ((ListTag) inputPotion.getOrCreateTag().get("custom_potion_effects"));
+        int defaultAmp = 1;
+        int defaultDur = 6000;
+
         if (listTag == null) {
             return null;
         }
 
         for (int i = 0; i < listTag.size(); i++) {
             var potion = listTag.getCompound(i);
-            var id = potion.getString("forge:id");
+            var id = potion.getString("neoforge:id");
             var amp = potion.getByte("Amplifier") + (ingredient.is(Items.GLOWSTONE_DUST) ? 2 : defaultAmp);
             var dur = potion.getInt("Duration") + (ingredient.is(Items.REDSTONE) ? 12000 : defaultDur);
             var splitId = id.split(":");
-            var instance = new MobEffectInstance(ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(splitId[0], splitId[1])), dur, amp);
-            
+            var instance = new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(splitId[0], splitId[1])), dur, amp);
+
             durList.add(dur);
             ret.add(instance);
         }
-        
+
         int maxInt = Collections.max(durList);
         ret.add(new MobEffectInstance(ModMobEffects.EXTRACTED.get(), maxInt));
-        
+
         return ret;
     }
     

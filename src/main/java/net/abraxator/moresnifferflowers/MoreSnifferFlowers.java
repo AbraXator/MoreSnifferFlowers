@@ -9,12 +9,9 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -26,25 +23,26 @@ public class MoreSnifferFlowers {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public MoreSnifferFlowers() {
-        
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        ModMenuTypes.MENU_TYPES.register(modEventBus);
         ModEntityTypes.ENTITIES.register(modEventBus);
-        ModMobEffects.EFFECTS.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
         ModParticles.PARTICLES.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-        ModMenuTypes.MENU_TYPES.register(modEventBus);
+        ModMobEffects.EFFECTS.register(modEventBus);
+        ModSoundEvents.SOUNDS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
-        
+
         if(ModList.get().isLoaded("quark")) {
             MinecraftForge.EVENT_BUS.addListener(OtherModEvents::onSimpleHarvest);
         }
