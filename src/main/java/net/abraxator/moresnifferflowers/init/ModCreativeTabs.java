@@ -15,7 +15,7 @@ public class ModCreativeTabs {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MORESNIFFERFLOWERS_TAB = TABS.register("moresnifferflowers_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("moresnifferflowers.creative_tab"))
-            .icon(() -> new ItemStack(ModItems.DYESPRIA.get()))
+            .icon(() -> new ItemStack(ModItems.CREATIVE_TAB_ICON.get()))
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.DAWNBERRY_VINE_SEEDS.get());
                 output.accept(ModItems.DAWNBERRY.get());
