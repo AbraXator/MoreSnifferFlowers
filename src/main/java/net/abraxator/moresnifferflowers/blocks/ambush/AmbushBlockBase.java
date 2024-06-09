@@ -102,10 +102,16 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         if(getAge(pState) == 7 && pRandom.nextInt(100) < 10 && isLower(pState)) {
-            double dx = pPos.getX() + pRandom.nextDouble();
-            double dy = pPos.getY() + pRandom.nextDouble();
-            double dz = pPos.getZ() + pRandom.nextDouble();
-            pLevel.addParticle(ModParticles.AMBUSH.get(), dx, dy, dz, 0, 0, 0);
+            pLevel.addAlwaysVisibleParticle(
+                    ModParticles.AMBUSH.get(), 
+                    true,
+                    (double)pPos.getX() + 0.5 + pRandom.nextDouble() / 3.0 * (double)(pRandom.nextBoolean() ? 1 : -1),
+                    (double)pPos.getY() + pRandom.nextDouble() + pRandom.nextDouble(),
+                    (double)pPos.getZ() + 0.5 + pRandom.nextDouble() / 3.0 * (double)(pRandom.nextBoolean() ? 1 : -1),
+                    0.0,
+                    0.07,
+                    0.0
+            );
         }
     }
 
