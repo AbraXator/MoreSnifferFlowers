@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "moresnifferflowers:block/vivicus_log",
+    "side": "moresnifferflowers:block/vivicus_log"
+  }
+}
