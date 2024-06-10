@@ -20,16 +20,26 @@ import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.*;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforgespi.locating.IModFile;
+
+import java.util.Optional;
 
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -106,30 +116,27 @@ public class ClientEvents {
     }
 
 
-    /*@SubscribeEvent
+    @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
         if(event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFile iModFileInfo = ModList.get().getModFileById(MoreSnifferFlowers.MOD_ID).getFile();
             event.addRepositorySource(pOnLoad -> {
                 String name = "more_sniffer_flowers_rtx";
                 var pack = Pack.readMetaAndCreate(
-                        name,
-                        Component.literal("More Sniffer Flowers RTX"),
-                        false,
+                        new PackLocationInfo(name, Component.literal("More Sniffer Flowers RTX"), PackSource.BUILT_IN, Optional.empty()),
                         new Pack.ResourcesSupplier() {
                             @Override
-                            public PackResources openPrimary(String pId) {
-                                return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/" + name), false);
+                            public PackResources openPrimary(PackLocationInfo pLocation) {
+                                return new PathPackResources(pLocation, iModFileInfo.findResource("resourcepacks/" + name));
                             }
 
                             @Override
-                            public PackResources openFull(String pId, Pack.Info pInfo) {
-                                return openPrimary(pId);
+                            public PackResources openFull(PackLocationInfo pLocation, Pack.Metadata pMetadata) {
+                                return openPrimary(pLocation);
                             }
                         },
                         PackType.CLIENT_RESOURCES,
-                        Pack.Position.TOP,
-                        PackSource.BUILT_IN);
+                        new PackSelectionConfig(false, Pack.Position.TOP, false));
                 if(pack != null) {
                     pOnLoad.accept(pack);
                 }
@@ -138,27 +145,24 @@ public class ClientEvents {
             event.addRepositorySource(pOnLoad -> {
                 String name = "more_sniffer_flowers_boring";
                     var pack = Pack.readMetaAndCreate(
-                            name,
-                            Component.literal("More Sniffer Flowers Boring"),
-                            false,
+                            new PackLocationInfo(name, Component.literal("More Sniffer Flowers Boring"),  PackSource.BUILT_IN, Optional.empty()),
                             new Pack.ResourcesSupplier() {
                                 @Override
-                                public PackResources openPrimary(String pId) {
-                                    return new PathPackResources(pId, iModFileInfo.findResource("resourcepacks/" + name), false);
+                                public PackResources openPrimary(PackLocationInfo packLocationInfo) {
+                                    return new PathPackResources(packLocationInfo, iModFileInfo.findResource("resourcepacks/" + name));
                                 }
 
                                 @Override
-                                public PackResources openFull(String pId, Pack.Info pInfo) {
-                                    return openPrimary(pId);
+                                public PackResources openFull(PackLocationInfo packLocationInfo, Pack.Metadata metadata) {
+                                    return openPrimary(packLocationInfo);
                                 }
                             },
                             PackType.CLIENT_RESOURCES,
-                            Pack.Position.TOP,
-                            PackSource.BUILT_IN);
+                            new PackSelectionConfig(false, Pack.Position.TOP, false));
                     if(pack != null) {
                         pOnLoad.accept(pack);
                     }
             });
         }
-    }*/
+    }
 }

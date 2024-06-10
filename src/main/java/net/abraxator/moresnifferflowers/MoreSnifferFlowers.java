@@ -20,6 +20,7 @@ public class MoreSnifferFlowers {
 
     public MoreSnifferFlowers(IEventBus modEventBus, Dist dist) {
         if(dist.isClient()) modEventBus.addListener(ClientEvents::clientSetup);
+        modEventBus.addListener(this::commonSetup);
         modEventBus.addListener((RegisterEvent e) -> ModAdvancementCritters.init());
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
@@ -28,13 +29,16 @@ public class MoreSnifferFlowers {
         ModEntityTypes.ENTITIES.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
-        ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
         ModParticles.PARTICLES.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         ModMobEffects.EFFECTS.register(modEventBus);
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModSoundEvents.SOUNDS.register(modEventBus);
+    }
+    
+    private void commonSetup(final FMLCommonSetupEvent event) {
+
     }
 
     public static ResourceLocation loc(String path) {

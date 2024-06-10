@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
+import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.abraxator.moresnifferflowers.init.ModSoundEvents;
@@ -41,17 +42,16 @@ public class CropressorBlockEntity extends ModBlockEntity {
         var cropressingRecipeOptional = quickCheck.getRecipeFor(container, level);
         
         if(content.getCount() >= INV_SIZE && cropressingRecipeOptional.isPresent()) {
+            result = cropressingRecipeOptional.get().value().result();
+            progress++;
+
             if(sound) {
                 level.playSound(null, worldPosition, ModSoundEvents.CROPRESSOR_BELT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + (level.getRandom().nextFloat() * 0.2)));
                 sound = false;
             }
             
-            result = cropressingRecipeOptional.get().value().result();
-            progress++;
-            
             if(progress % 10 == 0) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
-                
             }
 
             if(progress >= MAX_PROGRESS) {
@@ -64,7 +64,6 @@ public class CropressorBlockEntity extends ModBlockEntity {
                 level.gameEvent(GameEvent.BLOCK_CHANGE, getBlockPos(), GameEvent.Context.of(getBlockState()));
                 setChanged();
                 progress = 0;
-                sound = true;
             }
         }
     }
@@ -73,21 +72,38 @@ public class CropressorBlockEntity extends ModBlockEntity {
         return 0 >= progress || content.getCount() >= INV_SIZE;
     }
 
-    public void addItem(ItemStack pStack, Level level) {
-        if(content.getCount() >= INV_SIZE || (!content.is(pStack.getItem()) && !content.isEmpty())) return;
-        var freeSpace = INV_SIZE - content.getCount();
-        var toInsert = Math.min(pStack.getCount(), freeSpace);
-        content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
-        pStack.shrink(toInsert);
-        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+    public ItemStack addItem(ItemStack pStack, Level level) {
+        if(content.getCount() >= INV_SIZE) {
+            return pStack;
+        } else if(!content.is(pStack.getItem()) && !content.isEmpty()) {
+            var ret = content.copy();
+            var toInsert = Math.min(pStack.getCount(), INV_SIZE);
+            content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
+            pStack.shrink(toInsert);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+            
+            return ret;
+        } else {
+            var freeSpace = INV_SIZE - content.getCount();
+            var toInsert = Math.min(pStack.getCount(), freeSpace);
+            content = new ItemStack(pStack.getItem(), content.getCount() + toInsert);
+            pStack.shrink(toInsert);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+            
+            return pStack;
+        }
     }
 
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.saveAdditional(pTag, pRegistries);
-        pTag.put("content", content.saveOptional(pRegistries));
+        CompoundTag tagContent = new CompoundTag();
+        content.save(pRegistries, tagContent);
+        CompoundTag tagResult = new CompoundTag();
+        content.save(pRegistries, tagResult);
+        pTag.put("content", tagContent);
         pTag.putInt("progress", progress);
-        pTag.put("result", result.save(pRegistries, pTag));
+        pTag.put("result", tagResult);
     }
 
     @Override
@@ -105,7 +121,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         CompoundTag compoundtag = new CompoundTag();
-        compoundtag.put("result", result.saveOptional(pRegistries));
+        compoundtag.put("result", result.save(pRegistries, compoundtag));
         compoundtag.putInt("progress", progress);
         return compoundtag;
     }
