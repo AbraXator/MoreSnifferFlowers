@@ -130,6 +130,38 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(ModStateProperties.AGE_3, 3))
                                 .invert())));
+        
+        dropSelf(ModBlocks.CORRUPTED_LOG.get());
+        dropSelf(ModBlocks.CORRUPTED_WOOD.get());
+        dropSelf(ModBlocks.STRIPPED_CORRUPTED_LOG.get());
+        dropSelf(ModBlocks.STRIPPED_CORRUPTED_WOOD.get());
+        dropSelf(ModBlocks.CORRUPTED_PLANKS.get());
+        dropSelf(ModBlocks.CORRUPTED_STAIRS.get());
+        add(ModBlocks.CORRUPTED_SLAB.get(), this::createSlabItemTable);
+        dropSelf(ModBlocks.CORRUPTED_FENCE.get());
+        dropSelf(ModBlocks.CORRUPTED_FENCE_GATE.get());
+        dropSelf(ModBlocks.CORRUPTED_DOOR.get());
+        dropSelf(ModBlocks.CORRUPTED_TRAPDOOR.get()); 
+        dropSelf(ModBlocks.CORRUPTED_PRESSURE_PLATE.get());
+        dropSelf(ModBlocks.CORRUPTED_BUTTON.get());
+        add(ModBlocks.CORRUPTED_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.CORRUPTED_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
+        dropSelf(ModBlocks.CORRUPTED_SAPLING.get());
+
+        dropSelf(ModBlocks.VIVICUS_LOG.get());
+        dropSelf(ModBlocks.VIVICUS_WOOD.get());
+        dropSelf(ModBlocks.STRIPPED_VIVICUS_LOG.get());
+        dropSelf(ModBlocks.STRIPPED_VIVICUS_WOOD.get());
+        dropSelf(ModBlocks.VIVICUS_PLANKS.get());
+        dropSelf(ModBlocks.VIVICUS_STAIRS.get());
+        add(ModBlocks.VIVICUS_SLAB.get(), this::createSlabItemTable);
+        dropSelf(ModBlocks.VIVICUS_FENCE.get());
+        dropSelf(ModBlocks.VIVICUS_FENCE_GATE.get());
+        dropSelf(ModBlocks.VIVICUS_DOOR.get());
+        dropSelf(ModBlocks.VIVICUS_TRAPDOOR.get());
+        dropSelf(ModBlocks.VIVICUS_PRESSURE_PLATE.get());
+        dropSelf(ModBlocks.VIVICUS_BUTTON.get());
+        add(ModBlocks.VIVICUS_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.VIVICUS_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
+        dropSelf(ModBlocks.VIVICUS_SAPLING.get());
     }
 
     private LootTable.Builder giantCropLoot(Item crop, Item cropressed, Item special, Item piece, Item trim) {
