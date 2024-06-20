@@ -45,9 +45,9 @@ public interface ModCropBlock extends IPlantable, BonemealableBlock {
     default void makeGrowOnTick(Block block, BlockState blockState, Level level, BlockPos blockPos) {
         if (!isMaxAge(blockState) && level.isAreaLoaded(blockPos, 1) && level.getRawBrightness(blockPos, 0) >= 9) {
             float f = getGrowthSpeed(block, level, blockPos);
-            if (CommonHooks.onCropsGrowPre(level, blockPos, blockState, level.getRandom().nextInt((int)(25.0F / f) + 1) == 0)) {
+            if (CommonHooks.canCropGrow(level, blockPos, blockState, level.getRandom().nextInt((int)(25.0F / f) + 1) == 0)) {
                 level.setBlock(blockPos, blockState.setValue(getAgeProperty(), (blockState.getValue(getAgeProperty()) + 1)), 2);
-                CommonHooks.onCropsGrowPost(level, blockPos, blockState);
+                CommonHooks.fireCropGrowPost(level, blockPos, blockState);
             }
         }
     }

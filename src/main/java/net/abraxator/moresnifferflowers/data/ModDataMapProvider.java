@@ -18,7 +18,7 @@ public class ModDataMapProvider extends DataMapProvider {
 
     @Override
     protected void gather() {
-        builder(NeoForgeDataMaps.COMPOSTABLES)
+        /*builder(NeoForgeDataMaps.COMPOSTABLES)
                 .add(ModItems.DAWNBERRY_VINE_SEEDS, new Compostable(0.3F), false)
                 .add(ModItems.DAWNBERRY, new Compostable(0.3F), false)
                 .add(ModItems.AMBUSH_SEEDS, new Compostable(0.3F), false)
@@ -31,6 +31,6 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(ModItems.CROPRESSED_POTATO, new Compostable(1.0F), false)
                 .add(ModItems.CROPRESSED_CARROT, new Compostable(1.0F), false)
                 .add(Holder.direct(ModBlocks.CORRUPTED_LEAVES.asItem()), new Compostable(0.4F), false)
-                .add(Holder.direct(ModBlocks.CORRUPTED_SAPLING.asItem()), new Compostable(0.4F), false);
+                .add(Holder.direct(ModBlocks.CORRUPTED_SAPLING.asItem()), new Compostable(0.4F), false);*/
     }
 }

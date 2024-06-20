@@ -47,7 +47,7 @@ public class ModDatagen {
         //generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, future, existingFileHelper));
     
         //DATA MAPS
-        generator.addProvider(event.includeServer(), new ModDataMapProvider(packOutput, future));
+        //generator.addProvider(event.includeServer(), new ModDataMapProvider(packOutput, future));
         
         //ADVANCEMENTS
         generator.addProvider(event.includeServer(), new AdvancementProvider(packOutput, registries, existingFileHelper, List.of(new ModAdvancementGenerator())));
