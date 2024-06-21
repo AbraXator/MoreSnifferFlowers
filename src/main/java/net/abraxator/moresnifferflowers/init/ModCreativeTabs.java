@@ -64,6 +64,21 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.CORRUPTED_BUTTON.get());
                 output.accept(ModBlocks.CORRUPTED_LEAVES.get());
                 output.accept(ModBlocks.CORRUPTED_SAPLING.get());
+                output.accept(ModBlocks.VIVICUS_LOG.get());
+                output.accept(ModBlocks.VIVICUS_WOOD.get());
+                output.accept(ModBlocks.STRIPPED_VIVICUS_LOG.get());
+                output.accept(ModBlocks.STRIPPED_VIVICUS_WOOD.get());
+                output.accept(ModBlocks.VIVICUS_PLANKS.get());
+                output.accept(ModBlocks.VIVICUS_STAIRS.get());
+                output.accept(ModBlocks.VIVICUS_SLAB.get());
+                output.accept(ModBlocks.VIVICUS_FENCE.get());
+                output.accept(ModBlocks.VIVICUS_FENCE_GATE.get());
+                output.accept(ModBlocks.VIVICUS_DOOR.get());
+                output.accept(ModBlocks.VIVICUS_TRAPDOOR.get());
+                output.accept(ModBlocks.VIVICUS_PRESSURE_PLATE.get());
+                output.accept(ModBlocks.VIVICUS_BUTTON.get());
+                output.accept(ModBlocks.VIVICUS_LEAVES.get());
+                output.accept(ModBlocks.VIVICUS_SAPLING.get());
             })
             .withBackgroundLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID,  "textures/gui/container/tab_items.png"))
             .withTabsImage(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "textures/gui/container/tabs.png"))
