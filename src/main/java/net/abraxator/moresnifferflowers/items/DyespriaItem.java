@@ -52,34 +52,36 @@ public class DyespriaItem extends BlockItem implements Colorable {
         BlockPos blockPos = pContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
         ItemStack stack = pContext.getItemInHand();
-        boolean flag = false;
 
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
-
-        if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-            if (!player.isShiftKeyDown()) {
-                colorOne(stack, serverLevel, blockPos, blockState);
-            } else {
-                colorColumn(stack, serverLevel, blockPos);
+        
+        if(blockState.getBlock() instanceof Colorable) {
+            if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
+                if (!player.isShiftKeyDown()) {
+                    colorOne(stack, serverLevel, blockPos, blockState);
+                } else {
+                    colorColumn(stack, serverLevel, blockPos);
+                }
+                level.playSound(null, blockPos, ModSoundEvents.DYESPRIA_PAINT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
+                ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
             }
-            level.playSound(null, blockPos, ModSoundEvents.DYESPRIA_PAINT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
-            ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
+            
             return InteractionResult.sidedSuccess(level.isClientSide);
-        } else {
-            var posForDyespria = blockPos.above();
-            var blockHitResult = new BlockHitResult(posForDyespria.below().getCenter(), Direction.UP, posForDyespria.below(), false);
-            var useOnCtx = new UseOnContext(level, player, pContext.getHand(), stack, blockHitResult);
-            var result = super.useOn(useOnCtx);
-
-            if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
-                entity.dye = Dye.getDyeFromStack(stack);
-                entity.setChanged();
-            }
-
-            return result;
         }
+
+        var posForDyespria = blockPos.above();
+        var blockHitResult = new BlockHitResult(posForDyespria.below().getCenter(), Direction.UP, posForDyespria.below(), false);
+        var useOnCtx = new UseOnContext(level, player, pContext.getHand(), stack, blockHitResult);
+        var result = super.useOn(useOnCtx);
+
+        if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
+            entity.dye = Dye.getDyeFromStack(stack);
+            entity.setChanged();
+        }
+
+        return result;
     }
 
     @Nullable
@@ -133,17 +135,6 @@ public class DyespriaItem extends BlockItem implements Colorable {
             return true;
         }
         return false;
-    }
-
-    private void particles(RandomSource randomSource, ServerLevel level, Dye dye, BlockPos blockPos) {
-        for(int i = 0; i <= randomSource.nextIntBetweenInclusive(5, 10); i++) {
-            level.sendParticles(
-                    new DustParticleOptions(dye.isEmpty() ? Vec3.fromRGB24(14013909).toVector3f() : Vec3.fromRGB24(Dye.colorForDye(this, dye.color())).toVector3f(), 1.0F),
-                    blockPos.getX() + randomSource.nextDouble(),
-                    blockPos.getY() + randomSource.nextDouble(),
-                    blockPos.getZ() + randomSource.nextDouble(),
-                    1, 0, 0, 0, 0.3D);
-        }
     }
 
     @Override

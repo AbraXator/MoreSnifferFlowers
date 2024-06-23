@@ -4,6 +4,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.state.properties.*;
 
 public class ModStateProperties {
+    public static final IntegerProperty AGE_2 = IntegerProperty.create("age", 0, 2);
     public static final IntegerProperty AGE_3 = IntegerProperty.create("age", 0, 3);
     public static final IntegerProperty AGE_8 = IntegerProperty.create("age", 0, 8);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;

@@ -1,6 +1,8 @@
-// 1.20.6	2024-06-20T22:46:01.4588459	Registries
+// 1.20.6	2024-06-23T21:07:45.2589407	Registries
 469d4b21cfcc0954d00c2347d4c8e8a75ca92bc4 data/minecraft/worldgen/configured_feature/corrupted_tree.json
+f8f51029965571a1df753844bcb8cfa5f0197070 data/minecraft/worldgen/configured_feature/vivicus_tree.json
 1084a0f24fd2e6125464806392d232baf052977d data/minecraft/worldgen/placed_feature/corrupted_tree.json
+21336cdeb57f046b12afb958d6b58741fdd02ca3 data/minecraft/worldgen/placed_feature/vivicus_tree.json
 882bd85a7a641611c1ea698aef472b99ea8eba59 data/moresnifferflowers/banner_pattern/ambush.json
 77d03d75537e90eb7a411e54a09fc2129c3fca5e data/moresnifferflowers/trim_material/amber.json
 f0a8018649f4e20bcf1a5d1000284a68c2aed7ac data/moresnifferflowers/trim_material/beetroot.json

@@ -53,7 +53,7 @@ public interface ModCropBlock extends IPlantable, BonemealableBlock {
     }
 
     default void makeGrowOnBonemeal(Level level, BlockPos blockPos, BlockState blockState) {
-        level.setBlock(blockPos, blockState.setValue(getAgeProperty(), getAge(blockState) >= 3 ? getAge(blockState) : getAge(blockState) + 1), 2);
+        level.setBlock(blockPos, blockState.setValue(getAgeProperty(), isMaxAge(blockState) ? getAge(blockState) : getAge(blockState) + 1), 2);
     }
 
     default boolean mayPlaceOn(BlockState pState) {
