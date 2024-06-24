@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
+import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
@@ -31,10 +32,12 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.text.WordUtils;
+import org.apache.logging.log4j.core.filter.LevelMatchFilter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -56,24 +59,34 @@ public class DyespriaItem extends BlockItem implements Colorable {
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
-        
-        if(blockState.getBlock() instanceof Colorable) {
-            if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-                if (!player.isShiftKeyDown()) {
-                    colorOne(stack, serverLevel, blockPos, blockState);
-                } else {
-                    colorColumn(stack, serverLevel, blockPos);
-                }
-                level.playSound(null, blockPos, ModSoundEvents.DYESPRIA_PAINT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
-                ModAdvancementCritters.USED_DYESPRIA.trigger(serverPlayer);
-            }
+
+        if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
+            handleCaulorflower(player, stack, level, blockPos, blockState);
+        } else if (blockState.getBlock() instanceof ColorableVivicusBlock colorable) {
+            colorable.addDye(level, blockPos, blockState, player);
             
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
+        
+        return handlePlacement(blockPos, level, player, pContext.getHand(), stack);
+    }
+    
+    private InteractionResult handleCaulorflower(Player player, ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
+        if (!player.isShiftKeyDown()) {
+            colorOne(stack, ((ServerLevel) level), blockPos, blockState);
+        } else {
+            colorColumn(stack, ((ServerLevel) level), blockPos);
+        }
+        level.playSound(null, blockPos, ModSoundEvents.DYESPRIA_PAINT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
+        ModAdvancementCritters.USED_DYESPRIA.trigger(((ServerPlayer) player));
 
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+    
+    private InteractionResult handlePlacement(BlockPos blockPos, Level level, Player player, InteractionHand hand, ItemStack stack) {
         var posForDyespria = blockPos.above();
         var blockHitResult = new BlockHitResult(posForDyespria.below().getCenter(), Direction.UP, posForDyespria.below(), false);
-        var useOnCtx = new UseOnContext(level, player, pContext.getHand(), stack, blockHitResult);
+        var useOnCtx = new UseOnContext(level, player, hand, stack, blockHitResult);
         var result = super.useOn(useOnCtx);
 
         if (level.getBlockEntity(blockPos.above()) instanceof DyespriaPlantBlockEntity entity) {
@@ -83,7 +96,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
 
         return result;
     }
-
+    
     @Nullable
     @Override
     protected BlockState getPlacementState(BlockPlaceContext pContext) {

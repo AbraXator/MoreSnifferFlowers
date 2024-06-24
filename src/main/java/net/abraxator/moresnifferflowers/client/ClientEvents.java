@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.client;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.CaulorflowerBlock;
+import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.client.model.block.CropressorModel;
@@ -16,6 +17,7 @@ import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEnt
 import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
+import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
@@ -98,6 +100,19 @@ public class ClientEvents {
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());
+        event.register((pState, pLevel, pPos, pTintIndex) -> {
+            var colorable = ((ColorableVivicusBlock) pState.getBlock());
+            if(pTintIndex == 0) {
+                return Dye.colorForDye(colorable, pState.getValue(colorable.getColorProperty()));
+            }
+            
+            return -1;
+        }, ModBlocks.VIVICUS_LOG.get(), ModBlocks.VIVICUS_WOOD.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get(), 
+           ModBlocks.STRIPPED_VIVICUS_WOOD.get(), ModBlocks.VIVICUS_PLANKS.get(), ModBlocks.VIVICUS_STAIRS.get(), 
+           ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_FENCE.get(), ModBlocks.VIVICUS_FENCE_GATE.get(), 
+           ModBlocks.VIVICUS_DOOR.get(), ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get(), 
+           ModBlocks.VIVICUS_BUTTON.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SAPLING.get(), 
+           ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), ModBlocks.CORRUPTED_SPROUTING_VIVICUS_LEAVES.get());
     }
 
     @SubscribeEvent
