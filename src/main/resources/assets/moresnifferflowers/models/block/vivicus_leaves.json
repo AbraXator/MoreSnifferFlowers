@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/leaves",
+  "parent": "moresnifferflowers:block/colorable_wood/leaves",
   "textures": {
     "all": "moresnifferflowers:block/vivicus_leaves"
   }

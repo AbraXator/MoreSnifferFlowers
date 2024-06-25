@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
-	"render_type": "cutout",
 	"texture_size": [32, 32],
+	"parent": "minecraft:block/cube_all",
 	"textures": {
 		"0": "moresnifferflowers:block/vivicus_leaves",
 		"1": "moresnifferflowers:block/corrupted_sprouting_vivicus_leaves",
@@ -18,34 +18,6 @@
 				"west": {"uv": [0, 0, 16, 16], "texture": "#0"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
-			}
-		},
-		{
-			"name": "stage2a",
-			"from": [5.5, 4.80447, 4.04784],
-			"to": [10.5, 9.80447, 8.04784],
-			"rotation": {"angle": -45, "axis": "x", "origin": [8.25, 6.94239, 8.125]},
-			"faces": {
-				"north": {"uv": [0, 0, 2.5, 2.5], "texture": "#1"},
-				"east": {"uv": [7.5, 12.5, 5, 10.5], "rotation": 90, "texture": "#1"},
-				"south": {"uv": [0, 2.5, 2.5, 5], "texture": "#1"},
-				"west": {"uv": [5, 10.5, 7.5, 12.5], "rotation": 90, "texture": "#1"},
-				"up": {"uv": [7, 2, 4.5, 0], "texture": "#1"},
-				"down": {"uv": [10, 10.5, 7.5, 12.5], "texture": "#1"}
-			}
-		},
-		{
-			"name": "stage2a",
-			"from": [6, 5.40276, 7.93261],
-			"to": [10, 9.40276, 11.93261],
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [7.75, 6.94239, 7.875]},
-			"faces": {
-				"north": {"uv": [10, 4, 12, 6], "texture": "#1"},
-				"east": {"uv": [12, 8, 14, 6], "rotation": 90, "texture": "#1"},
-				"south": {"uv": [12, 4, 14, 6], "texture": "#1"},
-				"west": {"uv": [8, 8, 10, 6], "rotation": 270, "texture": "#1"},
-				"up": {"uv": [12, 8, 10, 6], "texture": "#1"},
-				"down": {"uv": [16, 6, 14, 8], "texture": "#1"}
 			}
 		},
 		{

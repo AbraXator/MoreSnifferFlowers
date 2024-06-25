@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/door_top_left",
+  "parent": "moresnifferflowers:block/colorable_wood/door_top_left",
   "render_type": "cutout",
   "textures": {
     "bottom": "moresnifferflowers:block/vivicus_door_bottom",

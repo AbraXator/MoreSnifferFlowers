@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/template_fence_gate_open",
+  "parent": "moresnifferflowers:block/colorable_wood/template_fence_gate_open",
   "textures": {
     "texture": "moresnifferflowers:block/vivicus_planks"
   }

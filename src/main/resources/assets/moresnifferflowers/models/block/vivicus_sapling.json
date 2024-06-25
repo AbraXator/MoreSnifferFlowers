@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "moresnifferflowers:block/colorable_wood/cross",
   "render_type": "cutout",
   "textures": {
     "cross": "moresnifferflowers:block/vivicus_sapling"

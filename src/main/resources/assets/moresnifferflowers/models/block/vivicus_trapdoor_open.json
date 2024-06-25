@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/template_orientable_trapdoor_open",
+  "parent": "moresnifferflowers:block/colorable_wood/template_orientable_trapdoor_open",
   "render_type": "cutout",
   "textures": {
     "texture": "moresnifferflowers:block/vivicus_trapdoor"

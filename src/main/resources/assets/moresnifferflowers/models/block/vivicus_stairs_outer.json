@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/outer_stairs",
+  "parent": "moresnifferflowers:block/colorable_wood/outer_stairs",
   "textures": {
     "bottom": "moresnifferflowers:block/vivicus_planks",
     "side": "moresnifferflowers:block/vivicus_planks",

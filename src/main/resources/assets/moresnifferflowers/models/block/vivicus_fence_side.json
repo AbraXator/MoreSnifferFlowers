@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/fence_side",
+  "parent": "moresnifferflowers:block/colorable_wood/fence_side",
   "textures": {
     "texture": "moresnifferflowers:block/vivicus_planks"
   }

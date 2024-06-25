@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/slab",
+  "parent": "moresnifferflowers:block/colorable_wood/slab",
   "textures": {
     "bottom": "moresnifferflowers:block/vivicus_planks",
     "side": "moresnifferflowers:block/vivicus_planks",

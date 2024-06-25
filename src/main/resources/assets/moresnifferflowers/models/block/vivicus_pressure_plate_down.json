@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/pressure_plate_down",
+  "parent": "moresnifferflowers:block/colorable_wood/pressure_plate_down",
   "textures": {
     "texture": "moresnifferflowers:block/vivicus_planks"
   }
