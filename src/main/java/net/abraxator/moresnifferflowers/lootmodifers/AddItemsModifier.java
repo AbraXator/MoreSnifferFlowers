@@ -5,9 +5,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
@@ -40,8 +42,12 @@ public class AddItemsModifier extends LootModifier {
                 return generatedLoot;
             }
         }
-
+        
+        generatedLoot.clear();
+        generatedLoot.add(Items.TORCHFLOWER_SEEDS.getDefaultInstance());
+        generatedLoot.add(Items.PITCHER_POD.getDefaultInstance());
         items.forEach(item -> generatedLoot.add(item.getDefaultInstance()));
+        newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));
         newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));
         return newLoot;
     }
