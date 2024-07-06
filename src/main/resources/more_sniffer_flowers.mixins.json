@@ -9,7 +9,8 @@
     "FarmBlockMixin",
     "SnifferEggMixin",
     "SpriteResourceLoaderMixin",
-    "ThrownPotionMixin"
+    "ThrownPotionMixin",
+    "RightClickHarvestModInitMixin"
   ],
   "client": [
     "SpriteResourceLoaderMixin$PalettedPermutationsAccessor"
