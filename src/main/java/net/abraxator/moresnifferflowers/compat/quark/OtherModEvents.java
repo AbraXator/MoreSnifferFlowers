@@ -11,7 +11,7 @@ public class OtherModEvents {
         if(event.entity instanceof Player player &&
            !event.level.isClientSide &&
            player.getItemInHand(event.hand == null ? InteractionHand.MAIN_HAND : event.hand).getItem() instanceof JarOfBonmeelItem &&
-           event.blockState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) {
+           event.blockState.is(ModTags.ModBlockTags.BONMEELABLE)) {
                 event.setCanceled(true);
                 event.level.setBlock(event.pos, event.blockState, 3);
         }

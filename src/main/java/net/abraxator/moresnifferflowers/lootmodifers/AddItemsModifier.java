@@ -38,14 +38,17 @@ public class AddItemsModifier extends LootModifier {
         ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
 
         for (LootItemCondition condition : this.conditions) {
-            if(!condition.test(context)) {
+            if (!condition.test(context)) {
                 return generatedLoot;
             }
         }
-        
-        generatedLoot.clear();
-        generatedLoot.add(Items.TORCHFLOWER_SEEDS.getDefaultInstance());
-        generatedLoot.add(Items.PITCHER_POD.getDefaultInstance());
+
+        if (generatedLoot.contains(Items.TORCHFLOWER_SEEDS.getDefaultInstance())) {
+            generatedLoot.add(Items.PITCHER_POD.getDefaultInstance());
+        } else if (generatedLoot.contains(Items.PITCHER_POD.getDefaultInstance())) {
+            generatedLoot.add(Items.TORCHFLOWER_SEEDS.getDefaultInstance());
+        }
+
         items.forEach(item -> generatedLoot.add(item.getDefaultInstance()));
         newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));
         newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));

@@ -38,7 +38,7 @@ public class ForgeEvents {
         var itemStack = event.getEntity().getItemInHand(event.getHand()).getItem().getDefaultInstance();
         var block = event.getLevel().getBlockState(event.getPos());
 
-        if(itemStack.getItem() instanceof JarOfBonmeelItem && block.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) {
+        if(itemStack.getItem() instanceof JarOfBonmeelItem && block.is(ModTags.ModBlockTags.BONMEELABLE)) {
             var context = new UseOnContext(event.getLevel(), event.getEntity(), event.getHand(), event.getItemStack(), event.getHitVec());
             
             event.setCanceled(true);
