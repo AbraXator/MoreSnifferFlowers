@@ -43,9 +43,9 @@ public class AddItemsModifier extends LootModifier {
             }
         }
 
-        if (generatedLoot.contains(Items.TORCHFLOWER_SEEDS.getDefaultInstance())) {
+        if (generatedLoot.stream().anyMatch(itemStack -> itemStack.is(Items.TORCHFLOWER_SEEDS))) {
             generatedLoot.add(Items.PITCHER_POD.getDefaultInstance());
-        } else if (generatedLoot.contains(Items.PITCHER_POD.getDefaultInstance())) {
+        } else {
             generatedLoot.add(Items.TORCHFLOWER_SEEDS.getDefaultInstance());
         }
 
