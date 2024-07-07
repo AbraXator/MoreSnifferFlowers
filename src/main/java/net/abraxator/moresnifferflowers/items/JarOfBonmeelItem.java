@@ -7,9 +7,7 @@ import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
@@ -50,7 +47,7 @@ public class JarOfBonmeelItem extends Item {
         Level level = pContext.getLevel();
         BlockPos clickedPos = pContext.getClickedPos();
         BlockState clickedState = level.getBlockState(clickedPos);
-        if(!clickedState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) return InteractionResult.PASS;
+        if(!clickedState.is(ModTags.ModBlockTags.BONMEELABLE)) return InteractionResult.PASS;
         Block crop = clickedState.getBlock();
         Block giantVersion = MAP.get(crop).getA();
         Iterable<BlockPos> blockPosList = BlockPos.betweenClosed(
@@ -67,7 +64,7 @@ public class JarOfBonmeelItem extends Item {
             var PROPERTY = MAP.get(crop).getB().getA();
             int MAX_AGE = MAP.get(crop).getB().getB();
 
-            return pos.getY() == cropY ? blockState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM) && blockState.getValue(PROPERTY) == MAX_AGE : blockState.is(Blocks.AIR);
+            return pos.getY() == cropY ? blockState.is(ModTags.ModBlockTags.BONMEELABLE) && blockState.getValue(PROPERTY) == MAX_AGE : blockState.is(Blocks.AIR);
         });
 
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
