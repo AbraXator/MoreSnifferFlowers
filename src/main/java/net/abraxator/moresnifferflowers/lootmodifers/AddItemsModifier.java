@@ -11,6 +11,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
@@ -36,15 +37,21 @@ public class AddItemsModifier extends LootModifier {
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         ObjectArrayList<ItemStack> newLoot = new ObjectArrayList<>();
 
-        /*for (LootItemCondition condition : this.conditions) {
-            if(!condition.test(context)) {
+        for (LootItemCondition condition : this.conditions) {
+            if (!condition.test(context)) {
                 return generatedLoot;
             }
-        }*/
+        }
+        
+        if (generatedLoot.stream().anyMatch(itemStack -> itemStack.is(Items.TORCHFLOWER_SEEDS))) {
+            generatedLoot.add(Items.PITCHER_POD.getDefaultInstance());
+        } else {
+            generatedLoot.add(Items.TORCHFLOWER_SEEDS.getDefaultInstance());
+        }
 
         items.forEach(item -> generatedLoot.add(item.getDefaultInstance()));
         newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));
-        //return ObjectArrayList.of(ModItems.BONMEELIA_SEEDS.asItem().getDefaultInstance());
+        newLoot.add(Util.getRandom(generatedLoot, context.getRandom()));
         return newLoot;
     }
 

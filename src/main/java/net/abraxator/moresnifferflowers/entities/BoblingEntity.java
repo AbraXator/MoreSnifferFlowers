@@ -1,14 +1,24 @@
 package net.abraxator.moresnifferflowers.entities;
 
+import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingAttackPlayerGoal;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingAvoidPlayerGoal;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModEntityDataSerializers;
+import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.ByIdMap;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -18,13 +28,16 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-import java.util.List;
+import javax.naming.Name;
 import java.util.Optional;
+import java.util.function.IntFunction;
 
 public class BoblingEntity extends PathfinderMob {
+    private static final EntityDataAccessor<Type> DATA_BOBLING_TYPE = SynchedEntityData.defineId(BoblingEntity.class, ModEntityDataSerializers.BOBLING_TYPE.get());
     private static final EntityDataAccessor<Boolean> DATA_RUNNING = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> DATA_WANTED_POS = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     private static final EntityDataAccessor<Boolean> DATA_PLANTING = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
@@ -33,9 +46,22 @@ public class BoblingEntity extends PathfinderMob {
     public AnimationState plantingAnimationState = new AnimationState();
     private int plantingProgress = 0;
     private final int MAX_PLANTING_PROGRESS = 26;
+
+    public BoblingEntity(EntityType<? extends PathfinderMob> entityType, Level level, Type type) {
+        super(entityType, level);
+        setBoblingType(type);
+    }
     
     public BoblingEntity(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+        this(pEntityType, pLevel, Type.CORRUPTED);
+    }
+    
+    public Type getBoblingType() {
+        return this.entityData.get(DATA_BOBLING_TYPE);
+    }
+    
+    public void setBoblingType(Type type) {
+        this.entityData.set(DATA_BOBLING_TYPE, type);
     }
     
     public boolean isRunning() {
@@ -66,6 +92,7 @@ public class BoblingEntity extends PathfinderMob {
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("bobling_type", getBoblingType().id());
         pCompound.putBoolean("running", this.isRunning());
         pCompound.putBoolean("planting", this.isPlanting());
         if(getWantedPos() != null) {
@@ -76,6 +103,7 @@ public class BoblingEntity extends PathfinderMob {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
+        this.setBoblingType(Type.BY_ID.apply(pCompound.getInt("bobling_type")));
         this.setRunning(pCompound.getBoolean("running"));
         this.setPlanting(pCompound.getBoolean("planting"));
         this.setWantedPos(NbtUtils.readBlockPos(pCompound, "wanted_pos"));
@@ -84,6 +112,7 @@ public class BoblingEntity extends PathfinderMob {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
         super.defineSynchedData(pBuilder);
+        pBuilder.define(DATA_BOBLING_TYPE, Type.CORRUPTED);
         pBuilder.define(DATA_RUNNING, false);
         pBuilder.define(DATA_WANTED_POS, Optional.empty());
         pBuilder.define(DATA_PLANTING, false);
@@ -96,8 +125,8 @@ public class BoblingEntity extends PathfinderMob {
         }
         
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, this.attackPlayerGoal);
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.8F));
+        this.goalSelector.addGoal(3, this.attackPlayerGoal);
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
@@ -149,11 +178,48 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     @Override
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+        if(itemStack.is(ModItems.VIVICUS_ANTIDOTE)) {
+            this.setBoblingType(Type.CURED);
+            itemStack.shrink(1);
+            
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
+        return super.mobInteract(pPlayer, pHand);
+    }
+
+    @Override
     public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
         return false;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.ATTACK_DAMAGE, 3.0);
+    }
+    
+    public static enum Type implements StringRepresentable {
+        CORRUPTED(0, "corrupted"),
+        CURED(1, "cured");
+
+        public static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::id, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
+        public static final StreamCodec<ByteBuf, Type> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, Type::id);
+        private final int id;
+        private final String name;
+
+        Type(int pId, String name) {
+            this.id = pId;
+            this.name = name;
+        }
+
+        public int id() {
+            return this.id;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name;
+        }
     }
 }

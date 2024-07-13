@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BoblingRenderer extends MobRenderer<BoblingEntity, BoblingModel<BoblingEntity>> {
     public static final ResourceLocation CORRUPTED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/corrupted_bobling.png");
-    public static final ResourceLocation NORMAL_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/bobling.png");
+    public static final ResourceLocation CURED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/bobling.png");
     
     public BoblingRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new BoblingModel<>(pContext.bakeLayer(ModModelLayerLocations.BOBLING)), 0.4F);
@@ -18,6 +18,6 @@ public class BoblingRenderer extends MobRenderer<BoblingEntity, BoblingModel<Bob
 
     @Override
     public ResourceLocation getTextureLocation(BoblingEntity pEntity) {
-        return CORRUPTED_TEXTURE;
+        return pEntity.getBoblingType() == BoblingEntity.Type.CORRUPTED ? CORRUPTED_TEXTURE : CURED_TEXTURE;
     }
 }
