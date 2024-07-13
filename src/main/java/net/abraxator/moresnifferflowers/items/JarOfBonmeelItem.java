@@ -63,8 +63,12 @@ public class JarOfBonmeelItem extends Item {
             int cropY = clickedPos.getY();
             var PROPERTY = MAP.get(crop).getB().getA();
             int MAX_AGE = MAP.get(crop).getB().getB();
-
-            return pos.getY() == cropY ? blockState.is(ModTags.ModBlockTags.BONMEELABLE) && blockState.getValue(PROPERTY) == MAX_AGE : blockState.is(Blocks.AIR);
+            
+            if(pos.getY() == cropY) {
+                return blockState.is(clickedState.getBlock()) && blockState.is(ModTags.ModBlockTags.BONMEELABLE) && blockState.getValue(PROPERTY) == MAX_AGE;
+            } else {
+                return blockState.is(Blocks.AIR);
+            }
         });
 
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
