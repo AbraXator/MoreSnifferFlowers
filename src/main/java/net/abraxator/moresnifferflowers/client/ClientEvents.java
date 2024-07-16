@@ -114,7 +114,7 @@ public class ClientEvents {
            ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_FENCE.get(), ModBlocks.VIVICUS_FENCE_GATE.get(), 
            ModBlocks.VIVICUS_DOOR.get(), ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get(), 
            ModBlocks.VIVICUS_BUTTON.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SAPLING.get(), 
-           ModBlocks.CURED_SPROUTING_VIVICUS_LEAVES.get(), ModBlocks.CORRUPTED_SPROUTING_VIVICUS_LEAVES.get());
+           ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
     }
 
     @SubscribeEvent

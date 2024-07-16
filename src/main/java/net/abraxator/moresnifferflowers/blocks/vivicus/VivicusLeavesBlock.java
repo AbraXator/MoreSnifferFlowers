@@ -12,13 +12,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 public class VivicusLeavesBlock extends LeavesBlock implements ColorableVivicusBlock {
     public VivicusLeavesBlock(Properties p_54422_) {
         super(p_54422_);
-        defaultBlockState().setValue(ModStateProperties.COLOR, DyeColor.WHITE).setValue(ModStateProperties.VIVICUS_TYPE, BoblingEntity.Type.CORRUPTED);
+        defaultBlockState().setValue(ModStateProperties.COLOR, DyeColor.WHITE);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
         pBuilder.add(ModStateProperties.COLOR);
-        pBuilder.add(ModStateProperties.VIVICUS_TYPE);
     }
 }

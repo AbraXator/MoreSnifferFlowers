@@ -37,7 +37,7 @@
                   ]
                 }
               ],
-              "name": "moresnifferflowers:corrupted_sprouting_vivicus_leaves"
+              "name": "moresnifferflowers:sprouting_vivicus_leaves"
             },
             {
               "type": "minecraft:item",
@@ -132,5 +132,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "moresnifferflowers:blocks/corrupted_sprouting_vivicus_leaves"
+  "random_sequence": "moresnifferflowers:blocks/sprouting_vivicus_leaves"
 }

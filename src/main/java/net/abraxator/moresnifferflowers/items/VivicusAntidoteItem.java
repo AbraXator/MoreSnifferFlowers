@@ -27,7 +27,7 @@ public class VivicusAntidoteItem extends Item {
         var blockState = level.getBlockState(blockPos);
         var random = level.getRandom();
         
-        if(blockState.is(ModBlocks.VIVICUS_SAPLING)) {
+        if(blockState.is(ModBlocks.VIVICUS_SAPLING) && blockState.getValue(ModStateProperties.VIVICUS_TYPE) != BoblingEntity.Type.CURED) {
             level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.VIVICUS_TYPE, BoblingEntity.Type.CURED));
 
             var particle = new DustParticleOptions(Vec3.fromRGB24(7118872).toVector3f(), 1);

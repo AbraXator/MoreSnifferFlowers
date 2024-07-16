@@ -25,7 +25,6 @@
               "color": "white",
               "distance": "7",
               "persistent": "false",
-              "vivicus_type": "corrupted",
               "waterlogged": "false"
             }
           },
@@ -33,7 +32,7 @@
         },
         {
           "data": {
-            "Name": "moresnifferflowers:corrupted_sprouting_vivicus_leaves",
+            "Name": "moresnifferflowers:sprouting_vivicus_leaves",
             "Properties": {
               "age": "0",
               "color": "white",
