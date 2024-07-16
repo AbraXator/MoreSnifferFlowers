@@ -83,8 +83,8 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.VIVICUS_SAPLING.get());
                 output.accept(ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
             })
-            .withBackgroundLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID,  "textures/gui/container/tab_items.png"))
-            .withTabsImage(new ResourceLocation(MoreSnifferFlowers.MOD_ID, "textures/gui/container/tabs.png"))
+            .backgroundTexture(MoreSnifferFlowers.loc("textures/gui/container/tab_items.png"))
+            .withTabsImage(MoreSnifferFlowers.loc("textures/gui/container/tabs.png"))
             .build());
 }
 //    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(

@@ -132,13 +132,6 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     }
 
     @Override
-    public BlockState getPlant(BlockGetter level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        if (state.getBlock() != this) return defaultBlockState();
-        return state;
-    }
-
-    @Override
     public IntegerProperty getAgeProperty() {
         return null;
     }

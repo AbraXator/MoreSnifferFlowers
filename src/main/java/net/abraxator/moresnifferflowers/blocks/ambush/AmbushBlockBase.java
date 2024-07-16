@@ -117,7 +117,7 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
 
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        float f = getGrowthSpeed(this, pLevel, pPos);
+        float f = ModCropBlock.getGrowthSpeed(pState, pLevel, pPos);
         if(pRandom.nextInt((int) ((25.0F / f) + 1)) == 0) {
             this.grow(pLevel, pState, pPos, 1);
         }
@@ -229,10 +229,5 @@ public class AmbushBlockBase extends ModEntityDoubleTallBlock implements ModCrop
     @Override
     public Block getUpperBlock() {
         return ModBlocks.AMBUSH_TOP.get();
-    }
-
-    @Override
-    public BlockState getPlant(BlockGetter level, BlockPos pos) {
-        return this.defaultBlockState();
     }
 }

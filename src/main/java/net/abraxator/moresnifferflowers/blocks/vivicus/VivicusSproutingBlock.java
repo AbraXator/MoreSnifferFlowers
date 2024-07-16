@@ -71,9 +71,4 @@ public class VivicusSproutingBlock extends VivicusLeavesBlock implements ModCrop
     public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
         grow(pState, pLevel, pPos);
     }
-
-    @Override
-    public BlockState getPlant(BlockGetter level, BlockPos pos) {
-        return null;
-    }
 }

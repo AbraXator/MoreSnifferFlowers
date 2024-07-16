@@ -29,10 +29,6 @@ public class MoreSnifferFlowerBlock extends Block implements ModCropBlock {
         super.createBlockStateDefinition(pBuilder);
         pBuilder.add(STALK_TYPE, LEAVES_TYPE);
     }
-    @Override
-    public BlockState getPlant(BlockGetter level, BlockPos pos) {
-        return null;
-    }
 
     @Override
     public IntegerProperty getAgeProperty() {

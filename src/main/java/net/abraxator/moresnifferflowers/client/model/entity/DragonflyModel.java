@@ -45,9 +45,9 @@ public class DragonflyModel extends Model {
 		this.wing1.zRot = (float) (Mth.cos(pPartialTick * 100F * Mth.PI / 180.0F) * Mth.PI * 0.25);
 		this.wing2.zRot = (float) -(Mth.cos(pPartialTick * 100F * Mth.PI / 180.0F) * Mth.PI * 0.25);
 	}
-	
+
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, int pColor) {
+		root.render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pColor);
 	}
 }

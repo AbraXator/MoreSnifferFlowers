@@ -65,7 +65,7 @@ public class BottleOfExtractionItem extends Item {
     }
     
     @Override
-    public int getUseDuration(ItemStack pStack) {
+    public int getUseDuration(ItemStack pStack, LivingEntity pEntity) {
         return 32;
     }
 

@@ -51,7 +51,7 @@ public class JarOfBonmeelItem extends Item {
         Level level = pContext.getLevel();
         BlockPos clickedPos = pContext.getClickedPos();
         BlockState clickedState = level.getBlockState(clickedPos);
-        if(!clickedState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) return InteractionResult.PASS;
+        if(!clickedState.is(ModTags.ModBlockTags.BONMEELABLE)) return InteractionResult.PASS;
         Block crop = clickedState.getBlock();
         Block giantVersion = MAP.get(crop).getA();
         Iterable<BlockPos> blockPosList = BlockPos.betweenClosed(
@@ -68,7 +68,11 @@ public class JarOfBonmeelItem extends Item {
             var PROPERTY = MAP.get(crop).getB().getA();
             int MAX_AGE = MAP.get(crop).getB().getB();
             
-            return pos.getY() == cropY ? blockState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM) && blockState.getValue(PROPERTY) == MAX_AGE : blockState.is(Blocks.AIR);
+            if(pos.getY() == cropY) {
+                return blockState.is(clickedState.getBlock()) && blockState.is(ModTags.ModBlockTags.BONMEELABLE) && blockState.getValue(PROPERTY) == MAX_AGE;
+            } else {
+                return blockState.is(Blocks.AIR);
+            }
         });
 
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
