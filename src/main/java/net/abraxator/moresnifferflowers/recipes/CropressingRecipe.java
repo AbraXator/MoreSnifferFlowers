@@ -13,13 +13,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-public record CropressingRecipe(Ingredient ingredient, int count, ItemStack result) implements Recipe<Container> {
+public record CropressingRecipe(Ingredient ingredient, int count, ItemStack result) implements Recipe<SingleRecipeInput> {
     public static final MapCodec<CropressingRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> {
         return builder.group(
                 Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CropressingRecipe::ingredient),
@@ -27,15 +24,15 @@ public record CropressingRecipe(Ingredient ingredient, int count, ItemStack resu
                 ItemStack.CODEC.fieldOf("result").forGetter(CropressingRecipe::result)
         ).apply(builder, CropressingRecipe::new);
     });
-    
+
     @Override
-    public boolean matches(Container pContainer, Level pLevel) {
-        ItemStack itemStack = pContainer.getItem(0);
+    public boolean matches(SingleRecipeInput pInput, Level pLevel) {
+        ItemStack itemStack = pInput.item();
         return itemStack.getCount() == count && ingredient.test(itemStack.copyWithCount(1));
     }
 
     @Override
-    public ItemStack assemble(Container pCraftingContainer, HolderLookup.Provider pRegistries) {
+    public ItemStack assemble(SingleRecipeInput pInput, HolderLookup.Provider pRegistries) {
         return this.result.copy();
     }
 

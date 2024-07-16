@@ -10,7 +10,7 @@
             "predicates": {
               "minecraft:enchantments": [
                 {
-                  "enchantment": "minecraft:silk_touch",
+                  "enchantments": "minecraft:silk_touch",
                   "levels": {
                     "min": 1
                   }
@@ -32,20 +32,17 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:inverted",
-          "term": {
-            "condition": "minecraft:match_tool",
-            "predicate": {
-              "predicates": {
-                "minecraft:enchantments": [
-                  {
-                    "enchantment": "minecraft:silk_touch",
-                    "levels": {
-                      "min": 1
-                    }
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantments": "minecraft:silk_touch",
+                  "levels": {
+                    "min": 1
                   }
-                ]
-              }
+                }
+              ]
             }
           }
         }

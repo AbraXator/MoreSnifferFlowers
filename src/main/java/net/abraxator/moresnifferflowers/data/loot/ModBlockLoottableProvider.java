@@ -9,6 +9,7 @@ import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -35,8 +36,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ModBlockLoottableProvider extends BlockLootSubProvider {
-    public ModBlockLoottableProvider() {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+    public ModBlockLoottableProvider(HolderLookup.Provider provider) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
     }
 
     @Override
@@ -54,10 +55,10 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
 
         add(ModBlocks.AMBER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .when(HAS_SILK_TOUCH)
+                        .when(hasSilkTouch())
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                        .when(HAS_NO_SILK_TOUCH)
+                        .when(hasSilkTouch())
                         //COMMON
                         .add(LootItem.lootTableItem(Items.COAL).setWeight(100))
                         .add(LootItem.lootTableItem(Items.EMERALD).setWeight(100))

@@ -42,7 +42,7 @@ public class MoreSnifferFlowers {
     }
 
     public static ResourceLocation loc(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     public static String sLoc(String path) {

@@ -34,10 +34,10 @@ import java.util.List;
 public class ForgeEvents {
     @SubscribeEvent
     public static void onUseItemOnBlock(UseItemOnBlockEvent event) {
-        var itemStack = event.getEntity().getItemInHand(event.getHand()).getItem().getDefaultInstance();
+        var itemStack = event.getPlayer().getItemInHand(event.getHand()).getItem().getDefaultInstance();
         var block = event.getLevel().getBlockState(event.getPos());
         
-        if(itemStack.getItem() instanceof JarOfBonmeelItem && block.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM)) {
+        if(itemStack.getItem() instanceof JarOfBonmeelItem && block.is(ModTags.ModBlockTags.BONMEELABLE)) {
             event.setCanceled(true);
             ((JarOfBonmeelItem) itemStack.getItem()).useOn(event.getUseOnContext());
         } else if((itemStack.is(ModItems.REBREWED_POTION) || itemStack.is(ModItems.EXTRACTED_BOTTLE)) && block.is(Blocks.DIRT) && event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK) {
@@ -60,7 +60,7 @@ public class ForgeEvents {
 
     @SubscribeEvent
     public static void onGetAdvancement(AdvancementEvent.AdvancementEarnEvent event) {
-        if(event.getAdvancement().id().equals(new ResourceLocation("husbandry/obtain_sniffer_egg")) && event.getEntity() instanceof ServerPlayer serverPlayer) {
+        if(event.getAdvancement().id().equals(ResourceLocation.parse("husbandry/obtain_sniffer_egg")) && event.getEntity() instanceof ServerPlayer serverPlayer) {
             ModAdvancementCritters.EARN_SNIFFER_ADVANCEMENT.trigger(serverPlayer);
         }
     }

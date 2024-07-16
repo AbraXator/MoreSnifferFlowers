@@ -17,7 +17,9 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -29,7 +31,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
     public int progress = 0;
     public final int MAX_PROGRESS = 100;
     private static final int INV_SIZE = 16;
-    private final RecipeManager.CachedCheck<Container, CropressingRecipe> quickCheck = RecipeManager.createCheck(ModRecipeTypes.CROPRESSING.get());
+    private final RecipeManager.CachedCheck<SingleRecipeInput, CropressingRecipe> quickCheck = RecipeManager.createCheck(ModRecipeTypes.CROPRESSING.get());
     private boolean sound = true;
 
     public CropressorBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -38,8 +40,8 @@ public class CropressorBlockEntity extends ModBlockEntity {
 
     @Override
     public void tick(Level level) {
-        var container = new SimpleContainer(content);
-        var cropressingRecipeOptional = quickCheck.getRecipeFor(container, level);
+        var recipeInput = new SingleRecipeInput(content);
+        var cropressingRecipeOptional = quickCheck.getRecipeFor(recipeInput, level);
         
         if(content.getCount() >= INV_SIZE && cropressingRecipeOptional.isPresent()) {
             result = cropressingRecipeOptional.get().value().result();
@@ -97,13 +99,9 @@ public class CropressorBlockEntity extends ModBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.saveAdditional(pTag, pRegistries);
-        CompoundTag tagContent = new CompoundTag();
-        content.save(pRegistries, tagContent);
-        CompoundTag tagResult = new CompoundTag();
-        content.save(pRegistries, tagResult);
-        pTag.put("content", tagContent);
+        pTag.put("content", content.saveOptional(pRegistries));
         pTag.putInt("progress", progress);
-        pTag.put("result", tagResult);
+        pTag.put("result", content.saveOptional(pRegistries));
     }
 
     @Override
@@ -121,7 +119,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         CompoundTag compoundtag = new CompoundTag();
-        compoundtag.put("result", result.save(pRegistries, compoundtag));
+        compoundtag.put("result", result.saveOptional(pRegistries));
         compoundtag.putInt("progress", progress);
         return compoundtag;
     }

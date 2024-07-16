@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -18,11 +19,11 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer pInv, Level pLevel) {
-        if (pInv.getWidth() == 3 && pInv.getHeight() == 3) {
-            for (int i = 0; i < pInv.getWidth(); i++) {
-                for (int j = 0; j < pInv.getHeight(); j++) {
-                    ItemStack itemstack = pInv.getItem(i + j * pInv.getWidth());
+    public boolean matches(CraftingInput pInput, Level pLevel) {
+        if (pInput.width() == 3 && pInput.height() == 3) {
+            for (int i = 0; i < pInput.width(); i++) {
+                for (int j = 0; j < pInput.height(); j++) {
+                    ItemStack itemstack = pInput.getItem(i + j * pInput.width());
                     if (itemstack.isEmpty()) {
                         return false;
                     }
@@ -44,8 +45,8 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer pCraftingContainer, HolderLookup.Provider pRegistries) {
-        ItemStack itemstack = pCraftingContainer.getItem(1 + pCraftingContainer.getWidth());
+    public ItemStack assemble(CraftingInput pInput, HolderLookup.Provider pRegistries) {
+        ItemStack itemstack = pInput.getItem(1 + pInput.width());
         if (!itemstack.is(ModItems.REBREWED_LINGERING_POTION)) {
             return ItemStack.EMPTY;
         } else {
@@ -54,7 +55,7 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
             return itemstack1;
         }
     }
-    
+
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return pWidth >= 2 && pHeight >= 2;

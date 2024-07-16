@@ -3,19 +3,15 @@ package net.abraxator.moresnifferflowers.blocks;
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.minecraft.Util;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -36,11 +32,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.common.IPlantable;
-import org.jetbrains.annotations.NotNull;
 
-public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock, IPlantable {
+public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
     public static final BooleanProperty IS_SHEARED = BooleanProperty.create("is_sheared");
     public static final MapCodec<DawnberryVineBlock> CODEC = simpleCodec(DawnberryVineBlock::new);
@@ -172,12 +165,5 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return Shapes.empty();
-    }
-
-    @Override
-    public BlockState getPlant(BlockGetter level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        if (state.getBlock() != this) return defaultBlockState();
-        return state;
     }
 }

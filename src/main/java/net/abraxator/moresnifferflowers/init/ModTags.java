@@ -22,7 +22,7 @@ public class ModTags {
     }
 
     public static class ModBlockTags {
-        public static final TagKey<Block> CROPS_FERTIABLE_BY_FBM = create(Registries.BLOCK, "crops_fertiable_by_fbm");
+        public static final TagKey<Block> BONMEELABLE = create(Registries.BLOCK, "crops_fertiable_by_fbm");
         public static final TagKey<Block> GIANT_CROPS = create(Registries.BLOCK, "giant_crops");
     }
 
