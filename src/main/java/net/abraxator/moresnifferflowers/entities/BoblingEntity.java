@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.entities.goals.BoblingAttackPlayerGoal;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingAvoidPlayerGoal;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModEntityDataSerializers;
+import net.abraxator.moresnifferflowers.init.ModEntityTypes;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.loot.LootTableProvider;
@@ -54,6 +55,10 @@ public class BoblingEntity extends PathfinderMob {
     
     public BoblingEntity(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         this(pEntityType, pLevel, Type.CORRUPTED);
+    }
+    
+    public BoblingEntity(Level level, Type type) {
+        this(ModEntityTypes.BOBLING.get(), level, type);
     }
     
     public Type getBoblingType() {

@@ -19,12 +19,10 @@ import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlock
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
-import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.*;
@@ -116,7 +114,7 @@ public class ClientEvents {
            ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_FENCE.get(), ModBlocks.VIVICUS_FENCE_GATE.get(), 
            ModBlocks.VIVICUS_DOOR.get(), ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get(), 
            ModBlocks.VIVICUS_BUTTON.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SAPLING.get(), 
-           ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), ModBlocks.CORRUPTED_SPROUTING_VIVICUS_LEAVES.get());
+           ModBlocks.CURED_SPROUTING_VIVICUS_LEAVES.get(), ModBlocks.CORRUPTED_SPROUTING_VIVICUS_LEAVES.get());
     }
 
     @SubscribeEvent

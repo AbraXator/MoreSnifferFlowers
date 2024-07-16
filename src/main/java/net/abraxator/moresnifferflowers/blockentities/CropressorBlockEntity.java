@@ -97,13 +97,9 @@ public class CropressorBlockEntity extends ModBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.saveAdditional(pTag, pRegistries);
-        CompoundTag tagContent = new CompoundTag();
-        content.save(pRegistries, tagContent);
-        CompoundTag tagResult = new CompoundTag();
-        content.save(pRegistries, tagResult);
-        pTag.put("content", tagContent);
+        pTag.put("content", content.saveOptional(pRegistries));
         pTag.putInt("progress", progress);
-        pTag.put("result", tagResult);
+        pTag.put("result", result.saveOptional(pRegistries));
     }
 
     @Override
@@ -121,7 +117,7 @@ public class CropressorBlockEntity extends ModBlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         CompoundTag compoundtag = new CompoundTag();
-        compoundtag.put("result", result.save(pRegistries, compoundtag));
+        compoundtag.put("result", result.saveOptional(pRegistries));
         compoundtag.putInt("progress", progress);
         return compoundtag;
     }

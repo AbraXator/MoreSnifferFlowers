@@ -79,7 +79,7 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.VIVICUS_BUTTON.get());
                 output.accept(ModBlocks.VIVICUS_LEAVES.get());
                 output.accept(ModBlocks.VIVICUS_SAPLING.get());
-                output.accept(ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
+                output.accept(ModBlocks.CURED_SPROUTING_VIVICUS_LEAVES.get());
                 output.accept(ModBlocks.CORRUPTED_SPROUTING_VIVICUS_LEAVES.get());
             })
             .withBackgroundLocation(new ResourceLocation(MoreSnifferFlowers.MOD_ID,  "textures/gui/container/tab_items.png"))

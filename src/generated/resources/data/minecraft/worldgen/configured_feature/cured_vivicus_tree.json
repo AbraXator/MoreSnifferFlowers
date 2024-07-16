@@ -16,16 +16,36 @@
       "radius": 3
     },
     "foliage_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "moresnifferflowers:vivicus_leaves",
-        "Properties": {
-          "color": "white",
-          "distance": "7",
-          "persistent": "false",
-          "waterlogged": "false"
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "moresnifferflowers:vivicus_leaves",
+            "Properties": {
+              "color": "white",
+              "distance": "7",
+              "persistent": "false",
+              "vivicus_type": "corrupted",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "Name": "moresnifferflowers:cured_sprouting_vivicus_leaves",
+            "Properties": {
+              "age": "0",
+              "color": "white",
+              "distance": "7",
+              "persistent": "false",
+              "vivicus_type": "corrupted",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
         }
-      }
+      ]
     },
     "force_dirt": false,
     "ignore_vines": true,
@@ -59,7 +79,8 @@
         "Name": "moresnifferflowers:vivicus_log",
         "Properties": {
           "axis": "y",
-          "color": "white"
+          "color": "white",
+          "vivicus_type": "corrupted"
         }
       }
     }
