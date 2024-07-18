@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
+import org.apache.http.impl.cookie.PublicSuffixDomainFilter;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
@@ -101,7 +102,7 @@ public class JarOfBonmeelItem extends Item {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    private GiantCropBlock.ModelPos evaulateModelPos(BlockPos pos, BlockPos posToCompare) {
+    public static GiantCropBlock.ModelPos evaulateModelPos(BlockPos pos, BlockPos posToCompare) {
         var value = GiantCropBlock.ModelPos.NONE;
 
         posToCompare = posToCompare.above();

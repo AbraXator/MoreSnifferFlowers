@@ -3,12 +3,9 @@ package net.abraxator.moresnifferflowers.entities;
 import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingAttackPlayerGoal;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingAvoidPlayerGoal;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModEntityDataSerializers;
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.entities.goals.BoblingGiantCropGoal;
+import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -26,24 +23,27 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-import javax.naming.Name;
 import java.util.Optional;
 import java.util.function.IntFunction;
 
 public class BoblingEntity extends PathfinderMob {
     private static final EntityDataAccessor<Type> DATA_BOBLING_TYPE = SynchedEntityData.defineId(BoblingEntity.class, ModEntityDataSerializers.BOBLING_TYPE.get());
     private static final EntityDataAccessor<Boolean> DATA_RUNNING = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_BONMEELED = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> DATA_WANTED_POS = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     private static final EntityDataAccessor<Boolean> DATA_PLANTING = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
     private BoblingAttackPlayerGoal attackPlayerGoal;
     private BoblingAvoidPlayerGoal<Player> avoidPlayerGoal;
+    private BoblingGiantCropGoal boblingGiantCropGoal;
     public AnimationState plantingAnimationState = new AnimationState();
     private int plantingProgress = 0;
     private static final int MAX_PLANTING_PROGRESS = 26;
@@ -75,7 +75,12 @@ public class BoblingEntity extends PathfinderMob {
 
     public void setRunning(boolean running) {
         this.entityData.set(DATA_RUNNING, running);
-        this.updateGoals();
+        this.updateRunningGoals();
+    }
+    
+    public void setBonmeeled() {
+        this.entityData.set(DATA_BONMEELED, true);
+        this.updateBonmeeledGoals();
     }
 
     public BlockPos getWantedPos() {
@@ -99,6 +104,7 @@ public class BoblingEntity extends PathfinderMob {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("bobling_type", getBoblingType().id());
         pCompound.putBoolean("running", this.isRunning());
+        pCompound.putBoolean("running", this.entityData.get(DATA_BONMEELED));
         pCompound.putBoolean("planting", this.isPlanting());
         if (getWantedPos() != null) {
             pCompound.put("wanted_pos", NbtUtils.writeBlockPos(getWantedPos()));
@@ -110,6 +116,7 @@ public class BoblingEntity extends PathfinderMob {
         super.readAdditionalSaveData(pCompound);
         this.setBoblingType(Type.BY_ID.apply(pCompound.getInt("bobling_type")));
         this.setRunning(pCompound.getBoolean("running"));
+        this.entityData.set(DATA_BONMEELED, pCompound.getBoolean("bonmeeled"));
         this.setPlanting(pCompound.getBoolean("planting"));
         this.setWantedPos(NbtUtils.readBlockPos(pCompound, "wanted_pos"));
     }
@@ -119,18 +126,26 @@ public class BoblingEntity extends PathfinderMob {
         super.defineSynchedData(pBuilder);
         pBuilder.define(DATA_BOBLING_TYPE, Type.CORRUPTED);
         pBuilder.define(DATA_RUNNING, false);
+        pBuilder.define(DATA_BONMEELED, false);
         pBuilder.define(DATA_WANTED_POS, Optional.empty());
         pBuilder.define(DATA_PLANTING, false);
     }
 
     @Override
     protected void registerGoals() {
-        if (this.attackPlayerGoal == null) {
-            this.attackPlayerGoal = new BoblingAttackPlayerGoal(this, 1.5F, false);
+        if(this.getBoblingType() == Type.CORRUPTED) {
+            if (this.attackPlayerGoal == null) {
+                this.attackPlayerGoal = new BoblingAttackPlayerGoal(this, 1.5F, false);
+            }
+
+            this.goalSelector.addGoal(3, this.attackPlayerGoal);
+        } else if (this.getBoblingType() == Type.CURED) {
+            this.goalSelector.addGoal(3, new TemptGoal(this, 0.9F, itemStack -> 
+                    itemStack.is(ModItems.JAR_OF_BONMEEL), false));
         }
 
+
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(3, this.attackPlayerGoal);
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
@@ -158,7 +173,7 @@ public class BoblingEntity extends PathfinderMob {
         }
     }
 
-    public void updateGoals() {
+    public void updateRunningGoals() {
         if (this.avoidPlayerGoal == null) {
             this.avoidPlayerGoal = new BoblingAvoidPlayerGoal<>(this, Player.class, 16.0F, 1.3F, 1.8F);
         }
@@ -170,6 +185,10 @@ public class BoblingEntity extends PathfinderMob {
         }
     }
 
+    public void updateBonmeeledGoals() {
+        if (this.;)
+    }
+    
     @Override
     public void aiStep() {
         super.aiStep();
@@ -190,6 +209,9 @@ public class BoblingEntity extends PathfinderMob {
             itemStack.shrink(1);
 
             return InteractionResult.sidedSuccess(this.level().isClientSide);
+        } else if (itemStack.is(ModItems.JAR_OF_BONMEEL)) {
+            this.entityData.set(DATA_BONMEELED, true);
+            itemStack.shrink(1);
         }
 
         return super.mobInteract(pPlayer, pHand);
