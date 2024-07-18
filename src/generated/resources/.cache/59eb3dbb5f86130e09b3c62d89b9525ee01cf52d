@@ -1,4 +1,4 @@
-// 1.20.6	2024-07-16T14:32:35.8610906	Loot Tables
+// 1.20.6	2024-07-16T19:08:53.3605355	Loot Tables
 734430bbc93275c9f545cbdfe38042bb215ab715 data/moresnifferflowers/loot_tables/blocks/amber.json
 82709fac129d665d29913b9da4679bcd34ba753f data/moresnifferflowers/loot_tables/blocks/ambush_bottom.json
 39b9b49d7469774aff8d068125bbfeafe0c50423 data/moresnifferflowers/loot_tables/blocks/ambush_top.json
@@ -28,6 +28,9 @@ de4ed107c58519a8e6dd800475565b5214826c9b data/moresnifferflowers/loot_tables/blo
 0c55a4c23f10c4042b10a2f7c87545840f30f8f5 data/moresnifferflowers/loot_tables/blocks/giant_potato.json
 8d08e4ba666cce76ccce5ea047a834a992e33b5a data/moresnifferflowers/loot_tables/blocks/giant_wheat.json
 1bb94e133ad319060bba0747630d587c6ba7bd3f data/moresnifferflowers/loot_tables/blocks/more_sniffer_flower.json
+da92642078acdf6e1a56f9f083406fada7dd7e38 data/moresnifferflowers/loot_tables/blocks/potted_corrupted_sapling.json
+2c2c33d7d8d3705623529db47ce00dc9f019d2ab data/moresnifferflowers/loot_tables/blocks/potted_dyespria.json
+869ac87169cb031b68c352948b2195ae71d85f19 data/moresnifferflowers/loot_tables/blocks/potted_vivicus_sapling.json
 dd3b26c506feecf14cc7130816321481883f724d data/moresnifferflowers/loot_tables/blocks/rebrewing_stand_bottom.json
 d9de98fedc8ef8c767e2615eefec9fa6c8f0650d data/moresnifferflowers/loot_tables/blocks/rebrewing_stand_top.json
 02ecae60bde3d4599d480d2d90363c1f23697c4e data/moresnifferflowers/loot_tables/blocks/sprouting_vivicus_leaves.json

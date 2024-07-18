@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -41,6 +42,10 @@ public class ModBlockStateGenerator extends BlockStateProvider {
                 }
             }
         }
+        
+        simpleBlock(ModBlocks.POTTED_DYESPRIA.get(), models().withExistingParent(ModBlocks.POTTED_DYESPRIA.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(ModBlocks.DYESPRIA_PLANT.get())));
+        simpleBlock(ModBlocks.POTTED_CORRUPTED_SAPLING.get(), models().withExistingParent(ModBlocks.POTTED_CORRUPTED_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(ModBlocks.CORRUPTED_SAPLING.get())));
+        simpleBlock(ModBlocks.POTTED_VIVICUS_SAPLING.get(), models().withExistingParent(ModBlocks.POTTED_VIVICUS_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(ModBlocks.VIVICUS_SAPLING.get())));
         
         //logWoodSapling((RotatedPillarBlock) ModBlocks.CORRUPTED_LOG.get(), (RotatedPillarBlock) ModBlocks.STRIPPED_CORRUPTED_LOG.get(), (RotatedPillarBlock) ModBlocks.CORRUPTED_WOOD.get(), (RotatedPillarBlock) ModBlocks.STRIPPED_CORRUPTED_WOOD.get(), ModBlocks.CORRUPTED_SAPLING.get());
         //plankBlocks("corrupted", ModBlocks.CORRUPTED_PLANKS.get(), ModBlocks.CORRUPTED_SLAB.get(), ((StairBlock) ModBlocks.CORRUPTED_STAIRS.get()), ModBlocks.CORRUPTED_BUTTON.get(), ModBlocks.CORRUPTED_FENCE.get(), ModBlocks.CORRUPTED_FENCE_GATE.get(), ModBlocks.CORRUPTED_PRESSURE_PLATE.get(), ((DoorBlock) ModBlocks.CORRUPTED_DOOR.get()), ((TrapDoorBlock) ModBlocks.CORRUPTED_TRAPDOOR.get()), true);

@@ -46,33 +46,33 @@ public class BoblingEntity extends PathfinderMob {
     private BoblingAvoidPlayerGoal<Player> avoidPlayerGoal;
     public AnimationState plantingAnimationState = new AnimationState();
     private int plantingProgress = 0;
-    private final int MAX_PLANTING_PROGRESS = 26;
+    private static final int MAX_PLANTING_PROGRESS = 26;
 
     public BoblingEntity(EntityType<? extends PathfinderMob> entityType, Level level, Type type) {
         super(entityType, level);
         setBoblingType(type);
     }
-    
+
     public BoblingEntity(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         this(pEntityType, pLevel, Type.CORRUPTED);
     }
-    
+
     public BoblingEntity(Level level, Type type) {
         this(ModEntityTypes.BOBLING.get(), level, type);
     }
-    
+
     public Type getBoblingType() {
         return this.entityData.get(DATA_BOBLING_TYPE);
     }
-    
+
     public void setBoblingType(Type type) {
         this.entityData.set(DATA_BOBLING_TYPE, type);
     }
-    
+
     public boolean isRunning() {
-        return this.entityData.get(DATA_RUNNING);   
+        return this.entityData.get(DATA_RUNNING);
     }
-    
+
     public void setRunning(boolean running) {
         this.entityData.set(DATA_RUNNING, running);
         this.updateGoals();
@@ -81,7 +81,7 @@ public class BoblingEntity extends PathfinderMob {
     public BlockPos getWantedPos() {
         return this.entityData.get(DATA_WANTED_POS).orElse(null);
     }
-    
+
     public void setWantedPos(Optional<BlockPos> wantedPos) {
         this.entityData.set(DATA_WANTED_POS, wantedPos);
     }
@@ -93,14 +93,14 @@ public class BoblingEntity extends PathfinderMob {
     public void setPlanting(boolean plan) {
         this.entityData.set(DATA_PLANTING, plan);
     }
-    
+
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("bobling_type", getBoblingType().id());
         pCompound.putBoolean("running", this.isRunning());
         pCompound.putBoolean("planting", this.isPlanting());
-        if(getWantedPos() != null) {
+        if (getWantedPos() != null) {
             pCompound.put("wanted_pos", NbtUtils.writeBlockPos(getWantedPos()));
         }
     }
@@ -125,10 +125,10 @@ public class BoblingEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
-        if(this.attackPlayerGoal == null) {
+        if (this.attackPlayerGoal == null) {
             this.attackPlayerGoal = new BoblingAttackPlayerGoal(this, 1.5F, false);
         }
-        
+
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(3, this.attackPlayerGoal);
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8F));
@@ -139,7 +139,7 @@ public class BoblingEntity extends PathfinderMob {
     @Override
     protected void actuallyHurt(DamageSource pDamageSource, float pDamageAmount) {
         super.actuallyHurt(pDamageSource, pDamageAmount);
-        if(!this.isRunning()) {
+        if (!this.isRunning()) {
             this.setRunning(true);
         }
     }
@@ -147,10 +147,10 @@ public class BoblingEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
-        
-        if(this.isPlanting()) {
-            this.plantingProgress++;    
-            if(plantingProgress >= MAX_PLANTING_PROGRESS) {
+
+        if (this.isPlanting()) {
+            this.plantingProgress++;
+            if (plantingProgress >= MAX_PLANTING_PROGRESS) {
                 var blockPos = BlockPos.containing(this.position()).relative(this.getDirection());
                 this.level().setBlockAndUpdate(blockPos, ModBlocks.CORRUPTED_SAPLING.get().defaultBlockState());
                 this.discard();
@@ -159,22 +159,22 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     public void updateGoals() {
-        if(this.avoidPlayerGoal == null) {
+        if (this.avoidPlayerGoal == null) {
             this.avoidPlayerGoal = new BoblingAvoidPlayerGoal<>(this, Player.class, 16.0F, 1.3F, 1.8F);
         }
-        
-        if(this.isRunning()) {
-            if(this.attackPlayerGoal != null) this.goalSelector.removeGoal(this.attackPlayerGoal);
-            
+
+        if (this.isRunning()) {
+            if (this.attackPlayerGoal != null) this.goalSelector.removeGoal(this.attackPlayerGoal);
+
             this.goalSelector.addGoal(1, this.avoidPlayerGoal);
         }
     }
-    
+
     @Override
     public void aiStep() {
         super.aiStep();
-        
-        if (this.isAlive() && !this.isPlanting() && this.getWantedPos() != null&& this.isRunning() && AABB.ofSize(getWantedPos().getCenter(), 2.0D, 2.0D, 2.0D).contains(this.position())) {
+
+        if (this.isAlive() && !this.isPlanting() && this.getWantedPos() != null && this.isRunning() && AABB.ofSize(getWantedPos().getCenter(), 2.0D, 2.0D, 2.0D).contains(this.position())) {
             this.setYRot(this.getDirection().toYRot());
             this.plantingAnimationState.start(this.tickCount);
             this.setPlanting(true);
@@ -185,10 +185,10 @@ public class BoblingEntity extends PathfinderMob {
     @Override
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
-        if(itemStack.is(ModItems.VIVICUS_ANTIDOTE)) {
+        if (itemStack.is(ModItems.VIVICUS_ANTIDOTE)) {
             this.setBoblingType(Type.CURED);
             itemStack.shrink(1);
-            
+
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
@@ -203,10 +203,9 @@ public class BoblingEntity extends PathfinderMob {
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.ATTACK_DAMAGE, 3.0);
     }
-    
+
     public static enum Type implements StringRepresentable {
-        CORRUPTED(0, "corrupted"),
-        CURED(1, "cured");
+        CORRUPTED(0, "corrupted"), CURED(1, "cured");
 
         public static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::id, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final StreamCodec<ByteBuf, Type> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, Type::id);

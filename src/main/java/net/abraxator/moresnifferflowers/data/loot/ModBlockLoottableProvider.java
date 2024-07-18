@@ -23,6 +23,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.neoforged.fml.common.Mod;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -156,6 +157,10 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         add(ModBlocks.VIVICUS_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.VIVICUS_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
         dropSelf(ModBlocks.VIVICUS_SAPLING.get());
         add(ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.VIVICUS_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
+        
+        dropPottedContents(ModBlocks.POTTED_DYESPRIA.get());
+        dropPottedContents(ModBlocks.POTTED_CORRUPTED_SAPLING.get());
+        dropPottedContents(ModBlocks.POTTED_VIVICUS_SAPLING.get());
     }
 
     private LootTable.Builder giantCropLoot(Item crop, Item cropressed, Item special, Item piece, Item trim) {

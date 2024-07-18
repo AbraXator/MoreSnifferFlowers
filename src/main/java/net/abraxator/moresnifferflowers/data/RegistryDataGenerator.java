@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModBannerPatterns;
+import net.abraxator.moresnifferflowers.init.ModPaintings;
 import net.abraxator.moresnifferflowers.init.ModTrimMaterials;
 import net.abraxator.moresnifferflowers.init.ModTrimPatterns;
 import net.abraxator.moresnifferflowers.worldgen.features.ModConfiguredFeatures;
