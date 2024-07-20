@@ -67,7 +67,7 @@ public class JarOfBonmeelItem extends Item {
             int cropY = clickedPos.getY();
             var PROPERTY = MAP.get(crop).getB().getA();
             int MAX_AGE = MAP.get(crop).getB().getB();
-
+            
             return pos.getY() == cropY ? blockState.is(ModTags.ModBlockTags.CROPS_FERTIABLE_BY_FBM) && blockState.getValue(PROPERTY) == MAX_AGE : blockState.is(Blocks.AIR);
         });
 

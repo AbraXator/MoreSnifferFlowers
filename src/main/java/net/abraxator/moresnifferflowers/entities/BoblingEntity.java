@@ -6,6 +6,7 @@ import net.abraxator.moresnifferflowers.entities.goals.BoblingAvoidPlayerGoal;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingGiantCropGoal;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Optional;
 import java.util.function.IntFunction;
@@ -186,14 +188,20 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     public void updateBonmeeledGoals() {
-        if (this.;)
+        if(this.entityData.get(DATA_BONMEELED)) {
+            if (this.boblingGiantCropGoal == null) {
+                this.boblingGiantCropGoal = new BoblingGiantCropGoal(this, 50, 0.8D);
+            }
+            
+            this.goalSelector.addGoal(1, this.boblingGiantCropGoal);
+        }
     }
     
     @Override
     public void aiStep() {
         super.aiStep();
 
-        if (this.isAlive() && !this.isPlanting() && this.getWantedPos() != null && this.isRunning() && AABB.ofSize(getWantedPos().getCenter(), 2.0D, 2.0D, 2.0D).contains(this.position())) {
+        if (this.isRunning() && this.isAlive() && !this.isPlanting() && this.getWantedPos() != null && AABB.ofSize(getWantedPos().getCenter(), 2.0D, 2.0D, 2.0D).contains(this.position())) {
             this.setYRot(this.getDirection().toYRot());
             this.plantingAnimationState.start(this.tickCount);
             this.setPlanting(true);
@@ -206,12 +214,29 @@ public class BoblingEntity extends PathfinderMob {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
         if (itemStack.is(ModItems.VIVICUS_ANTIDOTE)) {
             this.setBoblingType(Type.CURED);
-            itemStack.shrink(1);
+            
+            if (this.attackPlayerGoal != null) {
+                this.goalSelector.removeGoal(this.attackPlayerGoal);
+            }
 
+            var particle = new DustParticleOptions(Vec3.fromRGB24(7118872).toVector3f(), 1);
+            for(int i = 0; i <= 10; i++) {
+                this.level().addParticle(particle, this.position().x + random.nextDouble(), this.position().y + random.nextDouble(), this.position().z + random.nextDouble(), 0, -0.3, 0);
+            }
+            
+            itemStack.shrink(1);
+            
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         } else if (itemStack.is(ModItems.JAR_OF_BONMEEL)) {
-            this.entityData.set(DATA_BONMEELED, true);
+            this.setBonmeeled();
             itemStack.shrink(1);
+
+            var particle = new DustParticleOptions(Vec3.fromRGB24(0xaa51b2).toVector3f(), 1);
+            for(int i = 0; i <= 10; i++) {
+                this.level().addParticle(particle, this.position().x + random.nextDouble(), this.position().y + random.nextDouble(), this.position().z + random.nextDouble(), 0, -0.3, 0);
+            }
+
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
         return super.mobInteract(pPlayer, pHand);
@@ -227,7 +252,8 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     public static enum Type implements StringRepresentable {
-        CORRUPTED(0, "corrupted"), CURED(1, "cured");
+        CORRUPTED(0, "corrupted"), 
+        CURED(1, "cured");
 
         public static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::id, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
         public static final StreamCodec<ByteBuf, Type> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, Type::id);
