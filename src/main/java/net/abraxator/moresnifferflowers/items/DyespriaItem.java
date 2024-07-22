@@ -5,10 +5,7 @@ import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModSoundEvents;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -64,7 +61,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
             handleCaulorflower(player, stack, level, blockPos, blockState);
         } else if (blockState.getBlock() instanceof ColorableVivicusBlock colorable) {
             colorable.addDye(level, blockPos, blockState, player);
-            
+
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         
@@ -102,6 +99,14 @@ public class DyespriaItem extends BlockItem implements Colorable {
     protected BlockState getPlacementState(BlockPlaceContext pContext) {
         var state = super.getPlacementState(pContext);
         return state == null ? null : state.setValue(ModStateProperties.AGE_3, 3);
+    }
+    
+    public void colorTree(ItemStack dyespria, ServerLevel level, BlockPos blockPos, BlockState blockState) {
+        BlockPos.withinManhattanStream(blockPos, 5, 5, 5)
+                .filter(blockPos1 -> level.getBlockState(blockPos1).is(ModTags.ModBlockTags.VIVICUS_BLOCKS))
+                .forEach(pos -> {
+                    colorOne(dyespria, level, pos, level.getBlockState(pos));   
+                });
     }
 
     public void colorOne(ItemStack stack, ServerLevel level, BlockPos blockPos, BlockState blockState) {
@@ -149,7 +154,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
         }
         return false;
     }
-
+    
     @Override
     public void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {
         Dye.setDyeToStack(destinationStack, dye, amount);
