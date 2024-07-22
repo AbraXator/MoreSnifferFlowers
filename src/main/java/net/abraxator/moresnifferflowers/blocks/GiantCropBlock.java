@@ -6,21 +6,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.ticks.ScheduledTick;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GiantCropBlock extends Block implements ModEntityBlock {
     public static final EnumProperty<ModelPos> MODEL_POSITION = EnumProperty.create("model_pos", ModelPos.class);
@@ -37,8 +39,30 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
 
     @Override
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(pLevel.getBlockEntity(pPos) instanceof GiantCropBlockEntity entity) {
-            entity.canGrow = true;
+        if(pLevel.getBlockEntity(pPos) instanceof GiantCropBlockEntity entity && entity.state == 1) {
+            switch (entity.state) {
+                case 1: {
+                    entity.canGrow = true;
+                }
+                case 2: {
+                    var blockPos = entity.pos2.mutable().move(1, 0, 1).immutable();
+                    List<ItemStack> drops = new ArrayList<>();
+                    
+                    if(pLevel.getBlockState(blockPos).is(this)) {
+                        BlockPos.betweenClosed(entity.pos1, entity.pos2).forEach(blockPos1 -> {
+                            if(pLevel.getBlockState(blockPos1).is(this)) {
+                                LootParams.Builder params = new LootParams.Builder(pLevel).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withParameter(LootContextParams.ORIGIN, blockPos1.getCenter());
+                                
+                                drops.addAll(pLevel.getBlockState(blockPos1).getDrops(params));
+                                pLevel.destroyBlock(blockPos1, false);
+                            }
+                        });
+                    }
+
+
+                    BoblingSackBlock.spawnSack(pLevel, blockPos, drops);
+                }
+            }
         }
     }
 
@@ -46,12 +70,16 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         if(!pState.getValue(MODEL_POSITION).equals(ModelPos.NONE)) {
             pLevel.getBlockTicks().schedule(new ScheduledTick<>(this, pPos, pLevel.getGameTime() + 7, pLevel.nextSubTickCount()));
+            if(pLevel.getBlockEntity(pPos) instanceof GiantCropBlockEntity entity) {
+                entity.state = 1;
+            }
+            
             if(pState.getValue(MODEL_POSITION).equals(ModelPos.NED) && pLevel instanceof ServerLevel level) {
                 level.sendParticles(ModParticles.GIANT_CROP.get(), pPos.getCenter().x - 1, pPos.getCenter().y - 1, pPos.getCenter().z + 1, 1, 0, 0, 0, 0);
             }
         }
     }
-
+ 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);

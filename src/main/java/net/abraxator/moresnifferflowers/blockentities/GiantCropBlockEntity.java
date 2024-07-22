@@ -18,6 +18,7 @@ public class GiantCropBlockEntity extends ModBlockEntity {
     public BlockPos pos2;
     public boolean canGrow = false;
     public double growProgress = 0;
+    public int state = 0; //0 NONE; 1 ANIMATION; 2 SACK;
 
     public GiantCropBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GIANT_CROP.get(), pPos, pBlockState);
@@ -56,6 +57,7 @@ public class GiantCropBlockEntity extends ModBlockEntity {
         pTag.putDouble("growProgress", growProgress);
         pTag.put("pos1", NbtUtils.writeBlockPos(this.pos1));
         pTag.put("pos2", NbtUtils.writeBlockPos(this.pos2));
+        pTag.putInt("state", this.state);
     }
 
     @Override
@@ -65,5 +67,6 @@ public class GiantCropBlockEntity extends ModBlockEntity {
         this.growProgress = pTag.getDouble("growProgress");
         this.pos1 = NbtUtils.readBlockPos(pTag, "pos1").orElseGet(this::getBlockPos);
         this.pos2 = NbtUtils.readBlockPos(pTag, "pos2").orElseGet(this::getBlockPos);
+        this.state = pTag.getInt("state");
     }
 }

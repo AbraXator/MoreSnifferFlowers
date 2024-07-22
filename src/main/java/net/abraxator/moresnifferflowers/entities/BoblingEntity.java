@@ -7,6 +7,7 @@ import net.abraxator.moresnifferflowers.entities.goals.BoblingGiantCropGoal;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -33,7 +34,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.openjdk.nashorn.internal.ir.ReturnNode;
 
+import javax.management.loading.PrivateClassLoader;
 import java.util.Optional;
 import java.util.function.IntFunction;
 
@@ -84,7 +87,11 @@ public class BoblingEntity extends PathfinderMob {
         this.entityData.set(DATA_BONMEELED, true);
         this.updateBonmeeledGoals();
     }
-
+    
+    public boolean isBonmeeled() {
+        return this.entityData.get(DATA_BONMEELED);
+    }
+    
     public BlockPos getWantedPos() {
         return this.entityData.get(DATA_WANTED_POS).orElse(null);
     }
@@ -212,29 +219,22 @@ public class BoblingEntity extends PathfinderMob {
     @Override
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
+        
         if (itemStack.is(ModItems.VIVICUS_ANTIDOTE)) {
             this.setBoblingType(Type.CURED);
             
             if (this.attackPlayerGoal != null) {
                 this.goalSelector.removeGoal(this.attackPlayerGoal);
             }
-
-            var particle = new DustParticleOptions(Vec3.fromRGB24(7118872).toVector3f(), 1);
-            for(int i = 0; i <= 10; i++) {
-                this.level().addParticle(particle, this.position().x + random.nextDouble(), this.position().y + random.nextDouble(), this.position().z + random.nextDouble(), 0, -0.3, 0);
-            }
             
+            particles(new DustParticleOptions(Vec3.fromRGB24(7118872).toVector3f(), 1));
             itemStack.shrink(1);
             
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         } else if (itemStack.is(ModItems.JAR_OF_BONMEEL)) {
             this.setBonmeeled();
             itemStack.shrink(1);
-
-            var particle = new DustParticleOptions(Vec3.fromRGB24(0xaa51b2).toVector3f(), 1);
-            for(int i = 0; i <= 10; i++) {
-                this.level().addParticle(particle, this.position().x + random.nextDouble(), this.position().y + random.nextDouble(), this.position().z + random.nextDouble(), 0, -0.3, 0);
-            }
+            particles(new DustParticleOptions(Vec3.fromRGB24(0xaa51b2).toVector3f(), 1));
 
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
@@ -242,6 +242,15 @@ public class BoblingEntity extends PathfinderMob {
         return super.mobInteract(pPlayer, pHand);
     }
 
+    private void particles(ParticleOptions particle) {
+        for(int i = 0; i <= 30; i++) {
+            double d0 = this.random.nextGaussian() * 0.02;
+            double d1 = this.random.nextGaussian() * 0.02;
+            double d2 = this.random.nextGaussian() * 0.02;
+            this.level().addParticle(particle, this.getRandomX(1), this.getRandomY() + 0.5D, this.getRandomZ(1), d0, d1, d2);
+        }
+    } 
+    
     @Override
     public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
         return false;

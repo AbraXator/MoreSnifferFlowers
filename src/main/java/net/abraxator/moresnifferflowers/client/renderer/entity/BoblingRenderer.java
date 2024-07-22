@@ -7,10 +7,12 @@ import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.accesstransformer.generated.AtParser;
 
 public class BoblingRenderer extends MobRenderer<BoblingEntity, BoblingModel<BoblingEntity>> {
     public static final ResourceLocation CORRUPTED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/corrupted_bobling.png");
     public static final ResourceLocation CURED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/bobling.png");
+    public static final ResourceLocation BONMEELED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/bonmeeled_bobling.png");
     
     public BoblingRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new BoblingModel<>(pContext.bakeLayer(ModModelLayerLocations.BOBLING)), 0.4F);
@@ -18,6 +20,12 @@ public class BoblingRenderer extends MobRenderer<BoblingEntity, BoblingModel<Bob
 
     @Override
     public ResourceLocation getTextureLocation(BoblingEntity pEntity) {
-        return pEntity.getBoblingType() == BoblingEntity.Type.CORRUPTED ? CORRUPTED_TEXTURE : CURED_TEXTURE;
+        if (pEntity.isBonmeeled()) {
+            return BONMEELED_TEXTURE;
+        } else if (pEntity.getBoblingType() == BoblingEntity.Type.CORRUPTED) {
+            return CORRUPTED_TEXTURE;
+        } else {
+            return CURED_TEXTURE;
+        }
     }
 }
