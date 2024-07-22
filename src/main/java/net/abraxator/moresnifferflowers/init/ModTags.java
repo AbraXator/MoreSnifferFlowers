@@ -24,6 +24,7 @@ public class ModTags {
     public static class ModBlockTags {
         public static final TagKey<Block> BONMEELABLE = create(Registries.BLOCK, "crops_fertiable_by_fbm");
         public static final TagKey<Block> GIANT_CROPS = create(Registries.BLOCK, "giant_crops");
+        public static final TagKey<Block> VIVICUS_BLOCKS = create(Registries.BLOCK, "vivicus_blocks");
     }
 
     public static class ModBannerPatternTags {
