@@ -31,7 +31,6 @@ public class ModBlocks {
             DeferredRegister.createBlocks(MoreSnifferFlowers.MOD_ID);
 
     public static final DeferredBlock<Block> DAWNBERRY_VINE = registerBlockNoItem("dawnberry_vine", () -> new DawnberryVineBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GLOW_LICHEN).replaceable().noCollission().strength(0.2F).sound(SoundType.GLOW_LICHEN).lightLevel(value -> value.getValue(DawnberryVineBlock.AGE) >= 3 ? 3 : 0).ignitedByLava().pushReaction(PushReaction.DESTROY).randomTicks().noOcclusion()));
-    public static final DeferredBlock<Block> BOBLING_HEAD = registerBlockNoItem("bobling_head", () -> new BoblingHeadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK).noOcclusion()));
     public static final DeferredBlock<Block> AMBUSH_BOTTOM = registerBlockNoItem("ambush_bottom", () -> new AmbushBlockBase(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F)));
     public static final DeferredBlock<Block> AMBUSH_TOP = registerBlockNoItem("ambush_top", () -> new AmbushBlockUpper(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F)));
     public static final DeferredBlock<Block> AMBER = registerBlockWithItem("amber", () ->  new HalfTransparentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(3.0F).noOcclusion()));
@@ -81,8 +80,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> VIVICUS_LEAVES = registerBlockWithItem("vivicus_leaves", () -> new VivicusLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
     public static final DeferredBlock<Block> VIVICUS_SAPLING = registerBlockWithItem("vivicus_sapling", () -> new VivicusSaplingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final DeferredBlock<Block> SPROUTING_VIVICUS_LEAVES = registerBlockWithItem("sprouting_vivicus_leaves", () -> new VivicusSproutingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
-    
-    public static final DeferredBlock<Block> BOBLING_SACK = registerBlockWithItem("bobling_sack", () -> new BoblingSackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
+
+    public static final DeferredBlock<Block> BOBLING_HEAD = registerBlockNoItem("bobling_head", () -> new BoblingHeadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK).noOcclusion()));
+    public static final DeferredBlock<Block> BOBLING_SACK = registerBlockNoItem("bobling_sack", () -> new BoblingSackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
         
     public static final DeferredBlock<Block> POTTED_DYESPRIA = registerBlockNoItem("potted_dyespria", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, DYESPRIA_PLANT, BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT)));
     public static final DeferredBlock<Block> POTTED_CORRUPTED_SAPLING = registerBlockNoItem("potted_corrupted_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, CORRUPTED_SAPLING, BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT)));

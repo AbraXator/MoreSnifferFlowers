@@ -48,7 +48,7 @@ public class BoblingGiantCropGoal extends Goal {
             
             if(pos.isPresent()) {
                 this.wantedPos = pos.get().getCenter();
-                this.bobling.getNavigation().moveTo(this.wantedPos.x, this.wantedPos.z, this.wantedPos.y, this.speed);
+                this.bobling.getNavigation().moveTo(this.wantedPos.x, this.wantedPos.y, this.wantedPos.z, this.speed);
 
                 return true;
             }
@@ -60,16 +60,15 @@ public class BoblingGiantCropGoal extends Goal {
     @Override
     public void tick() {
         if(AABB.ofSize(this.wantedPos, 2.0D, 2.0D, 2.0D).contains(this.bobling.position())) {
-            this.wantedPos = this.wantedPos.add(0, 1, 0);
             var giantBlock = Util.getRandom(List.of(ModBlocks.GIANT_CARROT, ModBlocks.GIANT_BEETROOT, ModBlocks.GIANT_NETHERWART, ModBlocks.GIANT_POTATO, ModBlocks.GIANT_WHEAT), this.bobling.getRandom());
-            var aabb = AABB.ofSize(wantedPos.add(0, 1, 0), 2, 2, 2);
+            var aabb = AABB.ofSize(wantedPos.add(0, 2, 0), 2, 2, 2);
             var level = this.bobling.level();
             if(level.getBlockStates(aabb).allMatch(blockState -> blockState.is(Blocks.AIR))) {
                 BlockPos.betweenClosedStream(aabb).forEach(pos -> {
-                    level.setBlockAndUpdate(pos, giantBlock.get().defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, JarOfBonmeelItem.evaulateModelPos(pos, BlockPos.containing(this.wantedPos))));
+                    level.setBlockAndUpdate(pos, giantBlock.get().defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, JarOfBonmeelItem.evaulateModelPos(pos, BlockPos.containing(this.wantedPos.add(0, 1, 0)))));
                     if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
-                        entity.pos1 = BlockPos.containing(this.wantedPos).mutable().move(1, 2, 1);
-                        entity.pos2 = BlockPos.containing(this.wantedPos).mutable().move(-1, 0, -1);
+                        entity.pos1 = BlockPos.containing(this.wantedPos.add(0, 1, 0)).mutable().move(1, 2, 1);
+                        entity.pos2 = BlockPos.containing(this.wantedPos.add(0, 1, 0)).mutable().move(-1, 0, -1);
                     } 
                     
                     var tick = new ScheduledTick<>(level.getBlockState(pos).getBlock(), pos, level.getGameTime() + 50, level.nextSubTickCount());
@@ -77,7 +76,6 @@ public class BoblingGiantCropGoal extends Goal {
                     this.bobling.remove(Entity.RemovalReason.DISCARDED);
                 });
             }
-            this.wantedPos = this.wantedPos.add(0, -1, 0);
         }
     }
 }

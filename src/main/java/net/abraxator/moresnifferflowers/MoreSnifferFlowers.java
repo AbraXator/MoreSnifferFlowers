@@ -52,6 +52,8 @@ public class MoreSnifferFlowers {
 
         FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
         pot.addPlant(ModBlocks.DYESPRIA_PLANT.getId(), ModBlocks.POTTED_DYESPRIA);
+        pot.addPlant(ModBlocks.CORRUPTED_SAPLING.getId(), ModBlocks.POTTED_CORRUPTED_SAPLING);
+        pot.addPlant(ModBlocks.VIVICUS_SAPLING.getId(), ModBlocks.POTTED_VIVICUS_SAPLING);
 
         FireBlock fireBlock = (FireBlock) Blocks.FIRE;
         fireBlock.setFlammable(ModBlocks.CORRUPTED_LOG.get(), 5, 20);
