@@ -49,9 +49,7 @@ public interface Colorable {
         return dyeToInsert;
     }
     
-    default void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {
-        
-    }
+    default void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {}
 
     default void particles(RandomSource randomSource, ServerLevel level, Dye dye, BlockPos blockPos) {
         for(int i = 0; i <= randomSource.nextIntBetweenInclusive(5, 10); i++) {

@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.ClientEvents;
 import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.worldgen.configurations.ModTreeDecoratorTypes;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
@@ -28,7 +29,7 @@ public class MoreSnifferFlowers {
         if(dist.isClient()) modEventBus.addListener(ClientEvents::clientSetup);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener((RegisterEvent e) -> ModAdvancementCritters.init());
-        
+
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
@@ -42,6 +43,7 @@ public class MoreSnifferFlowers {
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
+        ModTreeDecoratorTypes.DECORATORS.register(modEventBus);
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModEntityDataSerializers.SERIALIZERS.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);

@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.data.loot;
 
+import com.google.common.base.CaseFormat;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.blocks.DawnberryVineBlock;
@@ -135,7 +136,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         add(ModBlocks.CORRUPTED_SLAB.get(), this::createSlabItemTable);
         dropSelf(ModBlocks.CORRUPTED_FENCE.get());
         dropSelf(ModBlocks.CORRUPTED_FENCE_GATE.get());
-        dropSelf(ModBlocks.CORRUPTED_DOOR.get());
+        add(ModBlocks.CORRUPTED_DOOR.get(), this::createDoorTable);
         dropSelf(ModBlocks.CORRUPTED_TRAPDOOR.get()); 
         dropSelf(ModBlocks.CORRUPTED_PRESSURE_PLATE.get());
         dropSelf(ModBlocks.CORRUPTED_BUTTON.get());
@@ -152,7 +153,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         add(ModBlocks.VIVICUS_SLAB.get(), this::createSlabItemTable);
         dropSelf(ModBlocks.VIVICUS_FENCE.get());
         dropSelf(ModBlocks.VIVICUS_FENCE_GATE.get());
-        dropSelf(ModBlocks.VIVICUS_DOOR.get());
+        add(ModBlocks.VIVICUS_DOOR.get(), this::createDoorTable);
         dropSelf(ModBlocks.VIVICUS_TRAPDOOR.get());
         dropSelf(ModBlocks.VIVICUS_PRESSURE_PLATE.get());
         dropSelf(ModBlocks.VIVICUS_BUTTON.get());

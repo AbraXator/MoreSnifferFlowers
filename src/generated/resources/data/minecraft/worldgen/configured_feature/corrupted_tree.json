@@ -15,24 +15,40 @@
         "max_inclusive": 3,
         "min_inclusive": 2
       },
-      "leaf_placement_attempts": 25,
-      "offset": {
-        "type": "minecraft:uniform",
-        "max_inclusive": 1,
-        "min_inclusive": 0
-      },
+      "leaf_placement_attempts": 35,
+      "offset": 0,
       "radius": 3
     },
     "foliage_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "moresnifferflowers:corrupted_leaves",
-        "Properties": {
-          "distance": "7",
-          "persistent": "false",
-          "waterlogged": "false"
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "moresnifferflowers:corrupted_leaves",
+            "Properties": {
+              "distance": "7",
+              "persistent": "false",
+              "waterlogged": "false"
+            }
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "Name": "moresnifferflowers:corrupted_log",
+            "Properties": {
+              "axis": "y"
+            }
+          },
+          "weight": 2
+        },
+        {
+          "data": {
+            "Name": "moresnifferflowers:corrupted_sludge"
+          },
+          "weight": 1
         }
-      }
+      ]
     },
     "force_dirt": false,
     "ignore_vines": true,
@@ -49,13 +65,27 @@
       "height_rand_b": 2
     },
     "trunk_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "moresnifferflowers:corrupted_log",
-        "Properties": {
-          "axis": "y"
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "moresnifferflowers:corrupted_log",
+            "Properties": {
+              "axis": "y"
+            }
+          },
+          "weight": 10
+        },
+        {
+          "data": {
+            "Name": "moresnifferflowers:stripped_corrupted_log",
+            "Properties": {
+              "axis": "y"
+            }
+          },
+          "weight": 4
         }
-      }
+      ]
     }
   }
 }

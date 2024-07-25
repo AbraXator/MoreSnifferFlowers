@@ -30,5 +30,9 @@ public class ModDataMapsProvider extends DataMapProvider {
         compostables.add(ModItems.CROPRESSED_WHEAT, new Compostable(1.0F), false);
         compostables.add(ModItems.CROPRESSED_POTATO, new Compostable(1.0F), false);
         compostables.add(ModItems.CROPRESSED_CARROT, new Compostable(1.0F), false);
+        compostables.add(ModBlocks.CORRUPTED_SAPLING.asItem().builtInRegistryHolder(), new Compostable(1.0F), false);
+        compostables.add(ModBlocks.VIVICUS_SAPLING.asItem().builtInRegistryHolder(), new Compostable(1.0F), false);
+        compostables.add(ModBlocks.CORRUPTED_LEAVES.asItem().builtInRegistryHolder(), new Compostable(1.0F), false);
+        compostables.add(ModBlocks.VIVICUS_LEAVES.asItem().builtInRegistryHolder(), new Compostable(1.0F), false);
     }
 }

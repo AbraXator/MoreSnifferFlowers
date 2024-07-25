@@ -69,6 +69,7 @@ public class BoblingGiantCropGoal extends Goal {
                     if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
                         entity.pos1 = BlockPos.containing(this.wantedPos.add(0, 1, 0)).mutable().move(1, 2, 1);
                         entity.pos2 = BlockPos.containing(this.wantedPos.add(0, 1, 0)).mutable().move(-1, 0, -1);
+                        entity.state = 2;
                     } 
                     
                     var tick = new ScheduledTick<>(level.getBlockState(pos).getBlock(), pos, level.getGameTime() + 50, level.nextSubTickCount());

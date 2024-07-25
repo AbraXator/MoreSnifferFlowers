@@ -8,16 +8,14 @@ import net.abraxator.moresnifferflowers.recipes.RebrewedTippedArrowRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class ModRecipesProvider extends RecipeProvider {
     public ModRecipesProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> future) {
@@ -128,6 +126,16 @@ public class ModRecipesProvider extends RecipeProvider {
         buttonBuilder(ModBlocks.VIVICUS_BUTTON, Ingredient.of(ModBlocks.VIVICUS_PLANKS))
                 .unlockedBy("has_VIVICUS_planks", has(ModBlocks.VIVICUS_PLANKS))
                 .save(pRecipeOutput);
+        
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.VIVICUS_ANTIDOTE, 1)
+                        .pattern(" AB")
+                        .pattern("ABA")
+                        .pattern("CB ")
+                        .define('A', Tags.Items.GLASS_BLOCKS_COLORLESS)
+                        .define('B', ModItems.CORRUPTED_SLIME_BALL)
+                        .define('C', Tags.Items.INGOTS_IRON)
+                        .unlockedBy("has_corrupted_slime_ball", has(ModItems.CORRUPTED_SLIME_BALL))
+                        .save(pRecipeOutput);
 
         SpecialRecipeBuilder.special(RebrewedTippedArrowRecipe::new).save(pRecipeOutput, "rebrewed_tipped_arrow");
         
