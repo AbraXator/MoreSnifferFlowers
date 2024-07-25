@@ -39,7 +39,10 @@
 	"item.moresnifferflowers.carotene_armor_trim_smithing_template": "Smithing Template",
 	"item.moresnifferflowers.grain_armor_trim_smithing_template": "Smithing Template",
 	"item.moresnifferflowers.beat_armor_trim_smithing_template": "Smithing Template",
-
+	"item.moresnifferflowers.corrupted_slime_ball": "Corrupted Slime Ball",
+	"item.moresnifferflowers.vivicus_antidote": "Vivicus Antidote",
+	"item.moresnifferflowers.corrupted_bobling_core": "Corrupted Bobling Core",
+	"item.moresnifferflowers.bobling_core": "Bobling Core",
 
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
 	"block.moresnifferflowers.ambush": "Ambush",
@@ -75,6 +78,7 @@
 	"block.moresnifferflowers.sprouting_vivicus_leaves": "Sprouting Vivicus Leaves",
 	"block.moresnifferflowers.corrupted_sprouting_vivicus_leaves": "Corrupted Sprouting Vivicus Leaves",
 
+
 	"block.moresnifferflowers.corrupted_log": "Corrupted Log",
 	"block.moresnifferflowers.corrupted_wood": "Corrupted Wood",
 	"block.moresnifferflowers.stripped_corrupted_log": "Stripped Corrupted Log",
@@ -93,10 +97,7 @@
 	"block.moresnifferflowers.corrupted_sign": "Corrupted Sign",
 	"block.moresnifferflowers.corrupted_boat": "Corrupted Boat",
 	"block.moresnifferflowers.corrupted_chest_boat": "Corrupted Boat with Chest",
-
-
-
-
+	"block.moresnifferflowers.corrupted_sludge": "Corrupted Sludge",
 
 
 	"tooltip.dyespria.usage": "Hover+Right-click to insert dye \nRight-click Caulorflower to paint \nSneak to paint whole column\n",
