@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:glass_blocks/colorless"
+    },
+    "B": {
+      "item": "moresnifferflowers:corrupted_slime_ball"
+    },
+    "C": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    " AB",
+    "ABA",
+    "CB "
+  ],
+  "result": {
+    "count": 1,
+    "id": "moresnifferflowers:vivicus_antidote"
+  }
+}

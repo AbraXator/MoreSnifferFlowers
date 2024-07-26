@@ -65,10 +65,11 @@ public class ModCreativeTabs {
                 output.accept(ModItems.BROKEN_REBREWING_STAND.get());
                 output.accept(ModItems.REBREWING_STAND.get());
                 
-                output.accept(ModItems.CORRUPTED_SLIME_BALL);
+
                 output.accept(ModItems.VIVICUS_ANTIDOTE);
                 output.accept(ModItems.CORRUPTED_BOBLING_CORE);
                 output.accept(ModItems.BOBLING_CORE);
+                output.accept(ModItems.CORRUPTED_SLIME_BALL);
                 
                 output.accept(ModBlocks.CORRUPTED_LOG.get());
                 output.accept(ModBlocks.CORRUPTED_WOOD.get());
@@ -86,6 +87,7 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.CORRUPTED_LEAVES.get());
                 output.accept(ModBlocks.CORRUPTED_SAPLING.get());
                 output.accept(ModBlocks.CORRUPTED_SLUDGE);
+                output.accept(ModBlocks.CORRUPTED_SLIME_LAYER);
                 
                 output.accept(ModBlocks.VIVICUS_LOG.get());
                 output.accept(ModBlocks.VIVICUS_WOOD.get());

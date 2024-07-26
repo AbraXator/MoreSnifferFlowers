@@ -17,4 +17,5 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RebrewingStandBlockEntity>> REBREWING_STAND = BLOCK_ENTITIES.register("rebrewing_stand", () -> BlockEntityType.Builder.of(RebrewingStandBlockEntity::new, ModBlocks.REBREWING_STAND_TOP.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DyespriaPlantBlockEntity>> DYESPRIA_PLANT = BLOCK_ENTITIES.register("dyespria_plant", () -> BlockEntityType.Builder.of(DyespriaPlantBlockEntity::new, ModBlocks.DYESPRIA_PLANT.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BoblingSackBlockEntity>> BOBLING_SACK = BLOCK_ENTITIES.register("bobling_sack", () -> BlockEntityType.Builder.of(BoblingSackBlockEntity::new, ModBlocks.BOBLING_SACK.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CorruptedSludgeBlockEntity>> CORRUPTED_SLUDGE = BLOCK_ENTITIES.register("corrupted_sludge", () -> BlockEntityType.Builder.of(CorruptedSludgeBlockEntity::new, ModBlocks.CORRUPTED_SLUDGE.get()).build(null));
 }

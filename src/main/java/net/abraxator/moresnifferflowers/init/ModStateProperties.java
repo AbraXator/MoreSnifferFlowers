@@ -13,4 +13,6 @@ public class ModStateProperties {
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
     public static final BooleanProperty SHEARED = BooleanProperty.create("sheared");
     public static final EnumProperty<BoblingEntity.Type> VIVICUS_TYPE = EnumProperty.create("vivicus_type", BoblingEntity.Type.class);
+    public static final IntegerProperty LAYER = BlockStateProperties.LAYERS;
+    
 }

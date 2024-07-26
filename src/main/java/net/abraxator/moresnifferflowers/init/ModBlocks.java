@@ -66,7 +66,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CORRUPTED_BUTTON = registerBlockWithItem("corrupted_button", () -> new ButtonBlock(BlockSetType.WARPED, 30, BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_BUTTON)));
     public static final DeferredBlock<Block> CORRUPTED_LEAVES = registerBlockWithItem("corrupted_leaves", () -> new CorruptedLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_WART_BLOCK).noOcclusion()));
     public static final DeferredBlock<Block> CORRUPTED_SAPLING = registerBlockWithItem("corrupted_sapling", () -> new SaplingBlock(ModTreeGrowers.CORRUPTED_TREE, BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_FUNGUS)));
-    public static final DeferredBlock<Block> CORRUPTED_SLUDGE = registerBlockWithItem("corrupted_sludge", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).lightLevel(value -> 4)));
+    public static final DeferredBlock<Block> CORRUPTED_SLUDGE = registerBlockWithItem("corrupted_sludge", () -> new CorruptedSludgeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK).lightLevel(value -> 4)));
+    public static final DeferredBlock<Block> CORRUPTED_SLIME_LAYER = registerBlockWithItem("corrupted_slime_layer", () -> new CorruptedSlimeLayerBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.CORRUPTED_SLUDGE.get()).lightLevel(value -> 4)));
     
     public static final DeferredBlock<Block> VIVICUS_LOG = registerBlockWithItem("vivicus_log", () -> new VivicusRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)));
     public static final DeferredBlock<Block> VIVICUS_WOOD = registerBlockWithItem("vivicus_wood", () -> new VivicusRotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)));

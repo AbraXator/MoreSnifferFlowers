@@ -23,6 +23,7 @@ import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.*;
@@ -73,6 +74,7 @@ public class ClientEvents {
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.BOBLING.get(), BoblingRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.DRAGONFLY.get(), DragonflyRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), ThrownItemRenderer::new);
     }
 
     @SubscribeEvent

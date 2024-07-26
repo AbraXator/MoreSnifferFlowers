@@ -28,6 +28,10 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
         super(ModEntityTypes.DRAGONFLY.get(), player, pLevel);
         this.setOwner(player);
     }
+    
+    public DragonflyProjectile(Level level) {
+        super(ModEntityTypes.DRAGONFLY.get(), level);
+    }
 
     @Override
     public void tick() {

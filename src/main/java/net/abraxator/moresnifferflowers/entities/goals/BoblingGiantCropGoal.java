@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.entities.goals;
 
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
-import net.abraxator.moresnifferflowers.blocks.BoblingSackBlock;
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
@@ -14,12 +13,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ScheduledTick;
-import org.apache.commons.io.output.ThresholdingOutputStream;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BoblingGiantCropGoal extends Goal {
     private final BoblingEntity bobling;
