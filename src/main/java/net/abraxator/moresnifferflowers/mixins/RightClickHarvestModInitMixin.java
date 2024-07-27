@@ -17,11 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class RightClickHarvestModInitMixin {
     @Inject(method = "onBlockUse(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;Z)Lnet/minecraft/world/InteractionResult;", at = @At("HEAD"), cancellable = true, remap = false)
     public void moresnifferflowers$onBlockUse(Player player, Level level, InteractionHand hand, BlockHitResult hitResult, boolean initialCall, CallbackInfoReturnable<InteractionResult> cir) {
-        MoreSnifferFlowers.LOGGER.warn("HAPPENED");
-        MoreSnifferFlowers.LOGGER.warn(player.getItemInHand(hand).getDescriptionId());
         if(player.getItemInHand(hand).is(ModItems.JAR_OF_BONMEEL.get()) && level.getBlockState(hitResult.getBlockPos()).is(ModTags.ModBlockTags.BONMEELABLE)) {
             cir.setReturnValue(InteractionResult.PASS);
-            MoreSnifferFlowers.LOGGER.warn("SUCCES!");
         }
     }
 }
