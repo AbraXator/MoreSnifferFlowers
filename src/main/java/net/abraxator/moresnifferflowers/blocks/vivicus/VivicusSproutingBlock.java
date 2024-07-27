@@ -24,13 +24,13 @@ public class VivicusSproutingBlock extends VivicusLeavesBlock implements ModCrop
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(ModStateProperties.AGE_2);
+        pBuilder.add(ModStateProperties.AGE_3);
         pBuilder.add(ModStateProperties.VIVICUS_TYPE);
     }
 
     @Override
     public IntegerProperty getAgeProperty() {
-        return ModStateProperties.AGE_2;
+        return ModStateProperties.AGE_3;
     }
 
     @Override

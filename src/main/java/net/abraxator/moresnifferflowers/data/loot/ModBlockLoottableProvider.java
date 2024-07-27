@@ -162,7 +162,8 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         add(ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.VIVICUS_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
         
         add(ModBlocks.BOBLING_SACK.get(),noDrop());
-        
+        add(ModBlocks.CORRUPTED_SLIME_LAYER.get(),noDrop());
+
         dropPottedContents(ModBlocks.POTTED_DYESPRIA.get());
         dropPottedContents(ModBlocks.POTTED_CORRUPTED_SAPLING.get());
         dropPottedContents(ModBlocks.POTTED_VIVICUS_SAPLING.get());

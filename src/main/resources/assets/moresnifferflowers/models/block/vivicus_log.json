@@ -5,8 +5,8 @@
 	"textures": {
 		"2": "moresnifferflowers:block/vivicus_log_top_crop",
 		"end": "moresnifferflowers:block/vivicus_log_top",
-		"side": "moresnifferflowers:block/vivicus_log",
-		"particle": "moresnifferflowers:block/vivicus_log"
+		"particle": "moresnifferflowers:block/vivicus_log",
+		"side": "moresnifferflowers:block/vivicus_log"
 	},
 	"elements": [
 		{
@@ -23,29 +23,12 @@
 			}
 		},
 		{
-			"from": [0, 16.025, 0],
+			"from": [0, 0.025, 0],
 			"to": [16, 16.025, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [1, 0.025, 1]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8.025, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "up"},
-				"east": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "up"},
-				"south": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "up"},
-				"west": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "up"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "up"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "up"}
-			}
-		},
-		{
-			"from": [0, -0.025, 0],
-			"to": [16, -0.025, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [1, -16.025, 1]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "down"},
-				"east": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "down"},
-				"south": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "down"},
-				"west": {"uv": [0, 0, 16, 0], "texture": "#missing", "cullface": "down"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "down"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "down"}
 			}
 		}
 	]
