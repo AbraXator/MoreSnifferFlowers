@@ -23,10 +23,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
@@ -34,9 +31,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.openjdk.nashorn.internal.ir.ReturnNode;
 
 import javax.management.loading.PrivateClassLoader;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.IntFunction;
 
@@ -92,6 +91,7 @@ public class BoblingEntity extends PathfinderMob {
         return this.entityData.get(DATA_BONMEELED);
     }
     
+    @Nullable
     public BlockPos getWantedPos() {
         return this.entityData.get(DATA_WANTED_POS).orElse(null);
     }
@@ -113,7 +113,7 @@ public class BoblingEntity extends PathfinderMob {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("bobling_type", getBoblingType().id());
         pCompound.putBoolean("running", this.isRunning());
-        pCompound.putBoolean("running", this.entityData.get(DATA_BONMEELED));
+        pCompound.putBoolean("bonmeeled", this.isBonmeeled());
         pCompound.putBoolean("planting", this.isPlanting());
         if (getWantedPos() != null) {
             pCompound.put("wanted_pos", NbtUtils.writeBlockPos(getWantedPos()));
@@ -200,7 +200,7 @@ public class BoblingEntity extends PathfinderMob {
                 this.boblingGiantCropGoal = new BoblingGiantCropGoal(this, 50, 0.8D);
             }
             
-            this.goalSelector.addGoal(1, this.boblingGiantCropGoal);
+            this.goalSelector.addGoal(4, this.boblingGiantCropGoal);
         }
     }
     
@@ -220,8 +220,11 @@ public class BoblingEntity extends PathfinderMob {
     protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
         
-        if (itemStack.is(ModItems.VIVICUS_ANTIDOTE)) {
+        if (itemStack.is(ModItems.VIVICUS_ANTIDOTE) && this.getBoblingType() == Type.CORRUPTED) {
             this.setBoblingType(Type.CURED);
+            
+            this.goalSelector.addGoal(3, new TemptGoal(this, 0.9F, stack ->
+                    stack.is(ModItems.JAR_OF_BONMEEL), false));
             
             if (this.attackPlayerGoal != null) {
                 this.goalSelector.removeGoal(this.attackPlayerGoal);
@@ -231,7 +234,7 @@ public class BoblingEntity extends PathfinderMob {
             itemStack.shrink(1);
             
             return InteractionResult.sidedSuccess(this.level().isClientSide);
-        } else if (itemStack.is(ModItems.JAR_OF_BONMEEL)) {
+        } else if (itemStack.is(ModItems.JAR_OF_BONMEEL) && this.getBoblingType() == Type.CURED && !this.isBonmeeled()) {
             this.setBonmeeled();
             itemStack.shrink(1);
             particles(new DustParticleOptions(Vec3.fromRGB24(0xaa51b2).toVector3f(), 1));

@@ -1,15 +1,13 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.entities.CorruptedSlimeBallProjectile;
-import net.abraxator.moresnifferflowers.entities.DragonflyProjectile;
+import net.abraxator.moresnifferflowers.entities.CorruptedProjectile;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModParticles;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -17,8 +15,6 @@ import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.level.gameevent.PositionSource;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.io.output.ThresholdingOutputStream;
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -55,49 +51,45 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
 
         @Override
         public boolean handleGameEvent(ServerLevel pLevel, Holder<GameEvent> pGameEvent, GameEvent.Context pContext, Vec3 pPos) {
-            if(pGameEvent.is(GameEvent.BLOCK_DESTROY) && pContext.affectedState().is(ModTags.ModBlockTags.CORRUPTED_BLOCKS) && !pPos.equals(this.positionSource.getPosition(pLevel).get())) {
-                var xo = this.getListenerSource().getPosition(pLevel).get().x;
-                var yo = this.getListenerSource().getPosition(pLevel).get().y;
-                var zo = this.getListenerSource().getPosition(pLevel).get().z;
-                var r = 2.5;
-                var checkR = 1.5;
-                Set<Vec3> set = new HashSet<>();
-
-                for (double theta = 0; theta <= Mth.TWO_PI * 3; theta += Mth.TWO_PI / 8) {
-                    generateMob(set, xo, yo, zo, r, theta + pLevel.random.nextDouble(), checkR, pLevel);
+            if(pGameEvent.is(GameEvent.BLOCK_DESTROY) && pContext.affectedState().is(ModTags.ModBlockTags.CORRUPTED_BLOCKS) && !pPos.equals(this.positionSource.getPosition(pLevel).get()) && pContext.sourceEntity() instanceof Player player) {
+                Vec3 center = this.getListenerSource().getPosition(pLevel).get();
+                var radius = 2.5;
+                var projectileNumber = pLevel.random.nextInt(10) + 2;
+                int attempts = 0;
+                Set<Vec3> placed = new HashSet<>();
+                
+                for(int i = 0; i < projectileNumber; i++) {
+                    generatePoint(placed, center, radius, pLevel);
                 }
             }
 
             return false;
         }
 
-        private void generateMob(Set<Vec3> set, double xo, double yo, double zo, double r, double theta, double checkR, ServerLevel pLevel) {
-            var x = xo + r * Mth.cos((float) theta);
-            var yx = yo + r * Mth.sin((float) theta);
-            var yz = yo + r * Mth.cos((float) theta);
-            var z = zo + r * Mth.sin((float) theta);
+        private void generatePoint(Set<Vec3> placed, Vec3 center, double radius, ServerLevel pLevel) {
+            var random = pLevel.random;
 
-            createAndAddProjectile(set, checkR, new Vec3(x, yo, z), pLevel);
-            createAndAddProjectile(set, checkR, new Vec3(x, yx, zo), pLevel);
-            createAndAddProjectile(set, checkR, new Vec3(xo, yz, z), pLevel);
-        }
-        
-        private void createAndAddProjectile(Set<Vec3> set, double checkR, Vec3 vec3, ServerLevel level) {
-            AABB aabb = AABB.ofSize(vec3, checkR, checkR, checkR);
-            if (set.stream().noneMatch(aabb::contains) && level.getBlockState(BlockPos.containing(vec3)).canBeReplaced()) {
-                var pos = this.positionSource.getPosition(level).get();
-                var random = level.random;
+            double theta = 2 * Mth.PI * random.nextDouble();
+            double phi = Math.acos(2 * random.nextDouble() - 1);
+
+            double xg = center.x + radius * Mth.sin((float) phi) * Mth.cos((float) theta);
+            double yg = center.y + radius * Mth.sin((float) phi) * Mth.sin((float) theta);
+            double zg = center.z + radius * Mth.cos((float) phi);
+            var vec3 = new Vec3(xg, yg, zg);
+            
+            if (placed.stream().noneMatch(vec31 -> AABB.ofSize(vec3, 1, 1, 1).contains(vec31)) && pLevel.getBlockState(BlockPos.containing(vec3)).canBeReplaced()) {
+                var pos = this.positionSource.getPosition(pLevel).get();
                 var x = random.nextDouble() * 0.5;
                 var y = random.nextDouble() * 0.5;
                 var z = random.nextDouble() * 0.5;
-                CorruptedSlimeBallProjectile projectile = new CorruptedSlimeBallProjectile(level);
+                CorruptedProjectile projectile = new CorruptedProjectile(pLevel);
                 projectile.setPos(vec3);
                 Vec3 dir = new Vec3(projectile.getX() - pos.x, projectile.getY() - pos.y, projectile.getZ() - pos.z).normalize().multiply(x, y, z);
                 projectile.setDeltaMovement(dir);
-                level.addFreshEntity(projectile);
-                
+                pLevel.addFreshEntity(projectile);
+
                 //level.sendParticles(ModParticles.CARROT.get(), vec3.x, vec3.y, vec3.z, 1, 0D, 0D, 0D, 0D);
-                set.add(vec3);
+                placed.add(vec3);
             }
         }
     }

@@ -1,8 +1,6 @@
 package net.abraxator.moresnifferflowers.entities;
 
-import com.ibm.icu.impl.coll.BOCSU;
 import net.abraxator.moresnifferflowers.init.*;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -11,7 +9,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -19,16 +16,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.slf4j.helpers.ThreadLocalMapOfStacks;
 
-import javax.sound.sampled.BooleanControl;
-
-public class CorruptedSlimeBallProjectile extends ThrowableItemProjectile {
-    public CorruptedSlimeBallProjectile(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
+public class CorruptedProjectile extends ThrowableItemProjectile {
+    public CorruptedProjectile(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public CorruptedSlimeBallProjectile(Level level) {
+    public CorruptedProjectile(Level level) {
         super(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), level);
     }
 

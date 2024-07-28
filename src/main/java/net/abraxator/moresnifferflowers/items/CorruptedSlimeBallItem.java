@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.entities.CorruptedSlimeBallProjectile;
+import net.abraxator.moresnifferflowers.entities.CorruptedProjectile;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.sounds.SoundEvents;
@@ -35,7 +35,7 @@ public class CorruptedSlimeBallItem extends Item implements ProjectileItem {
                 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F)
         );
         if (!pLevel.isClientSide) {
-            CorruptedSlimeBallProjectile projectile = new CorruptedSlimeBallProjectile(pLevel);
+            CorruptedProjectile projectile = new CorruptedProjectile(pLevel);
             projectile.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.5F, 1.0F);
             pLevel.addFreshEntity(projectile);
         }

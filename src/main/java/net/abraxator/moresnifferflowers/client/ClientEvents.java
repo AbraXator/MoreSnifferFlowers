@@ -8,6 +8,7 @@ import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.client.model.block.CropressorModel;
 import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
+import net.abraxator.moresnifferflowers.client.model.entity.CorruptedProjectileModel;
 import net.abraxator.moresnifferflowers.client.model.entity.DragonflyModel;
 import net.abraxator.moresnifferflowers.client.particle.AmbushParticle;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
@@ -18,6 +19,7 @@ import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEnt
 import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.entity.CorruptedProjectileRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
@@ -61,6 +63,7 @@ public class ClientEvents {
         //ENTITY
         event.registerLayerDefinition(ModModelLayerLocations.BOBLING, BoblingModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayerLocations.DRAGONFLY, DragonflyModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayerLocations.CORRUPTED_PROJECTILE, CorruptedProjectileModel::createBodyLayer);
         //BLOCK
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_CARROT, GiantCropModels::createGiantCarrotLayer);
         event.registerLayerDefinition(ModModelLayerLocations.GIANT_POTATO, GiantCropModels::createGiantPotatoLayer);
@@ -74,7 +77,7 @@ public class ClientEvents {
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntityTypes.BOBLING.get(), BoblingRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.DRAGONFLY.get(), DragonflyRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), CorruptedProjectileRenderer::new);
     }
 
     @SubscribeEvent

@@ -6,7 +6,6 @@ import net.abraxator.moresnifferflowers.data.loot.ModLootModifierProvider;
 import net.abraxator.moresnifferflowers.data.loot.ModLoottableProvider;
 import net.abraxator.moresnifferflowers.data.recipe.ModRecipesProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModBlockTagsProvider;
-import net.abraxator.moresnifferflowers.data.tag.ModItemTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModPaintingTagsProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,6 +26,7 @@ public class ModDatagen {
         
         //BLOCKMODELS
         generator.addProvider(event.includeClient(), new ModBlockStateGenerator(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
         
         //SOUNDS
         generator.addProvider(event.includeClient(), new ModSoundProvider(packOutput, existingFileHelper));
