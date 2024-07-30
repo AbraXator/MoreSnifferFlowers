@@ -35,7 +35,7 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = 'MoreSnifferFlowers-'+minecraft_version+'-neo'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -77,7 +77,6 @@ runs {
 
     server {
         systemProperty 'forge.enabledGameTestNamespaces', mod_id
-        programArgument '--nogui'
     }
 
     // This run config launches GameTestServer and runs all registered gametests, then exits.
