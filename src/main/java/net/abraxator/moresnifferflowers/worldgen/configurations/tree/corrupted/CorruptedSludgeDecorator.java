@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.worldgen.configurations.tree;
+package net.abraxator.moresnifferflowers.worldgen.configurations.tree.corrupted;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

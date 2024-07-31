@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModConfiguredFeatures;
-import net.abraxator.moresnifferflowers.worldgen.configurations.tree.VivicusTreeGrower;
+import net.abraxator.moresnifferflowers.worldgen.configurations.tree.vivicus.VivicusTreeGrower;
 import net.minecraft.world.level.block.grower.TreeGrower;
 
 import java.util.Optional;

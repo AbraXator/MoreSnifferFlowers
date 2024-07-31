@@ -88,6 +88,8 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.CORRUPTED_SAPLING.get());
                 output.accept(ModBlocks.CORRUPTED_SLUDGE);
                 output.accept(ModBlocks.CORRUPTED_SLIME_LAYER);
+                output.accept(ModItems.CORRUPTED_SIGN);
+                output.accept(ModItems.CORRUPTED_HANGING_SIGN);
                 
                 output.accept(ModBlocks.VIVICUS_LOG.get());
                 output.accept(ModBlocks.VIVICUS_WOOD.get());
@@ -105,6 +107,8 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.VIVICUS_LEAVES.get());
                 output.accept(ModBlocks.VIVICUS_SAPLING.get());
                 output.accept(ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
+                output.accept(ModItems.VIVICUS_SIGN.get());
+                output.accept(ModItems.VIVICUS_HANGING_SIGN.get());
             })
             .backgroundTexture(MoreSnifferFlowers.loc("textures/gui/container/tab_items.png"))
             .withTabsImage(MoreSnifferFlowers.loc("textures/gui/container/tabs.png"))

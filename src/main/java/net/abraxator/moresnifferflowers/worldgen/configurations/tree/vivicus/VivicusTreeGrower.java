@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.worldgen.configurations.tree;
+package net.abraxator.moresnifferflowers.worldgen.configurations.tree.vivicus;
 
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
@@ -47,7 +47,7 @@ public class VivicusTreeGrower {
             } else {
                 ConfiguredFeature<?, ?> configuredfeature1 = holder1.value();
                 BlockState blockstate1 = pLevel.getFluidState(pPos).createLegacyBlock();
-                pLevel.setBlock(pPos, blockstate1, 4);
+                //pLevel.setBlock(pPos, blockstate1, 4);
                 if (configuredfeature1.place(pLevel, pChunkGenerator, pRandom, pPos)) {
                     if (pLevel.getBlockState(pPos) == blockstate1) {
                         pLevel.sendBlockUpdated(pPos, saplingState, blockstate1, 2);

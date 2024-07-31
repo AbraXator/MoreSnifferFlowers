@@ -161,12 +161,22 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.VIVICUS_SAPLING.get());
         add(ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.VIVICUS_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
         
-        add(ModBlocks.BOBLING_SACK.get(),noDrop());
-        add(ModBlocks.CORRUPTED_SLIME_LAYER.get(),noDrop());
+        add(ModBlocks.BOBLING_SACK.get(), noDrop());
+        add(ModBlocks.CORRUPTED_SLIME_LAYER.get(), noDrop());
 
         dropPottedContents(ModBlocks.POTTED_DYESPRIA.get());
         dropPottedContents(ModBlocks.POTTED_CORRUPTED_SAPLING.get());
         dropPottedContents(ModBlocks.POTTED_VIVICUS_SAPLING.get());
+        
+        dropOther(ModBlocks.CORRUPTED_SIGN.get(), ModItems.CORRUPTED_SIGN);
+        dropOther(ModBlocks.CORRUPTED_WALL_SIGN.get(), ModItems.CORRUPTED_SIGN);
+        dropOther(ModBlocks.CORRUPTED_HANGING_SIGN.get(), ModItems.CORRUPTED_HANGING_SIGN);
+        dropOther(ModBlocks.CORRUPTED_WALL_HANGING_SIGN.get(), ModItems.CORRUPTED_HANGING_SIGN);
+        
+        dropOther(ModBlocks.VIVICUS_SIGN.get(), ModItems.VIVICUS_SIGN);
+        dropOther(ModBlocks.VIVICUS_WALL_SIGN.get(), ModItems.VIVICUS_SIGN);
+        dropOther(ModBlocks.VIVICUS_HANGING_SIGN.get(), ModItems.VIVICUS_HANGING_SIGN);
+        dropOther(ModBlocks.VIVICUS_WALL_HANGING_SIGN.get(), ModItems.VIVICUS_HANGING_SIGN);
     }
 
     private LootTable.Builder giantCropLoot(Item crop, Item cropressed, Item special, Item piece, Item trim) {

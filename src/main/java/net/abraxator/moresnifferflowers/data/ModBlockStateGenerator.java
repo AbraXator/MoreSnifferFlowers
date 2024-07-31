@@ -2,7 +2,6 @@ package net.abraxator.moresnifferflowers.data;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -12,12 +11,9 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-
-import static net.abraxator.moresnifferflowers.MoreSnifferFlowers.loc;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public class ModBlockStateGenerator extends BlockStateProvider {
@@ -46,9 +42,22 @@ public class ModBlockStateGenerator extends BlockStateProvider {
         simpleBlock(ModBlocks.POTTED_DYESPRIA.get(), models().withExistingParent(ModBlocks.POTTED_DYESPRIA.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(ModBlocks.DYESPRIA_PLANT.get())));
         simpleBlock(ModBlocks.POTTED_CORRUPTED_SAPLING.get(), models().withExistingParent(ModBlocks.POTTED_CORRUPTED_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(ModBlocks.CORRUPTED_SAPLING.get())));
         simpleBlock(ModBlocks.POTTED_VIVICUS_SAPLING.get(), models().withExistingParent(ModBlocks.POTTED_VIVICUS_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(ModBlocks.VIVICUS_SAPLING.get())));
-        
+        signBlock((StandingSignBlock) ModBlocks.CORRUPTED_SIGN.get(), (WallSignBlock) ModBlocks.CORRUPTED_WALL_SIGN.get(), blockTexture(ModBlocks.CORRUPTED_PLANKS.get()));
+        signBlock((StandingSignBlock) ModBlocks.VIVICUS_SIGN.get(), (WallSignBlock) ModBlocks.VIVICUS_WALL_SIGN.get(), blockTexture(ModBlocks.VIVICUS_PLANKS.get()));
+        hangingSignBlock(ModBlocks.CORRUPTED_HANGING_SIGN.get(), ModBlocks.CORRUPTED_WALL_HANGING_SIGN.get(), blockTexture(ModBlocks.CORRUPTED_PLANKS.get()));
+        hangingSignBlock(ModBlocks.VIVICUS_HANGING_SIGN.get(), ModBlocks.VIVICUS_WALL_HANGING_SIGN.get(), blockTexture(ModBlocks.VIVICUS_PLANKS.get()));
         //logWoodSapling((RotatedPillarBlock) ModBlocks.CORRUPTED_LOG.get(), (RotatedPillarBlock) ModBlocks.STRIPPED_CORRUPTED_LOG.get(), (RotatedPillarBlock) ModBlocks.CORRUPTED_WOOD.get(), (RotatedPillarBlock) ModBlocks.STRIPPED_CORRUPTED_WOOD.get(), ModBlocks.CORRUPTED_SAPLING.get());
         //plankBlocks("corrupted", ModBlocks.CORRUPTED_PLANKS.get(), ModBlocks.CORRUPTED_SLAB.get(), ((StairBlock) ModBlocks.CORRUPTED_STAIRS.get()), ModBlocks.CORRUPTED_BUTTON.get(), ModBlocks.CORRUPTED_FENCE.get(), ModBlocks.CORRUPTED_FENCE_GATE.get(), ModBlocks.CORRUPTED_PRESSURE_PLATE.get(), ((DoorBlock) ModBlocks.CORRUPTED_DOOR.get()), ((TrapDoorBlock) ModBlocks.CORRUPTED_TRAPDOOR.get()), true);
+    }
+
+    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ResourceLocation texture) {
+        ModelFile sign = models().sign(name(signBlock), texture);
+        hangingSignBlock(signBlock, wallSignBlock, sign);
+    }
+
+    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ModelFile sign) {
+        simpleBlock(signBlock, sign);
+        simpleBlock(wallSignBlock, sign);
     }
 
     protected void logWoodSapling(RotatedPillarBlock log, RotatedPillarBlock slog, RotatedPillarBlock wood, RotatedPillarBlock swood, Block sapling) {
@@ -225,7 +234,7 @@ public class ModBlockStateGenerator extends BlockStateProvider {
     }    
     
     private ModelFile rebrewingStandModel(String index) {
-        return models().getExistingFile(loc("block/rebrewing_stand_" + index));
+        return models().getExistingFile(MoreSnifferFlowers.loc("block/rebrewing_stand_" + index));
     }
     
     private ResourceLocation prefix(String path) {

@@ -6,6 +6,7 @@ import net.abraxator.moresnifferflowers.client.ClientEvents;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTreeDecoratorTypes;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
+import net.abraxator.moresnifferflowers.worldgen.feature.ModFeatures;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Blocks;
@@ -32,6 +33,7 @@ public class MoreSnifferFlowers {
 
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModFeatures.FEATURES.register(modEventBus);
         ModCreativeTabs.TABS.register(modEventBus);
         ModMobEffects.EFFECTS.register(modEventBus);
         ModSoundEvents.SOUNDS.register(modEventBus);

@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.mixins;
 
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.worldgen.configurations.tree.ModRandomSpreadFoliagePlacer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
