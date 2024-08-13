@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/acacia_hanging_sign"
+    "layer0": "moresnifferflowers:item/corrupted_boat"
   }
 }

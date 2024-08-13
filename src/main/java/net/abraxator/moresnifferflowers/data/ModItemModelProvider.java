@@ -18,5 +18,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.CORRUPTED_HANGING_SIGN.get());
         basicItem(ModItems.VIVICUS_SIGN.get());
         basicItem(ModItems.VIVICUS_HANGING_SIGN.get());
+        basicItem(ModItems.CORRUPTED_BOAT.get());
+        basicItem(ModItems.CORRUPTED_CHEST_BOAT.get());
+        basicItem(ModItems.VIVICUS_BOAT.get());
+        basicItem(ModItems.VIVICUS_CHEST_BOAT.get());
     }
 }

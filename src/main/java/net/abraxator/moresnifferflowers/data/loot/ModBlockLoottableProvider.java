@@ -48,12 +48,12 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(DawnberryVineBlock.AGE, 4)))));
 
-        add(ModBlocks.AMBER.get(), LootTable.lootTable()
+       add(ModBlocks.AMBER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .when(hasSilkTouch())
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                        .when(hasSilkTouch())
+                        .when(doesNotHaveSilkTouch())
                         //COMMON
                         .add(LootItem.lootTableItem(Items.COAL).setWeight(100))
                         .add(LootItem.lootTableItem(Items.EMERALD).setWeight(100))

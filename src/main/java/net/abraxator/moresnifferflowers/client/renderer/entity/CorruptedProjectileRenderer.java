@@ -28,7 +28,7 @@ public class CorruptedProjectileRenderer extends EntityRenderer<CorruptedProject
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot()) - 180F));
         pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
-        pPoseStack.translate(0, -1, 0.5);
+        pPoseStack.translate(0, -0.5, 0);
         pPoseStack.scale(0.6F, 0.6F, 0.6F);
         this.model.renderToBuffer(
                 pPoseStack,

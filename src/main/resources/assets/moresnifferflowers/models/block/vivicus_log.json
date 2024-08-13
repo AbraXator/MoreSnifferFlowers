@@ -3,32 +3,35 @@
 	"parent": "block/block",
 	"render_type": "cutout",
 	"textures": {
-		"2": "moresnifferflowers:block/vivicus_log_top_crop",
-		"end": "moresnifferflowers:block/vivicus_log_top",
-		"particle": "moresnifferflowers:block/vivicus_log",
-		"side": "moresnifferflowers:block/vivicus_log"
+		"0": "moresnifferflowers:block/vivicus_log",
+		"1": "moresnifferflowers:block/vivicus_log1",
+		"3": "moresnifferflowers:block/vivicus_log_top",
+		"4": "moresnifferflowers:block/vivicus_log_top1",
+		"particle": "moresnifferflowers:block/vivicus_log"
 	},
 	"elements": [
-		{
+			{
 			"from": [0, 0, 0],
 			"to": [16, 16, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [1, 0, 1]},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "north"},
-				"east": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "east"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "south"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "west"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#end", "cullface": "up", "tintindex": 0},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#end", "cullface": "down", "tintindex": 0}
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "north"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "up"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "down"}
 			}
 		},
 		{
-			"from": [0, 0.025, 0],
-			"to": [16, 16.025, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8.025, 8]},
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
 			"faces": {
-				"up": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "up"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "up"}
+				"north": {"uv": [0, 0, 16, 16], "texture": "#1", "cullface": "north", "tintindex": 0},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1", "cullface": "east", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#1", "cullface": "south", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1", "cullface": "west", "tintindex": 0},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#4", "cullface": "up", "tintindex": 0},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#4", "cullface": "down", "tintindex": 0}
 			}
 		}
 	]

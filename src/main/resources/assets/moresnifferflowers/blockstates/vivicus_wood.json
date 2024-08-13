@@ -1,16 +1,13 @@
 {
   "variants": {
     "axis=x": {
-      "model": "moresnifferflowers:block/vivicus_wood",
-      "x": 90,
-      "y": 90
+      "model": "moresnifferflowers:block/vivicus_wood_horizontal_b"
     },
     "axis=y": {
       "model": "moresnifferflowers:block/vivicus_wood"
     },
     "axis=z": {
-      "model": "moresnifferflowers:block/vivicus_wood",
-      "x": 90
+      "model": "moresnifferflowers:block/vivicus_wood_horizontal"
     }
   }
 }

@@ -43,6 +43,10 @@
 	"item.moresnifferflowers.vivicus_antidote": "Vivicus Antidote",
 	"item.moresnifferflowers.corrupted_bobling_core": "Corrupted Bobling Core",
 	"item.moresnifferflowers.bobling_core": "Bobling Core",
+	"item.moresnifferflowers.vivicus_boat": "Vivicus Boat",
+	"item.moresnifferflowers.vivicus_chest_boat": "Vivicus Boat with Chest",
+	"item.moresnifferflowers.corrupted_boat": "Corrupted Boat",
+	"item.moresnifferflowers.corrupted_chest_boat": "Corrupted Boat with Chest",
 
 	"block.moresnifferflowers.dawnberry_vine": "Dawnberry Vine",
 	"block.moresnifferflowers.ambush": "Ambush",
@@ -73,8 +77,7 @@
 	"block.moresnifferflowers.vivicus_leaves": "Vivicus Leaves",
 	"block.moresnifferflowers.vivicus_sapling": "Vivicus Sapling",
 	"block.moresnifferflowers.vivicus_sign": "Vivicus Sign",
-	"block.moresnifferflowers.vivicus_boat": "Vivicus Boat",
-	"block.moresnifferflowers.vivicus_chest_boat": "Vivicus Boat with Chest",
+	"block.moresnifferflowers.vivicus_hanging_sign": "Vivicus Hanging Sign",
 	"block.moresnifferflowers.sprouting_vivicus_leaves": "Sprouting Vivicus Leaves",
 	"block.moresnifferflowers.corrupted_sprouting_vivicus_leaves": "Corrupted Sprouting Vivicus Leaves",
 
@@ -95,8 +98,7 @@
 	"block.moresnifferflowers.corrupted_leaves": "Corrupted Leaves",
 	"block.moresnifferflowers.corrupted_sapling": "Corrupted Sapling",
 	"block.moresnifferflowers.corrupted_sign": "Corrupted Sign",
-	"block.moresnifferflowers.corrupted_boat": "Corrupted Boat",
-	"block.moresnifferflowers.corrupted_chest_boat": "Corrupted Boat with Chest",
+	"block.moresnifferflowers.corrupted_hanging_sign": "Corrupted Hanging Sign",
 	"block.moresnifferflowers.corrupted_sludge": "Corrupted Sludge",
 	"block.moresnifferflowers.corrupted_slime_layer": "Corrupted Slime Layer",
 
@@ -163,5 +165,7 @@
 	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
 
 	"entity.moresnifferflowers.dragonfly": "Dragonfly",
-	"entity.moresnifferflowers.bobling": "Bobling"
+	"entity.moresnifferflowers.bobling": "Bobling",
+	
+	"effect.moresnifferflowers.extracted.description":"Prevents the target from extracting their current potion effects via the Bottle o' Extraction."
 }
