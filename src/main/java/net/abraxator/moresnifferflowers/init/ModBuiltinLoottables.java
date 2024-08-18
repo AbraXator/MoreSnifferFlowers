@@ -8,10 +8,14 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ModBuiltintLoottables {
+public class ModBuiltinLoottables {
     public static final Set<ResourceKey<LootTable>> RESOURCES = new HashSet<>();
-    
-    private ResourceKey<LootTable> register(String name) {
+
+    public static final ResourceKey<LootTable> SNOW_SNIFFER_TEMPLE = register("snow_sniffer_temple");
+    public static final ResourceKey<LootTable> SNIFFER_EGG = register("sniffer_egg");
+
+
+    private static ResourceKey<LootTable> register(String name) {
         var ret = ResourceKey.create(Registries.LOOT_TABLE, MoreSnifferFlowers.loc(name));    
         RESOURCES.add(ret);
         return ret;

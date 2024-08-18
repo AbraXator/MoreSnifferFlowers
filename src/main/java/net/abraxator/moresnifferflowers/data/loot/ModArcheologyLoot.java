@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.data.loot;
 
+import net.abraxator.moresnifferflowers.init.ModBuiltinLoottables;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
@@ -19,16 +20,12 @@ public record ModArcheologyLoot(HolderLookup.Provider registries) implements Loo
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> pOutput) {
         pOutput.accept(
-                BuiltInLootTables.DESERT_WELL_ARCHAEOLOGY,
+                ModBuiltinLoottables.SNOW_SNIFFER_TEMPLE,
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
                                         .setRolls(ConstantValue.exactly(1.0F))
                                         .add(LootItem.lootTableItem(Items.ARMS_UP_POTTERY_SHERD).setWeight(2))
-                                        .add(LootItem.lootTableItem(Items.BREWER_POTTERY_SHERD).setWeight(2))
-                                        .add(LootItem.lootTableItem(Items.BRICK))
-                                        .add(LootItem.lootTableItem(Items.EMERALD))
-                                        .add(LootItem.lootTableItem(Items.STICK))
                                         .add(
                                                 LootItem.lootTableItem(Items.SUSPICIOUS_STEW)
                                                         .apply(
@@ -39,8 +36,21 @@ public record ModArcheologyLoot(HolderLookup.Provider registries) implements Loo
                                                                         .withEffect(MobEffects.BLINDNESS, UniformGenerator.between(5.0F, 7.0F))
                                                                         .withEffect(MobEffects.POISON, UniformGenerator.between(10.0F, 20.0F))
                                                                         .withEffect(MobEffects.SATURATION, UniformGenerator.between(7.0F, 10.0F))
+                                                                        .withEffect(MobEffects.SLOW_FALLING, UniformGenerator.between(7.0F, 10.0F))
+                                                                        .withEffect(MobEffects.FIRE_RESISTANCE, UniformGenerator.between(7.0F, 10.0F))
+
+
                                                         )
                                         )
+                        )
+        );
+        pOutput.accept(
+                ModBuiltinLoottables.SNIFFER_EGG,
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(LootItem.lootTableItem(Items.SNIFFER_EGG).setWeight(1))
                         )
         );
     }

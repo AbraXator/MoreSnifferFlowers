@@ -3,11 +3,10 @@ package net.abraxator.moresnifferflowers.data;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.data.advancement.ModAdvancementGenerator;
 import net.abraxator.moresnifferflowers.data.loot.ModLootModifierProvider;
-import net.abraxator.moresnifferflowers.data.loot.ModLoottableProivder;
+import net.abraxator.moresnifferflowers.data.loot.ModLoottableProvider;
 import net.abraxator.moresnifferflowers.data.recipe.ModRecipesProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModBlockTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModPaintingTagsProvider;
-import net.neoforged.bus.GeneratedEventListener;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
@@ -40,7 +39,7 @@ public class ModDatagen {
         
         //LOOT
         generator.addProvider(event.includeClient(), new ModLootModifierProvider(packOutput, future));
-        generator.addProvider(event.includeClient(), ModLoottableProivder.create(packOutput, registries));
+        generator.addProvider(event.includeClient(), ModLoottableProvider.create(packOutput, registries));
 
         //TAGS
         var blockTagsProvider = generator.addProvider(event.includeServer(), new ModBlockTagsProvider(packOutput, registries, existingFileHelper));
