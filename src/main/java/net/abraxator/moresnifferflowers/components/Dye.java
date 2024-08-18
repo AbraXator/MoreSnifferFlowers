@@ -43,9 +43,9 @@ public record Dye(DyeColor color, int amount) {
         return colorable.colorValues().getOrDefault(dyeColor, -1);
     }
 
-    public static void setDyeToStack(ItemStack stack, ItemStack dyeToInsert, int amount) {
+    public static void setDyeToDyeHolderStack(ItemStack dyeHolder, ItemStack dyeToInsert, int amount) {
         var dyeColor = dyeToInsert.getItem() instanceof DyeItem ? ((DyeItem) dyeToInsert.getItem()).getDyeColor() : DyeColor.WHITE;
-        stack.set(ModDataComponents.DYE, new Dye(dyeColor, amount));
+        dyeHolder.set(ModDataComponents.DYE, new Dye(dyeColor, amount));
     }
     
     public static void setDyeColorToStack(ItemStack stack, DyeColor color, int amount) {

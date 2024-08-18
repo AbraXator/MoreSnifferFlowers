@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.init;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.entities.ModBoatEntity;
+import net.abraxator.moresnifferflowers.entities.boat.ModBoatEntity;
 import net.abraxator.moresnifferflowers.items.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

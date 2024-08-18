@@ -37,7 +37,7 @@ public interface ColorableVivicusBlock extends Colorable {
 
         level.setBlockAndUpdate(blockPos, blockState.setValue(getColorProperty(), dye.color()));
         ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - randomSource.nextIntBetweenInclusive(0, 1)));
-        Dye.setDyeToStack(stack, itemStack, itemStack.getCount());
+        Dye.setDyeToDyeHolderStack(stack, itemStack, itemStack.getCount());
         
         if(!level.isClientSide()) {
             particles(randomSource, ((ServerLevel) level), dye, blockPos);

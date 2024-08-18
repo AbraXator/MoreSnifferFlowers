@@ -1,7 +1,9 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.entities.ModBoatEntity;
-import net.abraxator.moresnifferflowers.entities.ModChestBoatEntity;
+import net.abraxator.moresnifferflowers.entities.boat.ModBoatEntity;
+import net.abraxator.moresnifferflowers.entities.boat.ModChestBoatEntity;
+import net.abraxator.moresnifferflowers.entities.boat.VivicusBoatEntity;
+import net.abraxator.moresnifferflowers.entities.boat.VivicusChestBoatEntity;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -44,7 +46,7 @@ public class ModBoatItem extends Item {
                 Vec3 vec31 = pPlayer.getEyePosition();
 
                 for(Entity entity : list) {
-                    AABB aabb = entity.getBoundingBox().inflate((double)entity.getPickRadius());
+                    AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
                     if (aabb.contains(vec31)) {
                         return InteractionResultHolder.pass(itemstack);
                     }
@@ -80,7 +82,12 @@ public class ModBoatItem extends Item {
     }
 
     private Boat getBoat(Level p_220017_, HitResult p_220018_) {
-        return (Boat)(this.hasChest ? new ModChestBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z) :
-                new ModBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z));
+        if(this.type.equals(ModBoatEntity.Type.VIVICUS)) {
+            return this.hasChest ? new VivicusChestBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z) :
+                    new VivicusBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z);    
+        }
+        
+        return this.hasChest ? new ModChestBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z) :
+                new ModBoatEntity(p_220017_, p_220018_.getLocation().x, p_220018_.getLocation().y, p_220018_.getLocation().z);
     }
 }

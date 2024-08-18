@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
-import com.ibm.icu.impl.Trie;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Colorable;
@@ -9,10 +8,8 @@ import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
@@ -31,12 +28,9 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.text.WordUtils;
-import org.apache.logging.log4j.core.filter.LevelMatchFilter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -128,7 +122,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
 
         level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.COLOR, dye.color()));
         ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - randomSource.nextIntBetweenInclusive(0, 1)));
-        Dye.setDyeToStack(stack, itemStack, itemStack.getCount());
+        Dye.setDyeToDyeHolderStack(stack, itemStack, itemStack.getCount());
         if(level instanceof ServerLevel serverLevel) {
             particles(randomSource, serverLevel, dye, blockPos);
         }
@@ -168,7 +162,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
     
     @Override
     public void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {
-        Dye.setDyeToStack(destinationStack, dye, amount);
+        Dye.setDyeToDyeHolderStack(destinationStack, dye, amount);
     }
 
     private ItemStack remove(ItemStack pStack) {

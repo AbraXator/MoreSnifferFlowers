@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.entities;
+package net.abraxator.moresnifferflowers.entities.boat;
 
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModEntityTypes;
@@ -14,19 +14,18 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
 
 public class ModBoatEntity extends Boat {
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(Boat.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(ModBoatEntity.class, EntityDataSerializers.INT);
 
     public ModBoatEntity(EntityType<? extends Boat> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public ModBoatEntity(Level level, double pX, double pY, double pZ) {
-        this(ModEntityTypes.MOD_BOAT.get(), level);
+        this(ModEntityTypes.MOD_CORRUPTED_BOAT.get(), level);
         this.setPos(pX, pY, pZ);
         this.xo = pX;
         this.yo = pY;
@@ -34,7 +33,7 @@ public class ModBoatEntity extends Boat {
     }
 
     @Override
-    public Item getDropItem() {
+    public Item getDropItem() { 
         return switch (getModVariant()) {
             case CORRUPTED -> ModItems.CORRUPTED_BOAT.get();
             case VIVICUS -> ModItems.VIVICUS_BOAT.get();
@@ -75,7 +74,7 @@ public class ModBoatEntity extends Boat {
         public static final EnumCodec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
         private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
 
-        private Type(Block pPlanks, String pName) {
+        Type(Block pPlanks, String pName) {
             this.name = pName;
             this.planks = pPlanks;
         }
@@ -107,6 +106,4 @@ public class ModBoatEntity extends Boat {
             return CODEC.byName(pName, CORRUPTED);
         }
     }
-
-
 }

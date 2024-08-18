@@ -92,9 +92,10 @@ public class ClientEvents {
         event.registerEntityRenderer(ModEntityTypes.BOBLING.get(), BoblingRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.DRAGONFLY.get(), DragonflyRenderer::new);
         event.registerEntityRenderer(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), CorruptedProjectileRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.MOD_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false));
-        event.registerEntityRenderer(ModEntityTypes.MOD_CHEST_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false));
-
+        event.registerEntityRenderer(ModEntityTypes.MOD_CORRUPTED_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false));
+        event.registerEntityRenderer(ModEntityTypes.MOD_CORRUPTED_CHEST_BOAT.get(), pContext -> new ModBoatRenderer(pContext, true));
+        event.registerEntityRenderer(ModEntityTypes.MOD_VIVICUS_BOAT.get(), pContext -> new ModBoatRenderer(pContext, false));
+        event.registerEntityRenderer(ModEntityTypes.MOD_VIVICUS_CHEST_BOAT.get(), pContext -> new ModBoatRenderer(pContext, true));
     }
 
     @SubscribeEvent
@@ -138,7 +139,7 @@ public class ClientEvents {
            ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_FENCE.get(), ModBlocks.VIVICUS_FENCE_GATE.get(), 
            ModBlocks.VIVICUS_DOOR.get(), ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get(), 
            ModBlocks.VIVICUS_BUTTON.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SAPLING.get(), 
-           ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
+           ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SIGN.get(), ModBlocks.VIVICUS_HANGING_SIGN.get());
     }
 
     @SubscribeEvent
