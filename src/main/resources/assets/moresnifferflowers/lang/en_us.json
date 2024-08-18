@@ -116,5 +116,7 @@
 
 	"gui.mores_sniffer_flowers.cropressing_category": "Cropressing",
 
+	"effect.moresnifferflowers.extracted.description":"Prevents the target from extracting their current potion effects via the Bottle o' Extraction.",
+
 	"entity.moresnifferflowers.dragonfly": "Dragonfly"
 }

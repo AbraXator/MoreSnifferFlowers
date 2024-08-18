@@ -35,7 +35,7 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = 'MoreSnifferFlowers-'+minecraft_version+'-neo'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)

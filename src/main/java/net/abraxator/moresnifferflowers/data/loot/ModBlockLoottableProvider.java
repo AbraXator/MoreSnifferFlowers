@@ -58,7 +58,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .when(hasSilkTouch())
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-                        .when(hasSilkTouch())
+                        .when(doesNotHaveSilkTouch())
                         //COMMON
                         .add(LootItem.lootTableItem(Items.COAL).setWeight(100))
                         .add(LootItem.lootTableItem(Items.EMERALD).setWeight(100))
