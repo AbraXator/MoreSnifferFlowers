@@ -15,6 +15,7 @@ import net.abraxator.moresnifferflowers.blocks.signs.ModWallSignBlock;
 import net.abraxator.moresnifferflowers.blocks.vivicus.*;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.items.GiantCropItem;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -97,7 +98,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> VIVICUS_WALL_SIGN = registerBlockNoItem("vivicus_wall_sign", () -> new ModWallSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WALL_SIGN)));
     public static final DeferredBlock<Block> VIVICUS_HANGING_SIGN = registerBlockNoItem("vivicus_hanging_sign", () -> new ModHangingSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_HANGING_SIGN)));
     public static final DeferredBlock<Block> VIVICUS_WALL_HANGING_SIGN = registerBlockNoItem("vivicus_wall_hanging_sign", () -> new ModWallHangingSign(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WALL_HANGING_SIGN)));
-    
+
+    public static final DeferredBlock<Block> SUSPICIER_SAND = registerBlockWithItem("suspicier_sand", () -> new BrushableBlock(Blocks.SAND,SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, BlockBehaviour.Properties.of().mapColor(MapColor.SAND).instrument(NoteBlockInstrument.SNARE).strength(0.25F).sound(SoundType.SUSPICIOUS_SAND).pushReaction(PushReaction.DESTROY) ));
+
     public static final DeferredBlock<Block> BOBLING_HEAD = registerBlockNoItem("bobling_head", () -> new BoblingHeadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK).noOcclusion()));
     public static final DeferredBlock<Block> BOBLING_SACK = registerBlockNoItem("bobling_sack", () -> new BoblingSackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LEAVES)));
         

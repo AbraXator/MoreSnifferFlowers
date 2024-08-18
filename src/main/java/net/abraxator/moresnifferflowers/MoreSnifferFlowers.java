@@ -49,6 +49,7 @@ public class MoreSnifferFlowers {
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModEntityDataSerializers.SERIALIZERS.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        ModStructures.DEFERRED_REGISTRY_STRUCTURE.register(modEventBus);
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -95,7 +96,7 @@ public class MoreSnifferFlowers {
         fireBlock.setFlammable(ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), 5, 20);
     }
 
-    public static ResourceLocation loc(String path) {
+        public static ResourceLocation loc(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
