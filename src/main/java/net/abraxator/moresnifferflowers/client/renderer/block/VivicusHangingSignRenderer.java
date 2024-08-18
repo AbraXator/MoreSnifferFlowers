@@ -9,6 +9,7 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.SignBlock;
@@ -20,19 +21,17 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class VivicusSignRenderer extends SignRenderer {
-    public VivicusSignRenderer(BlockEntityRendererProvider.Context pContext) {
+public class VivicusHangingSignRenderer extends HangingSignRenderer {
+    public VivicusHangingSignRenderer(BlockEntityRendererProvider.Context pContext) {
         super(pContext);
     }
 
     @Override
     public void renderSignWithText(SignBlockEntity pSignEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState pState, SignBlock pSignBlock, WoodType pWoodType, Model pModel) {
         pPoseStack.pushPose();
-        pPoseStack.translate(0.5F, 0.75F * this.getSignModelRenderScale(), 0.5F);
+        pPoseStack.translate(0.5, 0.9375, 0.5);
         pPoseStack.mulPose(Axis.YP.rotationDegrees(-pSignBlock.getYRotationDegrees(pState)));
-        if (!(pState.getBlock() instanceof StandingSignBlock)) {
-            pPoseStack.translate(0.0F, -0.3125F, -0.4375F);
-        }
+        pPoseStack.translate(0.0F, -0.3125F, 0.0F);
         renderVivicusSign(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pWoodType, pModel, pState);
         this.renderSignText(
                 pSignEntity.getBlockPos(),
@@ -61,7 +60,7 @@ public class VivicusSignRenderer extends SignRenderer {
         pPoseStack.pushPose();
         float f = this.getSignModelRenderScale();
         pPoseStack.scale(f, -f, -f);
-        Material material = Sheets.getSignMaterial(pWoodType);
+        Material material = Sheets.getHangingSignMaterial(pWoodType);
         VertexConsumer vertexconsumer = material.buffer(pBuffer, pModel::renderType);
         var color = -1;
         if(pState.getBlock() instanceof ColorableVivicusBlock colorableVivicusBlock) {
@@ -74,7 +73,7 @@ public class VivicusSignRenderer extends SignRenderer {
     }
 
     void renderSignModel(PoseStack pPoseStack, int pPackedLight, int pPackedOverlay, Model pModel, VertexConsumer pVertexConsumer, int color) {
-        SignRenderer.SignModel signrenderer$signmodel = (SignRenderer.SignModel)pModel;
-        signrenderer$signmodel.root.render(pPoseStack, pVertexConsumer, pPackedLight, pPackedOverlay, color);
+        HangingSignRenderer.HangingSignModel hangingsignrenderer$hangingsignmodel = (HangingSignRenderer.HangingSignModel)pModel;
+        hangingsignrenderer$hangingsignmodel.root.render(pPoseStack, pVertexConsumer, pPackedLight, pPackedOverlay, color);
     }
 }

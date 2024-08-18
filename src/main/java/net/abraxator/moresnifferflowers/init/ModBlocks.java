@@ -94,10 +94,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> VIVICUS_LEAVES = registerBlockWithItem("vivicus_leaves", () -> new VivicusLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LEAVES)));
     public static final DeferredBlock<Block> VIVICUS_SAPLING = registerBlockWithItem("vivicus_sapling", () -> new VivicusSaplingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_SAPLING)));
     public static final DeferredBlock<Block> SPROUTING_VIVICUS_LEAVES = registerBlockWithItem("sprouting_vivicus_leaves", () -> new VivicusSproutingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LEAVES)));
-    public static final DeferredBlock<Block> VIVICUS_SIGN = registerBlockNoItem("vivicus_sign", () -> new ModStandingSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_SIGN)));
-    public static final DeferredBlock<Block> VIVICUS_WALL_SIGN = registerBlockNoItem("vivicus_wall_sign", () -> new ModWallSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WALL_SIGN)));
-    public static final DeferredBlock<Block> VIVICUS_HANGING_SIGN = registerBlockNoItem("vivicus_hanging_sign", () -> new ModHangingSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_HANGING_SIGN)));
-    public static final DeferredBlock<Block> VIVICUS_WALL_HANGING_SIGN = registerBlockNoItem("vivicus_wall_hanging_sign", () -> new ModWallHangingSign(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WALL_HANGING_SIGN)));
+    public static final DeferredBlock<Block> VIVICUS_SIGN = registerBlockNoItem("vivicus_sign", () -> new VivicusStandingSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_SIGN)));
+    public static final DeferredBlock<Block> VIVICUS_WALL_SIGN = registerBlockNoItem("vivicus_wall_sign", () -> new VivicusWallSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WALL_SIGN)));
+    public static final DeferredBlock<Block> VIVICUS_HANGING_SIGN = registerBlockNoItem("vivicus_hanging_sign", () -> new VivicusHangingSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_HANGING_SIGN)));
+    public static final DeferredBlock<Block> VIVICUS_WALL_HANGING_SIGN = registerBlockNoItem("vivicus_wall_hanging_sign", () -> new VivicusHangingWallSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WALL_HANGING_SIGN)));
 
     public static final DeferredBlock<Block> BOBLING_HEAD = registerBlockNoItem("bobling_head", () -> new BoblingHeadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK).noOcclusion()));
     public static final DeferredBlock<Block> BOBLING_SACK = registerBlockNoItem("bobling_sack", () -> new BoblingSackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LEAVES)));

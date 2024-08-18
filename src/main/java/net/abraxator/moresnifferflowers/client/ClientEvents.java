@@ -14,10 +14,7 @@ import net.abraxator.moresnifferflowers.client.particle.AmbushParticle;
 import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
 import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
 import net.abraxator.moresnifferflowers.client.particle.GiantCropParticle;
-import net.abraxator.moresnifferflowers.client.renderer.block.AmbushBlockEntityRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.block.CropressorBlockEntityRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.block.DyespriaPlantBlockEntityRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.block.GiantCropBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.block.*;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.CorruptedProjectileRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
@@ -105,7 +102,9 @@ public class ClientEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.CROPRESSOR.get(), CropressorBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.DYESPRIA_PLANT.get(), DyespriaPlantBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MOD_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.VIVICUS_SIGN.get(), VivicusSignRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MOD_HANGING_SIGN.get(), HangingSignRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.VIVICUS_HANGING_SIGN.get(), VivicusHangingSignRenderer::new);
     }
 
     @SubscribeEvent

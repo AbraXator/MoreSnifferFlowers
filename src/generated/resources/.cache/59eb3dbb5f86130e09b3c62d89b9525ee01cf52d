@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // 1.21	2024-08-18T21:10:34.1842308	Loot Tables
 7c14e7e7e4991cc1b6d9e0837c1a20d1d45627b2 data/moresnifferflowers/loot_table/blocks/amber.json
 82709fac129d665d29913b9da4679bcd34ba753f data/moresnifferflowers/loot_table/blocks/ambush_bottom.json
@@ -64,3 +65,7 @@ ed127a50c6a52560bb1d3cfd12213f8c1f19c6bd data/moresnifferflowers/loot_table/bloc
 364fff66e9da0603af6aa3c176a99b73c8851bb4 data/moresnifferflowers/loot_table/blocks/vivicus_wood.json
 c9bf1e162e5c5389c764189fb8241eef0fe96f7f data/moresnifferflowers/loot_table/sniffer_egg.json
 a7ebd67d6a495c456dd9f54ef3024ecdc577f95c data/moresnifferflowers/loot_table/snow_sniffer_temple.json
+=======
+// 1.21	2024-08-18T23:02:44.092881	Loot Tables
+aa49e5f8295eb03904a0ab3e2247d89aa31e58c5 data/minecraft/loot_table/archaeology/desert_well.json
+>>>>>>> Stashed changes
