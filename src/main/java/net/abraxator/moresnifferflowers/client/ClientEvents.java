@@ -22,8 +22,11 @@ import net.abraxator.moresnifferflowers.client.renderer.entity.ModBoatRenderer;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
+import net.abraxator.moresnifferflowers.networking.DyespriaModePacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
@@ -41,17 +44,24 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforgespi.locating.IModFile;
 
 import java.util.Optional;
 
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
+    @SubscribeEvent
+    public void onInputMouseScrolling(InputEvent.MouseScrollingEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if(player.isCrouching() && player.getMainHandItem().is(ModItems.DYESPRIA)) {
+            event.setCanceled(true);
+            PacketDistributor.sendToServer(new DyespriaModePacket(player.getMainHandItem(), ((int) event.getScrollDeltaY())));
+        }
+    }
+
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
         Sheets.addWoodType(ModWoodTypes.CORRUPTED);

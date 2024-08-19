@@ -4,10 +4,12 @@ import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -20,6 +22,10 @@ import java.util.Map;
 public interface Colorable {
     Map<DyeColor, Integer> colorValues();
 
+    default TagKey<Block> matchTag() {
+        return null;
+    }
+    
     default ItemStack add(@Nullable ItemStack dyespria, Dye dyeInside, ItemStack dyeToInsert) {
         if(dyeToInsert.getItem() instanceof DyeItem) {
             if(!dyeInside.isEmpty()) {

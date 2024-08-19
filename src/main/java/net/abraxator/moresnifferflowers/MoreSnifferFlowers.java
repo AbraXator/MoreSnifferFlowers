@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.ClientEvents;
 import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTreeDecoratorTypes;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
 import net.abraxator.moresnifferflowers.worldgen.feature.ModFeatures;
@@ -50,6 +51,8 @@ public class MoreSnifferFlowers {
         ModEntityDataSerializers.SERIALIZERS.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         ModStructures.DEFERRED_REGISTRY_STRUCTURE.register(modEventBus);
+
+        ModPacketHandler.register(modEventBus, 1);
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {

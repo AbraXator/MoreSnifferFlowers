@@ -21,7 +21,7 @@ public interface ColorableVivicusBlock extends Colorable {
     default EnumProperty<DyeColor> getColorProperty() {
         return ModStateProperties.COLOR;
     }
-
+    
     default void addDye(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         if(!blockState.hasProperty(getColorProperty())) {
             return;

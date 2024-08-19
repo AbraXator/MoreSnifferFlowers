@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
+import net.abraxator.moresnifferflowers.components.DyespriaMode;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -16,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,9 +34,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
+import org.openjdk.nashorn.internal.ir.ReturnNode;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntFunction;
 
 public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
@@ -53,34 +57,18 @@ public class DyespriaItem extends BlockItem implements Colorable {
             return InteractionResult.PASS;
         }
 
-        if (blockState.is(ModBlocks.CAULORFLOWER.get()) && player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-            handleCaulorflower(player, stack, level, blockPos, blockState);
-
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        } else if (blockState.getBlock() instanceof ColorableVivicusBlock colorable) {
-             if (blockState.is(ModTags.ModBlockTags.VIVICUS_BLOCKS) && player.isShiftKeyDown()) {
-                 colorTree(stack, level, blockPos, blockState);
-
-                 return InteractionResult.sidedSuccess(level.isClientSide);
-             }
-            colorable.addDye(level, blockPos, blockState, player);
+        if (blockState.getBlock() instanceof Colorable colorable) {
+            DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
+            DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, colorable.matchTag(), level);
+            dyespriaMode.getSelector().apply(dyespriaSelector).forEach(blockPos1 -> {
+                var state = level.getBlockState(blockPos1);
+                colorOne(stack, level, blockPos1, state);
+            });
 
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        
+
         return handlePlacement(blockPos, level, player, pContext.getHand(), stack);
-    }
-    
-    private InteractionResult handleCaulorflower(Player player, ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
-        if (!player.isShiftKeyDown()) {
-            colorOne(stack, ((ServerLevel) level), blockPos, blockState);
-        } else {
-            colorColumn(stack, ((ServerLevel) level), blockPos);
-        }
-        level.playSound(null, blockPos, ModSoundEvents.DYESPRIA_PAINT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + level.random.nextFloat() * 0.2));
-        ModAdvancementCritters.USED_DYESPRIA.trigger(((ServerPlayer) player));
-
-        return InteractionResult.sidedSuccess(level.isClientSide);
     }
     
     private InteractionResult handlePlacement(BlockPos blockPos, Level level, Player player, InteractionHand hand, ItemStack stack) {
@@ -103,14 +91,6 @@ public class DyespriaItem extends BlockItem implements Colorable {
         var state = super.getPlacementState(pContext);
         return state == null ? null : state.setValue(ModStateProperties.AGE_3, 3);
     }
-    
-    public void colorTree(ItemStack dyespria, Level level, BlockPos blockPos, BlockState blockState) {
-        BlockPos.withinManhattanStream(blockPos, 4, 4, 4)
-                .filter(blockPos1 -> level.getBlockState(blockPos1).is(blockState.getBlock()))
-                .forEach(pos -> {
-                    colorOne(dyespria, level, pos, level.getBlockState(pos));   
-                });
-    }
 
     public void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
         Dye dye = Dye.getDyeFromStack(stack);
@@ -127,21 +107,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
             particles(randomSource, serverLevel, dye, blockPos);
         }
     }
-
-    private void colorColumn(ItemStack stack, ServerLevel level, BlockPos blockPos) {
-        BlockPos posUp = blockPos.above().mutable();
-        BlockPos posDown = blockPos.mutable();
-        while (level.getBlockState(posUp).is(ModBlocks.CAULORFLOWER.get())) {
-            colorOne(stack, level, posUp, level.getBlockState(posUp));
-            posUp = posUp.above();
-        }
-
-        while (level.getBlockState(posDown).is(ModBlocks.CAULORFLOWER.get())) {
-            colorOne(stack, level, posDown, level.getBlockState(posDown));
-            posDown = posDown.below();
-        }
-    }
-
+    
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
         if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
