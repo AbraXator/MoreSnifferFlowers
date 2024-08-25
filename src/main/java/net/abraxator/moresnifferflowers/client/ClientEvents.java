@@ -54,15 +54,6 @@ import java.util.Optional;
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
     @SubscribeEvent
-    public void onInputMouseScrolling(InputEvent.MouseScrollingEvent event) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if(player.isCrouching() && player.getMainHandItem().is(ModItems.DYESPRIA)) {
-            event.setCanceled(true);
-            PacketDistributor.sendToServer(new DyespriaModePacket(player.getMainHandItem(), ((int) event.getScrollDeltaY())));
-        }
-    }
-
-    @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
         Sheets.addWoodType(ModWoodTypes.CORRUPTED);
         Sheets.addWoodType(ModWoodTypes.VIVICUS);

@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.ClientEvents;
 import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.networking.DyespriaDisplayModeChangePacket;
+import net.abraxator.moresnifferflowers.networking.DyespriaModePacket;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTreeDecoratorTypes;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
@@ -18,6 +20,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.slf4j.Logger;
@@ -51,7 +55,7 @@ public class MoreSnifferFlowers {
         ModEntityDataSerializers.SERIALIZERS.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
         ModStructures.DEFERRED_REGISTRY_STRUCTURE.register(modEventBus);
-
+        
         ModPacketHandler.register(modEventBus, 1);
     }
     
@@ -98,8 +102,8 @@ public class MoreSnifferFlowers {
         fireBlock.setFlammable(ModBlocks.VIVICUS_SAPLING.get(), 5, 20);
         fireBlock.setFlammable(ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), 5, 20);
     }
-
-        public static ResourceLocation loc(String path) {
+    
+    public static ResourceLocation loc(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 

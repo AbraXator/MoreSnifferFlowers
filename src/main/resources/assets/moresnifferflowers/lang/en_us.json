@@ -80,7 +80,7 @@
 	"block.moresnifferflowers.vivicus_hanging_sign": "Vivicus Hanging Sign",
 	"block.moresnifferflowers.sprouting_vivicus_leaves": "Sprouting Vivicus Leaves",
 	"block.moresnifferflowers.corrupted_sprouting_vivicus_leaves": "Corrupted Sprouting Vivicus Leaves",
-
+	
 
 	"block.moresnifferflowers.corrupted_log": "Corrupted Log",
 	"block.moresnifferflowers.corrupted_wood": "Corrupted Wood",
@@ -102,6 +102,7 @@
 	"block.moresnifferflowers.corrupted_sludge": "Corrupted Sludge",
 	"block.moresnifferflowers.corrupted_slime_layer": "Corrupted Slime Layer",
 
+	"message.more_sniffer_flowers.dyespria_mode": "Current Mode",
 
 	"tooltip.dyespria.usage": "Hover+Right-click to insert dye \nRight-click Caulorflower to paint \nSneak to paint whole column\n",
 	"tooltip.dyespria.empty": "Empty",

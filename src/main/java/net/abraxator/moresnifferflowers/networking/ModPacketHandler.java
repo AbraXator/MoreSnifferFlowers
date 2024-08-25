@@ -7,6 +7,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+import java.net.http.HttpResponse;
+
 public class ModPacketHandler {
     public ModPacketHandler(IEventBus modEventBus, int version) {
         modEventBus.addListener(RegisterPayloadHandlersEvent.class, event -> {
@@ -20,7 +22,9 @@ public class ModPacketHandler {
         registrar.play(DyespriaModePacket.TYPE, DyespriaModePacket.STREAM_CODEC);
     }
     
-    protected void registerServerToClient(ModPacketRegistrar registrar) {}
+    protected void registerServerToClient(ModPacketRegistrar registrar) {
+        registrar.play(DyespriaDisplayModeChangePacket.TYPE, DyespriaDisplayModeChangePacket.STREAM_CODEC);
+    }
 
     public static ModPacketHandler register(IEventBus iEventBus, int version) {
         return new ModPacketHandler(iEventBus, version);

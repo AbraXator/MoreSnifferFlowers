@@ -7,6 +7,8 @@ import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.components.DyespriaMode;
 import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.networking.DyespriaDisplayModeChangePacket;
+import net.abraxator.moresnifferflowers.networking.DyespriaModePacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -32,10 +34,12 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 import org.openjdk.nashorn.internal.ir.ReturnNode;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
@@ -59,7 +63,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
 
         if (blockState.getBlock() instanceof Colorable colorable) {
             DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
-            DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, colorable.matchTag(), level);
+            DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, colorable.matchTag(), level, pContext.getClickedFace());
             dyespriaMode.getSelector().apply(dyespriaSelector).forEach(blockPos1 -> {
                 var state = level.getBlockState(blockPos1);
                 colorOne(stack, level, blockPos1, state);
@@ -146,9 +150,17 @@ public class DyespriaItem extends BlockItem implements Colorable {
         super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
         Dye dye = Dye.getDyeFromStack(pStack);
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
+        var usageComponents = Arrays.stream(usage.getString().split("\n", -1))
+                .filter(s -> !s.isEmpty())
+                .map(String::trim);
 
+        usageComponents.forEach(s -> pTooltipComponents.add(Component.literal(s).withStyle(ChatFormatting.GOLD)));
+        pTooltipComponents.add(Component.empty());
+        pTooltipComponents.add(getCurrentModeComponent(getCurrentMode(pStack)));
+        pTooltipComponents.add(Component.empty());
+        
         if(!dye.isEmpty()) {
-            Component name = Component
+            var name = Component
                     .literal(dye.amount() + " - " + WordUtils.capitalizeFully(dye.color()
                             .getName()
                             .toLowerCase()
@@ -156,11 +168,8 @@ public class DyespriaItem extends BlockItem implements Colorable {
                             .replaceAll("_", " ")))
                     .withStyle(Style.EMPTY
                             .withColor(Dye.colorForDye(this, dye.color())));
-
-            pTooltipComponents.add(usage);
             pTooltipComponents.add(name);
         } else {
-            pTooltipComponents.add(usage);
             pTooltipComponents.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
         }
     }
@@ -193,5 +202,22 @@ public class DyespriaItem extends BlockItem implements Colorable {
             dyeColorHexFormatMap.put(DyeColor.MAGENTA, 0xFFd276b9);
             dyeColorHexFormatMap.put(DyeColor.PINK, 0xFFf8b0c4);
         });
+    }
+
+    public static DyespriaMode getCurrentMode(ItemStack itemStack) {
+        return itemStack.getOrDefault(ModDataComponents.DYESPRIA_MODE.get(), DyespriaMode.SINGLE);
+    }
+    
+    public static Component getCurrentModeComponent(DyespriaMode dyespriaMode) {
+        var baseText = Component.translatable("message.more_sniffer_flowers.dyespria_mode").append(": ").withStyle(ChatFormatting.GOLD);
+        var modeText = Component.literal(dyespriaMode.getSerializedName()).withStyle(dyespriaMode.getTextColor());
+        return baseText.append(modeText);
+    }
+    
+    public void changeMode(ServerPlayer player, ItemStack stack, int amount) {
+        var currentMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
+        var newMode = DyespriaMode.shift(currentMode, amount);
+        stack.set(ModDataComponents.DYESPRIA_MODE, newMode);
+        PacketDistributor.sendToPlayer(player, new DyespriaDisplayModeChangePacket(newMode.ordinal()));
     }
 }

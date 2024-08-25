@@ -27,8 +27,8 @@ public class GiantCropItem extends BlockItem {
         BlockPos.betweenClosedStream(aabb).forEach(pos -> {
             level.setBlockAndUpdate(pos, this.getBlock().defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, JarOfBonmeelItem.evaulateModelPos(pos, pContext.getClickedPos())));
             if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
-                entity.pos1 = pContext.getClickedPos().above(1).mutable().move(1, 2, 1);
-                entity.pos2 = pContext.getClickedPos().above(1).mutable().move(-1, 0, -1);
+                entity.pos1 = pContext.getClickedPos().mutable().move(1, 2, 1);
+                entity.pos2 = pContext.getClickedPos().mutable().move(-1, 0, -1);
             }
         });
         

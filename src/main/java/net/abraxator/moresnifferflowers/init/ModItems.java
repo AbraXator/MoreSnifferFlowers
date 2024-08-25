@@ -86,5 +86,5 @@ public class ModItems {
 
     public static final DeferredItem<Item> BOBLING_SPAWN_EGG = ITEMS.register("bobling_spawn_egg", () -> new DeferredSpawnEggItem(ModEntityTypes.BOBLING, 0x442c1f, 0x8bae35, new Item.Properties()));
     
-    public static final DeferredItem<Item> CREATIVE_TAB_ICON = ITEMS.register("creative_tab_icon", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> CREATIVE_TAB_ICON = ITEMS.register("creative_tab_icon", () -> new CreativeTabItem(new Item.Properties()));
 }
