@@ -1,7 +1,9 @@
 package net.abraxator.moresnifferflowers.init;
 
+import ca.weblite.objc.Proxy;
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.worldgen.structures.DessertSnifferTemple;
 import net.abraxator.moresnifferflowers.worldgen.structures.SnowSnifferTemple;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -13,6 +15,7 @@ public class ModStructures {
     public static final DeferredRegister<StructureType<?>> DEFERRED_REGISTRY_STRUCTURE = DeferredRegister.create(Registries.STRUCTURE_TYPE, MoreSnifferFlowers.MOD_ID);
 
     public static final DeferredHolder<StructureType<?>, StructureType<SnowSnifferTemple>> SNOW_SNIFFER_TEMPLE = DEFERRED_REGISTRY_STRUCTURE.register("snow_sniffer_temple", () -> explicitStructureTypeTyping(SnowSnifferTemple.CODEC));
+    public static final DeferredHolder<StructureType<?>, StructureType<DessertSnifferTemple>> DESSERT_SNIFFER_TEMPLE = DEFERRED_REGISTRY_STRUCTURE.register("dessert_sniffer_temple", () -> explicitStructureTypeTyping(DessertSnifferTemple.CODEC));
 
     private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(MapCodec<T> structureCodec) {
         return () -> structureCodec;

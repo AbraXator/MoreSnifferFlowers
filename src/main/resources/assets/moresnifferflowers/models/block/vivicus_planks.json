@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/cube_all",
 	"textures": {
-		"all": "moresnifferflowers:block/vivicus_planks"
+		"all": "moresnifferflowers:colors/vivicus/vivicus_planks_blue"
 	},
 	"elements": [
 		{

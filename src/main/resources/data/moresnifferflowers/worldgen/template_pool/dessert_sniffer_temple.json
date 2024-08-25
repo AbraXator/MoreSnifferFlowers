@@ -15,9 +15,9 @@
           // The Identifier of the nbt file itself of the structure piece.
           // Note, this will automatically check into the 'structures' folder for the nbt file.
           // The final path would look like 'resources/data/structure_tutorial/structure/run_down_house_left_side.nbt'
-        "processors": "moresnifferflowers:snow_sniffer_temple_processor",
+        "processors": "moresnifferflowers:dessert_sniffer_temple_processor",
         "projection": "rigid",
-        "location": "moresnifferflowers:snow_sniffer_temple",
+        "location": "moresnifferflowers:dessert_sniffer_temple",
         "element_type": "minecraft:single_pool_element"
       }
     }

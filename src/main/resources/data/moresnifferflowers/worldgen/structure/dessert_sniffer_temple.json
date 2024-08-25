@@ -3,10 +3,10 @@
     // Since we are using a custom structure class with its own codec, you'll notice there's no use_expansion_hack field
     // below like the minecraft:jigsaw structure type has. This is because our custom structure's codec does not have
     // that field because we should not need expansion hacks for our structures. It's only for legacy Minecraft villages.
-  "type": "moresnifferflowers:snow_sniffer_temple",
+  "type": "moresnifferflowers:dessert_sniffer_temple",
 
     // the path to the template pool json file to use
-  "start_pool": "moresnifferflowers:snow_sniffer_temple",
+  "start_pool": "moresnifferflowers:dessert_sniffer_temple",
 
     // This is how many pieces away from the starting piece a piece of the structure can spawn
     // Think of it like the length of the branch of the structure
@@ -16,7 +16,7 @@
   "max_distance_from_center": 80,
 
     // The biome tag to use for what biomes that this structure can spawn in
-  "biomes": "#moresnifferflowers:has_structure/snow_sniffer_temple_biomes",
+  "biomes": "#moresnifferflowers:has_structure/dessert_sniffer_temple_biomes",
 
     // The generation step for when to generate the structure. there are 10 stages you can pick from!
     // This surface structure stage places the structure before plants and ores are generated
@@ -28,7 +28,7 @@
     // If project_start_to_heightmap is present, the y value chosen in start_height will be added to the terrain's y value.
     // So a start height that gives -5 will sink the structure 5 blocks into the terrain. Here, we will spawn this structure 60 blocks above the terrain.
   "start_height": {
-    "absolute": -12
+    "absolute": -6
   },
 
     // Makes our sky fan structure take the terrain's top y value and add it to the start_height y value above.

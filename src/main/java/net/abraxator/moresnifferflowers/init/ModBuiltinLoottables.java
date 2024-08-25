@@ -12,6 +12,7 @@ public class ModBuiltinLoottables {
     public static final Set<ResourceKey<LootTable>> RESOURCES = new HashSet<>();
 
     public static final ResourceKey<LootTable> SNOW_SNIFFER_TEMPLE = register("snow_sniffer_temple");
+    public static final ResourceKey<LootTable> DESSERT_SNIFFER_TEMPLE = register("dessert_sniffer_temple");
     public static final ResourceKey<LootTable> SNIFFER_EGG = register("sniffer_egg");
 
 
