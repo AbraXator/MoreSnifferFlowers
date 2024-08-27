@@ -35,9 +35,11 @@
         },
         {
           "data": {
-            "Name": "moresnifferflowers:corrupted_log",
+            "Name": "moresnifferflowers:corrupted_leaves_bush",
             "Properties": {
-              "axis": "y"
+              "distance": "7",
+              "persistent": "false",
+              "waterlogged": "false"
             }
           },
           "weight": 2
