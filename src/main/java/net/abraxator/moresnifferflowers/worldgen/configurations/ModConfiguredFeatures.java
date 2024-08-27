@@ -50,7 +50,7 @@ public class ModConfiguredFeatures {
                         new WeightedStateProvider(
                                 SimpleWeightedRandomList.<BlockState>builder()
                                         .add(ModBlocks.CORRUPTED_LEAVES.get().defaultBlockState(), 10)
-                                        .add(ModBlocks.CORRUPTED_LOG.get().defaultBlockState(), 2)
+                                        .add(ModBlocks.CORRUPTED_LEAVES_BUSH.get().defaultBlockState(), 2)
                                         .add(ModBlocks.CORRUPTED_SLUDGE.get().defaultBlockState(), 1)
                         ),
                         new RandomSpreadFoliagePlacer(ConstantInt.of(3), ConstantInt.of(0), UniformInt.of(2, 3), 35),
