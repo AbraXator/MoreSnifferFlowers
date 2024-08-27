@@ -70,6 +70,31 @@ public record ModArcheologyLoot(HolderLookup.Provider registries) implements Loo
                         )
         );
         pOutput.accept(
+                ModBuiltinLoottables.SWAMP_SNIFFER_TEMPLE, //5 rolls
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(LootItem.lootTableItem(Items.ARMS_UP_POTTERY_SHERD).setWeight(2))
+                                        .add(
+                                                LootItem.lootTableItem(Items.SUSPICIOUS_STEW)
+                                                        .apply(
+                                                                SetStewEffectFunction.stewEffect()
+                                                                        .withEffect(MobEffects.NIGHT_VISION, UniformGenerator.between(7.0F, 10.0F))
+                                                                        .withEffect(MobEffects.JUMP, UniformGenerator.between(7.0F, 10.0F))
+                                                                        .withEffect(MobEffects.WEAKNESS, UniformGenerator.between(6.0F, 8.0F))
+                                                                        .withEffect(MobEffects.BLINDNESS, UniformGenerator.between(5.0F, 7.0F))
+                                                                        .withEffect(MobEffects.POISON, UniformGenerator.between(10.0F, 20.0F))
+                                                                        .withEffect(MobEffects.SATURATION, UniformGenerator.between(7.0F, 10.0F))
+                                                                        .withEffect(MobEffects.SLOW_FALLING, UniformGenerator.between(7.0F, 10.0F))
+                                                                        .withEffect(MobEffects.FIRE_RESISTANCE, UniformGenerator.between(7.0F, 10.0F))
+
+
+                                                        )
+                                        )
+                        )
+        );
+        pOutput.accept(
                 ModBuiltinLoottables.SNIFFER_EGG, //1 roll (guaranteed)
                 LootTable.lootTable()
                         .withPool(

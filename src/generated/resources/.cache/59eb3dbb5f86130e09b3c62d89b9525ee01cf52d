@@ -1,4 +1,4 @@
-// 1.21	2024-08-20T23:02:04.9537326	Loot Tables
+// 1.21	2024-08-27T00:10:13.0240139	Loot Tables
 7c14e7e7e4991cc1b6d9e0837c1a20d1d45627b2 data/moresnifferflowers/loot_table/blocks/amber.json
 82709fac129d665d29913b9da4679bcd34ba753f data/moresnifferflowers/loot_table/blocks/ambush_bottom.json
 39b9b49d7469774aff8d068125bbfeafe0c50423 data/moresnifferflowers/loot_table/blocks/ambush_top.json
@@ -65,3 +65,5 @@ ed127a50c6a52560bb1d3cfd12213f8c1f19c6bd data/moresnifferflowers/loot_table/bloc
 20c7b06dca255c4d2412de51a719c18dcf79d46d data/moresnifferflowers/loot_table/dessert_sniffer_temple.json
 c9bf1e162e5c5389c764189fb8241eef0fe96f7f data/moresnifferflowers/loot_table/sniffer_egg.json
 a7ebd67d6a495c456dd9f54ef3024ecdc577f95c data/moresnifferflowers/loot_table/snow_sniffer_temple.json
+54cbbe254741e458a3c1226e3be4be65efff08fe data/moresnifferflowers/loot_table/swamp_sniffer_temple.json
+2e3f6a6e7ad51f7051a18fa7e1ae13875d69f8ff data/moresnifferflowers/loot_table/swamp_sniffer_temple_chest.json

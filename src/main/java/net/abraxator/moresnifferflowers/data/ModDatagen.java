@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.data.advancement.ModAdvancementGenerator
 import net.abraxator.moresnifferflowers.data.loot.ModLootModifierProvider;
 import net.abraxator.moresnifferflowers.data.loot.ModLoottableProvider;
 import net.abraxator.moresnifferflowers.data.recipe.ModRecipesProvider;
+import net.abraxator.moresnifferflowers.data.tag.ModBiomeTagProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModBlockTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModItemTagsProvider;
 import net.abraxator.moresnifferflowers.data.tag.ModPaintingTagsProvider;
@@ -47,6 +48,7 @@ public class ModDatagen {
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, future, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new ModPaintingTagsProvider(packOutput, future, existingFileHelper));
         //generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, future, existingFileHelper));
+        generator.addProvider(event.includeServer(), new ModBiomeTagProvider(packOutput, future, existingFileHelper));
     
         //DATA MAPS
         //generator.addProvider(event.includeServer(), new ModDataMapProvider(packOutput, future));

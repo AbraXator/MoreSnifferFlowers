@@ -3,7 +3,6 @@ package net.abraxator.moresnifferflowers.worldgen.structures;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.init.ModStructures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -153,6 +152,6 @@ public class SnowSnifferTemple extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return ModStructures.SNOW_SNIFFER_TEMPLE.get(); // Helps the game know how to turn this structure back to json to save to chunks
+        return ModStructureTypes.SNOW_SNIFFER_TEMPLE.get(); // Helps the game know how to turn this structure back to json to save to chunks
     }
 }

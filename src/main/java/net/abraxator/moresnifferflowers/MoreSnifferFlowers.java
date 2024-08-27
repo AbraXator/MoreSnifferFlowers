@@ -4,26 +4,22 @@ import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import net.abraxator.moresnifferflowers.client.ClientEvents;
 import net.abraxator.moresnifferflowers.init.*;
-import net.abraxator.moresnifferflowers.networking.DyespriaDisplayModeChangePacket;
-import net.abraxator.moresnifferflowers.networking.DyespriaModePacket;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTreeDecoratorTypes;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
 import net.abraxator.moresnifferflowers.worldgen.feature.ModFeatures;
+import net.abraxator.moresnifferflowers.worldgen.structures.ModStructureTypes;
+import net.abraxator.moresnifferflowers.worldgen.structures.pieces.ModPieceTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
-import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.slf4j.Logger;
 
 @Mod(MoreSnifferFlowers.MOD_ID)
@@ -48,13 +44,14 @@ public class MoreSnifferFlowers {
         ModEntityTypes.ENTITIES.register(modEventBus);
         ModTrunkPlacerTypes.TRUNKS.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
+        ModPieceTypes.STRUCTURE_PIECE.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         ModTreeDecoratorTypes.DECORATORS.register(modEventBus);
+        ModStructureTypes.STRUCTURE_PIECE.register(modEventBus);
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModEntityDataSerializers.SERIALIZERS.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-        ModStructures.DEFERRED_REGISTRY_STRUCTURE.register(modEventBus);
         
         ModPacketHandler.register(modEventBus, 1);
     }

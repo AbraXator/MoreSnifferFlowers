@@ -16,7 +16,8 @@ public class ModLoottableProvider {
                 ModBuiltinLoottables.all(),
                 List.of(
                         new LootTableProvider.SubProviderEntry(ModBlockLoottableProvider::new, LootContextParamSets.BLOCK),
-                        new LootTableProvider.SubProviderEntry(ModArcheologyLoot::new, LootContextParamSets.ARCHAEOLOGY)
+                        new LootTableProvider.SubProviderEntry(ModArcheologyLoot::new, LootContextParamSets.ARCHAEOLOGY),
+                        new LootTableProvider.SubProviderEntry(ModChestLoot::new, LootContextParamSets.CHEST)
                 ),
                 pRegistries
         );

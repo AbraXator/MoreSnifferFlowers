@@ -13,8 +13,9 @@ public class ModBuiltinLoottables {
 
     public static final ResourceKey<LootTable> SNOW_SNIFFER_TEMPLE = register("snow_sniffer_temple");
     public static final ResourceKey<LootTable> DESSERT_SNIFFER_TEMPLE = register("dessert_sniffer_temple");
+    public static final ResourceKey<LootTable> SWAMP_SNIFFER_TEMPLE = register("swamp_sniffer_temple");
+    public static final ResourceKey<LootTable> SWAMP_SNIFFER_TEMPLE_CHEST = register("swamp_sniffer_temple_chest");
     public static final ResourceKey<LootTable> SNIFFER_EGG = register("sniffer_egg");
-
 
     private static ResourceKey<LootTable> register(String name) {
         var ret = ResourceKey.create(Registries.LOOT_TABLE, MoreSnifferFlowers.loc(name));    

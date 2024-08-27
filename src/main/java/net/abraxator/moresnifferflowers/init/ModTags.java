@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
 
@@ -31,7 +32,10 @@ public class ModTags {
 
     public static class ModBannerPatternTags {
         public static final TagKey<BannerPattern> AMBUSH_BANNER_PATTERN = create(Registries.BANNER_PATTERN, "pattern_item/ambush");
-
+    }
+    
+    public static class ModBiomeTags {
+        public static final TagKey<Biome> HAS_SWAMP_SNIFFER_TEMPLE = create(Registries.BIOME, "has_swamp_sniffer_temple");
     }
 
     private static <T extends Object> TagKey<T> create(ResourceKey<Registry<T>> registry, String name){

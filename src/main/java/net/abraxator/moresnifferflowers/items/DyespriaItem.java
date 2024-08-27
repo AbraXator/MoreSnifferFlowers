@@ -32,6 +32,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -60,7 +61,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
         if (pContext.getHand() != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
-
+        String s = blockState.getBlock().getDescriptionId();
         if (blockState.getBlock() instanceof Colorable colorable) {
             DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
             DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, colorable.matchTag(), level, pContext.getClickedFace());
@@ -88,7 +89,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
 
         return result;
     }
-    
+
     @Nullable
     @Override
     protected BlockState getPlacementState(BlockPlaceContext pContext) {

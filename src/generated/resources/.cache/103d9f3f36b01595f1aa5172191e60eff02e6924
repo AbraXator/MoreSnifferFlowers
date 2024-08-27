@@ -1,4 +1,4 @@
-// 1.21	2024-07-31T13:24:08.4170335	Registries
+// 1.21	2024-08-26T00:05:52.5784045	Registries
 75ae79fe525d19c0ee99dd67be945a9ca9e7970f data/minecraft/worldgen/configured_feature/corrupted_tree.json
 1f01a962913c7babe8b2d7b821abfbfd2cd2a561 data/minecraft/worldgen/configured_feature/corrupted_vivicus_tree.json
 8ffe6db5cff23431c883db11d3b2042e3151e90d data/minecraft/worldgen/configured_feature/cured_vivicus_tree.json
@@ -18,3 +18,4 @@ c9e0cb09572e3e60a817c4cf79ce6df009d6e8d1 data/moresnifferflowers/trim_pattern/ca
 895bc85e8f2ceab2d684e208a16f4ecb95accb11 data/moresnifferflowers/trim_pattern/grain.json
 0fedef90b6e78dbcdf50de55820d866caf9573ed data/moresnifferflowers/trim_pattern/nether_wart.json
 7e2493a1a4af318375e79c46a14fd513640cf219 data/moresnifferflowers/trim_pattern/tater.json
+5d7ec797cb9509560ac24ce953e3887353ab7321 data/moresnifferflowers/worldgen/structure/swamp_sniffer_temple.json
