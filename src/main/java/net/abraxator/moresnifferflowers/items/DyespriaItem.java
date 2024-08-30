@@ -2,24 +2,23 @@ package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
-import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.components.DyespriaMode;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.DyespriaDisplayModeChangePacket;
-import net.abraxator.moresnifferflowers.networking.DyespriaModePacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.ByIdMap;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,18 +31,20 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
-import org.openjdk.nashorn.internal.ir.ReturnNode;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.IntFunction;
 
 public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
@@ -57,14 +58,15 @@ public class DyespriaItem extends BlockItem implements Colorable {
         BlockPos blockPos = pContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
         ItemStack stack = pContext.getItemInHand();
+        Dye dye = Dye.getDyeFromStack(stack);
 
-        if (pContext.getHand() != InteractionHand.MAIN_HAND) {
+        if (pContext.getHand() != InteractionHand.MAIN_HAND || dye.isEmpty()) {
             return InteractionResult.PASS;
         }
-        String s = blockState.getBlock().getDescriptionId();
-        if (blockState.getBlock() instanceof Colorable colorable) {
+        
+        if (checkDyedBlock(blockState) || blockState.getBlock() instanceof Colorable) {
             DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
-            DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, colorable.matchTag(), level, pContext.getClickedFace());
+            DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, getMatchTag(blockState), level, pContext.getClickedFace());
             dyespriaMode.getSelector().apply(dyespriaSelector).forEach(blockPos1 -> {
                 var state = level.getBlockState(blockPos1);
                 colorOne(stack, level, blockPos1, state);
@@ -74,6 +76,10 @@ public class DyespriaItem extends BlockItem implements Colorable {
         }
 
         return handlePlacement(blockPos, level, player, pContext.getHand(), stack);
+    }
+    
+    private @Nullable TagKey<Block> getMatchTag(BlockState blockState) {
+        return blockState instanceof Colorable colorable ? colorable.matchTag() : null;
     }
     
     private InteractionResult handlePlacement(BlockPos blockPos, Level level, Player player, InteractionHand hand, ItemStack stack) {
@@ -100,19 +106,66 @@ public class DyespriaItem extends BlockItem implements Colorable {
     public void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
         Dye dye = Dye.getDyeFromStack(stack);
         RandomSource randomSource = level.random;
-
-        if(blockState.getValue(ModStateProperties.COLOR).equals(dye.color()) || dye.isEmpty()) {
+        
+        if (!canDye(blockState, dye)) {
             return;
         }
 
-        level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.COLOR, dye.color()));
+        if(blockState.getBlock() instanceof Colorable) {
+            level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.COLOR, dye.color()));
+        } else {
+            dyeNonColorableBlock(blockState, blockPos, dye.color(), level);
+        }
+        
         ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - randomSource.nextIntBetweenInclusive(0, 1)));
         Dye.setDyeToDyeHolderStack(stack, itemStack, itemStack.getCount());
-        if(level instanceof ServerLevel serverLevel) {
+        if (level instanceof ServerLevel serverLevel) {
             particles(randomSource, serverLevel, dye, blockPos);
         }
     }
     
+    private boolean canDye(BlockState blockState, Dye dye) {
+        return (blockState.hasProperty(ModStateProperties.COLOR) && !blockState.getValue(ModStateProperties.COLOR).equals(dye.color())) || !dye.isEmpty();
+    }
+
+    private boolean checkDyedBlock(BlockState blockState) {
+        return blockState.is(Tags.Blocks.DYED);
+    }
+    
+    private void dyeNonColorableBlock(BlockState blockState, BlockPos blockPos, DyeColor newColor, Level level) {
+        if(!checkDyedBlock(blockState)) {
+            return;
+        }
+        
+        String blockIdentifier = blockState.getBlock().toString().replace("Block{", "").replace("}", "");
+        String[] identifiers = blockIdentifier.split(":");
+        String blockId = identifiers[1]; 
+        String modId = identifiers[0];   
+        String[] splitBlockId = blockId.split("_");
+        List<String> validColors = Arrays.stream(DyeColor.values())
+                .map(DyeColor::getName)
+                .toList();
+        int colorIndex = validColors.contains(splitBlockId[0]) ? 0 : 1;
+        splitBlockId[colorIndex] = newColor.getName();
+        
+        String finalBlockName = String.join("_", splitBlockId);
+        Block finalBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId, finalBlockName));
+        BlockState finalBlockState = finalBlock.defaultBlockState();
+        
+        level.setBlockAndUpdate(blockPos, copyAllBlockStateProperties(blockState, finalBlockState));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable<T>> BlockState copyAllBlockStateProperties(BlockState sourceState, BlockState targetState) {
+        for (Property<?> property : sourceState.getProperties()) {
+            if (targetState.hasProperty(property)) {
+                T value = (T) sourceState.getValue(property);
+                targetState = targetState.setValue((Property<T>) property, value);
+            }
+        }
+        return targetState;
+    }
+
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
         if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
