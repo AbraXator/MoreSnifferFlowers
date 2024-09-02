@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
 import com.google.common.collect.Lists;
+import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.blocks.rebrewingstand.RebrewingStandBlockBase;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
 import net.abraxator.moresnifferflowers.init.ModBlockEntities;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.sound.sampled.BooleanControl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -172,6 +174,10 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
     private boolean canBrew() {
         boolean ret = false;
+        boolean correctInvContent = !inv.get(2).isEmpty() && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get());
+        boolean hasFuel = fuel >= 1 && this.fuel >= this.cost;
+        boolean correctCost = this.cost <= 16;
+        
 
         for(int i = 3; i <= 5; i++) {
             if(!inv.get(i).isEmpty() && !inv.get(i).is(ModItems.REBREWED_POTION.get())) {
@@ -179,7 +185,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             }
         }
 
-        return ret && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get()) && fuel >= 1 && !inv.get(2).isEmpty() && this.cost <= 16;
+        return ret && correctInvContent && hasFuel && correctCost;
     }
 
     private boolean[] getPotionBits() {
