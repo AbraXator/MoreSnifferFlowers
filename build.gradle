@@ -22,7 +22,7 @@ repositories {
 }
 
 group = 'net.abraxator.moresnifferflowers'
-archivesBaseName = 'moresnifferflowers'
+archivesBaseName = 'MoreSnifferFlowers-'+mc_version+'-forge'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
