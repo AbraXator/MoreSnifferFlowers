@@ -7,6 +7,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BondripiaBlockEntity extends ModBlockEntity {
     public BondripiaBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities, pPos, pBlockState);
+        super(ModBlockEntities.BONDRIPIA.get(), pPos, pBlockState);
     }
 }

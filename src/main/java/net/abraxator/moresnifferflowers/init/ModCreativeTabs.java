@@ -13,7 +13,7 @@ public class ModCreativeTabs {
             BuiltInRegistries.CREATIVE_MODE_TAB.key(), MoreSnifferFlowers.MOD_ID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MORESNIFFERFLOWERS_TAB = TABS.register("moresnifferflowers_tab", () -> CreativeModeTab.builder()
-            .title(Component.literal(""))
+            .title(Component.translatable("moresnifferflowers.creative_tab"))
             .icon(() -> new ItemStack(ModItems.CREATIVE_TAB_ICON.get()))
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.DAWNBERRY_VINE_SEEDS.get());
@@ -110,6 +110,7 @@ public class ModCreativeTabs {
                 output.accept(ModBlocks.VIVICUS_LEAVES.get());
                 output.accept(ModBlocks.VIVICUS_SAPLING.get());
                 output.accept(ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
+                output.accept(ModBlocks.VIVICUS_LEAVES_SPROUT.get());
                 output.accept(ModItems.VIVICUS_SIGN.get());
                 output.accept(ModItems.VIVICUS_HANGING_SIGN.get());
                 output.accept(ModItems.VIVICUS_BOAT);

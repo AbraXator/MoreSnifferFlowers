@@ -1,13 +1,28 @@
 {
-  "variants": {
-    "age=0": {
-      "model": "moresnifferflowers:block/sprouting_vivicus_leaves_0"
+  "multipart": [
+    {
+      "when": {
+        "age": "0"
+      },
+      "apply": {
+        "model": "moresnifferflowers:block/sprouting_vivicus_leaves_0"
+      }
     },
-    "age=1": {
-      "model": "moresnifferflowers:block/sprouting_vivicus_leaves_1"
+    {
+      "when": {
+        "age": "1"
+      },
+      "apply": {
+        "model": "moresnifferflowers:block/sprouting_vivicus_leaves_1"
+      }
     },
-    "age=2": {
-      "model": "moresnifferflowers:block/sprouting_vivicus_leaves_2"
+    {
+      "when": {
+        "age": "2"
+      },
+      "apply": {
+        "model": "moresnifferflowers:block/sprouting_vivicus_leaves_2"
+      }
     }
-  }
+  ]
 }
