@@ -172,6 +172,10 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
     private boolean canBrew() {
         boolean ret = false;
+        boolean correctInvContent = !inv.get(2).isEmpty() && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get());
+        boolean hasFuel = fuel >= 1 && this.fuel >= this.cost;
+        boolean correctCost = this.cost <= 16;
+
 
         for(int i = 3; i <= 5; i++) {
             if(!inv.get(i).isEmpty() && !inv.get(i).is(ModItems.REBREWED_POTION.get())) {
@@ -179,7 +183,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             }
         }
 
-        return ret && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get()) && fuel >= 1 && !inv.get(2).isEmpty() && cost <= 16;
+        return ret && correctInvContent && hasFuel && correctCost;
     }
 
     private boolean[] getPotionBits() {
