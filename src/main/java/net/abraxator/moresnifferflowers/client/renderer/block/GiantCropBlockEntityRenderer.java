@@ -70,8 +70,7 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 			pPoseStack.popPose();
 		}
 	}
-
-
+	
 	@Override
 	public boolean shouldRenderOffScreen(T pBlockEntity) {
 		return true;

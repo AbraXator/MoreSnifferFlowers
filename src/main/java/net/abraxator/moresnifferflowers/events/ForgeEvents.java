@@ -1,10 +1,12 @@
 package net.abraxator.moresnifferflowers.events;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.blockentities.BondripiaBlockEntity;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -67,6 +69,16 @@ public class ForgeEvents {
             BlockPos.betweenClosed(entity.pos1, entity.pos2).forEach(blockPos -> {
                 event.getLevel().destroyBlock(blockPos, true);
             });
+        }
+        
+        if (event.getLevel().getBlockEntity(event.getPos()) instanceof BondripiaBlockEntity entity) {
+            Direction.Plane.HORIZONTAL.forEach(direction -> {
+                BlockPos blockPos = entity.center.relative(direction);
+
+                event.getLevel().destroyBlock(blockPos, true);
+            });
+
+            event.getLevel().destroyBlock(entity.center, true);
         }
     }
 

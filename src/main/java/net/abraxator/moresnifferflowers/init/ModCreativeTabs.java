@@ -33,6 +33,7 @@ public class ModCreativeTabs {
                 
                 output.accept(ModItems.BONMEELIA_SEEDS.get());
                 output.accept(ModItems.JAR_OF_BONMEEL.get());
+                output.accept(ModItems.BONDRIPIA_SEEDS);
                 
                 output.accept(ModItems.BELT_PIECE.get());
                 output.accept(ModItems.ENGINE_PIECE.get());
