@@ -7,6 +7,7 @@ import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,7 +18,10 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
 import java.util.HashMap;
@@ -56,15 +60,34 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 		Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/" + path));
 		VertexConsumer vertexConsumer = TEXTURE.buffer(pBufferSource, RenderType::entityCutout);
 
-		if(pBlockEntity.growProgress > 0 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(GiantCropBlock.MODEL_POSITION) != GiantCropBlock.ModelPos.NONE) {
-			var modelPos = blockState.getValue(GiantCropBlock.MODEL_POSITION);
+		if(pBlockEntity.growProgress > 0 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(ModStateProperties.CENTER)) {
 			pPoseStack.pushPose();
-			pPoseStack.translate(modelPos.x, modelPos.y - 2 + pBlockEntity.growProgress * 2, modelPos.z);
+			pPoseStack.translate(0.5, (pBlockEntity.growProgress * 2) - 1.5, 0.5);
 			var delta = Math.min(pBlockEntity.growProgress * pPartialTick, 1);
 			pPoseStack.scale(1, (float) Math.min(Mth.lerp(pBlockEntity.growProgress + pPartialTick, 0, 1), pBlockEntity.growProgress), 1);
 			pPoseStack.mulPose(new Quaternionf().rotateX((float) (Math.PI)));
 			modelPartMap.get(blockState.getBlock()).render(pPoseStack, vertexConsumer, pPackedLight, pPackedOverlay);
 			pPoseStack.popPose();
 		}
+	}
+
+
+	@Override
+	public boolean shouldRenderOffScreen(T pBlockEntity) {
+		return true;
+	}
+
+	@Override
+	public int getViewDistance() {
+		return 256;
+	}
+
+	public boolean shouldRender(T pBlockEntity, Vec3 pCameraPos) {
+		return true;
+	}
+
+	@Override
+	public AABB getRenderBoundingBox(T blockEntity) {
+		return AABB.INFINITE;
 	}
 }

@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.components.DyespriaMode;
+import net.abraxator.moresnifferflowers.components.EntityDistanceComparator;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.DyespriaDisplayModeChangePacket;
 import net.minecraft.ChatFormatting;
@@ -42,9 +43,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.BreakIterator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
@@ -67,9 +70,13 @@ public class DyespriaItem extends BlockItem implements Colorable {
         if (checkDyedBlock(blockState) || blockState.getBlock() instanceof Colorable) {
             DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
             DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, getMatchTag(blockState), level, pContext.getClickedFace());
-            dyespriaMode.getSelector().apply(dyespriaSelector).forEach(blockPos1 -> {
+            Set<BlockPos> set = dyespriaMode.getSelector().apply(dyespriaSelector);
+            set.stream().sorted(new EntityDistanceComparator(blockPos)).forEach(blockPos1 -> {
                 var state = level.getBlockState(blockPos1);
-                colorOne(stack, level, blockPos1, state);
+                
+                if(!Dye.getDyeFromStack(stack).isEmpty()) {
+                    colorOne(stack, level, blockPos1, state);
+                }
             });
 
             return InteractionResult.sidedSuccess(level.isClientSide);
@@ -128,7 +135,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
         return (blockState.hasProperty(ModStateProperties.COLOR) && !blockState.getValue(ModStateProperties.COLOR).equals(dye.color())) || !dye.isEmpty();
     }
 
-    private boolean checkDyedBlock(BlockState blockState) {
+    public static boolean checkDyedBlock(BlockState blockState) {
         return blockState.is(Tags.Blocks.DYED);
     }
     

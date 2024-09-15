@@ -2,8 +2,10 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -26,11 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GiantCropBlock extends Block implements ModEntityBlock {
-    public static final EnumProperty<ModelPos> MODEL_POSITION = EnumProperty.create("model_pos", ModelPos.class);
-
     public GiantCropBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(defaultBlockState().setValue(MODEL_POSITION, ModelPos.NONE));
+        registerDefaultState(defaultBlockState().setValue(ModStateProperties.CENTER, false));
     }
 
     @Override
@@ -66,14 +67,14 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
 
     @Override
     public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
-        if(!pState.getValue(MODEL_POSITION).equals(ModelPos.NONE)) {
+        if(pState.getValue(ModStateProperties.CENTER)) {
             pLevel.getBlockTicks().schedule(new ScheduledTick<>(this, pPos, pLevel.getGameTime() + 7, pLevel.nextSubTickCount()));
             if(pLevel.getBlockEntity(pPos) instanceof GiantCropBlockEntity entity && entity.state == 0) {
                 entity.state = 1;
             }
-            
-            if(pState.getValue(MODEL_POSITION).equals(ModelPos.NED) && pLevel instanceof ServerLevel level) {
-                level.sendParticles(ModParticles.GIANT_CROP.get(), pPos.getCenter().x - 1, pPos.getCenter().y - 1, pPos.getCenter().z + 1, 1, 0, 0, 0, 0);
+        
+            if(pLevel instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ModParticles.GIANT_CROP.get(), pPos.getCenter().x, pPos.getCenter().y, pPos.getCenter().z, 1, 0, 0, 0, 0);
             }
         }
     }
@@ -81,7 +82,7 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(MODEL_POSITION);
+        pBuilder.add(ModStateProperties.CENTER);
     }
 
     @Nullable
@@ -94,39 +95,5 @@ public class GiantCropBlock extends Block implements ModEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return tickerHelper(pLevel);
-    }
-
-    public static enum ModelPos implements StringRepresentable {
-        NED("ned",-0.4992, -0.4992, 1.4992),
-        NEU("neu",-0.4994, 1.4994, 1.4994),
-        NWD("nwd",1.4996, -0.4996, 1.4996),
-        NWU("nwu",1.4998, 1.4998, 1.4998),
-        SED("sed",-0.5, -0.5, -0.5),
-        SEU("seu",-0.4990, 1.4990, -0.4990),
-        SWD("swd",1.4988, -0.4988, -0.4988),
-        SWU("swu",1.4986, 1.4986, -0.4986),
-        NONE("none");
-
-        public final String name;
-        public final double x;
-        public final double y;
-        public final double z;
-        
-        //offsets for rendering each model to prevent Z-Fighting
-        ModelPos(String name, double x, double y, double z) {
-            this.name = name;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        ModelPos(String name) {
-            this(name, 0, 0, 0);
-        }
-
-        @Override
-        public String getSerializedName() {
-            return name;
-        }
     }
 }

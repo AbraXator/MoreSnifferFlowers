@@ -32,11 +32,13 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.*;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.api.distmarker.Dist;
@@ -130,7 +132,18 @@ public class ClientEvents {
         event.register((pState, pLevel, pPos, pTintIndex) -> {
             var colorable = ((ColorableVivicusBlock) pState.getBlock());
             if(pTintIndex == 0) {
-                return Dye.colorForDye(colorable, pState.getValue(colorable.getColorProperty()));
+                var dyedValue = Dye.colorForDye(colorable, pState.getValue(colorable.getColorProperty()));
+                
+                if(pState.is(ModBlocks.VIVICUS_LEAVES)) {
+                    var noiseValue = Mth.hsvToRgb(pLevel == null
+                            ? 0.45F
+                            : SimplexNoiseHelper.rippleFractalNoise(2, 128.0f, pPos != null
+                            ? pPos.above(128)
+                            : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f);
+                    return dyedValue | noiseValue;
+                }
+                
+                return dyedValue;
             }
             
             return -1;

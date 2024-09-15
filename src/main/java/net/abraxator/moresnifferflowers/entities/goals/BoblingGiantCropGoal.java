@@ -4,6 +4,7 @@ import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -111,7 +112,7 @@ public class BoblingGiantCropGoal extends Goal {
             var level = this.bobling.level();
 
             BlockPos.betweenClosedStream(aabb).forEach(pos -> {
-                level.setBlockAndUpdate(pos, giantBlock.get().defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, JarOfBonmeelItem.evaulateModelPos(pos, BlockPos.containing(this.wantedPos.add(0, 1, 0)))));
+                level.setBlockAndUpdate(pos, giantBlock.get().defaultBlockState().setValue(ModStateProperties.CENTER, pos.equals(BlockPos.containing(this.wantedPos.add(0, 1, 0)))));
                 if (level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
                     entity.pos1 = BlockPos.containing(this.wantedPos.add(0, 1, 0)).mutable().move(1, 2, 1);
                     entity.pos2 = BlockPos.containing(this.wantedPos.add(0, 1, 0)).mutable().move(-1, 0, -1);

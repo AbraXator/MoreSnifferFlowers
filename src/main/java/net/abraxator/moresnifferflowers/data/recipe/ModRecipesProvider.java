@@ -129,11 +129,12 @@ public class ModRecipesProvider extends RecipeProvider {
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.VIVICUS_ANTIDOTE, 1)
                         .pattern(" AB")
-                        .pattern("ABA")
-                        .pattern("CB ")
+                        .pattern("ACA")
+                        .pattern("DA ")
                         .define('A', Tags.Items.GLASS_BLOCKS_COLORLESS)
                         .define('B', ModItems.CORRUPTED_SLIME_BALL)
-                        .define('C', Tags.Items.INGOTS_IRON)
+                        .define('C', ModItems.BOBLING_CORE)
+                        .define('D', Tags.Items.INGOTS_IRON)
                         .unlockedBy("has_corrupted_slime_ball", has(ModItems.CORRUPTED_SLIME_BALL))
                         .save(pRecipeOutput);
 

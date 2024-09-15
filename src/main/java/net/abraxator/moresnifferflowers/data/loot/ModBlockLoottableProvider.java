@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
@@ -47,8 +48,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.DAWNBERRY_VINE.get())
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(DawnberryVineBlock.AGE, 4)))));
-
-       add(ModBlocks.AMBER.get(), LootTable.lootTable()
+        add(ModBlocks.AMBER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .when(hasSilkTouch())
                         .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
@@ -86,7 +86,7 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(ModItems.AMBUSH_SEEDS.get()).setWeight(12))
                         .add(LootItem.lootTableItem(ModItems.DYESPRIA_SEEDS.get()).setWeight(12))
                         .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get()).setWeight(12))));
-
+        
         dropSelf(ModBlocks.BOBLING_HEAD.get());
         add(ModBlocks.AMBUSH_TOP.get(), noDrop());
         dropSelf(ModBlocks.AMBUSH_BOTTOM.get());
@@ -142,7 +142,12 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.CORRUPTED_BUTTON.get());
         add(ModBlocks.CORRUPTED_LEAVES.get(), block -> createLeavesDrops(block, ModBlocks.CORRUPTED_SAPLING.get(), 0.05F, 0.0625F, 0.083333336F, 0.1F));
         dropSelf(ModBlocks.CORRUPTED_SAPLING.get());
-        dropSelf(ModBlocks.CORRUPTED_SLUDGE.get());
+        add(ModBlocks.CORRUPTED_SLUDGE.get(), block -> this.createSilkTouchDispatchTable(
+                block, this.applyExplosionCondition(
+                        block, LootItem.lootTableItem(ModItems.CORRUPTED_SLIME_BALL)
+                                .when(LootItemRandomChanceCondition.randomChance(0.175F))
+                )
+        ));
 
         dropSelf(ModBlocks.VIVICUS_LOG.get());
         dropSelf(ModBlocks.VIVICUS_WOOD.get());

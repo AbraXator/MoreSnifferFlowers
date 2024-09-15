@@ -11,9 +11,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,9 +23,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.ICancellableEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
@@ -32,6 +32,18 @@ import java.util.List;
 
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class ForgeEvents {
+    @SubscribeEvent
+    public static void onLivingJump(LivingEvent.LivingJumpEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        Level level = livingEntity.level();
+        Vec3 loc = livingEntity.position();
+        BlockPos blockPos = BlockPos.containing(loc);
+        
+        if(level.getBlockState(blockPos).is(ModBlocks.CORRUPTED_SLIME_LAYER) || level.getBlockState(blockPos.below()).is(ModBlocks.CORRUPTED_SLIME_LAYER)) {
+            livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().multiply(1, 0.3, 1));
+        }
+    }
+
     @SubscribeEvent
     public static void onUseItemOnBlock(UseItemOnBlockEvent event) {
         var itemStack = event.getPlayer().getItemInHand(event.getHand()).getItem().getDefaultInstance();

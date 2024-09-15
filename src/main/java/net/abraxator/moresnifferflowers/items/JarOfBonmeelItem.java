@@ -4,6 +4,7 @@ import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -90,7 +91,7 @@ public class JarOfBonmeelItem extends Item {
         blockPosList.forEach(pos -> {
             pos = pos.immutable();
             level.destroyBlock(pos, false);
-            level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(GiantCropBlock.MODEL_POSITION, evaulateModelPos(pos, clickedPos)));
+            level.setBlockAndUpdate(pos, giantVersion.defaultBlockState().setValue(ModStateProperties.CENTER, pos.equals(clickedPos.above())));
             if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity) {
                 entity.pos1 = clickedPos.mutable().move(1, 2, 1);
                 entity.pos2 = clickedPos.mutable().move(-1, 0, -1);
@@ -104,44 +105,6 @@ public class JarOfBonmeelItem extends Item {
         ModAdvancementCritters.USED_BONMEEL.trigger(player);
         level.playLocalSound(clickedPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
         return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    public static GiantCropBlock.ModelPos evaulateModelPos(BlockPos pos, BlockPos posToCompare) {
-        var value = GiantCropBlock.ModelPos.NONE;
-
-        posToCompare = posToCompare.above();
-        pos = pos.above();
-
-        if(pos.equals(posToCompare.north().east())) {
-            value = GiantCropBlock.ModelPos.NEU;
-        }
-        if(pos.equals(posToCompare.north().west())) {
-            value = GiantCropBlock.ModelPos.NWU;
-        }
-        if(pos.equals(posToCompare.south().east())) {
-            value = GiantCropBlock.ModelPos.SEU;
-        }
-        if(pos.equals(posToCompare.south().west())) {
-            value = GiantCropBlock.ModelPos.SWU;
-        }
-
-        posToCompare.below(2);
-        pos = pos.below(2);
-
-        if(pos.equals(posToCompare.north().east())) {
-            value = GiantCropBlock.ModelPos.NED;
-        }
-        if(pos.equals(posToCompare.north().west())) {
-            value = GiantCropBlock.ModelPos.NWD;
-        }
-        if(pos.equals(posToCompare.south().east())) {
-            value = GiantCropBlock.ModelPos.SED;
-        }
-        if(pos.equals(posToCompare.south().west())) {
-            value = GiantCropBlock.ModelPos.SWD;
-        }
-
-        return value;
     }
 
     @Override
