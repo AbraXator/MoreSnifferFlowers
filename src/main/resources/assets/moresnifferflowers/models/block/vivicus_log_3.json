@@ -3,8 +3,8 @@
 	"parent": "block/block",
 	"render_type": "cutout",
 	"textures": {
-		"0": "moresnifferflowers:block/vivicus_log",
-		"1": "moresnifferflowers:block/vivicus_log1",
+		"0": "moresnifferflowers:block/vivicus_logc",
+		"1": "moresnifferflowers:block/vivicus_log1c",
 		"3": "moresnifferflowers:block/vivicus_log_top",
 		"4": "moresnifferflowers:block/vivicus_log_top1",
 		"particle": "moresnifferflowers:block/vivicus_logc"
