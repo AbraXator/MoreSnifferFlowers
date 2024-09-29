@@ -11,10 +11,7 @@ import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.client.model.entity.CorruptedProjectileModel;
 import net.abraxator.moresnifferflowers.client.model.entity.DragonflyModel;
-import net.abraxator.moresnifferflowers.client.particle.AmbushParticle;
-import net.abraxator.moresnifferflowers.client.particle.CarrotParticle;
-import net.abraxator.moresnifferflowers.client.particle.FlyParticle;
-import net.abraxator.moresnifferflowers.client.particle.GiantCropParticle;
+import net.abraxator.moresnifferflowers.client.particle.*;
 import net.abraxator.moresnifferflowers.client.renderer.block.*;
 import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.CorruptedProjectileRenderer;
@@ -23,16 +20,12 @@ import net.abraxator.moresnifferflowers.client.renderer.entity.ModBoatRenderer;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
-import net.abraxator.moresnifferflowers.networking.DyespriaModePacket;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -40,7 +33,6 @@ import net.minecraft.server.packs.*;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -49,7 +41,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforgespi.locating.IModFile;
 
 import java.util.Optional;
@@ -119,6 +110,8 @@ public class ClientEvents {
         event.registerSpriteSet(ModParticles.CARROT.get(), CarrotParticle.Provider::new);
         event.registerSpriteSet(ModParticles.AMBUSH.get(), AmbushParticle.Provider::new);
         event.registerSpriteSet(ModParticles.GIANT_CROP.get(), GiantCropParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.GIANT_CROP.get(), GiantCropParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.BONDRIPIA.get(), BondripiaParticle.BondripiaParticleProvider::new);
     }
 
     @SubscribeEvent

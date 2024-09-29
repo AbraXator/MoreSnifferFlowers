@@ -1,6 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blockentities.BondripiaBlockEntity;
+import net.abraxator.moresnifferflowers.init.ModParticles;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.core.BlockPos;
@@ -19,9 +20,14 @@ import net.minecraft.world.level.block.SporeBlossomBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import org.apache.logging.log4j.util.PropertySource;
+import org.checkerframework.checker.i18nformatter.qual.I18nFormat;
 import org.jetbrains.annotations.Nullable;
 
+import javax.lang.model.element.ModuleElement;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock {
@@ -48,9 +54,24 @@ public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock 
         });
     }
 
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if(state.getValue(ModStateProperties.CENTER) && random.nextDouble() <= 0.3D) {
+            List<BlockPos> list = new java.util.ArrayList<>(BlockPos.betweenClosedStream(pos.north().east(), pos.south().west()).map(BlockPos::immutable).toList());
+            Collections.shuffle(list);
+            list = list.subList(0, random.nextInt(6));
+            list.forEach(blockPos -> {
+                var vec3 = blockPos.getCenter();
+                level.addParticle(ModParticles.BONDRIPIA.get(), vec3.x, vec3.y, vec3.z, 0, 0, 0);
+            });
+        }
+    }
+    
+ 
     @Override
     protected void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (pLevel.getBlockEntity(pPos) instanceof BondripiaBlockEntity entity) {
+        if (pRandom.nextDouble() <= 0.33D && pLevel.getBlockEntity(pPos) instanceof BondripiaBlockEntity entity) {
             for (BlockPos blockPos : BlockPos.betweenClosed(entity.center.north().east(), entity.center.south().west())) {
                 BlockPos currentPos = blockPos;
 
@@ -59,15 +80,14 @@ public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock 
                         BlockState blockState = pLevel.getBlockState(currentPos);
 
 
-                        if (blockState.getBlock() instanceof BonemealableBlock bonemealable) {
-                            if (bonemealable.isValidBonemealTarget(pLevel, currentPos, blockState)) {
-                                bonemealable.performBonemeal(pLevel, pRandom, currentPos, blockState);
-                                break;
-                            }
+                        if (blockState.getBlock() instanceof BonemealableBlock bonemealable && bonemealable.isValidBonemealTarget(pLevel, currentPos, blockState)) {
+                            bonemealable.performBonemeal(pLevel, pRandom, currentPos, blockState);
+                            break;
                         }
+                        
                         if (blockState.is(ModTags.ModBlockTags.BONMEELABLE)) {
                             Bonmeelable bonmeelable = ((Bonmeelable) Bonmeelable.MAP.get(blockState.getBlock()));
-                            if (bonmeelable.canBonmeel(blockPos, blockState, pLevel)) {
+                            if (bonmeelable.canBonmeel(currentPos, blockState, pLevel)) {
                                 bonmeelable.performBonmeel(currentPos, blockState, pLevel, null);
                                 break;
                             }
@@ -84,9 +104,6 @@ public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock 
     private boolean isBondripable(Level level, BlockPos blockPos) {
         return level.getBlockState(blockPos).getBlock() instanceof BonemealableBlock || level.getBlockState(blockPos).is(ModTags.ModBlockTags.BONMEELABLE);
     }
-
-    @Override
-    public void animateTick(BlockState p_222503_, Level p_222504_, BlockPos p_222505_, RandomSource p_222506_) {}
 
     @Override
     protected boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
