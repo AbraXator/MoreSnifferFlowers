@@ -43,7 +43,10 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
 
+import java.awt.*;
 import java.util.Optional;
+
+import static java.lang.Math.sin;
 
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -129,14 +132,16 @@ public class ClientEvents {
             var colorable = ((ColorableVivicusBlock) pState.getBlock());
             if(pTintIndex == 0) {
                 var dyedValue = Dye.colorForDye(colorable, pState.getValue(colorable.getColorProperty()));
-                
-                if(pState.is(ModBlocks.VIVICUS_LEAVES)) {
-                    var noiseValue = Mth.hsvToRgb(pLevel == null
-                            ? 0.45F
-                            : SimplexNoiseHelper.rippleFractalNoise(2, 128.0f, pPos != null
-                            ? pPos.above(128)
-                            : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f);
-                    return dyedValue | noiseValue;
+
+                if(pState.is(ModBlocks.VIVICUS_LEAVES) || pState.is(ModBlocks.VIVICUS_LEAVES_SPROUT)) {
+                    int startRed = (dyedValue >> 16) & 0xFF;
+                    int startGreen = (dyedValue >> 8) & 0xFF;
+                    int startBlue = dyedValue & 0xFF;
+                    float[] colorHSB =  Color.RGBtoHSB(startRed, startGreen, startBlue, null);
+
+                    assert pPos != null;
+                    float hue = colorHSB[0] + (float)(sin((float)pPos.getX() + (float)pPos.getY() + (float)pPos.getZ()) / 15);
+                    return Color.HSBtoRGB(hue, colorHSB[1], colorHSB[2]);
                 }
                 
                 return dyedValue;
@@ -148,7 +153,7 @@ public class ClientEvents {
            ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_FENCE.get(), ModBlocks.VIVICUS_FENCE_GATE.get(), 
            ModBlocks.VIVICUS_DOOR.get(), ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get(), 
            ModBlocks.VIVICUS_BUTTON.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SAPLING.get(), 
-           ModBlocks.SPROUTING_VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SIGN.get(), ModBlocks.VIVICUS_HANGING_SIGN.get());
+           ModBlocks.VIVICUS_LEAVES_SPROUT.get(), ModBlocks.VIVICUS_SIGN.get(), ModBlocks.VIVICUS_HANGING_SIGN.get());
     }
 
     @SubscribeEvent
