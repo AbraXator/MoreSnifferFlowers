@@ -28,12 +28,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.VIVICUS_CHEST_BOAT.get());
         
         var modelBuilder = withExistingParent(ModItems.BOBLING_SPAWN_EGG.getId().getPath(), MoreSnifferFlowers.loc("item/cropressor_normal"));
-        for(int i = 1; i <= ModItemProperties.COPRESSOR_ANIMATION_FRAMES; i++) {
+        /*for(int i = 1; i <= ModItemProperties.COPRESSOR_ANIMATION_FRAMES; i++) {
             withExistingParent(ModItems.CROPRESSOR.getId().getPath() + "_animation_" + i, MoreSnifferFlowers.loc("item/cropressor_animation_" + i / ModItemProperties.FRAME_TIME));
             
             modelBuilder.override(i)
                     .predicate(MoreSnifferFlowers.loc("item/cropressor_animation_" + i / ModItemProperties.FRAME_TIME), (float) ((double) 1 / i))
                     .model(new ModelFile.ExistingModelFile(MoreSnifferFlowers.loc("item/cropressor_animation_" + i / ModItemProperties.FRAME_TIME), existingFileHelper));
-        }
+        }*/
     }
 }

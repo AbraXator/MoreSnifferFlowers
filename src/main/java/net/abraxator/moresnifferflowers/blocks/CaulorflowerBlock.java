@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
+import org.checkerframework.checker.units.qual.A;
+import org.checkerframework.checker.units.qual.h;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -31,16 +33,17 @@ import static net.abraxator.moresnifferflowers.init.ModStateProperties.*;
 public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock, Colorable {
     public CaulorflowerBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(defaultBlockState()
+        this.registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(FLIPPED, true)
+                .setValue(AGE_1, 0)
                 .setValue(COLOR, DyeColor.WHITE));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(FACING, FLIPPED, COLOR);
+        pBuilder.add(FACING, FLIPPED, COLOR, AGE_1);
     }
 
     @Override
@@ -81,7 +84,8 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
 
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
-        return highestPos(pLevel, pPos, true).isPresent() && pLevel.getBlockState(highestPos(pLevel, pPos, true).get().above()).is(Blocks.AIR);
+        Optional<BlockPos> highestPos = highestPos(pLevel, pPos, true);
+        return highestPos.isPresent() && (pLevel.getBlockState(highestPos.get().above()).is(Blocks.AIR) || !isMaxAge(pLevel.getBlockState(highestPos.get())));
     }
 
     @Override
@@ -96,12 +100,28 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
 
     protected void grow(ServerLevel pLevel, BlockPos originalPos, boolean bonemeal) {
         highestPos(pLevel, originalPos, bonemeal).ifPresent(highestPos -> {
-            var state = pLevel.getBlockState(highestPos.below());
-            pLevel.setBlockAndUpdate(highestPos, this.defaultBlockState()
-                    .setValue(FLIPPED, highestPos.getY() % 2 == 0)
-                    .setValue(FACING, state.getValue(FACING))
-                    .setValue(COLOR, state.getValue(COLOR)));
+            var posBelow = highestPos.below();
+            var stateBelow = pLevel.getBlockState(posBelow);
+            if(isMaxAge(stateBelow)) {
+                pLevel.setBlockAndUpdate(highestPos, this.defaultBlockState()
+                        .setValue(FLIPPED, highestPos.getY() % 2 == 0)
+                        .setValue(FACING, stateBelow.getValue(FACING))
+                        .setValue(COLOR, stateBelow.getValue(COLOR)));
+            } else {
+                makeGrowOnBonemeal(pLevel, posBelow, stateBelow);   
+            }
         });
+    }
+
+    @Override
+    public void makeGrowOnBonemeal(Level level, BlockPos blockPos, BlockState blockState) {
+        if(level.random.nextDouble() > 0.3D) {
+            ModCropBlock.super.makeGrowOnBonemeal(level, blockPos, blockState);
+            return;
+        } else {
+            ModCropBlock.super.makeGrowOnBonemeal(level, blockPos, blockState);
+            ModCropBlock.super.makeGrowOnBonemeal(level, blockPos, blockState);
+        }
     }
 
     private Optional<BlockPos> highestPos(BlockGetter level, BlockPos originalPos, boolean bonemeal) {
@@ -133,7 +153,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
 
     @Override
     public IntegerProperty getAgeProperty() {
-        return null;
+        return AGE_1;
     }
 
     @Override

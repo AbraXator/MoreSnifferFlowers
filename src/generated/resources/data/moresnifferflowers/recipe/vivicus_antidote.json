@@ -9,13 +9,16 @@
       "item": "moresnifferflowers:corrupted_slime_ball"
     },
     "C": {
+      "item": "moresnifferflowers:bobling_core"
+    },
+    "D": {
       "tag": "c:ingots/iron"
     }
   },
   "pattern": [
     " AB",
-    "ABA",
-    "CB "
+    "ACA",
+    "DA "
   ],
   "result": {
     "count": 1,

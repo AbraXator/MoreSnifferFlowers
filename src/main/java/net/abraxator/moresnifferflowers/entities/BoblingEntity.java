@@ -42,12 +42,10 @@ import java.util.function.IntFunction;
 public class BoblingEntity extends PathfinderMob {
     private static final EntityDataAccessor<Type> DATA_BOBLING_TYPE = SynchedEntityData.defineId(BoblingEntity.class, ModEntityDataSerializers.BOBLING_TYPE.get());
     private static final EntityDataAccessor<Boolean> DATA_RUNNING = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_BONMEELED = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> DATA_WANTED_POS = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     private static final EntityDataAccessor<Boolean> DATA_PLANTING = SynchedEntityData.defineId(BoblingEntity.class, EntityDataSerializers.BOOLEAN);
     private BoblingAttackPlayerGoal attackPlayerGoal;
     private BoblingAvoidPlayerGoal<Player> avoidPlayerGoal;
-    private BoblingGiantCropGoal boblingGiantCropGoal;
     public AnimationState plantingAnimationState = new AnimationState();
     private int plantingProgress = 0;
     private static final int MAX_PLANTING_PROGRESS = 26;
@@ -82,15 +80,6 @@ public class BoblingEntity extends PathfinderMob {
         this.updateRunningGoals();
     }
     
-    public void setBonmeeled() {
-        this.entityData.set(DATA_BONMEELED, true);
-        this.updateBonmeeledGoals();
-    }
-    
-    public boolean isBonmeeled() {
-        return this.entityData.get(DATA_BONMEELED);
-    }
-    
     @Nullable
     public BlockPos getWantedPos() {
         return this.entityData.get(DATA_WANTED_POS).orElse(null);
@@ -113,7 +102,6 @@ public class BoblingEntity extends PathfinderMob {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("bobling_type", getBoblingType().id());
         pCompound.putBoolean("running", this.isRunning());
-        pCompound.putBoolean("bonmeeled", this.isBonmeeled());
         pCompound.putBoolean("planting", this.isPlanting());
         if (getWantedPos() != null) {
             pCompound.put("wanted_pos", NbtUtils.writeBlockPos(getWantedPos()));
@@ -125,7 +113,6 @@ public class BoblingEntity extends PathfinderMob {
         super.readAdditionalSaveData(pCompound);
         this.setBoblingType(Type.BY_ID.apply(pCompound.getInt("bobling_type")));
         this.setRunning(pCompound.getBoolean("running"));
-        this.entityData.set(DATA_BONMEELED, pCompound.getBoolean("bonmeeled"));
         this.setPlanting(pCompound.getBoolean("planting"));
         this.setWantedPos(NbtUtils.readBlockPos(pCompound, "wanted_pos"));
     }
@@ -135,7 +122,6 @@ public class BoblingEntity extends PathfinderMob {
         super.defineSynchedData(pBuilder);
         pBuilder.define(DATA_BOBLING_TYPE, Type.CORRUPTED);
         pBuilder.define(DATA_RUNNING, false);
-        pBuilder.define(DATA_BONMEELED, false);
         pBuilder.define(DATA_WANTED_POS, Optional.empty());
         pBuilder.define(DATA_PLANTING, false);
     }
@@ -193,16 +179,6 @@ public class BoblingEntity extends PathfinderMob {
             this.goalSelector.addGoal(1, this.avoidPlayerGoal);
         }
     }
-
-    public void updateBonmeeledGoals() {
-        if(this.entityData.get(DATA_BONMEELED)) {
-            if (this.boblingGiantCropGoal == null) {
-                this.boblingGiantCropGoal = new BoblingGiantCropGoal(this, 50, 0.8D);
-            }
-            
-            this.goalSelector.addGoal(4, this.boblingGiantCropGoal);
-        }
-    }
     
     @Override
     public void aiStep() {
@@ -233,12 +209,6 @@ public class BoblingEntity extends PathfinderMob {
             particles(new DustParticleOptions(Vec3.fromRGB24(7118872).toVector3f(), 1));
             itemStack.shrink(1);
             
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        } else if (itemStack.is(ModItems.JAR_OF_BONMEEL) && this.getBoblingType() == Type.CURED && !this.isBonmeeled()) {
-            this.setBonmeeled();
-            itemStack.shrink(1);
-            particles(new DustParticleOptions(Vec3.fromRGB24(0xaa51b2).toVector3f(), 1));
-
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
