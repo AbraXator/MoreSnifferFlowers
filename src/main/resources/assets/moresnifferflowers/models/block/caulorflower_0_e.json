@@ -5,29 +5,15 @@
 	"textures": {
 		"0": "moresnifferflowers:block/caulorflower_0",
 		"1": "block/oak_log",
-		"3": "moresnifferflowers:block/caulorflower_1_color",
 		"particle": "block/oak_log"
 	},
 	"elements": [
-		{
-			"from": [5, 4, 5],
-			"to": [11, 12, 11],
-			"rotation": {"angle": -45, "axis": "x", "origin": [9, 8, 8]},
-			"faces": {
-				"north": {"uv": [8, 5.5, 10, 7], "rotation": 270, "texture": "#3", "tintindex": 1},
-				"east": {"uv": [10, 7, 8, 5.5], "rotation": 270, "texture": "#3", "tintindex": 1},
-				"south": {"uv": [8, 5.5, 10, 7], "rotation": 90, "texture": "#3", "tintindex": 1},
-				"west": {"uv": [10, 5.5, 8, 7], "rotation": 270, "texture": "#3", "tintindex": 1},
-				"up": {"uv": [8.5, 7, 10, 8.5], "rotation": 90, "texture": "#3", "tintindex": 1},
-				"down": {"uv": [8.5, 7, 10, 8.5], "rotation": 90, "texture": "#3", "tintindex": 1}
-			}
-		},
 		{
 			"from": [3.5, 6, 2],
 			"to": [12.5, 6, 11],
 			"rotation": {"angle": 45, "axis": "x", "origin": [8.25, 5.972, 5.47936]},
 			"faces": {
-				"up": {"uv": [0, 7, 2.25, 9.25], "rotation": 270, "texture": "#0", "tintindex": 0},
+				"up": {"uv": [0.25, 7, 2.5, 9.25], "rotation": 270, "texture": "#0", "tintindex": 0},
 				"down": {"uv": [0.25, 7, 2.5, 9.25], "rotation": 270, "texture": "#0", "tintindex": 0}
 			}
 		},
@@ -72,12 +58,16 @@
 			}
 		},
 		{
-			"from": [0, -3.5, 8],
-			"to": [16, 19.5, 8],
+			"from": [4.75, 4.75, 7.9],
+			"to": [11.25, 11.25, 7.9],
 			"rotation": {"angle": 45, "axis": "x", "origin": [8, 8, 8]},
 			"faces": {
-				"north": {"uv": [0, 10.25, 4, 16], "rotation": 180, "texture": "#3", "tintindex": 1},
-				"south": {"uv": [0, 10.25, 4, 16], "rotation": 180, "texture": "#3", "tintindex": 1}
+				"north": {"uv": [4.625, 5.75, 3, 7.375], "texture": "#0", "tintindex": 0},
+				"east": {"uv": [0, 0, 0, 5.75], "texture": "#0", "tintindex": 0},
+				"south": {"uv": [4, 0, 8, 5.75], "texture": "#0", "tintindex": 0},
+				"west": {"uv": [0, 0, 0, 5.75], "texture": "#0", "tintindex": 0},
+				"up": {"uv": [0, 4, 0, 0], "rotation": 270, "texture": "#0", "tintindex": 0},
+				"down": {"uv": [0, 0, 0, 4], "rotation": 90, "texture": "#0", "tintindex": 0}
 			}
 		},
 		{
@@ -98,7 +88,7 @@
 			"name": "group",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": [0, 1, 2, 3, 4, 5, 6, 7]
+			"children": [0, 1, 2, 3, 4, 5, 6]
 		}
 	]
 }

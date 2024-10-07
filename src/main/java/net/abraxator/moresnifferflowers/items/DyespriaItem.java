@@ -251,12 +251,12 @@ public class DyespriaItem extends BlockItem implements Colorable {
             dyeColorHexFormatMap.put(DyeColor.GRAY, 0xFF474f52);
             dyeColorHexFormatMap.put(DyeColor.BLACK, 0xFF1d1d21);
             dyeColorHexFormatMap.put(DyeColor.BROWN, 0xFF835432);
-            dyeColorHexFormatMap.put(DyeColor.RED, 0xFFb5432e);
+            dyeColorHexFormatMap.put(DyeColor.RED, 0xFFce5849);
             dyeColorHexFormatMap.put(DyeColor.ORANGE, 0xFFf89635);
             dyeColorHexFormatMap.put(DyeColor.YELLOW, 0xFFffee53);
             dyeColorHexFormatMap.put(DyeColor.LIME, 0xFF80c71f);
             dyeColorHexFormatMap.put(DyeColor.GREEN, 0xFF5e7c16);
-            dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF00AACC);
+            dyeColorHexFormatMap.put(DyeColor.CYAN, 0xFF36a98c);
             dyeColorHexFormatMap.put(DyeColor.LIGHT_BLUE, 0xFF70d9e4);
             dyeColorHexFormatMap.put(DyeColor.BLUE, 0xFF4753ac);
             dyeColorHexFormatMap.put(DyeColor.PURPLE, 0xFFb15fc2);

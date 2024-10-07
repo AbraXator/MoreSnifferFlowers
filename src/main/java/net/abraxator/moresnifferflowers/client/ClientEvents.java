@@ -47,6 +47,7 @@ import java.awt.*;
 import java.util.Optional;
 
 import static java.lang.Math.sin;
+import static org.apache.commons.lang3.math.NumberUtils.max;
 
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -121,7 +122,15 @@ public class ClientEvents {
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
         event.register((pState, pLevel, pPos, pTintIndex) -> {
             if(pTintIndex == 0) {
-                return BiomeColors.getAverageFoliageColor(pLevel, pPos);
+                var dyedValue = Dye.colorForDye(((CaulorflowerBlock) pState.getBlock()), pState.getValue(ModStateProperties.COLOR));
+
+                int startRed = (dyedValue >> 16) & 0xFF;
+                int startGreen = (dyedValue >> 8) & 0xFF;
+                int startBlue = dyedValue & 0xFF;
+                float[] colorHSB =  Color.RGBtoHSB(startRed, startGreen, startBlue, null);
+
+
+                return Color.HSBtoRGB(colorHSB[0], max(colorHSB[1] / 1.7F, 0), max(colorHSB[2], 0));
             }
             if(pTintIndex == 1) {
                 return Dye.colorForDye(((CaulorflowerBlock) pState.getBlock()), pState.getValue(ModStateProperties.COLOR));
