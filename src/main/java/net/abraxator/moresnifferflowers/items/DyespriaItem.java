@@ -118,8 +118,8 @@ public class DyespriaItem extends BlockItem implements Colorable {
             return;
         }
 
-        if(blockState.getBlock() instanceof Colorable) {
-            level.setBlockAndUpdate(blockPos, blockState.setValue(ModStateProperties.COLOR, dye.color()));
+        if(blockState.getBlock() instanceof Colorable colorable) {
+            colorable.colorBlock(level, blockPos, blockState, dye);
         } else {
             dyeNonColorableBlock(blockState, blockPos, dye.color(), level);
         }

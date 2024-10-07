@@ -1,4 +1,4 @@
-// 1.21	2024-10-02T15:43:39.0546825	Loot Tables
+// 1.21	2024-10-06T18:00:15.2626645	Loot Tables
 7c14e7e7e4991cc1b6d9e0837c1a20d1d45627b2 data/moresnifferflowers/loot_table/blocks/amber.json
 82709fac129d665d29913b9da4679bcd34ba753f data/moresnifferflowers/loot_table/blocks/ambush_bottom.json
 39b9b49d7469774aff8d068125bbfeafe0c50423 data/moresnifferflowers/loot_table/blocks/ambush_top.json
@@ -6,7 +6,7 @@
 baead50b069112a911e2dbab10b4573932d9295f data/moresnifferflowers/loot_table/blocks/bobling_sack.json
 160d0a0b01cdc567c6eb394ea2df6fd440f99e17 data/moresnifferflowers/loot_table/blocks/bondripia.json
 71d641c2be4ab828fa5b2e1f1ec9e344ab9eff96 data/moresnifferflowers/loot_table/blocks/bonmeelia.json
-0f82b528e63f8143de5be2aeec154447b9225328 data/moresnifferflowers/loot_table/blocks/caulorflower.json
+694ad9903eb07fbfb1aee1a7a984522a507af70c data/moresnifferflowers/loot_table/blocks/caulorflower.json
 f755992c9d2bc4542b3c4f07949ad2b511ed9be1 data/moresnifferflowers/loot_table/blocks/corrupted_button.json
 199863fa654061e4b298b46c663672f6d4d57b59 data/moresnifferflowers/loot_table/blocks/corrupted_door.json
 3496399b8de2b0eb7572716a9a2b62bb465eebaa data/moresnifferflowers/loot_table/blocks/corrupted_fence.json

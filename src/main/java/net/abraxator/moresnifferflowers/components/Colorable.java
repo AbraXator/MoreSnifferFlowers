@@ -9,15 +9,18 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import oshi.util.tuples.Pair;
 
 import java.util.Map;
+
+import static net.abraxator.moresnifferflowers.init.ModStateProperties.COLOR;
+import static net.abraxator.moresnifferflowers.init.ModStateProperties.EMPTY;
 
 public interface Colorable {
     Map<DyeColor, Integer> colorValues();
@@ -25,6 +28,28 @@ public interface Colorable {
     default TagKey<Block> matchTag() {
         return null;
     }
+    
+    default Pair<EnumProperty<DyeColor>, BooleanProperty> getColorProperties() {
+        return new Pair<>(COLOR, EMPTY);
+    }
+    
+    default Dye getDyeFromBlock(BlockState blockState) {
+        DyeColor dyeColor = DyeColor.WHITE;
+        boolean empty = true;
+        
+        if (blockState.hasProperty(getColorProperties().getA())) {
+            dyeColor = blockState.getValue(getColorProperties().getA());
+        }
+        if (blockState.hasProperty(getColorProperties().getB())) {
+            empty = blockState.getValue(getColorProperties().getB());
+        }
+        
+        return new Dye(dyeColor, !empty ? 1 : 0);
+    }
+    
+    default void colorBlock(Level level, BlockPos blockPos, BlockState blockState, Dye dye) {
+        level.setBlockAndUpdate(blockPos, blockState.setValue(getColorProperties().getA(), dye.color()));
+    } 
     
     default ItemStack add(@Nullable ItemStack dyespria, Dye dyeInside, ItemStack dyeToInsert) {
         if(dyeToInsert.getItem() instanceof DyeItem) {

@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.worldgen.feature;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import com.mojang.serialization.Codec;
+import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -32,7 +33,8 @@ public class VivicusTreeFeature extends TreeFeature {
         final WorldGenLevel worldgenlevel = pContext.level();
         RandomSource randomsource = pContext.random();
         BlockPos blockpos = pContext.origin();
-        DyeColor saplingColor = pContext.level().getBlockState(blockpos).getValue(ModStateProperties.COLOR);
+        BlockState blockState = pContext.level().getBlockState(blockpos);
+        DyeColor saplingColor = blockState.hasProperty(ModStateProperties.COLOR) ? blockState.getValue(ModStateProperties.COLOR) : DyeColor.WHITE;
         TreeConfiguration treeconfiguration = pContext.config();
         Set<BlockPos> set = Sets.newHashSet();
         Set<BlockPos> set1 = Sets.newHashSet();
