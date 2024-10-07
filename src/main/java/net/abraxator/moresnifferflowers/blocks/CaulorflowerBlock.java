@@ -117,7 +117,8 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
                 pLevel.setBlockAndUpdate(highestPos, this.defaultBlockState()
                         .setValue(FLIPPED, highestPos.getY() % 2 == 0)
                         .setValue(FACING, stateBelow.getValue(FACING))
-                        .setValue(COLOR, stateBelow.getValue(COLOR)));
+                        .setValue(getColorProperties().getA(), stateBelow.getValue(getColorProperties().getA()))
+                        .setValue(getColorProperties().getB(), stateBelow.getValue(getColorProperties().getB())));
             } else {
                 makeGrowOnBonemeal(pLevel, posBelow, stateBelow);   
             }
@@ -126,7 +127,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        return !harvestable(pState) && pStack.is(Items.BONE_MEAL)
+        return harvestable(pState) && pStack.is(Items.BONE_MEAL)
                 ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION
                 : super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
