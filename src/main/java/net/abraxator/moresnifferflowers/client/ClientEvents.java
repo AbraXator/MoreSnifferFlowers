@@ -146,7 +146,7 @@ public class ClientEvents {
             if(pTintIndex == 0) {
                 var dyedValue = Dye.colorForDye(colorable, pState.getValue(colorable.getColorProperty()));
 
-                if(pState.is(ModBlocks.VIVICUS_LEAVES) || pState.is(ModBlocks.VIVICUS_LEAVES_SPROUT)) {
+                if(pState.is(ModBlocks.VIVICUS_LEAVES) || pState.is(ModBlocks.VIVICUS_LEAVES_SPROUT) || pState.is(ModBlocks.VIVICUS_SAPLING)) {
                     int startRed = (dyedValue >> 16) & 0xFF;
                     int startGreen = (dyedValue >> 8) & 0xFF;
                     int startBlue = dyedValue & 0xFF;
