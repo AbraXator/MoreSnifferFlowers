@@ -33,8 +33,6 @@ public class ModTrimMaterials {
         register(context, WHEAT, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_WHEAT.get()), Style.EMPTY.withColor(TextColor.parseColor("#cdb159").getOrThrow()), 0.6F, Map.of());
         register(context, BEETROOT, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_BEETROOT.get()), Style.EMPTY.withColor(TextColor.parseColor("#a4272c").getOrThrow()), 0.4F, Map.of());
         register(context, CARROT, BuiltInRegistries.ITEM.wrapAsHolder(ModItems.CROPRESSED_CARROT.get()), Style.EMPTY.withColor(TextColor.parseColor("#e67022").getOrThrow()), 0.5F, Map.of());
-
-
     }
 
     private static void register(BootstrapContext<TrimMaterial> p_268244_, ResourceKey<TrimMaterial> p_268139_, Holder<Item> p_268311_, Style p_268232_, float p_268197_, Map<ArmorMaterials, String> p_268352_) {

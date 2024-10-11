@@ -1,6 +1,5 @@
 package net.abraxator.moresnifferflowers.components;
 
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -32,6 +31,10 @@ public interface Colorable {
     default Pair<EnumProperty<DyeColor>, BooleanProperty> getColorProperties() {
         return new Pair<>(COLOR, EMPTY);
     }
+        
+    default boolean canBeColored(BlockState blockState, Dye dye) {
+        return !getDyeFromBlock(blockState).color().equals(dye.color());
+    }
     
     default Dye getDyeFromBlock(BlockState blockState) {
         DyeColor dyeColor = DyeColor.WHITE;
@@ -50,6 +53,10 @@ public interface Colorable {
     default void colorBlock(Level level, BlockPos blockPos, BlockState blockState, Dye dye) {
         level.setBlockAndUpdate(blockPos, blockState.setValue(getColorProperties().getA(), dye.color()));
     } 
+    
+    default boolean isColorEmpty(BlockState blockState) {
+        return blockState.getValue(getColorProperties().getB());
+    }
     
     default ItemStack add(@Nullable ItemStack dyespria, Dye dyeInside, ItemStack dyeToInsert) {
         if(dyeToInsert.getItem() instanceof DyeItem) {
@@ -82,14 +89,14 @@ public interface Colorable {
     
     default void onAddDye(@Nullable ItemStack destinationStack, ItemStack dye, int amount) {}
 
-    default void particles(RandomSource randomSource, ServerLevel level, Dye dye, BlockPos blockPos) {
+    default void particles(RandomSource randomSource, Level level, Dye dye, BlockPos blockPos) {
         for(int i = 0; i <= randomSource.nextIntBetweenInclusive(5, 10); i++) {
-            level.sendParticles(
+            level.addParticle(
                     new DustParticleOptions(dye.isEmpty() ? Vec3.fromRGB24(14013909).toVector3f() : Vec3.fromRGB24(Dye.colorForDye(this, dye.color())).toVector3f(), 1.0F),
                     blockPos.getX() + randomSource.nextDouble(),
                     blockPos.getY() + randomSource.nextDouble(),
                     blockPos.getZ() + randomSource.nextDouble(),
-                    1, 0, 0, 0, 0.3D);
+                    0, 0, 0);
         }
     }
     

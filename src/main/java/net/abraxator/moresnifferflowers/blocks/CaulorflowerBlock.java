@@ -3,7 +3,6 @@ package net.abraxator.moresnifferflowers.blocks;
 import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,7 +32,6 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-import oshi.util.tuples.Pair;
 
 import java.util.Map;
 import java.util.Optional;
@@ -110,19 +108,23 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     }
 
     protected void grow(ServerLevel pLevel, BlockPos originalPos, boolean bonemeal) {
-        highestPos(pLevel, originalPos, bonemeal).ifPresent(highestPos -> {
-            var posBelow = highestPos.below();
-            var stateBelow = pLevel.getBlockState(posBelow);
-            if(isMaxAge(stateBelow)) {
-                pLevel.setBlockAndUpdate(highestPos, this.defaultBlockState()
-                        .setValue(FLIPPED, highestPos.getY() % 2 == 0)
-                        .setValue(FACING, stateBelow.getValue(FACING))
-                        .setValue(getColorProperties().getA(), stateBelow.getValue(getColorProperties().getA()))
-                        .setValue(getColorProperties().getB(), stateBelow.getValue(getColorProperties().getB())));
-            } else {
-                makeGrowOnBonemeal(pLevel, posBelow, stateBelow);   
-            }
-        });
+        if(!isMaxAge(pLevel.getBlockState(originalPos))) {
+            makeGrowOnBonemeal(pLevel, originalPos, pLevel.getBlockState(originalPos));
+        } else {
+            highestPos(pLevel, originalPos, bonemeal).ifPresent(highestPos -> {
+                var posBelow = highestPos.below();
+                var stateBelow = pLevel.getBlockState(posBelow);
+                if (isMaxAge(stateBelow)) {
+                    pLevel.setBlockAndUpdate(highestPos, this.defaultBlockState()
+                            .setValue(FLIPPED, highestPos.getY() % 2 == 0)
+                            .setValue(FACING, stateBelow.getValue(FACING))
+                            .setValue(getColorProperties().getA(), stateBelow.getValue(getColorProperties().getA()))
+                            .setValue(getColorProperties().getB(), stateBelow.getValue(getColorProperties().getB())));
+                } else {
+                    makeGrowOnBonemeal(pLevel, posBelow, stateBelow);
+                }
+            });
+        }
     }
 
     @Override
@@ -150,17 +152,6 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     
     private boolean harvestable(BlockState blockState) {
         return isMaxAge(blockState) && !getDyeFromBlock(blockState).isEmpty();
-    }
-    
-    @Override
-    public void makeGrowOnBonemeal(Level level, BlockPos blockPos, BlockState blockState) {
-        if(level.random.nextDouble() > 0.3D) {
-            ModCropBlock.super.makeGrowOnBonemeal(level, blockPos, blockState);
-            return;
-        } else {
-            ModCropBlock.super.makeGrowOnBonemeal(level, blockPos, blockState);
-            ModCropBlock.super.makeGrowOnBonemeal(level, blockPos, blockState);
-        }
     }
 
     private Optional<BlockPos> highestPos(BlockGetter level, BlockPos originalPos, boolean bonemeal) {
@@ -198,6 +189,11 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     @Override
     public void colorBlock(Level level, BlockPos blockPos, BlockState blockState, Dye dye) {
         Colorable.super.colorBlock(level, blockPos, blockState.setValue(getColorProperties().getB(), false), dye);
+    }
+
+    @Override
+    public boolean canBeColored(BlockState blockState, Dye dye) {
+        return Colorable.super.canBeColored(blockState, dye) || Colorable.super.isColorEmpty(blockState);
     }
 
     @Override

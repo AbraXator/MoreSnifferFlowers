@@ -25,6 +25,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
@@ -44,10 +45,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.BreakIterator;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
@@ -62,6 +60,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
         BlockState blockState = level.getBlockState(blockPos);
         ItemStack stack = pContext.getItemInHand();
         Dye dye = Dye.getDyeFromStack(stack);
+        List<Boolean> success = new ArrayList<>();
 
         if (pContext.getHand() != InteractionHand.MAIN_HAND || dye.isEmpty()) {
             return InteractionResult.PASS;
@@ -71,15 +70,15 @@ public class DyespriaItem extends BlockItem implements Colorable {
             DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
             DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, getMatchTag(blockState), level, pContext.getClickedFace());
             Set<BlockPos> set = dyespriaMode.getSelector().apply(dyespriaSelector);
-            set.stream().sorted(new EntityDistanceComparator(blockPos)).forEach(blockPos1 -> {
-                var state = level.getBlockState(blockPos1);
-                
-                if(!Dye.getDyeFromStack(stack).isEmpty()) {
-                    colorOne(stack, level, blockPos1, state);
-                }
-            });
+            boolean anySuccess = set.stream()
+                    .sorted(new EntityDistanceComparator(blockPos))
+                    .anyMatch(blockPos1 -> {
+                        BlockState state = level.getBlockState(blockPos1);
+                        return !Dye.getDyeFromStack(stack).isEmpty() && colorOne(stack, level, blockPos1, state);
+                    });
 
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            // Return based on whether any block was successfully colored
+            return anySuccess ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
         }
 
         return handlePlacement(blockPos, level, player, pContext.getHand(), stack);
@@ -110,24 +109,35 @@ public class DyespriaItem extends BlockItem implements Colorable {
         return state == null ? null : state.setValue(ModStateProperties.AGE_3, 3);
     }
 
-    public void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
+    public boolean colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState) {
         Dye dye = Dye.getDyeFromStack(stack);
-        RandomSource randomSource = level.random;
         
         if (!canDye(blockState, dye)) {
-            return;
+            return false;
         }
 
         if(blockState.getBlock() instanceof Colorable colorable) {
-            colorable.colorBlock(level, blockPos, blockState, dye);
+            if(colorable.canBeColored(blockState, dye)) {
+                colorable.colorBlock(level, blockPos, blockState, dye);
+                finishColoring(dye, level, stack, blockPos);
+                
+                return true;
+            }
         } else {
             dyeNonColorableBlock(blockState, blockPos, dye.color(), level);
+            finishColoring(dye, level, stack, blockPos);
+
+            return true;
         }
         
-        ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - randomSource.nextIntBetweenInclusive(0, 1)));
+        return false;
+    }
+    
+    private void finishColoring(Dye dye, Level level, ItemStack stack, BlockPos blockPos) {
+        ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - level.getRandom().nextIntBetweenInclusive(0, 1)));
         Dye.setDyeToDyeHolderStack(stack, itemStack, itemStack.getCount());
-        if (level instanceof ServerLevel serverLevel) {
-            particles(randomSource, serverLevel, dye, blockPos);
+        if (level.isClientSide) {
+            particles(level.getRandom(), level, dye, blockPos);
         }
     }
     

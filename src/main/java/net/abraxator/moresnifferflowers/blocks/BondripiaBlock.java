@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.SporeBlossomBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.apache.logging.log4j.util.PropertySource;
 import org.checkerframework.checker.i18nformatter.qual.I18nFormat;
 import org.jetbrains.annotations.Nullable;
@@ -30,15 +31,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock {
+public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock, ModCropBlock {
     public BondripiaBlock(Properties p_49795_) {
         super(p_49795_);
-        this.defaultBlockState().setValue(ModStateProperties.CENTER, false);
+        this.defaultBlockState()
+                .setValue(ModStateProperties.CENTER, false)
+                .setValue(getAgeProperty(), 0);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(ModStateProperties.CENTER);
+        pBuilder.add(ModStateProperties.CENTER, getAgeProperty());
     }
 
     @Override
@@ -54,10 +57,14 @@ public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock 
         });
     }
 
+    @Override
+    protected boolean isRandomlyTicking(BlockState pState) {
+        return true;
+    }
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if(state.getValue(ModStateProperties.CENTER) && random.nextDouble() <= 0.3D) {
+        if(state.getValue(ModStateProperties.CENTER) && random.nextDouble() <= 0.3D && isMaxAge(state)) {
             List<BlockPos> list = new java.util.ArrayList<>(BlockPos.betweenClosedStream(pos.north().east(), pos.south().west()).map(BlockPos::immutable).toList());
             Collections.shuffle(list);
             list = list.subList(0, random.nextInt(6));
@@ -71,7 +78,9 @@ public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock 
  
     @Override
     protected void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (pRandom.nextDouble() <= 0.33D && pLevel.getBlockEntity(pPos) instanceof BondripiaBlockEntity entity) {
+        if(!isMaxAge(pState)) {
+            grow(pLevel, pPos);
+        } else if (pRandom.nextDouble() <= 0.33D && pLevel.getBlockEntity(pPos) instanceof BondripiaBlockEntity entity) {
             for (BlockPos blockPos : BlockPos.betweenClosed(entity.center.north().east(), entity.center.south().west())) {
                 BlockPos currentPos = blockPos;
 
@@ -98,6 +107,15 @@ public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock 
                     currentPos = currentPos.below();
                 }
             }
+        }
+    }
+    
+    private void grow(Level level, BlockPos blockPos) {
+        if(level.getBlockEntity(blockPos) instanceof BondripiaBlockEntity entity) {
+            makeGrowOnBonemeal(level, entity.center, level.getBlockState(entity.center));
+            Direction.Plane.HORIZONTAL.forEach(direction -> {
+                makeGrowOnBonemeal(level, entity.center.relative(direction), level.getBlockState(entity.center.relative(direction)));
+            });
         }
     }
     
@@ -129,5 +147,25 @@ public class BondripiaBlock extends SporeBlossomBlock implements ModEntityBlock 
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new BondripiaBlockEntity(pPos, pState);
+    }
+
+    @Override
+    public IntegerProperty getAgeProperty() {
+        return ModStateProperties.AGE_2;
+    }
+    
+    @Override
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
+        return !isMaxAge(pState);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+        grow(pLevel, pPos);
     }
 }

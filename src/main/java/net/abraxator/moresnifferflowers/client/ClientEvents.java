@@ -17,6 +17,7 @@ import net.abraxator.moresnifferflowers.client.renderer.entity.BoblingRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.CorruptedProjectileRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.DragonflyRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.ModBoatRenderer;
+import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
@@ -33,6 +34,7 @@ import net.minecraft.server.packs.*;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -121,19 +123,21 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
         event.register((pState, pLevel, pPos, pTintIndex) -> {
-            if(pTintIndex == 0) {
-                var dyedValue = Dye.colorForDye(((CaulorflowerBlock) pState.getBlock()), pState.getValue(ModStateProperties.COLOR));
+            Colorable colorable = ((Colorable) pState.getBlock());
+            Dye dye = colorable.getDyeFromBlock(pState);
+            int color = Dye.colorForDye(colorable, dye.color());
+            if(!dye.isEmpty()) {
+                if (pTintIndex == 0) {
+                    int startRed = (color >> 16) & 0xFF;
+                    int startGreen = (color >> 8) & 0xFF;
+                    int startBlue = color & 0xFF;
+                    float[] colorHSB = Color.RGBtoHSB(startRed, startGreen, startBlue, null);
 
-                int startRed = (dyedValue >> 16) & 0xFF;
-                int startGreen = (dyedValue >> 8) & 0xFF;
-                int startBlue = dyedValue & 0xFF;
-                float[] colorHSB =  Color.RGBtoHSB(startRed, startGreen, startBlue, null);
-
-
-                return Color.HSBtoRGB(colorHSB[0], max(colorHSB[1] / 1.7F, 0), max(colorHSB[2], 0));
-            }
-            if(pTintIndex == 1) {
-                return Dye.colorForDye(((CaulorflowerBlock) pState.getBlock()), pState.getValue(ModStateProperties.COLOR));
+                    return Color.HSBtoRGB(colorHSB[0], max(colorHSB[1] / 1.7F, 0), max(colorHSB[2], 0));
+                }
+                if (pTintIndex == 1) {
+                    return color;
+                }
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());

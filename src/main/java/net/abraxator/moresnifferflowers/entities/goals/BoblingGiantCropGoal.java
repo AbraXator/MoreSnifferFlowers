@@ -69,7 +69,7 @@ public class BoblingGiantCropGoal extends Goal {
 
     private Optional<BlockPos> findFarm() {
         var level = this.bobling.level();
-        var entityAABB = new AABB(BlockPos.containing(bobling.position())).inflate(searchArea);
+        var entityAABB = new AABB(BlockPos.containing(bobling.position())).inflate(searchArea, 3, searchArea);
         List<BlockPos> nearbyFarmlandsPos = BlockPos.betweenClosedStream(entityAABB).filter(blockPos -> {
             BlockState blockState = level.getBlockState(blockPos);
             return blockState.is(Blocks.FARMLAND);

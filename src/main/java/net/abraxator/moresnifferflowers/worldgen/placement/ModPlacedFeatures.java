@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.worldgen.placement;
 
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.worldgen.configurations.ModConfiguredFeatures;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -10,9 +11,9 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import java.util.List;
 
 public class ModPlacedFeatures {
-    public static final ResourceKey<PlacedFeature> CORRUPTED_TREE = PlacementUtils.createKey("corrupted_tree");
-    public static final ResourceKey<PlacedFeature> CURED_VIVICUS_TREE = PlacementUtils.createKey("cured_vivicus_tree");
-    public static final ResourceKey<PlacedFeature> CORRUPTED_VIVICUS_TREE = PlacementUtils.createKey("corrupted_vivicus_tree");
+    public static final ResourceKey<PlacedFeature> CORRUPTED_TREE = ResourceKey.create(Registries.PLACED_FEATURE, MoreSnifferFlowers.loc("corrupted_tree"));
+    public static final ResourceKey<PlacedFeature> CURED_VIVICUS_TREE = ResourceKey.create(Registries.PLACED_FEATURE, MoreSnifferFlowers.loc("cured_vivicus_tree"));
+    public static final ResourceKey<PlacedFeature> CORRUPTED_VIVICUS_TREE = ResourceKey.create(Registries.PLACED_FEATURE, MoreSnifferFlowers.loc("corrupted_vivicus_tree"));
     
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         var holderGetter = context.lookup(Registries.CONFIGURED_FEATURE);
