@@ -21,7 +21,7 @@ public class AmbushBlockEntityRenderer implements BlockEntityRenderer<AmbushBloc
     @Override
     public void render(AmbushBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         if(pBlockEntity.getBlockState().is(ModBlocks.AMBUSH_TOP.get())) {
-            BlockState state = ModBlocks.AMBER.get().defaultBlockState();
+            BlockState state = ModBlocks.AMBER_BLOCK.get().defaultBlockState();
             pPoseStack.pushPose();
             float progress = Math.min(pBlockEntity.growProgress, 1);
             float translate = 0.5f -(progress  * 0.5f);

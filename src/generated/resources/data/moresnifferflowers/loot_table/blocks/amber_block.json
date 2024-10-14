@@ -23,7 +23,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "moresnifferflowers:amber"
+          "name": "moresnifferflowers:amber_block"
         }
       ],
       "rolls": 1.0
@@ -195,5 +195,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "moresnifferflowers:blocks/amber"
+  "random_sequence": "moresnifferflowers:blocks/amber_block"
 }

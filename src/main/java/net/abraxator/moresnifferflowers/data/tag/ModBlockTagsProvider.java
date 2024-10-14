@@ -10,8 +10,6 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
@@ -31,14 +29,15 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
         this.tag(BlockTags.MINEABLE_WITH_HOE).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH_BOTTOM.get(), ModBlocks.AMBUSH_TOP.get(), ModBlocks.BONMEELIA.get(), ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get(), ModBlocks.CAULORFLOWER.get());
         this.tag(BlockTags.MINEABLE_WITH_AXE).add( ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get(), ModBlocks.CAULORFLOWER.get());
         
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AMBER.get(), ModBlocks.CROPRESSOR_OUT.get(), ModBlocks.CROPRESSOR_CENTER.get(), ModBlocks.REBREWING_STAND_BOTTOM.get(), ModBlocks.REBREWING_STAND_TOP.get());
-        this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.AMBER.get(), ModBlocks.CROPRESSOR_OUT.get(), ModBlocks.CROPRESSOR_CENTER.get(), ModBlocks.REBREWING_STAND_BOTTOM.get(), ModBlocks.REBREWING_STAND_TOP.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.AMBER_BLOCK.get(), ModBlocks.CROPRESSOR_OUT.get(), ModBlocks.CROPRESSOR_CENTER.get(), ModBlocks.REBREWING_STAND_BOTTOM.get(), ModBlocks.REBREWING_STAND_TOP.get());
+        this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.AMBER_BLOCK.get(), ModBlocks.CROPRESSOR_OUT.get(), ModBlocks.CROPRESSOR_CENTER.get(), ModBlocks.REBREWING_STAND_BOTTOM.get(), ModBlocks.REBREWING_STAND_TOP.get());
 
         this.tag(ModTags.ModBlockTags.BONMEELABLE).add(Blocks.WHEAT, Blocks.CARROTS, Blocks.POTATOES, Blocks.BEETROOTS, Blocks.NETHER_WART);
         this.tag(ModTags.ModBlockTags.GIANT_CROPS).add(ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get());
         this.tag(ModTags.ModBlockTags.GIANT_CROPS).add(ModBlocks.VIVICUS_LOG.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
         
         this.tag(BlockTags.LOGS).add(ModBlocks.CORRUPTED_LOG.get(), ModBlocks.VIVICUS_LOG.get(), ModBlocks.STRIPPED_CORRUPTED_LOG.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get());
+        this.tag(BlockTags.LEAVES).add(ModBlocks.CORRUPTED_LEAVES.get(), ModBlocks.VIVICUS_LEAVES.get());
 
         this.tag(BlockTags.WOODEN_BUTTONS).add(ModBlocks.CORRUPTED_BUTTON.get(), ModBlocks.VIVICUS_BUTTON.get());
         this.tag(BlockTags.WOODEN_PRESSURE_PLATES).add(ModBlocks.CORRUPTED_PRESSURE_PLATE.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get());
@@ -50,6 +49,7 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
         this.tag(BlockTags.WOODEN_TRAPDOORS).add(ModBlocks.CORRUPTED_TRAPDOOR.get(), ModBlocks.VIVICUS_TRAPDOOR.get());
         this.tag(BlockTags.PLANKS).add(ModBlocks.CORRUPTED_PLANKS.get(), ModBlocks.VIVICUS_PLANKS.get());
         this.tag(BlockTags.SAPLINGS).add(ModBlocks.CORRUPTED_SAPLING.get(), ModBlocks.VIVICUS_SAPLING.get());
+        this.tag(BlockTags.WALLS).add(ModBlocks.AMBER_MOSAIC_WALL.get());
 
         this.tag(ModTags.ModBlockTags.VIVICUS_BLOCKS).add(
             ModBlocks.STRIPPED_VIVICUS_WOOD.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get(), ModBlocks.VIVICUS_BUTTON.get(), 
@@ -57,7 +57,7 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
             ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_LOG.get(), ModBlocks.VIVICUS_PLANKS.get(),
             ModBlocks.VIVICUS_PRESSURE_PLATE.get(), ModBlocks.VIVICUS_SAPLING.get(), ModBlocks.VIVICUS_STAIRS.get(),
             ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_WOOD.get(),
-            ModBlocks.SPROUTING_VIVICUS_LEAVES.get());
+            ModBlocks.VIVICUS_LEAVES_SPROUT.get());
         this.tag(ModTags.ModBlockTags.CORRUPTED_BLOCKS).add(
                 ModBlocks.STRIPPED_CORRUPTED_WOOD.get(), ModBlocks.STRIPPED_CORRUPTED_LOG.get(), ModBlocks.CORRUPTED_BUTTON.get(),
                 ModBlocks.CORRUPTED_DOOR.get(), ModBlocks.CORRUPTED_FENCE.get(), ModBlocks.CORRUPTED_FENCE_GATE.get(),

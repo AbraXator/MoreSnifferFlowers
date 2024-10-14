@@ -20,12 +20,19 @@ public class ModCreativeTabs {
                 output.accept(ModItems.DAWNBERRY.get());
                 
                 output.accept(ModItems.AMBUSH_SEEDS.get());
-                output.accept(ModBlocks.AMBER.get());
+                output.accept(ModBlocks.AMBER_BLOCK.get());
+                output.accept(ModBlocks.AMBER_MOSAIC.get());
+                output.accept(ModBlocks.AMBER_MOSAIC_STAIRS.get());
+                output.accept(ModBlocks.AMBER_MOSAIC_SLAB.get());
+                output.accept(ModBlocks.AMBER_MOSAIC_WALL.get());
+                output.accept(ModBlocks.CHISELED_AMBER.get());
+                output.accept(ModBlocks.CRACKED_AMBER.get());
+
                 output.accept(ModItems.AMBER_SHARD.get());
                 output.accept(ModItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get());
-                output.accept(ModItems.AMBUSH_BANNER_PATTERN.get());
                 output.accept(ModItems.DRAGONFLY.get());
-                
+                output.accept(ModItems.AMBUSH_BANNER_PATTERN.get());
+
                 output.accept(ModItems.DYESPRIA_SEEDS.get());
                 output.accept(ModItems.DYESPRIA.get());
                 

@@ -1,6 +1,5 @@
 package net.abraxator.moresnifferflowers.data.loot;
 
-import com.google.common.base.CaseFormat;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.blocks.DawnberryVineBlock;
@@ -20,13 +19,11 @@ import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.fml.common.Mod;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,10 +45,10 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.DAWNBERRY_VINE.get())
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(DawnberryVineBlock.AGE, 4)))));
-        add(ModBlocks.AMBER.get(), LootTable.lootTable()
+        add(ModBlocks.AMBER_BLOCK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .when(hasSilkTouch())
-                        .add(LootItem.lootTableItem(ModBlocks.AMBER.get())))
+                        .add(LootItem.lootTableItem(ModBlocks.AMBER_BLOCK.get())))
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                         .when(doesNotHaveSilkTouch())
                         //COMMON
@@ -88,6 +85,13 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(ModItems.BONMEELIA_SEEDS.get()).setWeight(12))));
         
         dropSelf(ModBlocks.BOBLING_HEAD.get());
+        dropSelf(ModBlocks.CRACKED_AMBER.get());
+        dropSelf(ModBlocks.CHISELED_AMBER.get());
+        dropSelf(ModBlocks.AMBER_MOSAIC.get());
+        dropSelf(ModBlocks.AMBER_MOSAIC_SLAB.get());
+        dropSelf(ModBlocks.AMBER_MOSAIC_STAIRS.get());
+        dropSelf(ModBlocks.AMBER_MOSAIC_WALL.get());
+
         add(ModBlocks.AMBUSH_TOP.get(), noDrop());
         dropSelf(ModBlocks.AMBUSH_BOTTOM.get());
         dropSelf(ModBlocks.CAULORFLOWER.get());

@@ -53,7 +53,7 @@ public class ModRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_amber_shard", has(ModItems.AMBER_SHARD.get()))
                 .save(pRecipeOutput);
 
-        twoByTwoPacker(pRecipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMBER.get(), ModItems.AMBER_SHARD.get());
+        twoByTwoPacker(pRecipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMBER_BLOCK.get(), ModItems.AMBER_SHARD.get());
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CROPRESSOR.get())
                 .requires(ModItems.TUBE_PIECE.get())

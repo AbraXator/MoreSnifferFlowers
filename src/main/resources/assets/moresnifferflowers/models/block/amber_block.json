@@ -3,8 +3,8 @@
 	"parent": "minecraft:block/cube_all",
   	"render_type": "translucent",
 	"textures": {
-		"0": "moresnifferflowers:block/amber",
-		"particle": "moresnifferflowers:block/amber"
+		"0": "moresnifferflowers:block/amber_block",
+		"particle": "moresnifferflowers:block/amber_block"
 	},
 	"elements": [
 		{
