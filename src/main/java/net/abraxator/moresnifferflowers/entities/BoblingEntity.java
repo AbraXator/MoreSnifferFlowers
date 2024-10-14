@@ -20,6 +20,8 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -152,6 +154,12 @@ public class BoblingEntity extends PathfinderMob {
         if (!this.isRunning()) {
             this.setRunning(true);
         }
+    }
+
+    @Override
+    protected int calculateFallDamage(float pFallDistance, float pDamageMultiplier) {
+        if (this.tickCount <= 60) return 0;
+        return super.calculateFallDamage(pFallDistance, pDamageMultiplier);
     }
 
     @Override

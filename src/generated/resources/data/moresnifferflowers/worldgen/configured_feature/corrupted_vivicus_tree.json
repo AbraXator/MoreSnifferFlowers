@@ -1,36 +1,13 @@
 {
   "type": "moresnifferflowers:vivicus_tree",
   "config": {
-    "decorators": [],
-    "dirt_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "minecraft:dirt"
-      }
-    },
-    "foliage_placer": {
-      "type": "minecraft:acacia_foliage_placer",
-      "offset": 0,
-      "radius": 2
-    },
-    "foliage_provider": {
-      "type": "minecraft:weighted_state_provider",
-      "entries": [
-        {
-          "data": {
-            "Name": "moresnifferflowers:vivicus_leaves",
-            "Properties": {
-              "color": "white",
-              "distance": "7",
-              "persistent": "false",
-              "waterlogged": "false"
-            }
-          },
-          "weight": 10
-        },
-        {
-          "data": {
-            "Name": "moresnifferflowers:sprouting_vivicus_leaves",
+    "decorators": [
+      {
+        "type": "minecraft:attached_to_leaves",
+        "block_provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "moresnifferflowers:vivicus_leaves_sprout",
             "Properties": {
               "age": "0",
               "color": "white",
@@ -39,10 +16,40 @@
               "vivicus_type": "corrupted",
               "waterlogged": "false"
             }
-          },
-          "weight": 3
+          }
+        },
+        "directions": [
+          "down"
+        ],
+        "exclusion_radius_xz": 1,
+        "exclusion_radius_y": 0,
+        "probability": 0.14,
+        "required_empty_blocks": 2
+      }
+    ],
+    "dirt_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:dirt"
+      }
+    },
+    "foliage_placer": {
+      "type": "minecraft:fancy_foliage_placer",
+      "height": 4,
+      "offset": 4,
+      "radius": 3
+    },
+    "foliage_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "moresnifferflowers:vivicus_leaves",
+        "Properties": {
+          "color": "white",
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
         }
-      ]
+      }
     },
     "force_dirt": false,
     "ignore_vines": true,
@@ -54,40 +61,9 @@
     },
     "trunk_placer": {
       "type": "moresnifferflowers:vivicus_trunk_placer",
-      "base_height": 7,
-      "branch_count": {
-        "type": "minecraft:weighted_list",
-        "distribution": [
-          {
-            "data": 1,
-            "weight": 1
-          },
-          {
-            "data": 2,
-            "weight": 1
-          },
-          {
-            "data": 3,
-            "weight": 1
-          }
-        ]
-      },
-      "branch_end_offset_from_top": {
-        "type": "minecraft:uniform",
-        "max_inclusive": 0,
-        "min_inclusive": -1
-      },
-      "branch_horizontal_length": {
-        "type": "minecraft:uniform",
-        "max_inclusive": 4,
-        "min_inclusive": 2
-      },
-      "branch_start_offset_from_top": {
-        "max_inclusive": -3,
-        "min_inclusive": -4
-      },
+      "base_height": 5,
       "height_rand_a": 1,
-      "height_rand_b": 0
+      "height_rand_b": 1
     },
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",

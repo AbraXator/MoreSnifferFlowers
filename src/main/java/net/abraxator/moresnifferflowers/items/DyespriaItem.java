@@ -6,7 +6,9 @@ import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.components.DyespriaMode;
 import net.abraxator.moresnifferflowers.components.EntityDistanceComparator;
-import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModDataComponents;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.networking.DyespriaDisplayModeChangePacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -16,36 +18,36 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.BreakIterator;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties pProperties) {
@@ -60,25 +62,24 @@ public class DyespriaItem extends BlockItem implements Colorable {
         BlockState blockState = level.getBlockState(blockPos);
         ItemStack stack = pContext.getItemInHand();
         Dye dye = Dye.getDyeFromStack(stack);
-        List<Boolean> success = new ArrayList<>();
 
         if (pContext.getHand() != InteractionHand.MAIN_HAND || dye.isEmpty()) {
             return InteractionResult.PASS;
         }
-        
+
         if (checkDyedBlock(blockState) || blockState.getBlock() instanceof Colorable) {
             DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
             DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, getMatchTag(blockState), level, pContext.getClickedFace());
             Set<BlockPos> set = dyespriaMode.getSelector().apply(dyespriaSelector);
-            boolean anySuccess = set.stream()
-                    .sorted(new EntityDistanceComparator(blockPos))
-                    .anyMatch(blockPos1 -> {
-                        BlockState state = level.getBlockState(blockPos1);
-                        return !Dye.getDyeFromStack(stack).isEmpty() && colorOne(stack, level, blockPos1, state);
-                    });
+            set.stream().sorted(new EntityDistanceComparator(blockPos)).forEach(blockPos1 -> {
+                var state = level.getBlockState(blockPos1);
 
-            // Return based on whether any block was successfully colored
-            return anySuccess ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
+                if(!Dye.getDyeFromStack(stack).isEmpty()) {
+                    colorOne(stack, level, blockPos1, state);
+                }
+            });
+
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
         return handlePlacement(blockPos, level, player, pContext.getHand(), stack);

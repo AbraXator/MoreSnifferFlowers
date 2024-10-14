@@ -56,8 +56,8 @@ public class VivicusChestBoatEntity extends ModChestBoatEntity implements Colora
             var stack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - 1));
             Dye.setDyeToDyeHolderStack(dyespria, stack, stack.getCount());
             
-            if(!this.level().isClientSide) {
-                particles(this.random, ((ServerLevel) this.level()), dye, BlockPos.containing(this.position()));
+            if(this.level().isClientSide) {
+                particles(this.random, this.level(), dye, BlockPos.containing(this.position()));
             }
             
             return InteractionResult.sidedSuccess(this.level().isClientSide());

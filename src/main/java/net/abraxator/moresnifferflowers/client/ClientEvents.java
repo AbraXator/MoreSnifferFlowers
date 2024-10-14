@@ -48,9 +48,6 @@ import net.neoforged.neoforgespi.locating.IModFile;
 import java.awt.*;
 import java.util.Optional;
 
-import static java.lang.Math.sin;
-import static org.apache.commons.lang3.math.NumberUtils.max;
-
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
     @SubscribeEvent
@@ -133,7 +130,7 @@ public class ClientEvents {
                     int startBlue = color & 0xFF;
                     float[] colorHSB = Color.RGBtoHSB(startRed, startGreen, startBlue, null);
 
-                    return Color.HSBtoRGB(colorHSB[0], max(colorHSB[1] / 1.7F, 0), max(colorHSB[2], 0));
+                    return Color.HSBtoRGB(colorHSB[0], Math.max(colorHSB[1] / 1.7F, 0), Math.max(colorHSB[2], 0));
                 }
                 if (pTintIndex == 1) {
                     return color;
@@ -153,7 +150,7 @@ public class ClientEvents {
                     float[] colorHSB =  Color.RGBtoHSB(startRed, startGreen, startBlue, null);
 
                     assert pPos != null;
-                    float hue = colorHSB[0] + (float)(sin((float)pPos.getX() + (float)pPos.getY() + (float)pPos.getZ()) / 15);
+                    float hue = colorHSB[0] + (Mth.sin((float)pPos.getX() + (float)pPos.getY() + (float)pPos.getZ()) / 15);
                     return Color.HSBtoRGB(hue, colorHSB[1], colorHSB[2]);
                 }
                 

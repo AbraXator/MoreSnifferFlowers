@@ -46,13 +46,17 @@ public class VivicusTreeFeature extends TreeFeature {
         };
         BiConsumer<BlockPos, BlockState> trunkPlacer = (p_160548_, p_160549_) -> {
             set1.add(p_160548_.immutable());
-            if(worldgenlevel.getBlockState(p_160548_).hasProperty(ModStateProperties.COLOR)) worldgenlevel.setBlock(p_160548_, p_160549_.setValue(ModStateProperties.COLOR, saplingColor), 2);
+            if(p_160549_.hasProperty(ModStateProperties.COLOR)) {
+                worldgenlevel.setBlock(p_160548_, p_160549_.setValue(ModStateProperties.COLOR, saplingColor), 2);
+            }
         };
         FoliagePlacer.FoliageSetter foliageplacer$foliagesetter = new FoliagePlacer.FoliageSetter() {
             @Override
             public void set(BlockPos p_272825_, BlockState p_273311_) {
                 set2.add(p_272825_.immutable());
-                if(worldgenlevel.getBlockState(p_272825_).hasProperty(ModStateProperties.COLOR)) worldgenlevel.setBlock(p_272825_, p_273311_.setValue(ModStateProperties.COLOR, saplingColor), 2);
+                if(p_273311_.hasProperty(ModStateProperties.COLOR)) {
+                    worldgenlevel.setBlock(p_272825_, p_273311_.setValue(ModStateProperties.COLOR, saplingColor), 2);
+                }
             }
 
             @Override
@@ -62,7 +66,9 @@ public class VivicusTreeFeature extends TreeFeature {
         };
         BiConsumer<BlockPos, BlockState> biconsumer2 = (p_160543_, p_160544_) -> {
             set3.add(p_160543_.immutable());
-            worldgenlevel.setBlock(p_160543_, p_160544_, 19);
+            if(p_160544_.hasProperty(ModStateProperties.COLOR)) {
+                worldgenlevel.setBlock(p_160543_, p_160544_.setValue(ModStateProperties.COLOR, saplingColor), 2);
+            }
         };
         boolean flag = this.doPlace(worldgenlevel, randomsource, blockpos, biconsumer, trunkPlacer, foliageplacer$foliagesetter, treeconfiguration);
         if (flag && (!set1.isEmpty() || !set2.isEmpty())) {

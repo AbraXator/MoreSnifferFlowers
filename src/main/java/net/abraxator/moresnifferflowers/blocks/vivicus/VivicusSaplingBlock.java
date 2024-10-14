@@ -5,10 +5,12 @@ import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.abraxator.moresnifferflowers.init.ModTreeGrowers;
 import net.abraxator.moresnifferflowers.worldgen.configurations.tree.vivicus.VivicusTreeGrower;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
@@ -21,6 +23,17 @@ public class VivicusSaplingBlock extends SaplingBlock implements ColorableVivicu
     public VivicusSaplingBlock(Properties p_55979_) {
         super(TreeGrower.OAK, p_55979_);
         defaultBlockState().setValue(ModStateProperties.COLOR, DyeColor.WHITE).setValue(ModStateProperties.VIVICUS_TYPE, BoblingEntity.Type.CORRUPTED);
+    }
+
+    @Override
+    protected void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        DyeColor dyeColor = Util.getRandom(DyeColor.values(), pLevel.random);
+        
+        if(pOldState.is(this)) {
+            dyeColor = getDyeFromBlock(pState).color();    
+        }
+        
+        pLevel.setBlock(pPos, pState.setValue(ModStateProperties.COLOR, dyeColor), 3);
     }
 
     @Override
