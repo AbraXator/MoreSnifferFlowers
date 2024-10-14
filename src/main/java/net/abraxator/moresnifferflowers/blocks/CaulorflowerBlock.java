@@ -80,7 +80,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
         BlockState blockState = pLevel.getBlockState(blockPos);
         BlockPos wallPos = pPos.relative(pState.getValue(FACING).getOpposite());
         BlockState wallState = pLevel.getBlockState(wallPos);
-        return pLevel.getBlockState(blockPos).is(this) || blockState.isFaceSturdy(pLevel, blockPos, Direction.UP) || wallState.isFaceSturdy(pLevel, wallPos, pState.getValue(FACING));
+        return (blockState.is(this) && getAge(blockState) > 0) || blockState.isFaceSturdy(pLevel, blockPos, Direction.UP) || wallState.isFaceSturdy(pLevel, wallPos, pState.getValue(FACING));
     }
 
     @Override
@@ -94,7 +94,13 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
         Optional<BlockPos> highestPos = highestPos(pLevel, pPos, true);
-        return highestPos.isPresent() && (pLevel.getBlockState(highestPos.get().above()).is(Blocks.AIR) || !isMaxAge(pLevel.getBlockState(highestPos.get())));
+        
+        if(highestPos.isPresent()) {
+            BlockState blockState = pLevel.getBlockState(highestPos.get());
+            return pLevel.getBlockState(highestPos.get().above()).is(Blocks.AIR) || (blockState.hasProperty(getAgeProperty()) && !isMaxAge(blockState));
+        }
+        
+        return false;
     }
 
     @Override

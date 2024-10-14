@@ -65,13 +65,16 @@ public class ForgeEvents {
             ((JarOfBonmeelItem) itemStack.getItem()).useOn(event.getUseOnContext());
         } else if((itemStack.is(ModItems.REBREWED_POTION) || itemStack.is(ModItems.EXTRACTED_BOTTLE)) && block.is(Blocks.DIRT) && event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK) {
             event.setCanceled(true);
-        } else if(itemStack.is(ItemTags.AXES) && block.is(ModBlocks.VIVICUS_LOG) || block.is(ModBlocks.VIVICUS_WOOD)) {
-            var state = AxeItem.STRIPPABLES.get(block.getBlock()).defaultBlockState()
+        } else if(itemStack.is(ItemTags.AXES) && (block.is(ModBlocks.VIVICUS_LOG) || block.is(ModBlocks.VIVICUS_WOOD))) {
+            var strippedBlock = AxeItem.STRIPPABLES.get(block.getBlock());
+            var state = strippedBlock.defaultBlockState()
                     .setValue(RotatedPillarBlock.AXIS, block.getValue(RotatedPillarBlock.AXIS))
                     .setValue(ModStateProperties.COLOR, block.getValue(ModStateProperties.COLOR));
+            
             if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
                 CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, event.getPos(), itemStack);
             }
+            
             event.getLevel().setBlock(event.getPos(), state, 3);
             event.getLevel().gameEvent(GameEvent.BLOCK_CHANGE, event.getPos(), GameEvent.Context.of(event.getPlayer(), state));
             itemStack.hurtAndBreak(1, event.getPlayer(), LivingEntity.getSlotForHand(event.getHand()));
