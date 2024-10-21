@@ -9,15 +9,10 @@
       }
     },
     "foliage_placer": {
-      "type": "minecraft:random_spread_foliage_placer",
-      "foliage_height": {
-        "type": "minecraft:uniform",
-        "max_inclusive": 3,
-        "min_inclusive": 2
-      },
-      "leaf_placement_attempts": 35,
-      "offset": 0,
-      "radius": 3
+      "type": "minecraft:fancy_foliage_placer",
+      "height": 2,
+      "offset": 2,
+      "radius": 2
     },
     "foliage_provider": {
       "type": "minecraft:weighted_state_provider",
@@ -62,8 +57,8 @@
     },
     "trunk_placer": {
       "type": "moresnifferflowers:corrupted_trunk_placer",
-      "base_height": 3,
-      "height_rand_a": 1,
+      "base_height": 4,
+      "height_rand_a": 2,
       "height_rand_b": 2
     },
     "trunk_provider": {

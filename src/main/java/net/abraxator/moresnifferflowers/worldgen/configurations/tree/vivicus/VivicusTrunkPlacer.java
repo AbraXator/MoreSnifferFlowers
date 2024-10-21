@@ -45,7 +45,7 @@ public class VivicusTrunkPlacer extends TrunkPlacer {
         BlockPos.MutableBlockPos mainTrunk = pPos.mutable();
         for(int i = 0; i < pFreeTreeHeight; i++) {
             this.placeLog(pLevel, pBlockSetter, pRandom, mainTrunk, pConfig);
-
+            
             if (i == 0) {
                 for(Direction direction : Direction.Plane.HORIZONTAL) {
                     int outerHeight = pRandom.nextInt(3);;
@@ -84,7 +84,7 @@ public class VivicusTrunkPlacer extends TrunkPlacer {
         ret.add(new FoliagePlacer.FoliageAttachment(mainTrunk.below(1), 0, false));
         return ret;
     }
-    
+
     private void placeStump(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, BlockPos.MutableBlockPos stumpPos, TreeConfiguration pConfig) {
         if (pRandom.nextDouble() <= 0.3D) {
             for (int height = 0; height < pRandom.nextInt(3); height++) {
