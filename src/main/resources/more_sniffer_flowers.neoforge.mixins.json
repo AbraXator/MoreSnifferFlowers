@@ -8,6 +8,7 @@
     "AgeableMobMixin",
     "BlockBehaviourMixin",
     "BlockMixin",
+    "CraftingMenuMixin",
     "EntityMixin",
     "FarmBlockMixin",
     "FlowerBlockMixin",
@@ -19,11 +20,14 @@
     "SlotMixin",
     "SnifferEggMixin",
     "SpriteResourceLoaderMixin",
+    "StructureTemplateMixin",
     "ThrownPotionMixin"
   ],
   "client": [
     "BiomeColorsMixin",
+    "CreativeInventoryScreenMixin",
     "InventoryScreenMixin",
+    "ClientLevelMixin",
     "SpriteResourceLoaderMixin$PalettedPermutationsAccessor"
   ]
 }

@@ -32,12 +32,12 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Optional;
 
 public class CorruptedProjectile extends ThrowableItemProjectile {
-    public CorruptedProjectile(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public CorruptedProjectile(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public CorruptedProjectile(Level pLevel, LivingEntity pShooter) {
-        super(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), pShooter, pLevel);
+    public CorruptedProjectile(Level level, LivingEntity pShooter) {
+        super(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), pShooter, level);
     }
 
     public CorruptedProjectile(Level level) {
@@ -54,8 +54,8 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void onHit(HitResult pResult) {
-        super.onHit(pResult);
+    protected void onHit(HitResult result) {
+        super.onHit(result);
         for (int i = 0; i < 16; i++) {
             this.level().broadcastEntityEvent(this, (byte) 3);
         }
@@ -70,9 +70,9 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult pResult) {
-        super.onHitEntity(pResult);
-        Entity entity = pResult.getEntity();
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        Entity entity = result.getEntity();
         if(entity instanceof LivingEntity livingEntity) {
             entity.hurt(this.damageSources().thrown(this, this.getOwner()), 0.0F);
           if (!level().isClientSide)

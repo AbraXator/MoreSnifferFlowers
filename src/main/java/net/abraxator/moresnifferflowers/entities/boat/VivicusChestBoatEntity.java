@@ -22,12 +22,12 @@ import net.minecraft.world.level.Level;
 public class VivicusChestBoatEntity extends ModChestBoatEntity implements ColorableVivicusBlock {
     private static final EntityDataAccessor<Integer> COLOR_DATA = SynchedEntityData.defineId(VivicusChestBoatEntity.class, EntityDataSerializers.INT);
     
-    public VivicusChestBoatEntity(EntityType<? extends ModChestBoatEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public VivicusChestBoatEntity(EntityType<? extends ModChestBoatEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public VivicusChestBoatEntity(Level pLevel, double pX, double pY, double pZ) {
-        this(ModEntityTypes.MOD_VIVICUS_CHEST_BOAT.get(), pLevel);
+    public VivicusChestBoatEntity(Level level, double pX, double pY, double pZ) {
+        this(ModEntityTypes.MOD_VIVICUS_CHEST_BOAT.get(), level);
         this.setPos(pX, pY, pZ);
         this.xo = pX;
         this.yo = pY;
@@ -49,8 +49,8 @@ public class VivicusChestBoatEntity extends ModChestBoatEntity implements Colora
     }
 
     @Override
-    public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
-        var dyespria = pPlayer.getMainHandItem();
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        var dyespria = player.getMainHandItem();
         if (dyespria.is(ModItems.DYESPRIA)) {
             var dye = Dye.getDyeFromDyespria(dyespria);
             int uses = DyespriaItem.getDyespriaUses(dyespria);
@@ -68,8 +68,8 @@ public class VivicusChestBoatEntity extends ModChestBoatEntity implements Colora
             var stack = Dye.stackFromDye(new Dye(dye.color(), dyeCount));
             Dye.setDyeToDyeHolderStack(dyespria, stack, stack.getCount());
 
-            if(pPlayer instanceof ServerPlayer player) {
-                ModAdvancementCritters.DYE_BOAT.get().trigger(player);
+            if(player instanceof ServerPlayer serverPlayer) {
+                ModAdvancementCritters.DYE_BOAT.get().trigger(serverPlayer);
             }
             
             if(this.level().isClientSide) {
@@ -79,18 +79,18 @@ public class VivicusChestBoatEntity extends ModChestBoatEntity implements Colora
             return InteractionResult.sidedSuccess(this.level().isClientSide());
         }
         
-        return super.interact(pPlayer, pHand);
+        return super.interact(player, hand);
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("Color", this.getColor().getId());
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("Color", this.getColor().getId());
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        this.setColor(Dye.colorFromId(pCompound.getInt("Color")));
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setColor(Dye.colorFromId(tag.getInt("Color")));
     }
 }

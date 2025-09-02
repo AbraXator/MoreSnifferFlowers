@@ -19,48 +19,48 @@ public class CorruptedLeavesBlock extends LeavesBlock {
     }
 
     @Override
-    protected void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        pLevel.setBlock(pPos, updateDistance(pState, pLevel, pPos), 3);
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        level.setBlock(pos, updateDistance(state, level, pos), 3);
     }
     
     @Override
-    protected BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        if (pState.getValue(WATERLOGGED)) {
-            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+    protected BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
         int i = getDistanceAt(pFacingState) + 1;
-        if (i != 1 || pState.getValue(DISTANCE) != i) {
-            pLevel.scheduleTick(pCurrentPos, this, 1);
+        if (i != 1 || state.getValue(DISTANCE) != i) {
+            level.scheduleTick(pCurrentPos, this, 1);
         }
 
-        return pState;
+        return state;
     }
 
-    private static BlockState updateDistance(BlockState pState, LevelAccessor pLevel, BlockPos pPos) {
+    private static BlockState updateDistance(BlockState state, LevelAccessor level, BlockPos pos) {
         int i = 7;
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
         for (Direction direction : Direction.values()) {
-            blockpos$mutableblockpos.setWithOffset(pPos, direction);
-            i = Math.min(i, getDistanceAt(pLevel.getBlockState(blockpos$mutableblockpos)) + 1);
+            blockpos$mutableblockpos.setWithOffset(pos, direction);
+            i = Math.min(i, getDistanceAt(level.getBlockState(blockpos$mutableblockpos)) + 1);
             if (i == 1) {
                 break;
             }
         }
 
-        return pState.setValue(DISTANCE, Integer.valueOf(i));
+        return state.setValue(DISTANCE, Integer.valueOf(i));
     }
 
     private static int getDistanceAt(BlockState pNeighbor) {
         return getOptionalDistanceAt(pNeighbor).orElse(7);
     }
 
-    public static OptionalInt getOptionalDistanceAt(BlockState pState) {
-        if (pState.is(BlockTags.LOGS) || pState.is(ModBlocks.CORRUPTED_SLUDGE)) {
+    public static OptionalInt getOptionalDistanceAt(BlockState state) {
+        if (state.is(BlockTags.LOGS) || state.is(ModBlocks.CORRUPTED_SLUDGE)) {
             return OptionalInt.of(0);
         } else {
-            return pState.hasProperty(DISTANCE) ? OptionalInt.of(pState.getValue(DISTANCE)) : OptionalInt.empty();
+            return state.hasProperty(DISTANCE) ? OptionalInt.of(state.getValue(DISTANCE)) : OptionalInt.empty();
         }
     }
 }

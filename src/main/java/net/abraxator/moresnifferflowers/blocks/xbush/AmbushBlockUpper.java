@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
 public class AmbushBlockUpper extends AbstractXBushBlockUpper{
-    public AmbushBlockUpper(Properties pProperties) {
-        super(pProperties);
+    public AmbushBlockUpper(Properties properties) {
+        super(properties);
     }
 
     @Override

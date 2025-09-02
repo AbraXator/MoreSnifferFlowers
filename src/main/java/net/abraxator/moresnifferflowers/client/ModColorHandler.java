@@ -27,9 +27,9 @@ import java.awt.*;
 public class ModColorHandler {
     @SubscribeEvent
     public static void onRegisterBlockColorHandlers(net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) {
-        event.register((pState, pLevel, pPos, pTintIndex) -> {
-            Colorable colorable = ((Colorable) pState.getBlock());
-            Dye dye = colorable.getDyeFromBlock(pState);
+        event.register((state, level, pos, pTintIndex) -> {
+            Colorable colorable = ((Colorable) state.getBlock());
+            Dye dye = colorable.getDyeFromBlock(state);
             int color = Dye.colorForDye(colorable, dye.color());
             if(!dye.isEmpty()) {
                 if (pTintIndex == 0) {
@@ -43,9 +43,9 @@ public class ModColorHandler {
             }
             return -1;
         }, ModBlocks.CAULORFLOWER.get());
-        event.register((pState, pLevel, pPos, pTintIndex) -> {
-            int color = pState.getValue(ModStateProperties.BLOCK_PATTERN).getColor();
-            if (pState.getValue(ModStateProperties.EMPTY)) color = 0xFFFFFF;
+        event.register((state, level, pos, pTintIndex) -> {
+            int color = state.getValue(ModStateProperties.BLOCK_PATTERN).getColor();
+            if (state.getValue(ModStateProperties.EMPTY)) color = 0xFFFFFF;
             if (pTintIndex == 0) {
                 float[] colorHSB = getColorHSB(color);
                 return Color.HSBtoRGB(colorHSB[0], Math.max(colorHSB[1] / 1.7F, 0), Math.max(colorHSB[2], 0));
@@ -57,24 +57,24 @@ public class ModColorHandler {
 
             return -1;
         }, ModBlocks.PATTERNFLOWER.get());
-        event.register((pState, pLevel, pPos, pTintIndex) -> {
-                    var colorable = ((ColorableVivicusBlock) pState.getBlock());
+        event.register((state, level, pos, pTintIndex) -> {
+                    var colorable = ((ColorableVivicusBlock) state.getBlock());
                     if(pTintIndex == 0) {
-                        var dyedValue = Dye.colorForDye(colorable, pState.getValue(colorable.getColorProperty()));
-                        var color = colorable.getDyeFromBlock(pState).color();
+                        var dyedValue = Dye.colorForDye(colorable, state.getValue(colorable.getColorProperty()));
+                        var color = colorable.getDyeFromBlock(state).color();
 
-                        if(pState.is(ModBlocks.VIVICUS_LEAVES.get()) || pState.is(ModBlocks.VIVICUS_LEAVES_SPROUT.get())) {
+                        if(state.is(ModBlocks.VIVICUS_LEAVES.get()) || state.is(ModBlocks.VIVICUS_LEAVES_SPROUT.get())) {
                             float[] colorHSB = getColorHSB(dyedValue);
 
-                            assert pPos != null;
-                            float hue = colorHSB[0] + ((1+ Mth.sin((float)pPos.getX() + (float)pPos.getY() + (float)pPos.getZ())) / 15);
+                            assert pos != null;
+                            float hue = colorHSB[0] + ((1+ Mth.sin((float)pos.getX() + (float)pos.getY() + (float)pos.getZ())) / 15);
 
                             if (colorHSB[1] < 0.3 && colorHSB[2] < 0.8){
-                                colorHSB[2] = colorHSB[2] - ((1+Mth.sin((float)pPos.getX() + (float)pPos.getY() + (float)pPos.getZ())) / 15);
+                                colorHSB[2] = colorHSB[2] - ((1+Mth.sin((float)pos.getX() + (float)pos.getY() + (float)pos.getZ())) / 15);
                             }
 
                             if (colorHSB[1] < 0.3){
-                                colorHSB[1] = colorHSB[1] + ((1+Mth.sin((float)pPos.getX() + (float)pPos.getY() + (float)pPos.getZ())) / 12);
+                                colorHSB[1] = colorHSB[1] + ((1+Mth.sin((float)pos.getX() + (float)pos.getY() + (float)pos.getZ())) / 12);
                             }
 
 
@@ -96,16 +96,16 @@ public class ModColorHandler {
 
     @SubscribeEvent
     public static void onRegisterItemColorHandlers(RegisterColorHandlersEvent.Item event) {
-        event.register((pStack, pTintIndex) -> {
-            Dye dye = Dye.getDyeFromDyespria(pStack);
+        event.register((stack, pTintIndex) -> {
+            Dye dye = Dye.getDyeFromDyespria(stack);
             if(pTintIndex != 0 || dye.isEmpty()) {
                 return -1;
             } else {
-                return Dye.colorForDye(((DyespriaItem) pStack.getItem()), dye.color());
+                return Dye.colorForDye(((DyespriaItem) stack.getItem()), dye.color());
             }
         }, ModItems.DYESPRIA.get());
 
-        event.register((pStack, pTintIndex) -> pTintIndex > 0 ? -1 : pStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor(),
+        event.register((stack, pTintIndex) -> pTintIndex > 0 ? -1 : stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor(),
                 ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get(), ModItems.REBREWED_SPLASH_POTION.get(), ModItems.REBREWED_LINGERING_POTION.get());
 
         event.register(((stack, tintIndex) ->{

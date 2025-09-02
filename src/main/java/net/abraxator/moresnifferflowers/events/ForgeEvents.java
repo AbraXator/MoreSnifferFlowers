@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -51,6 +52,7 @@ import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
@@ -213,6 +215,26 @@ public class ForgeEvents {
        }
     }
 
+    @SubscribeEvent
+    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+        ItemStack output = event.getCrafting();
+        Container input = event.getInventory();
+
+        if (output.is(ModTags.ModItemTags.COLORABLE)){
+            for (int i = 0; i < input.getContainerSize(); i++) {
+                ItemStack stack = input.getItem(i);
+
+                int colorId = stack.getOrDefault(ModDataComponents.COLOR_ID.get(), -1);
+                int color = stack.getOrDefault(ModDataComponents.COLOR.get(), -1);
+
+                if (colorId != -1 && color != -1) {
+                    output.set(ModDataComponents.COLOR_ID, colorId);
+                    output.set(ModDataComponents.COLOR, color);
+                    break;
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerInteractRightClickItem(UseItemOnBlockEvent event) {

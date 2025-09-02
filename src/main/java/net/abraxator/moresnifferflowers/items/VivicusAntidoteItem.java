@@ -19,18 +19,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class VivicusAntidoteItem extends Item {
-    public VivicusAntidoteItem(Properties pProperties) {
-        super(pProperties);
+    public VivicusAntidoteItem(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        var level = pContext.getLevel();
-        var blockPos = pContext.getClickedPos();
-        var relativePos = blockPos.relative(pContext.getClickedFace());
+    public InteractionResult useOn(UseOnContext context) {
+        var level = context.getLevel();
+        var blockPos = context.getClickedPos();
+        var relativePos = blockPos.relative(context.getClickedFace());
         var blockState = level.getBlockState(blockPos);
         var random = level.getRandom();
-        var player = pContext.getPlayer();
+        var player = context.getPlayer();
         var particle = new DustParticleOptions(Vec3.fromRGB24(7118872).toVector3f(), 1);
 
         if(blockState.is(ModBlocks.VIVICUS_SAPLING.get()) && !blockState.getValue(ModStateProperties.VIVICUS_CURED)) {
@@ -66,12 +66,12 @@ public class VivicusAntidoteItem extends Item {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         
-        return super.useOn(pContext);
+        return super.useOn(context);
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, TooltipContext context , List<Component> pTooltip, TooltipFlag pFlag) {
-        super.appendHoverText(pStack, context, pTooltip, pFlag);
+    public void appendHoverText(ItemStack stack, TooltipContext context , List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(stack, context, pTooltip, pFlag);
         pTooltip.add(Component.translatableWithFallback("tooltip.wip", "WIP").withStyle(ChatFormatting.DARK_RED));
         pTooltip.add(Component.translatableWithFallback("tooltip.vivicus_antidote", "Cures Boblings and Corrupted Grass").withStyle(ChatFormatting.GOLD));
         ;

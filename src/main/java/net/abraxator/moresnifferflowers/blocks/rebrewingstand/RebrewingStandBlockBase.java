@@ -36,36 +36,36 @@ public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
     public static VoxelShape ROD_UPPER = Block.box(6.5, 0, 6.5, 9.5, 14, 9.5);
     public static VoxelShape ROD_LOWER = Block.box(6.5, 0, 6.5, 9.5, 16, 9.5);
 
-    public RebrewingStandBlockBase(Properties pProperties) {
-        super(pProperties);
+    public RebrewingStandBlockBase(Properties properties) {
+        super(properties);
         if(!(this instanceof RebrewingStandBlockTop)) {
             this.registerDefaultState(defaultBlockState().setValue(HAS_BOTTLE[0], false).setValue(HAS_BOTTLE[1], false).setValue(HAS_BOTTLE[2], false));
         }
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(HAS_BOTTLE);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(HAS_BOTTLE);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.or(BASE, ROD_LOWER);
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if (pLevel.isClientSide) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            BlockPos blockPos = pPos;
-            if(pLevel.getBlockState(pPos).is(ModBlocks.REBREWING_STAND_BOTTOM.get())) {
+            BlockPos blockPos = pos;
+            if(level.getBlockState(pos).is(ModBlocks.REBREWING_STAND_BOTTOM.get())) {
                 blockPos = blockPos.above();
             }
 
-            BlockEntity entity = pLevel.getBlockEntity(blockPos);
+            BlockEntity entity = level.getBlockEntity(blockPos);
             if (entity instanceof RebrewingStandBlockEntity) {
-                pPlayer.openMenu((RebrewingStandBlockEntity) entity);
+                player.openMenu((RebrewingStandBlockEntity) entity);
             }
 
             return InteractionResult.CONSUME;
@@ -73,11 +73,11 @@ public class RebrewingStandBlockBase extends ModEntityDoubleTallBlock {
     }
 
     @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        double d0 = (double)pPos.getX() + 0.4D + (double)pRandom.nextFloat() * 0.2D;
-        double d1 = (double)pPos.getY() + 0.7D + (double)pRandom.nextFloat() * 0.3D;
-        double d2 = (double)pPos.getZ() + 0.4D + (double)pRandom.nextFloat() * 0.2D;
-        pLevel.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        double d0 = (double)pos.getX() + 0.4D + (double)random.nextFloat() * 0.2D;
+        double d1 = (double)pos.getY() + 0.7D + (double)random.nextFloat() * 0.3D;
+        double d2 = (double)pos.getZ() + 0.4D + (double)random.nextFloat() * 0.2D;
+        level.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
     }
 
     @Override

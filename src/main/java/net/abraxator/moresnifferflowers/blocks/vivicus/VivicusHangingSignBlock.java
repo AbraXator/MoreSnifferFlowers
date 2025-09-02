@@ -26,14 +26,14 @@ public class VivicusHangingSignBlock extends ModHangingSignBlock implements Colo
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(ModStateProperties.COLOR);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(ModStateProperties.COLOR);
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new VivicusHangingSignBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new VivicusHangingSignBlockEntity(pos, state);
     }
 
     @Override

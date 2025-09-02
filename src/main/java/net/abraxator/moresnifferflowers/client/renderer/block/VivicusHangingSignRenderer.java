@@ -22,17 +22,17 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class VivicusHangingSignRenderer extends HangingSignRenderer {
-    public VivicusHangingSignRenderer(BlockEntityRendererProvider.Context pContext) {
-        super(pContext);
+    public VivicusHangingSignRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
-    public void renderSignWithText(SignBlockEntity pSignEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState pState, SignBlock pSignBlock, WoodType pWoodType, Model pModel) {
+    public void renderSignWithText(SignBlockEntity pSignEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState state, SignBlock pSignBlock, WoodType pWoodType, Model pModel) {
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 0.9375, 0.5);
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(-pSignBlock.getYRotationDegrees(pState)));
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(-pSignBlock.getYRotationDegrees(state)));
         pPoseStack.translate(0.0F, -0.3125F, 0.0F);
-        renderVivicusSign(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pWoodType, pModel, pState);
+        renderVivicusSign(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pWoodType, pModel, state);
         this.renderSignText(
                 pSignEntity.getBlockPos(),
                 pSignEntity.getFrontText(),
@@ -56,15 +56,15 @@ public class VivicusHangingSignRenderer extends HangingSignRenderer {
         pPoseStack.popPose();
     }
     
-    private void renderVivicusSign(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, WoodType pWoodType, Model pModel, BlockState pState) {
+    private void renderVivicusSign(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, WoodType pWoodType, Model pModel, BlockState state) {
         pPoseStack.pushPose();
         float f = this.getSignModelRenderScale();
         pPoseStack.scale(f, -f, -f);
         Material material = Sheets.getHangingSignMaterial(pWoodType);
         VertexConsumer vertexconsumer = material.buffer(pBuffer, pModel::renderType);
         var color = -1;
-        if(pState.getBlock() instanceof ColorableVivicusBlock colorableVivicusBlock) {
-            var dyeColor = pState.getValue(ModStateProperties.COLOR);
+        if(state.getBlock() instanceof ColorableVivicusBlock colorableVivicusBlock) {
+            var dyeColor = state.getValue(ModStateProperties.COLOR);
             color = colorableVivicusBlock.colorValues().get(dyeColor);
             vertexconsumer.setColor(color);
         }

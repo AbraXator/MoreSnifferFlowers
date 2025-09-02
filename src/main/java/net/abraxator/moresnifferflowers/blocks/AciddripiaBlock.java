@@ -26,13 +26,13 @@ public class AciddripiaBlock extends BondripiaBlock {
     }
     
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (pLevel.getBlockEntity(pPos) instanceof BondripiaBlockEntity entity) {
-            if (!isMaxAge(pState)) {
-                grow(pLevel, pPos, pState);
-            } else if (pRandom.nextDouble() <= 0.33D) {
+    public void randomTick(BlockState stateOriginal, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (level.getBlockEntity(pos) instanceof BondripiaBlockEntity entity) {
+            if (!isMaxAge(stateOriginal)) {
+                grow(level, pos, stateOriginal);
+            } else if (random.nextDouble() <= 0.33D) {
                 var aabb = new AABB(entity.center.below()).inflate(1.5D, 0, 1.5D).setMaxY(10.0D);
-                pLevel.getEntities((Entity) null, aabb, entity1 -> entity1.getType() == EntityType.PLAYER)
+                level.getEntities((Entity) null, aabb, entity1 -> entity1.getType() == EntityType.PLAYER)
                         .stream().map(entity1 -> ((Player) entity1))
                         .forEach(entity1 -> {
                             entity1.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 2));
@@ -40,21 +40,21 @@ public class AciddripiaBlock extends BondripiaBlock {
                 for (BlockPos blockPos : BlockPos.betweenClosed(entity.center.below().north().east(), entity.center.below().south().west())) {
                     BlockPos currentPos = blockPos;
 
-                    int y = pLevel.getRandom().nextIntBetweenInclusive(1, 11);
+                    int y = level.getRandom().nextIntBetweenInclusive(1, 11);
                     currentPos = currentPos.below(y);
-                    if (getProperty(currentPos, pLevel).isPresent()) {
-                            BlockState state = pLevel.getBlockState(currentPos);
-                            state = state.setValue((IntegerProperty) getProperty(currentPos, pLevel).get(), 0);
-                            pLevel.setBlock(currentPos, state, 2);
+                    if (getProperty(currentPos, level).isPresent()) {
+                            BlockState state = level.getBlockState(currentPos);
+                            state = state.setValue((IntegerProperty) getProperty(currentPos, level).get(), 0);
+                            level.setBlock(currentPos, state, 2);
                         }
 
-                        BlockState state = pLevel.getBlockState(currentPos);
+                        BlockState state = level.getBlockState(currentPos);
                         if (state.is(BlockTags.LEAVES)) {
-                            pLevel.setBlock(currentPos, Blocks.AIR.defaultBlockState(), 2);
-                        } else if (pLevel.getBlockState(currentPos).getBlock() instanceof AbstractCauldronBlock) {
-                            fillCauldron(pLevel, currentPos, this.defaultBlockState());
+                            level.setBlock(currentPos, Blocks.AIR.defaultBlockState(), 2);
+                        } else if (level.getBlockState(currentPos).getBlock() instanceof AbstractCauldronBlock) {
+                            fillCauldron(level, currentPos, this.defaultBlockState());
                         } else if (state.is(BlockTags.DIRT) && !state.is(Blocks.DIRT)) {
-                            pLevel.setBlock(currentPos, Blocks.DIRT.defaultBlockState(), 2);
+                            level.setBlock(currentPos, Blocks.DIRT.defaultBlockState(), 2);
                         }
 
                     }

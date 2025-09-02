@@ -37,9 +37,9 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
     public int usesLeft = -1;
     public int stateChange = 1;
     
-    public CorruptedSludgeBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.CORRUPTED_SLUDGE.get(), pPos, pBlockState);
-        this.corruptedSludgeListener = new CorruptedSludgeListener(new BlockPositionSource(pPos));
+    public CorruptedSludgeBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.CORRUPTED_SLUDGE.get(), pos, state);
+        this.corruptedSludgeListener = new CorruptedSludgeListener(new BlockPositionSource(pos));
         this.stateChange = usesLeft / 4;
     }
 
@@ -99,17 +99,17 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
 
 
         @Override
-        public boolean handleGameEvent(ServerLevel pLevel, Holder<GameEvent> pGameEvent, GameEvent.Context pContext, Vec3 pPos) {
+        public boolean handleGameEvent(ServerLevel level, Holder<GameEvent> pGameEvent, GameEvent.Context context, Vec3 pos) {
             CorruptedSludgeBlockEntity entity;
 
-            if(pLevel.getBlockEntity(BlockPos.containing(this.positionSource.getPosition(pLevel).get())) instanceof CorruptedSludgeBlockEntity entity1) {
+            if(level.getBlockEntity(BlockPos.containing(this.positionSource.getPosition(level).get())) instanceof CorruptedSludgeBlockEntity entity1) {
                 entity = entity1;
             } else return false;
             
             boolean validEvent = (pGameEvent != GameEvent.BLOCK_PLACE || pGameEvent != GameEvent.BLOCK_DESTROY);
             
             if (entity.usesLeft == -1) {
-                entity.usesLeft = pLevel.random.nextIntBetweenInclusive(16, 32) - 1;
+                entity.usesLeft = level.random.nextIntBetweenInclusive(16, 32) - 1;
                 entity.stateChange = entity.usesLeft / 4;
             }
             
@@ -117,21 +117,21 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
                 return false;
             }
 
-            if(pGameEvent.is(GameEvent.BLOCK_PLACE) && Corruptable.canBeCorrupted(pContext.affectedState().getBlock(), pLevel.random)) {
-                Vec3 startPos = this.getListenerSource().getPosition(pLevel).get();
-                Vec3 dirNormal = new Vec3(pPos.x - startPos.x, pPos.y - startPos.y, pPos.z - startPos.z).normalize();
-                Optional<Block> corrupted = Corruptable.getCorruptedBlock(pContext.affectedState().getBlock(), pLevel.random);
-                BlockPos blockPos = BlockPos.containing(pPos);
+            if(pGameEvent.is(GameEvent.BLOCK_PLACE) && Corruptable.canBeCorrupted(context.affectedState().getBlock(), level.random)) {
+                Vec3 startPos = this.getListenerSource().getPosition(level).get();
+                Vec3 dirNormal = new Vec3(pos.x - startPos.x, pos.y - startPos.y, pos.z - startPos.z).normalize();
+                Optional<Block> corrupted = Corruptable.getCorruptedBlock(context.affectedState().getBlock(), level.random);
+                BlockPos blockPos = BlockPos.containing(pos);
                 corrupted.ifPresent(block -> {
-                    PacketDistributor.sendToAllPlayers(new CorruptedSludgePacket(startPos.toVector3f(), pPos.toVector3f(), dirNormal.toVector3f()));
-                    if(pLevel.getBlockState(BlockPos.containing(pPos)).getBlock() instanceof net.abraxator.moresnifferflowers.blocks.Corruptable corruptable) {
-                        corruptable.onCorrupt(pLevel, blockPos, pLevel.getBlockState(BlockPos.containing(pPos)), block);
+                    PacketDistributor.sendToAllPlayers(new CorruptedSludgePacket(startPos.toVector3f(), pos.toVector3f(), dirNormal.toVector3f()));
+                    if(level.getBlockState(BlockPos.containing(pos)).getBlock() instanceof net.abraxator.moresnifferflowers.blocks.Corruptable corruptable) {
+                        corruptable.onCorrupt(level, blockPos, level.getBlockState(BlockPos.containing(pos)), block);
                     } else {
-                        pLevel.setBlockAndUpdate(BlockPos.containing(pPos), block.withPropertiesOf(pContext.affectedState()));
+                        level.setBlockAndUpdate(BlockPos.containing(pos), block.withPropertiesOf(context.affectedState()));
                     }
-                    pLevel.sendParticles(
+                    level.sendParticles(
                             new DustParticleOptions(Vec3.fromRGB24(0x0443248).toVector3f(), 1.0F),
-                            blockPos.getX() + pLevel.random.nextDouble(), blockPos.getY() + pLevel.random.nextDouble(), blockPos.getZ() + pLevel.random.nextDouble(),
+                            blockPos.getX() + level.random.nextDouble(), blockPos.getY() + level.random.nextDouble(), blockPos.getZ() + level.random.nextDouble(),
                             10,
                             0.0D, 0.0D, 0.0D,
                             0.0D
@@ -144,9 +144,9 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
             }
 
             if (ModServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) {
-                if (pGameEvent.is(GameEvent.BLOCK_DESTROY) && pContext.affectedState().is(ModTags.ModBlockTags.CORRUPTED_SLUDGE) && !pPos.equals(this.positionSource.getPosition(pLevel).get()) && pContext.sourceEntity() instanceof Player player) {
-                    var projectileNumber = pContext.affectedState().is(ModBlocks.CORRUPTED_LEAVES) || pContext.affectedState().is(ModBlocks.CORRUPTED_LEAVES_BUSH) ? pLevel.random.nextInt(1) + 1 : pLevel.random.nextInt(5) + 1;
-                    shootProjectiles(this.positionSource.getPosition(pLevel).get(), projectileNumber, pLevel);
+                if (pGameEvent.is(GameEvent.BLOCK_DESTROY) && context.affectedState().is(ModTags.ModBlockTags.CORRUPTED_SLUDGE) && !pos.equals(this.positionSource.getPosition(level).get()) && context.sourceEntity() instanceof Player player) {
+                    var projectileNumber = context.affectedState().is(ModBlocks.CORRUPTED_LEAVES) || context.affectedState().is(ModBlocks.CORRUPTED_LEAVES_BUSH) ? level.random.nextInt(1) + 1 : level.random.nextInt(5) + 1;
+                    shootProjectiles(this.positionSource.getPosition(level).get(), projectileNumber, level);
                     entity.updateUses();
                     return false;
                 }
@@ -164,8 +164,8 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
             }
         }
 
-        private static void generatePoint(Set<Vec3> placed, Vec3 center, double radius, Level pLevel) {
-            var random = pLevel.random;
+        private static void generatePoint(Set<Vec3> placed, Vec3 center, double radius, Level level) {
+            var random = level.random;
 
             double theta = 2 * Mth.PI * random.nextDouble();
             double phi = Math.acos(2 * random.nextDouble() - 1);
@@ -175,16 +175,16 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
             double zg = center.z + radius * Mth.cos((float) phi);
             var vec3 = new Vec3(xg, yg, zg);
             
-            if (placed.stream().noneMatch(vec31 -> AABB.ofSize(vec3, 1, 1, 1).contains(vec31)) && pLevel.getBlockState(BlockPos.containing(vec3)).canBeReplaced()) {
+            if (placed.stream().noneMatch(vec31 -> AABB.ofSize(vec3, 1, 1, 1).contains(vec31)) && level.getBlockState(BlockPos.containing(vec3)).canBeReplaced()) {
                 var pos = center;
                 var x = random.nextDouble() * 0.5;
                 var y = random.nextDouble() * 0.5;
                 var z = random.nextDouble() * 0.5;
-                CorruptedProjectile projectile = new CorruptedProjectile(pLevel);
+                CorruptedProjectile projectile = new CorruptedProjectile(level);
                 projectile.setPos(vec3);
                 Vec3 dir = new Vec3(projectile.getX() - pos.x, projectile.getY() - pos.y, projectile.getZ() - pos.z).normalize().multiply(x, y, z);
                 projectile.setDeltaMovement(dir);
-                pLevel.addFreshEntity(projectile);
+                level.addFreshEntity(projectile);
 
                 //level.sendParticles(ModParticles.CARROT.get(), vec3.x, vec3.y, vec3.z, 1, 0D, 0D, 0D, 0D);
                 placed.add(vec3);

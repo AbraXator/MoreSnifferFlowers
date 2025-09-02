@@ -13,7 +13,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -23,9 +28,11 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,13 +44,17 @@ import java.util.stream.Stream;
 public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock, Corruptable, ModCropBlock, PreviewableMultiblock, CorruptableMultiblock {
     public SaltemoneBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(defaultBlockState().setValue(ModStateProperties.CENTER, false).setValue(getAgeProperty(), 0).setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH));
+        this.registerDefaultState(defaultBlockState()
+                .setValue(ModStateProperties.CENTER, false)
+                .setValue(getAgeProperty(), 0)
+                .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH)
+                .setValue(ModStateProperties.SHEARED, false));
     }
     protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(HorizontalDirectionalBlock.FACING, ModStateProperties.CENTER, getAgeProperty());
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(HorizontalDirectionalBlock.FACING, ModStateProperties.CENTER, getAgeProperty(), ModStateProperties.SHEARED);
     }
 
     @Override
@@ -86,18 +97,18 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
     }
 
     @Override
-    public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
+    public boolean isRandomlyTicking(BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        growHelper(pLevel, pPos, pState);
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        growHelper(level, pos, state);
     }
 
     public boolean isCorrupted(){
@@ -105,7 +116,16 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
     }
 
     @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (shear(player, level, pos, hand)){
+            return ItemInteractionResult.SUCCESS;
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+    }
+
+    @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (state.getValue(ModStateProperties.SHEARED)) return;
         if (level.getBlockEntity(pos) instanceof SaltemoneBlockEntity entity && pos.equals(entity.center)) {
             if (isMaxAge(state)) {
                 Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);

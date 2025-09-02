@@ -17,8 +17,8 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
     public boolean hasGrown;
     public final float growRate;
     
-    public GrowingCropBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, float growRate) {
-        super(pType, pPos, pBlockState);
+    public GrowingCropBlockEntity(BlockEntityType<?> pType, BlockPos pos, BlockState state, float growRate) {
+        super(pType, pos, state);
         this.growRate = growRate;
     }
 
@@ -43,9 +43,9 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        CompoundTag tag = super.getUpdateTag(pRegistries);
-        saveAdditional(tag, pRegistries);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        saveAdditional(tag, registries);
         return tag;
     }
 
@@ -61,17 +61,17 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
-        this.hasGrown = pTag.getBoolean("hasGrown");
-        this.growProgress = pTag.getFloat("progress");
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        this.hasGrown = tag.getBoolean("hasGrown");
+        this.growProgress = tag.getFloat("progress");
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-        pTag.putBoolean("hasGrown", this.hasGrown);
-        pTag.putFloat("progress", this.growProgress);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putBoolean("hasGrown", this.hasGrown);
+        tag.putFloat("progress", this.growProgress);
     }
 
     @Nullable

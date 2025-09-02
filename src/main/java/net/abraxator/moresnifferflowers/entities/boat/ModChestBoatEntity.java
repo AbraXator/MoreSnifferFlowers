@@ -15,12 +15,12 @@ import org.openjdk.nashorn.api.tree.ForInLoopTree;
 public class ModChestBoatEntity extends ChestBoat {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(ModChestBoatEntity.class, EntityDataSerializers.INT);
 
-    public ModChestBoatEntity(EntityType<? extends ChestBoat> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public ModChestBoatEntity(EntityType<? extends ChestBoat> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public ModChestBoatEntity(Level pLevel, double pX, double pY, double pZ) {
-        this(ModEntityTypes.MOD_CORRUPTED_CHEST_BOAT.get(), pLevel);
+    public ModChestBoatEntity(Level level, double pX, double pY, double pZ) {
+        this(ModEntityTypes.MOD_CORRUPTED_CHEST_BOAT.get(), level);
         this.setPos(pX, pY, pZ);
         this.xo = pX;
         this.yo = pY;
@@ -44,13 +44,13 @@ public class ModChestBoatEntity extends ChestBoat {
         builder.define(DATA_ID_TYPE, ModBoatEntity.Type.CORRUPTED.ordinal());
     }
 
-    protected void addAdditionalSaveData(CompoundTag pCompound) {
-        pCompound.putString("Type", this.getModVariant().getSerializedName());
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.putString("Type", this.getModVariant().getSerializedName());
     }
 
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
-        if (pCompound.contains("Type", 8)) {
-            this.setVariant(ModBoatEntity.Type.byName(pCompound.getString("Type")));
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        if (tag.contains("Type", 8)) {
+            this.setVariant(ModBoatEntity.Type.byName(tag.getString("Type")));
         }
     }
 

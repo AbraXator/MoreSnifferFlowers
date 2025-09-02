@@ -20,13 +20,13 @@ public record CropressingRecipe(Ingredient ingredient, int count, ItemStack resu
     });
 
     @Override
-    public boolean matches(SingleRecipeInput pInput, Level pLevel) {
+    public boolean matches(SingleRecipeInput pInput, Level level) {
         ItemStack itemStack = pInput.getItem(0);
         return itemStack.getCount() >= count && ingredient.test(itemStack.copyWithCount(1));
     }
 
     @Override
-    public ItemStack assemble(SingleRecipeInput pInput, HolderLookup.Provider pRegistries) {
+    public ItemStack assemble(SingleRecipeInput pInput, HolderLookup.Provider registries) {
         return this.result.copy();
     }
 
@@ -36,7 +36,7 @@ public record CropressingRecipe(Ingredient ingredient, int count, ItemStack resu
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider pRegistries) {
+    public ItemStack getResultItem(HolderLookup.Provider registries) {
         return this.result;
     }
 

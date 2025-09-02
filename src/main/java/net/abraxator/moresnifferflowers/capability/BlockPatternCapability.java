@@ -20,7 +20,9 @@ import java.util.stream.Stream;
 
 public class BlockPatternCapability {
     public Map<BlockPos, PatternData> patterns;
-    public static final Codec<BlockPos> BLOCKPOS_LONG_CODEC = Codec.LONG.xmap(
+    public static final Codec<Long> LONG_STRING_CODEC = Codec.STRING.xmap(Long::parseLong, Object::toString);
+
+    public static final Codec<BlockPos> BLOCKPOS_LONG_CODEC = LONG_STRING_CODEC.xmap(
             BlockPos::of,
             BlockPos::asLong
     );

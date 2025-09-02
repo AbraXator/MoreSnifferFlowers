@@ -157,6 +157,6 @@ public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> impleme
 
     @Override
     public AABB getRenderBoundingBox(T blockEntity) {
-        return new AABB(blockEntity.center).inflate(3);
+        return new AABB(blockEntity.center).inflate(1);
     }
 }

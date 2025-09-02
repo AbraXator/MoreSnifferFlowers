@@ -14,8 +14,8 @@ public class MultiBlockEntity extends ModBlockEntity {
     public boolean isPlaced; //True once the whole placing logic runs (to prevent updateShape from breaking it early)
     public PreviewMode previewMode = PreviewMode.PLACED;
 
-    public MultiBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+    public MultiBlockEntity(BlockEntityType<?> pType, BlockPos pos, BlockState state) {
+        super(pType, pos, state);
         this.center = this.getBlockPos();
         this.isPlaced = false;
     }
@@ -59,6 +59,10 @@ public class MultiBlockEntity extends ModBlockEntity {
 
     public static void setPlaced(LevelReader level, BlockPos blockPos) {
         if(level.getBlockEntity(blockPos) instanceof MultiBlockEntity entity) entity.setPlaced();
+    }
+
+    public boolean isCenter(){
+        return this.center.equals(getBlockPos());
     }
 
 

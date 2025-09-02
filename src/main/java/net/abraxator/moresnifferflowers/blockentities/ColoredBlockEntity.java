@@ -21,8 +21,8 @@ import java.util.Map;
 public class ColoredBlockEntity extends ModBlockEntity implements Colorable {
     public Dye dye = Dye.EMPTY;
 
-    public ColoredBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+    public ColoredBlockEntity(BlockEntityType<?> pType, BlockPos pos, BlockState state) {
+        super(pType, pos, state);
     }
 
     @Override
@@ -58,24 +58,24 @@ public class ColoredBlockEntity extends ModBlockEntity implements Colorable {
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         dye = Dye.EMPTY;
-        this.dye = new Dye(DyeColor.byId(pTag.getInt("dyeId")), pTag.getInt("amount"));
+        this.dye = new Dye(DyeColor.byId(tag.getInt("dyeId")), tag.getInt("amount"));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-        pTag.putInt("dyeId", dye.color().getId());
-        pTag.putInt("amount", dye.amount());
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putInt("dyeId", dye.color().getId());
+        tag.putInt("amount", dye.amount());
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        super.getUpdateTag(pRegistries);
-        CompoundTag tag = super.getUpdateTag(pRegistries);
-        saveAdditional(tag, pRegistries);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        super.getUpdateTag(registries);
+        CompoundTag tag = super.getUpdateTag(registries);
+        saveAdditional(tag, registries);
         return tag;
     }
 

@@ -41,11 +41,11 @@ public class VivicusSproutingBlock extends Block implements ModCropBlock, Colora
 
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(ModStateProperties.AGE_3);
-        pBuilder.add(ModStateProperties.VIVICUS_CURED);
-        pBuilder.add(ModStateProperties.COLOR);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(ModStateProperties.AGE_3);
+        builder.add(ModStateProperties.VIVICUS_CURED);
+        builder.add(ModStateProperties.COLOR);
     }
 
     @Override
@@ -54,18 +54,18 @@ public class VivicusSproutingBlock extends Block implements ModCropBlock, Colora
     }
 
     @Override
-    protected boolean isRandomlyTicking(BlockState pState) {
-        return super.isRandomlyTicking(pState) || !isMaxAge(pState);
+    protected boolean isRandomlyTicking(BlockState state) {
+        return super.isRandomlyTicking(state) || !isMaxAge(state);
     }
 
-    public void grow(BlockState pState, Level pLevel, BlockPos pPos) {
-        makeGrowOnBonemeal(pLevel, pPos, pState);
+    public void grow(BlockState state, Level level, BlockPos pos) {
+        makeGrowOnBonemeal(level, pos, state);
         
-        if(isMaxAge(pLevel.getBlockState(pPos))) {
-            BoblingEntity boblingEntity = new BoblingEntity(pLevel, pState.getValue(ModStateProperties.VIVICUS_CURED));
-            boblingEntity.setPos(pPos.getCenter());
-            pLevel.addFreshEntity(boblingEntity);
-            pLevel.removeBlock(pPos, false);
+        if(isMaxAge(level.getBlockState(pos))) {
+            BoblingEntity boblingEntity = new BoblingEntity(level, state.getValue(ModStateProperties.VIVICUS_CURED));
+            boblingEntity.setPos(pos.getCenter());
+            level.addFreshEntity(boblingEntity);
+            level.removeBlock(pos, false);
         }
     }
 
@@ -77,34 +77,34 @@ public class VivicusSproutingBlock extends Block implements ModCropBlock, Colora
     }
 
     @Override
-    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        return pFacing == Direction.UP && !pState.canSurvive(pLevel, pCurrentPos)
+    public BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        return pFacing == Direction.UP && !state.canSurvive(level, pCurrentPos)
                 ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+                : super.updateShape(state, pFacing, pFacingState, level, pCurrentPos, pFacingPos);
     }
 
     @Override
-    protected void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(pRandom.nextDouble() <= 0.5D) {
-            grow(pState, pLevel, pPos);
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if(random.nextDouble() <= 0.5D) {
+            grow(state, level, pos);
         }
         
-        super.randomTick(pState, pLevel, pPos, pRandom);
+        super.randomTick(state, level, pos, random);
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
-        return !isMaxAge(pState);
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return !isMaxAge(state);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        grow(pState, pLevel, pPos);
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        grow(state, level, pos);
     }
 
     @Override

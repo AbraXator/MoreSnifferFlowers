@@ -6,8 +6,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import org.jetbrains.annotations.Nullable;
 
 public class GiantCropParticle extends TextureSheetParticle {
-    protected GiantCropParticle(ClientLevel pLevel, double pX, double pY, double pZ) {
-        super(pLevel, pX, pY, pZ);
+    protected GiantCropParticle(ClientLevel level, double pX, double pY, double pZ) {
+        super(level, pX, pY, pZ);
         this.scale(5);
         this.setLifetime(25);
     }
@@ -26,8 +26,8 @@ public class GiantCropParticle extends TextureSheetParticle {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            GiantCropParticle giantCropParticle = new GiantCropParticle(pLevel, pX, pY, pZ);
+        public Particle createParticle(SimpleParticleType pType, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+            GiantCropParticle giantCropParticle = new GiantCropParticle(level, pX, pY, pZ);
             giantCropParticle.pickSprite(spriteSet);
             return giantCropParticle;
         }

@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(SnifferEggBlock.class)
 public class SnifferEggMixin extends Block {
-    public SnifferEggMixin(Properties pProperties) {
-        super(pProperties);
+    public SnifferEggMixin(Properties properties) {
+        super(properties);
     }
     
     @ModifyVariable(method = "onPlace", at = @At(value = "STORE"), ordinal = 0) 

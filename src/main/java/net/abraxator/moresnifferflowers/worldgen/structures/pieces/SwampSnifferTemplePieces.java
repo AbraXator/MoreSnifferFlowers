@@ -48,8 +48,8 @@ public class SwampSnifferTemplePieces {
     );
     public static final BlockPos PIVOT = new BlockPos(5, -2, -5);
     
-    public static void addPieces(StructureTemplateManager pStructureTemplateManager, BlockPos pStartPos, Rotation pRotation, StructurePieceAccessor pPieces, RandomSource pRandom) {
-        int corner_chance = pRandom.nextIntBetweenInclusive(2, 4);
+    public static void addPieces(StructureTemplateManager pStructureTemplateManager, BlockPos pStartPos, Rotation pRotation, StructurePieceAccessor pPieces, RandomSource random) {
+        int corner_chance = random.nextIntBetweenInclusive(2, 4);
         var list = new ArrayList<>(CORNER_PIECES_LOCATION);
         Collections.shuffle(list);
         var sublist = list.subList(0, 4);
@@ -89,20 +89,20 @@ public class SwampSnifferTemplePieces {
         }
 
         @Override
-        protected void addAdditionalSaveData(StructurePieceSerializationContext pContext, CompoundTag pTag) {
-            super.addAdditionalSaveData(pContext, pTag);
-            pTag.putString("Rot", this.placeSettings.getRotation().name());
+        protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
+            super.addAdditionalSaveData(context, tag);
+            tag.putString("Rot", this.placeSettings.getRotation().name());
         }
 
         @Override
-        public void postProcess(WorldGenLevel pLevel, StructureManager pStructureManager, ChunkGenerator pGenerator, RandomSource pRandom, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pPos) {
-            int i = pLevel.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, this.templatePosition.getX(), this.templatePosition.getZ());
+        public void postProcess(WorldGenLevel level, StructureManager pStructureManager, ChunkGenerator pGenerator, RandomSource random, BoundingBox pBox, ChunkPos pChunkPos, BlockPos pos) {
+            int i = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, this.templatePosition.getX(), this.templatePosition.getZ());
             this.templatePosition = this.templatePosition.offset(0, i - 90, 0);
-            super.postProcess(pLevel, pStructureManager, pGenerator, pRandom, pBox, pChunkPos, pPos);
+            super.postProcess(level, pStructureManager, pGenerator, random, pBox, pChunkPos, pos);
         }
 
         @Override
-        protected void handleDataMarker(String pName, BlockPos pPos, ServerLevelAccessor pLevel, RandomSource pRandom, BoundingBox pBox) {}
+        protected void handleDataMarker(String pName, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox pBox) {}
 
         private static StructureProcessor suspiciateGravel() {
             return new CappedProcessor(

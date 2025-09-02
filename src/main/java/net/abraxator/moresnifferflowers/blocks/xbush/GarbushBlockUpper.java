@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
 public class GarbushBlockUpper extends AbstractXBushBlockUpper{
-    public GarbushBlockUpper(Properties pProperties) {
-        super(pProperties);
+    public GarbushBlockUpper(Properties properties) {
+        super(properties);
     }
 
     @Override

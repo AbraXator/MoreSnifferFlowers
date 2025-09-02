@@ -45,7 +45,7 @@ public enum NutritionType {
             SOUR, ModEffects.SLIPPERY,
             SALTY, ModEffects.SALTY,
             SPICY, ModEffects.PANTS_ON_FIRE,
-            SWEET, ModEffects.HARDENED_MOUTH,
+            SWEET, ModEffects.STICKY,
             NEUTRAL, ModEffects.BLAND
     );
 
@@ -53,7 +53,7 @@ public enum NutritionType {
             SOUR, ModEffects.UNTOUCHABLE,
             SALTY,  ModEffects.COMBO_MEAL,
             SPICY,  ModEffects.HARDENED_MOUTH,
-            SWEET,  ModEffects.STICKY,
+            SWEET,  ModEffects.GLUING_TOUCH,
             NEUTRAL, ModEffects.WELL_BALANCED
     );
 }

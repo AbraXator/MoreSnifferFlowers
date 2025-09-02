@@ -14,5 +14,9 @@
     "moresnifferflowers:dawnberry": 60,
     "moresnifferflowers:gloomberry": 60,
     "moresnifferflowers:sour_spice": 100
+  },
+  "neutral":{
+    "moresnifferflowers:dawnberry": 20,
+    "moresnifferflowers:gloomberry": 20
   }
 }

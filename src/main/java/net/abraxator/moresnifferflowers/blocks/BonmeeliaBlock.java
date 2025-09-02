@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.ScheduledTick;
 
 public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
-    public static final MapCodec<BonmeeliaBlock> CODEC = simpleCodec(pProperties -> new BonmeeliaBlock(pProperties, false));
+    public static final MapCodec<BonmeeliaBlock> CODEC = simpleCodec(properties -> new BonmeeliaBlock(properties, false));
     public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);
     public static final BooleanProperty HAS_BOTTLE = BooleanProperty.create("bottle");
@@ -43,8 +43,8 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     
     private final boolean wilted;
 
-    public BonmeeliaBlock(Properties pProperties, boolean wilted) {
-        super(pProperties);
+    public BonmeeliaBlock(Properties properties, boolean wilted) {
+        super(properties);
         registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0).setValue(HAS_JAR, false));
         this.wilted = wilted;
     }
@@ -55,50 +55,50 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(AGE, HAS_BOTTLE, SHOW_HINT, HAS_JAR);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(AGE, HAS_BOTTLE, SHOW_HINT, HAS_JAR);
     }
 
     @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return this.mayPlaceOn(pLevel.getBlockState(pPos.below()));
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return this.mayPlaceOn(level.getBlockState(pos.below()));
     }
 
     @Override
-    public boolean mayPlaceOn(BlockState pState) {
-        return ModCropBlock.super.mayPlaceOn(pState);
+    public boolean mayPlaceOn(BlockState state) {
+        return ModCropBlock.super.mayPlaceOn(state);
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        if(pStack.is(Items.GLASS_BOTTLE) && canInsertBottle(pState)) {
-            return addBottle(pLevel, pPos, pState, pStack, pPlayer);
-        } else if(pStack.is(Items.BONE_MEAL) && pState.getValue(AGE) < 3)  {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(stack.is(Items.GLASS_BOTTLE) && canInsertBottle(state)) {
+            return addBottle(level, pos, state, stack, player);
+        } else if(stack.is(Items.BONE_MEAL) && state.getValue(AGE) < 3)  {
             return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         } 
             
-        return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if (pState.getValue(HAS_BOTTLE) && pState.getValue(AGE) >= MAX_AGE) {
-            return takeJarOfBonmeel(pLevel, pPos, pState);
-        } else if (!pState.getValue(HAS_BOTTLE) && getAge(pState) >= 3) {
-            return hint(pLevel, pPos, pState);
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (state.getValue(HAS_BOTTLE) && state.getValue(AGE) >= MAX_AGE) {
+            return takeJarOfBonmeel(level, pos, state);
+        } else if (!state.getValue(HAS_BOTTLE) && getAge(state) >= 3) {
+            return hint(level, pos, state);
         }
 
         return InteractionResult.PASS;
     }
 
     @Override
-    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        pLevel.setBlock(pPos, pState.setValue(SHOW_HINT, false), 3);
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        level.setBlock(pos, state.setValue(SHOW_HINT, false), 3);
     }
     
     private ItemInteractionResult addBottle(Level level, BlockPos blockPos, BlockState blockState, ItemStack stack, Player player) {
@@ -123,8 +123,8 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     }
     
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
-        return getAge(pState) < 3 || (getAge(pState) >= 3 && pState.getValue(HAS_BOTTLE));
+    public boolean isRandomlyTicking(BlockState state) {
+        return getAge(state) < 3 || (getAge(state) >= 3 && state.getValue(HAS_BOTTLE));
     }
 
     private boolean canInsertBottle(BlockState blockState) {
@@ -132,19 +132,19 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     }
 
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (!isMaxAge(pState)) {
-            pLevel.setBlockAndUpdate(pPos, pState
-                    .setValue(AGE, getAge(pState) + 1)
-                    .setValue(HAS_JAR, (getAge(pState) + 1) == MAX_AGE && pState.getValue(HAS_BOTTLE)));
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!isMaxAge(state)) {
+            level.setBlockAndUpdate(pos, state
+                    .setValue(AGE, getAge(state) + 1)
+                    .setValue(HAS_JAR, (getAge(state) + 1) == MAX_AGE && state.getValue(HAS_BOTTLE)));
             var particle = new DustParticleOptions(wilted ? Vec3.fromRGB24(0xaeff5c).toVector3f() : Vec3.fromRGB24(11162034).toVector3f(), 1F);
-            if (getAge(pState) >= 3) {
-                for (int i = 0; i <= pRandom.nextIntBetweenInclusive(5, 10); i++) {
-                    pLevel.sendParticles(
+            if (getAge(state) >= 3) {
+                for (int i = 0; i <= random.nextIntBetweenInclusive(5, 10); i++) {
+                    level.sendParticles(
                             particle,
-                            pPos.getX() + pRandom.nextDouble(),
-                            pPos.getY() + pRandom.nextDouble(),
-                            pPos.getZ() + pRandom.nextDouble(),
+                            pos.getX() + random.nextDouble(),
+                            pos.getY() + random.nextDouble(),
+                            pos.getZ() + random.nextDouble(),
                             1, 0, 0, 0, 0.3D);
                 }
             }
@@ -157,17 +157,17 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
-        return getAge(pState) < 3;
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return getAge(state) < 3;
     }
 
     @Override
-    public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        makeGrowOnBonemeal(pLevel, pPos, pState);
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        makeGrowOnBonemeal(level, pos, state);
     }
 }

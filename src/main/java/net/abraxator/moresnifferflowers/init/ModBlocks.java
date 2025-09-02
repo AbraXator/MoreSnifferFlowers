@@ -51,7 +51,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> AMBUSH_TOP = registerBlockNoItem("ambush_top", () -> new AmbushBlockUpper(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F)));
     public static final DeferredBlock<Block> GARBUSH_BOTTOM = registerBlockNoItem("garbush_bottom", () -> new GarbushBlockLower(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F)));
     public static final DeferredBlock<Block> GARBUSH_TOP = registerBlockNoItem("garbush_top", () -> new GarbushBlockUpper(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F)));
-    
+
     public static final DeferredBlock<Block> AMBER_BLOCK = registerBlockWithItem("amber_block", () -> new HalfTransparentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(3.0F).noOcclusion()));
     public static final DeferredBlock<Block> CHISELED_AMBER = registerBlockWithItem("chiseled_amber", () -> new HalfTransparentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GLASS).strength(3.0F).noOcclusion()));
     public static final DeferredBlock<Block> CHISELED_AMBER_SLAB = registerBlockWithItem("chiseled_amber_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.CHISELED_AMBER.get())));
@@ -77,20 +77,24 @@ public class ModBlocks {
     public static final DeferredBlock<Block> GIANT_NETHERWART = registerGiantCrop("giant_netherwart", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion().isSuffocating(GiantCropBlock.STATE_PREDICATE).dynamicShape()));
     public static final DeferredBlock<Block> GIANT_BEETROOT = registerGiantCrop("giant_beetroot", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion().isSuffocating(GiantCropBlock.STATE_PREDICATE)));
     public static final DeferredBlock<Block> GIANT_WHEAT = registerGiantCrop("giant_wheat", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion().isSuffocating(GiantCropBlock.STATE_PREDICATE)));
-    
+    public static final DeferredBlock<Block> GIANT_CABBAGE = registerGiantCrop("giant_cabbage", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion().isSuffocating(GiantCropBlock.STATE_PREDICATE)));
+    public static final DeferredBlock<Block> GIANT_ONION = registerGiantCrop("giant_onion", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion().isSuffocating(GiantCropBlock.STATE_PREDICATE)));
+    public static final DeferredBlock<Block> GIANT_TOMATO = registerGiantCrop("giant_tomato", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion().isSuffocating(GiantCropBlock.STATE_PREDICATE)));
+    public static final DeferredBlock<Block> GIANT_RICE = registerGiantCrop("giant_rice", () ->  new GiantCropBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.GIANT_CARROT.get()).noOcclusion().isSuffocating(GiantCropBlock.STATE_PREDICATE)));
+
     public static final DeferredBlock<Block> BONMEELIA = registerBlockNoItem("bonmeelia", () ->  new BonmeeliaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F).lightLevel(value -> 3).noOcclusion(), false));
     public static final DeferredBlock<Block> BONWILTIA = registerBlockNoItem("bonwiltia", () ->  new BonmeeliaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).strength(0.2F).lightLevel(value -> 3).noOcclusion(), true));
     public static final DeferredBlock<Block> BONDRIPIA = registerBlockNoItem("bondripia", () ->  new BondripiaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPORE_BLOSSOM).strength(0.2F).lightLevel(value -> 3).noOcclusion().randomTicks().pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> ACIDRIPIA = registerBlockNoItem("acidripia", () ->  new AciddripiaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPORE_BLOSSOM).strength(0.2F).lightLevel(value -> 3).noOcclusion().randomTicks().pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> BONMEEL_FILLED_CAULDRON = registerBlockNoItem("bonmeel_filled_cauldron", () ->  new ModLayeredCauldronBlock(Biome.Precipitation.NONE, ModCauldronInteractions.BONMEEL, BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)));
     public static final DeferredBlock<Block> ACID_FILLED_CAULDRON = registerBlockNoItem("acid_filled_cauldron", () ->  new ModLayeredCauldronBlock(Biome.Precipitation.NONE, ModCauldronInteractions.ACID, BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)));
-    
+
     public static final DeferredBlock<Block> CROPRESSOR_CENTER = registerBlockNoItem("cropressor_center", () ->  new CropressorBlockBase(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL), CropressorBlockBase.Part.CENTER));
     public static final DeferredBlock<Block> CROPRESSOR_OUT = registerBlockNoItem("cropressor_out", () ->  new CropressorBlockOut(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL), CropressorBlockBase.Part.OUT));
 
     public static final DeferredBlock<Block> REBREWING_STAND_BOTTOM = registerBlockNoItem("rebrewing_stand_bottom", () -> new RebrewingStandBlockBase(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(0.5F).noOcclusion()));
     public static final DeferredBlock<Block> REBREWING_STAND_TOP = registerBlockNoItem("rebrewing_stand_top", () -> new RebrewingStandBlockTop(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(0.5F).noOcclusion()));
-    
+
     public static final DeferredBlock<Block> DYESPRIA_PLANT = registerBlockNoItem("dyespria_plant", () ->  new DyespriaPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<Block> DYESCRAPIA_PLANT = registerBlockNoItem("dyescrapia_plant", () ->  new DyescrapiaPlantBlock(BlockBehaviour.Properties.ofFullCopy(DYESPRIA_PLANT.get())));
 
@@ -146,7 +150,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> VIVICUS_WALL_HANGING_SIGN = registerBlockNoItem("vivicus_wall_hanging_sign", () -> new VivicusHangingWallSignBlock(ModWoodTypes.VIVICUS, BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WALL_HANGING_SIGN)));
 
     public static final DeferredBlock<Block> BOBLING_SACK = registerBlockNoItem("bobling_sack", () -> new BoblingSackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LEAVES)));
-        
+
     public static final DeferredBlock<Block> POTTED_DYESPRIA = registerBlockNoItem("potted_dyespria", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, DYESPRIA_PLANT, BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT)));
     public static final DeferredBlock<Block> POTTED_CORRUPTED_SAPLING = registerBlockNoItem("potted_corrupted_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, CORRUPTED_SAPLING, BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT)));
     public static final DeferredBlock<Block> POTTED_VIVICUS_SAPLING = registerBlockNoItem("potted_vivicus_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, VIVICUS_SAPLING, BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT)));
@@ -157,6 +161,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SALTY_CLUMP = registerBlockNoItem("salty_clump", () -> new SaltyClumpBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SMALL_AMETHYST_BUD).noOcclusion().sound(SoundType.SAND).pushReaction(PushReaction.DESTROY).isSuffocating(ModBlocks::never).noCollission()));
     public static final DeferredBlock<Block> DRIPSALT = registerBlockNoItem("dripsalt", () -> new DripsaltBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POINTED_DRIPSTONE)));
     public static final DeferredBlock<Block> SOUR_PUDDLE = registerBlockNoItem("sour_puddle", () -> new SourPuddleBlock(BlockBehaviour.Properties.ofFullCopy(ModBlocks.SALTY_CLUMP.get()).sound(SoundType.MUD).requiresCorrectToolForDrops().friction(0.98F).noOcclusion().pushReaction(PushReaction.DESTROY).isSuffocating(ModBlocks::never)));
+
+    public static final DeferredBlock<Block> CROPRESSED_NETHERWART = registerBlockNoItem("cropressed_netherwart", () -> new Block(BlockBehaviour.Properties.of().strength(1f).sound(SoundType.HARD_CROP).noOcclusion().pushReaction(PushReaction.DESTROY).isSuffocating(ModBlocks::never)));
 
     private static <T extends Block> DeferredBlock<T> registerBlockNoItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

@@ -97,8 +97,8 @@ public class SaltyClumpBlock extends Block implements SimpleWaterloggedBlock {
         return canSurvive(state, level, pos) ? state : Blocks.AIR.defaultBlockState();
     }
 
-    public boolean isFree(BlockState pState) {
-        return pState.isAir() || pState.is(BlockTags.FIRE) || pState.liquid() || pState.canBeReplaced();
+    public boolean isFree(BlockState state) {
+        return state.isAir() || state.is(BlockTags.FIRE) || state.liquid() || state.canBeReplaced();
     }
 
     public FluidState getFluidState(BlockState state) {

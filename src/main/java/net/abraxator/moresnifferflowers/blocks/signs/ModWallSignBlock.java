@@ -14,7 +14,7 @@ public class ModWallSignBlock extends WallSignBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-         return new ModSignBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+         return new ModSignBlockEntity(pos, state);
     }
 }

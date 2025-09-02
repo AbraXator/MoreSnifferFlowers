@@ -15,7 +15,11 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -27,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -38,9 +43,10 @@ import java.util.stream.Stream;
 public class BondripiaBlock extends AbstractMultiBlock implements ModEntityBlock, ModCropBlock, Corruptable, PreviewableMultiblock, CorruptableMultiblock {
     public BondripiaBlock(Properties p_49795_) {
         super(p_49795_);
-        this.defaultBlockState()
+        this.registerDefaultState(defaultBlockState()
                 .setValue(ModStateProperties.CENTER, false)
-                .setValue(getAgeProperty(), 0);
+                .setValue(getAgeProperty(), 0)
+                .setValue(ModStateProperties.SHEARED, false));
     }
     private static final VoxelShape SHAPE = Block.box(2.0, 13.0, 2.0, 14.0, 16.0, 14.0);
     private static final VoxelShape SHAPE_CENTER = Block.box(0.0, 13.0, 0.0, 16.0, 16.0, 16.0);
@@ -68,8 +74,8 @@ public class BondripiaBlock extends AbstractMultiBlock implements ModEntityBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(ModStateProperties.CENTER, getAgeProperty());
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(ModStateProperties.CENTER, getAgeProperty(), ModStateProperties.SHEARED);
     }
 
     @Override
@@ -82,14 +88,14 @@ public class BondripiaBlock extends AbstractMultiBlock implements ModEntityBlock
     }
     
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
+    public boolean isRandomlyTicking(BlockState state) {
         return true;
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return tickerHelper(pLevel);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> pBlockEntityType) {
+        return tickerHelper(level);
     }
 
     @Override
@@ -131,35 +137,36 @@ public class BondripiaBlock extends AbstractMultiBlock implements ModEntityBlock
 
 
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(!isMaxAge(pState)) {
-            grow(pLevel, pPos, pState);
-        } else if (pRandom.nextDouble() <= 0.33D && pLevel.getBlockEntity(pPos) instanceof BondripiaBlockEntity entity) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (state.getValue(ModStateProperties.SHEARED)) return;
+        if(!isMaxAge(state)) {
+            grow(level, pos, state);
+        } else if (random.nextDouble() <= 0.33D && level.getBlockEntity(pos) instanceof BondripiaBlockEntity entity) {
             for (BlockPos blockPos : BlockPos.betweenClosed(entity.center.below().north().east(), entity.center.below().south().west())) {
                 BlockPos currentPos = blockPos;
 
-                    int y = pLevel.getRandom().nextIntBetweenInclusive(1, 11);
+                    int y = level.getRandom().nextIntBetweenInclusive(1, 11);
                     currentPos = currentPos.below(y);
 
-                    if (isBondripable(pLevel, currentPos)) {
-                        BlockState blockState = pLevel.getBlockState(currentPos);
+                    if (isBondripable(level, currentPos)) {
+                        BlockState blockState = level.getBlockState(currentPos);
 
-                        if (blockState.getBlock() instanceof BonemealableBlock bonemealable && bonemealable.isValidBonemealTarget(pLevel, currentPos, blockState)) {
-                            bonemealable.performBonemeal(pLevel, pRandom, currentPos, blockState);
+                        if (blockState.getBlock() instanceof BonemealableBlock bonemealable && bonemealable.isValidBonemealTarget(level, currentPos, blockState)) {
+                            bonemealable.performBonemeal(level, random, currentPos, blockState);
                             break;
                         }
                         
                         if (blockState.is(ModTags.ModBlockTags.BONMEELABLE)) {
-                            Bonmeelable bonmeelable = ((Bonmeelable) Bonmeelable.MAP.get(blockState.getBlock()));
-                            if (bonmeelable.canBonmeel(currentPos, blockState, pLevel)) {
-                                bonmeelable.performBonmeel(currentPos, blockState, pLevel, null);
+                            Bonmeelable bonmeelable = (Bonmeelable) GiantCropBlock.getCropMap().get(blockState.getBlock()).getA();
+                            if (bonmeelable.canBonmeel(currentPos, blockState, level)) {
+                                bonmeelable.performBonmeel(currentPos, blockState, level, null);
                                 break;
                             }
                         }
 
 
-                    } else if (pLevel.getBlockState(currentPos).getBlock() instanceof AbstractCauldronBlock block) {
-                        fillCauldron(pLevel, currentPos, pLevel.getBlockState(currentPos));
+                    } else if (level.getBlockState(currentPos).getBlock() instanceof AbstractCauldronBlock block) {
+                        fillCauldron(level, currentPos, level.getBlockState(currentPos));
                     }
 
 
@@ -175,6 +182,14 @@ public class BondripiaBlock extends AbstractMultiBlock implements ModEntityBlock
             level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(blockstate));
             level.levelEvent(1047, blockPos, 0);
         }
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (shear(player, level, pos, hand)){
+            return ItemInteractionResult.SUCCESS;
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Override
@@ -197,8 +212,8 @@ public class BondripiaBlock extends AbstractMultiBlock implements ModEntityBlock
     
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new BondripiaBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BondripiaBlockEntity(pos, state);
     }
 
     @Override
@@ -212,13 +227,13 @@ public class BondripiaBlock extends AbstractMultiBlock implements ModEntityBlock
     }
 
     @Override
-    public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        grow(pLevel, pPos, pState);
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        grow(level, pos, state);
     }
 
     @Override

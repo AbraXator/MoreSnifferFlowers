@@ -18,8 +18,8 @@ import java.util.function.BiConsumer;
 
 public record ModArcheologyLoot(HolderLookup.Provider registries) implements LootTableSubProvider {
     @Override
-    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> pOutput) {
-        pOutput.accept(
+    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+        output.accept(
                 ModBuiltinLoottables.SNOW_SNIFFER_TEMPLE, //5 rolls
                 LootTable.lootTable()
                         .withPool(
@@ -44,7 +44,7 @@ public record ModArcheologyLoot(HolderLookup.Provider registries) implements Loo
                                         )
                         )
         );
-        pOutput.accept(
+        output.accept(
                 ModBuiltinLoottables.DESSERT_SNIFFER_TEMPLE, //9 rolls
                 LootTable.lootTable()
                         .withPool(
@@ -69,7 +69,7 @@ public record ModArcheologyLoot(HolderLookup.Provider registries) implements Loo
                                         )
                         )
         );
-        pOutput.accept(
+        output.accept(
                 ModBuiltinLoottables.SWAMP_SNIFFER_TEMPLE, //5 rolls
                 LootTable.lootTable()
                         .withPool(
@@ -94,7 +94,7 @@ public record ModArcheologyLoot(HolderLookup.Provider registries) implements Loo
                                         )
                         )
         );
-        pOutput.accept(
+        output.accept(
                 ModBuiltinLoottables.SNIFFER_EGG, //1 roll (guaranteed)
                 LootTable.lootTable()
                         .withPool(

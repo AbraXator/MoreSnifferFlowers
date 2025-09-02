@@ -57,40 +57,40 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DyespriaItem extends BlockItem implements Colorable {
-    public DyespriaItem(Properties pProperties) {
-        super(ModBlocks.DYESPRIA_PLANT.get(), pProperties);
+    public DyespriaItem(Properties properties) {
+        super(ModBlocks.DYESPRIA_PLANT.get(), properties);
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        Player player = pContext.getPlayer();
-        Level level = pContext.getLevel();
-        BlockPos blockPos = pContext.getClickedPos();
+    public InteractionResult useOn(UseOnContext context) {
+        Player player = context.getPlayer();
+        Level level = context.getLevel();
+        BlockPos blockPos = context.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
-        ItemStack stack = pContext.getItemInHand();
+        ItemStack stack = context.getItemInHand();
         Dye dye = Dye.getDyeFromDyespria(stack);
 
-        if (pContext.getHand() != InteractionHand.MAIN_HAND) {
+        if (context.getHand() != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
 
         if (checkDyedBlock(blockState) || blockState.getBlock() instanceof Colorable && !dye.isEmpty() || (BlockPatternCapability.hasPattern(blockPos, level) && !player.isCrouching())) {
             DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
             AtomicBoolean canContinueDyeing = new AtomicBoolean(true);
-            DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, getMatchTag(blockState), level, pContext.getClickedFace(), player.isCrouching());
+            DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, getMatchTag(blockState), level, context.getClickedFace(), player.isCrouching());
             Set<BlockPos> set = dyespriaMode.getSelector().apply(dyespriaSelector);
             set.stream().sorted(new EntityDistanceComparator(blockPos)).takeWhile(t -> canContinueDyeing.get()).forEach(blockPos1 -> {
                 var state = level.getBlockState(blockPos1);
 
                 if(!Dye.getDyeFromDyespria(stack).isEmpty()) {
-                    colorOne(stack, level, blockPos1, state, pContext.getClickedFace(), player, BlockPatternCapability.hasPattern(blockPos, level));
+                    colorOne(stack, level, blockPos1, state, context.getClickedFace(), player, BlockPatternCapability.hasPattern(blockPos, level));
                 } else canContinueDyeing.set(false);
             });
 
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        return handlePlacement(blockPos, level, player, pContext.getHand(), stack);
+        return handlePlacement(blockPos, level, player, context.getHand(), stack);
     }
 
     private @Nullable TagKey<Block> getMatchTag(BlockState blockState) {
@@ -115,8 +115,8 @@ public class DyespriaItem extends BlockItem implements Colorable {
 
     @Nullable
     @Override
-    protected BlockState getPlacementState(BlockPlaceContext pContext) {
-        var state = super.getPlacementState(pContext);
+    protected BlockState getPlacementState(BlockPlaceContext context) {
+        var state = super.getPlacementState(context);
         return state == null ? null : state.setValue(ModStateProperties.AGE_3, 3);
     }
 
@@ -264,16 +264,16 @@ public class DyespriaItem extends BlockItem implements Colorable {
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
-        if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
-            if(pOther.isEmpty()) {
-                pAccess.set(remove(pStack));
-                playRemoveOneSound(pPlayer);
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+        if(action == ClickAction.SECONDARY && slot.allowModification(player)) {
+            if(other.isEmpty()) {
+                access.set(remove(stack));
+                playRemoveOneSound(player);
             } else {
-                ItemStack itemStack = add(pStack, Dye.getDyeFromDyespria(pStack), pOther);
-                pAccess.set(itemStack);
+                ItemStack itemStack = add(stack, Dye.getDyeFromDyespria(stack), other);
+                access.set(itemStack);
                 if(itemStack.isEmpty()) {
-                    this.playInsertSound(pPlayer);
+                    this.playInsertSound(player);
                 }
             }
             return true;
@@ -286,31 +286,33 @@ public class DyespriaItem extends BlockItem implements Colorable {
         Dye.setDyeToDyeHolderStack(destinationStack, dye, amount);
     }
 
-    private ItemStack remove(ItemStack pStack) {
-        var dye = Dye.getDyeFromDyespria(pStack);
-        int uses = getDyespriaUses(pStack);
+    private ItemStack remove(ItemStack stack) {
+        var dye = Dye.getDyeFromDyespria(stack);
+        int uses = getDyespriaUses(stack);
         
         if(!dye.isEmpty()) {
-            Dye.setDyeColorToStack(pStack, DyeColor.WHITE, 0);
-            return Dye.stackFromDye(new Dye(dye.color(), dye.amount() - (uses == 4 ? 0 : 1)));
+            Dye.setDyeColorToStack(stack, DyeColor.WHITE, 0);
+            ItemStack returnStack = Dye.stackFromDye(new Dye(dye.color(), dye.amount() - (uses == 4 ? 0 : 1)));
+            setDyespriaUses(stack, 4);
+            return returnStack;
         } else {
             return ItemStack.EMPTY;
         }
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pTooltipFlag) {
-        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
-        Dye dye = Dye.getDyeFromDyespria(pStack);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, components, tooltipFlag);
+        Dye dye = Dye.getDyeFromDyespria(stack);
         Component usage = Component.translatableWithFallback("tooltip.dyespria.usage", "Right click with dye to insert \nRight click caulorflower to repaint \nSneak to apply to the whole column \n").withStyle(ChatFormatting.GOLD);
         var usageComponents = Arrays.stream(usage.getString().split("\n", -1))
                 .filter(s -> !s.isEmpty())
                 .map(String::trim);
 
-        usageComponents.forEach(s -> pTooltipComponents.add(Component.literal(s).withStyle(ChatFormatting.GOLD)));
-        pTooltipComponents.add(Component.empty());
-        pTooltipComponents.add(getCurrentModeComponent(getCurrentMode(pStack)));
-        pTooltipComponents.add(Component.empty());
+        usageComponents.forEach(s -> components.add(Component.literal(s).withStyle(ChatFormatting.GOLD)));
+        components.add(Component.empty());
+        components.add(getCurrentModeComponent(getCurrentMode(stack)));
+        components.add(Component.empty());
         
         if(!dye.isEmpty()) {
             var name = Component
@@ -321,9 +323,9 @@ public class DyespriaItem extends BlockItem implements Colorable {
                             .replaceAll("_", " ")))
                     .withStyle(Style.EMPTY
                             .withColor(Dye.colorForDye(this, dye.color())));
-            pTooltipComponents.add(name);
+            components.add(name);
         } else {
-            pTooltipComponents.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
+            components.add(Component.translatableWithFallback("tooltip.dyespria.empty", "Empty").withStyle(ChatFormatting.GRAY));
         }
     }
 

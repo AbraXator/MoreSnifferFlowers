@@ -11,8 +11,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import java.util.concurrent.CompletableFuture;
 
 public class ModPaintingTagsProvider extends TagsProvider<PaintingVariant> {
-    public ModPaintingTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
-        super(pOutput, Registries.PAINTING_VARIANT, pLookupProvider, MoreSnifferFlowers.MOD_ID, existingFileHelper);
+    public ModPaintingTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
+        super(output, Registries.PAINTING_VARIANT, pLookupProvider, MoreSnifferFlowers.MOD_ID, existingFileHelper);
     }
 
     @Override

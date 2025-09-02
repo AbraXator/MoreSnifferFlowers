@@ -21,10 +21,10 @@ public class VivicusRotatedPillarBlock extends RotatedPillarBlock implements Col
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(ModStateProperties.COLOR);
-        pBuilder.add(ModStateProperties.VIVICUS_CURED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(ModStateProperties.COLOR);
+        builder.add(ModStateProperties.VIVICUS_CURED);
     }
 
     @Override

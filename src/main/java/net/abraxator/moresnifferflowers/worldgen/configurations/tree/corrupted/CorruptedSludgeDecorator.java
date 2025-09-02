@@ -44,11 +44,11 @@ public class CorruptedSludgeDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(TreeDecorator.Context pContext) {
+    public void place(TreeDecorator.Context context) {
         Set<BlockPos> set = new HashSet<>();
-        RandomSource randomsource = pContext.random();
+        RandomSource randomsource = context.random();
 
-        for (BlockPos blockpos : Util.shuffledCopy(pContext.leaves(), randomsource)) {
+        for (BlockPos blockpos : Util.shuffledCopy(context.leaves(), randomsource)) {
             Direction direction = Util.getRandom(this.directions, randomsource);
             BlockPos blockpos1 = blockpos.relative(direction);
             if (!set.contains(blockpos1) && randomsource.nextFloat() < this.probability) {
@@ -59,7 +59,7 @@ public class CorruptedSludgeDecorator extends TreeDecorator {
                     set.add(blockpos4.immutable());
                 }
 
-                pContext.setBlock(blockpos1, this.blockProvider.getState(randomsource, blockpos1));
+                context.setBlock(blockpos1, this.blockProvider.getState(randomsource, blockpos1));
             }
         }
     }

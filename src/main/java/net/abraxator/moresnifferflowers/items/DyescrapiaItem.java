@@ -34,17 +34,17 @@ import java.util.List;
 import static net.abraxator.moresnifferflowers.items.DyespriaItem.copyAllBlockStateProperties;
 
 public class DyescrapiaItem extends BlockItem {
-    public DyescrapiaItem(Properties pProperties) {
-        super(ModBlocks.DYESCRAPIA_PLANT.get(), pProperties);
+    public DyescrapiaItem(Properties properties) {
+        super(ModBlocks.DYESCRAPIA_PLANT.get(), properties);
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        var pos = pContext.getClickedPos();
-        var state = pContext.getLevel().getBlockState(pos);
-        var player = pContext.getPlayer();
-        var level = pContext.getLevel();
-        var stack = pContext.getItemInHand();
+    public InteractionResult useOn(UseOnContext context) {
+        var pos = context.getClickedPos();
+        var state = context.getLevel().getBlockState(pos);
+        var player = context.getPlayer();
+        var level = context.getLevel();
+        var stack = context.getItemInHand();
         int uses = getDyescrapiaUses(stack) + 1;
 
 
@@ -71,7 +71,7 @@ public class DyescrapiaItem extends BlockItem {
                     uses = 0;
                 }
 
-                stack.set(ModDataComponents.COLOR, uses);
+                stack.set(ModDataComponents.USES, uses);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }            
         } else if (state.is(ModTags.ModBlockTags.DYED)){
@@ -117,14 +117,14 @@ public class DyescrapiaItem extends BlockItem {
                     uses = 0;
                 }
 
-                stack.set(ModDataComponents.COLOR, uses);
+                stack.set(ModDataComponents.USES, uses);
                 return InteractionResult.sidedSuccess(level.isClientSide);
 
             } else return InteractionResult.FAIL;
 
         }
         
-        return handlePlacement(pos, level, player, pContext.getHand(), pContext.getItemInHand());
+        return handlePlacement(pos, level, player, context.getHand(), context.getItemInHand());
     }
 
     private InteractionResult handlePlacement(BlockPos blockPos, Level level, Player player, InteractionHand hand, ItemStack stack) {
@@ -160,7 +160,7 @@ public class DyescrapiaItem extends BlockItem {
     }
 
     public static int getDyescrapiaUses(ItemStack stack) {
-        return stack.getOrDefault(ModDataComponents.COLOR, 0);
+        return stack.getOrDefault(ModDataComponents.USES, 0);
     }
 
     @Override

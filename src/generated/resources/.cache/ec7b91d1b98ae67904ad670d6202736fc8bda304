@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-14T17:18:35.255019	Item Models: moresnifferflowers
+// 1.21.1	2025-09-01T14:35:52.1603433	Item Models: moresnifferflowers
 5418fa48df84ad2470f45e39a59acb51f6e0ebc9 assets/moresnifferflowers/models/item/block_pattern_bricks.json
 0f2bc9ad5c22e3ccb52ed75b6ecc0486adda28c7 assets/moresnifferflowers/models/item/block_pattern_bubbles.json
 3653dd794ff8e37d02d363ec04bc102e74b84950 assets/moresnifferflowers/models/item/block_pattern_clouds.json
@@ -22,6 +22,10 @@ a19214028a56cefedc707596acd9d67ea311ecae assets/moresnifferflowers/models/item/c
 c9dc88fb63a14bbf03e67f479f42f829c03800f2 assets/moresnifferflowers/models/item/corrupted_sign.json
 4e32e388116a9589516f35c1219623c3f3faa765 assets/moresnifferflowers/models/item/debug_flower.json
 880eb33bc0a6a424f5275cd5896252b30a47bc95 assets/moresnifferflowers/models/item/fiery_spice.json
+4e1e8c1a2cb0cb6b77b844492b2115c255020739 assets/moresnifferflowers/models/item/giant_cabbage.json
+cd68c5a83d97cdd4ea9c0ec9a458cc81e9c4aeb8 assets/moresnifferflowers/models/item/giant_onion.json
+dd29e1273afed3f13200ac5f61fc8303f485be8c assets/moresnifferflowers/models/item/giant_rice.json
+3773c9a06174ff3fb9bc6d6f9939a0ab6fd451fb assets/moresnifferflowers/models/item/giant_tomato.json
 fc69ae10a540b7cd4cc9b26af9f28fa20c25f7d9 assets/moresnifferflowers/models/item/patternflower_seeds.json
 23564fceb4ae2678ecbdcad8bdc358d7bd45ad51 assets/moresnifferflowers/models/item/placeholder.json
 cd8c2b1a74b66fec9c46844ce0f2a7fc7d4ec8fd assets/moresnifferflowers/models/item/salty_spice.json

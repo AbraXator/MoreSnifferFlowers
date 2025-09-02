@@ -7,8 +7,8 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class VivicusSignBlockEntity extends SignBlockEntity {
-    public VivicusSignBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.VIVICUS_SIGN.get(), pPos, pBlockState);
+    public VivicusSignBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.VIVICUS_SIGN.get(), pos, state);
     }
         @Override
      public BlockEntityType<?> getType() {

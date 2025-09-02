@@ -21,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.client.model.pipeline.VertexConsumerWrapper;
 import org.joml.Quaternionf;
 
 import java.util.HashMap;
@@ -29,29 +30,30 @@ import java.util.function.Function;
 
 public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implements BlockEntityRenderer<T>, MultiblockRender {
 	private final Map<Block, ModelPart> modelPartMap = new HashMap<>();
-	private final ModelPart carrot;
-	private final ModelPart potato;
-	private final ModelPart netherwart;
-	private final ModelPart beetroot;
-	private final ModelPart wheat;
 
-	public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
-        ModelPart carrotModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_CARROT);
-		this.carrot = carrotModelPart.getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_CARROT.get(), this.carrot);
-		ModelPart potatoModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_POTATO);
-		this.potato = potatoModelPart.getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_POTATO.get(), this.potato);
-		ModelPart netherwartModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART);
-		this.netherwart = netherwartModelPart.getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_NETHERWART.get(), this.netherwart);
-		ModelPart beetrootModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_BEETROOT);
-		this.beetroot = beetrootModelPart.getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_BEETROOT.get(), this.beetroot);
-		ModelPart wheatModelPart = pContext.bakeLayer(ModModelLayerLocations.GIANT_WHEAT);
-		this.wheat = wheatModelPart.getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_WHEAT.get(), this.wheat);
-	}
+
+    public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+        ModelPart carrot = context.bakeLayer(ModModelLayerLocations.GIANT_CARROT).getChild("root");
+		this.modelPartMap.put(ModBlocks.GIANT_CARROT.get(), carrot);
+        ModelPart potato = context.bakeLayer(ModModelLayerLocations.GIANT_POTATO).getChild("root");
+		this.modelPartMap.put(ModBlocks.GIANT_POTATO.get(), potato);
+        ModelPart netherwart = context.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART).getChild("root");
+		this.modelPartMap.put(ModBlocks.GIANT_NETHERWART.get(), netherwart);
+        ModelPart beetroot = context.bakeLayer(ModModelLayerLocations.GIANT_BEETROOT).getChild("root");
+		this.modelPartMap.put(ModBlocks.GIANT_BEETROOT.get(), beetroot);
+        ModelPart wheat = context.bakeLayer(ModModelLayerLocations.GIANT_WHEAT).getChild("root");
+		this.modelPartMap.put(ModBlocks.GIANT_WHEAT.get(), wheat);
+
+        ModelPart onion = context.bakeLayer(ModModelLayerLocations.GIANT_ONION).getChild("root");
+        this.modelPartMap.put(ModBlocks.GIANT_ONION.get(), onion);
+        ModelPart tomato = context.bakeLayer(ModModelLayerLocations.GIANT_TOMATO).getChild("root");
+        this.modelPartMap.put(ModBlocks.GIANT_TOMATO.get(), tomato);
+        ModelPart cabbage = context.bakeLayer(ModModelLayerLocations.GIANT_CABBAGE).getChild("root");
+        this.modelPartMap.put(ModBlocks.GIANT_CABBAGE.get(), cabbage);
+        ModelPart rice = context.bakeLayer(ModModelLayerLocations.GIANT_RICE).getChild("root");
+        this.modelPartMap.put(ModBlocks.GIANT_RICE.get(), rice);
+
+    }
 
 	@Override
 	public void render(GiantCropBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
@@ -82,7 +84,18 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 			poseStack.translate(0.5, yCord, 0.5);
 			poseStack.scale(1, yScale, 1);
 			poseStack.mulPose(new Quaternionf().rotateX((float) (Math.PI)));
-			render(modelPartMap.get(blockState.getBlock()), poseStack, vertexConsumer, packedLight, packedOverlay, blockEntity.previewMode);
+
+            if (blockState.is(ModTags.ModBlockTags.NO_SHADING)) {
+                vertexConsumer = new VertexConsumerWrapper(vertexConsumer) {
+                    @Override
+                    public VertexConsumer setNormal(float x, float y, float z) {
+                        return super.setNormal(1, 1, 1);
+                    }
+                };
+            }
+
+            render(modelPartMap.get(blockState.getBlock()), poseStack, vertexConsumer, packedLight, packedOverlay, blockEntity.previewMode);
+
 			poseStack.popPose();
 		}
 	}
@@ -94,6 +107,6 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 
 	@Override
 	public AABB getRenderBoundingBox(T blockEntity) {
-		return new AABB(blockEntity.center).inflate(4);
+		return new AABB(blockEntity.center).inflate(1.1);
 	}
 }

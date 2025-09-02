@@ -32,8 +32,8 @@ public class CorruptedWartBlock extends BushBlock {
     private static final VoxelShape SHAPE = Block.box(4, 0,  4, 12, 5, 12);
 
     @Override
-    public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
-        explode(pPos, pLevel);
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity pEntity) {
+        explode(pos, level);
     }
 
     @Override

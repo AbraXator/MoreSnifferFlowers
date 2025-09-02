@@ -56,13 +56,13 @@ public class BoblingEntity extends PathfinderMob {
     private int plantingProgress = 0;
     private static final int MAX_PLANTING_PROGRESS = 35;
 
-    public BoblingEntity(EntityType<? extends BoblingEntity> pEntityType, Level pLevel, boolean type) {
-        super(pEntityType, pLevel);
+    public BoblingEntity(EntityType<? extends BoblingEntity> entityType, Level level, boolean type) {
+        super(entityType, level);
         setCured(type);
     }
 
-    public BoblingEntity(EntityType<? extends BoblingEntity> pEntityType, Level pLevel) {
-        this(pEntityType, pLevel, false);
+    public BoblingEntity(EntityType<? extends BoblingEntity> entityType, Level level) {
+        this(entityType, level, false);
     }
 
     public BoblingEntity(Level level, boolean type) {
@@ -103,32 +103,32 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("cured", this.isCured());
-        pCompound.putBoolean("running", this.isRunning());
-        pCompound.putBoolean("planting", this.isPlanting());
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("cured", this.isCured());
+        tag.putBoolean("running", this.isRunning());
+        tag.putBoolean("planting", this.isPlanting());
         if (getWantedPos() != null) {
-            pCompound.put("wanted_pos", NbtUtils.writeBlockPos(getWantedPos()));
+            tag.put("wanted_pos", NbtUtils.writeBlockPos(getWantedPos()));
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        this.setCured(pCompound.getBoolean("cured"));
-        this.setRunning(pCompound.getBoolean("running"));
-        this.setPlanting(pCompound.getBoolean("planting"));
-        this.setWantedPos(NbtUtils.readBlockPos(pCompound, "wanted_pos"));
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setCured(tag.getBoolean("cured"));
+        this.setRunning(tag.getBoolean("running"));
+        this.setPlanting(tag.getBoolean("planting"));
+        this.setWantedPos(NbtUtils.readBlockPos(tag, "wanted_pos"));
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
-        super.defineSynchedData(pBuilder);
-        pBuilder.define(DATA_CURED, false);
-        pBuilder.define(DATA_RUNNING, false);
-        pBuilder.define(DATA_WANTED_POS, Optional.empty());
-        pBuilder.define(DATA_PLANTING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_CURED, false);
+        builder.define(DATA_RUNNING, false);
+        builder.define(DATA_WANTED_POS, Optional.empty());
+        builder.define(DATA_PLANTING, false);
     }
 
     @Override
@@ -147,14 +147,14 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     @Override
-    protected void actuallyHurt(DamageSource pDamageSource, float pDamageAmount) {
-        super.actuallyHurt(pDamageSource, pDamageAmount);
-        if (this.isRunning() && pDamageSource.is(DamageTypes.PLAYER_ATTACK) && !isCured()) {
+    protected void actuallyHurt(DamageSource damageSource, float pDamageAmount) {
+        super.actuallyHurt(damageSource, pDamageAmount);
+        if (this.isRunning() && damageSource.is(DamageTypes.PLAYER_ATTACK) && !isCured()) {
             var r = 1.0;
             var checkR = 1.5;
             Set<Vec3> set = new HashSet<>();
 
-            if (pDamageSource.getEntity() instanceof ServerPlayer serverPlayer) {
+            if (damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
                 ModAdvancementCritters.BOBLING_ATTACK.get().trigger(serverPlayer);
             }
 
@@ -166,7 +166,7 @@ public class BoblingEntity extends PathfinderMob {
 
         }
 
-        if (!this.isRunning() && pDamageSource.is(DamageTypes.PLAYER_ATTACK)) {
+        if (!this.isRunning() && damageSource.is(DamageTypes.PLAYER_ATTACK)) {
             this.setRunning(true);
         }
     }
@@ -264,8 +264,8 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
         
         if (itemStack.is(ModItems.VIVICUS_ANTIDOTE) && !isCured()) {
             this.setCured(true);
@@ -276,7 +276,7 @@ public class BoblingEntity extends PathfinderMob {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        return super.mobInteract(pPlayer, pHand);
+        return super.mobInteract(player, hand);
     }
 
     private void particles(ParticleOptions particle) {

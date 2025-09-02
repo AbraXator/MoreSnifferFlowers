@@ -13,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class JarOfAcidItem extends Item implements ProjectileItem {
-    public JarOfAcidItem(Properties pProperties) {
-        super(pProperties);
+    public JarOfAcidItem(Properties properties) {
+        super(properties);
     }
 
     @Override

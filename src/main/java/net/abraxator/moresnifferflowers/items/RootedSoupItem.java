@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
+import net.abraxator.moresnifferflowers.capability.NutritionCapability;
 import net.abraxator.moresnifferflowers.client.ModColorHandler;
 import net.abraxator.moresnifferflowers.components.RootedSoup;
 import net.abraxator.moresnifferflowers.init.ModDataAttachments;
@@ -57,6 +58,9 @@ public class RootedSoupItem extends Item {
                 int dur = effect.length();
                 int amp = effect.amplifier();
                 boolean positive = effect.isPositive();
+
+                player.getData(ModDataAttachments.NUTRITION).unlockedEffects.add(NutritionCapability.idFromNutrition(NutritionType.byId(id), positive));
+
                 Holder<MobEffect> mobEffect = NutritionType.getEffect(NutritionType.byId(id), positive);
                 if (mobEffect != null) {
                     effects.add(new MobEffectInstance(mobEffect, dur, amp));

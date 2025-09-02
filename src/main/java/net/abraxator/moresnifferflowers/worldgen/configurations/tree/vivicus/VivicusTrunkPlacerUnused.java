@@ -63,36 +63,36 @@ public class VivicusTrunkPlacerUnused extends TrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, int pFreeTreeHeight, BlockPos pPos, TreeConfiguration pConfig) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, int pFreeTreeHeight, BlockPos pos, TreeConfiguration config) {
         List<FoliagePlacer.FoliageAttachment> list = Lists.newArrayList();
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
         List<Direction> directions = new ArrayList<>(Direction.Plane.HORIZONTAL.stream().toList());
         
         for (int i = 0; i < pFreeTreeHeight; i++) {
-            int j = pPos.getY() + i;
+            int j = pos.getY() + i;
 
             if(i == 0) {
-                var intchance = this.stumpChance.sample(pRandom);
+                var intchance = this.stumpChance.sample(random);
                 for(int stump = 0; stump < intchance; stump++) {
                     Collections.shuffle(directions);
                     Direction stumpDir = directions.getFirst();
-                    this.placeLog(pLevel, pBlockSetter, pRandom, pPos.relative(stumpDir), pConfig);
+                    this.placeLog(level, blockSetter, random, pos.relative(stumpDir), config);
                     directions.removeFirst();
                 }
             }
             
-            if (this.placeLog(pLevel, pBlockSetter, pRandom, blockpos$mutableblockpos.set(pPos.getX(), j, pPos.getZ()), pConfig)
+            if (this.placeLog(level, blockSetter, random, blockpos$mutableblockpos.set(pos.getX(), j, pos.getZ()), config)
                     && i < pFreeTreeHeight - 1
-                    && pRandom.nextFloat() < this.placeBranchPerLogProbability) {
-                Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(pRandom);
-                int k = this.extraBranchLength.sample(pRandom);
-                int l = Math.max(0, k - this.extraBranchLength.sample(pRandom) - 1);
-                int i1 = this.extraBranchSteps.sample(pRandom);
-                this.placeBranch(pLevel, pBlockSetter, pRandom, pFreeTreeHeight, pConfig, list, blockpos$mutableblockpos, j, direction, l, i1);
+                    && random.nextFloat() < this.placeBranchPerLogProbability) {
+                Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                int k = this.extraBranchLength.sample(random);
+                int l = Math.max(0, k - this.extraBranchLength.sample(random) - 1);
+                int i1 = this.extraBranchSteps.sample(random);
+                this.placeBranch(level, blockSetter, random, pFreeTreeHeight, config, list, blockpos$mutableblockpos, j, direction, l, i1);
             }
 
             if (i == pFreeTreeHeight - 1) {
-                list.add(new FoliagePlacer.FoliageAttachment(blockpos$mutableblockpos.set(pPos.getX(), j + 1, pPos.getZ()), 0, false));
+                list.add(new FoliagePlacer.FoliageAttachment(blockpos$mutableblockpos.set(pos.getX(), j + 1, pos.getZ()), 0, false));
             }
         }
 
@@ -100,21 +100,21 @@ public class VivicusTrunkPlacerUnused extends TrunkPlacer {
     }
 
     private void placeBranch(
-            LevelSimulatedReader pLevel,
-            BiConsumer<BlockPos, BlockState> pBlockSetter,
-            RandomSource pRandom,
+            LevelSimulatedReader level,
+            BiConsumer<BlockPos, BlockState> blockSetter,
+            RandomSource random,
             int pFreeTreeHeight,
             TreeConfiguration pTreeConfig,
             List<FoliagePlacer.FoliageAttachment> pFoliageAttachments,
-            BlockPos.MutableBlockPos pPos,
+            BlockPos.MutableBlockPos pos,
             int pY,
             Direction pDirection,
             int pExtraBranchLength,
             int pExtraBranchSteps
     ) {
         int i = pY + pExtraBranchLength;
-        int j = pPos.getX();
-        int k = pPos.getZ();
+        int j = pos.getX();
+        int k = pos.getZ();
         int l = pExtraBranchLength;
 
         while (l < pFreeTreeHeight && pExtraBranchSteps > 0) {
@@ -123,11 +123,11 @@ public class VivicusTrunkPlacerUnused extends TrunkPlacer {
                 j += pDirection.getStepX();
                 k += pDirection.getStepZ();
                 i = i1;
-                if (this.placeLog(pLevel, pBlockSetter, pRandom, pPos.set(j, i1, k), pTreeConfig)) {
+                if (this.placeLog(level, blockSetter, random, pos.set(j, i1, k), pTreeConfig)) {
                     i = i1 + 1;
                 }
 
-                pFoliageAttachments.add(new FoliagePlacer.FoliageAttachment(pPos.immutable(), 0, false));
+                pFoliageAttachments.add(new FoliagePlacer.FoliageAttachment(pos.immutable(), 0, false));
             }
 
             l++;
@@ -147,7 +147,7 @@ public class VivicusTrunkPlacerUnused extends TrunkPlacer {
     }
 
     @Override
-    protected boolean validTreePos(LevelSimulatedReader pLevel, BlockPos pPos) {
-        return super.validTreePos(pLevel, pPos) || pLevel.isStateAtPosition(pPos, p_226232_ -> p_226232_.is(this.canGrowThrough));
+    protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
+        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, p_226232_ -> p_226232_.is(this.canGrowThrough));
     }
 }

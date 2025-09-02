@@ -79,12 +79,12 @@ public enum DyespriaMode implements StringRepresentable {
             ret.add(originalPos);
             var posUp = originalPos.above().mutable();
             var posDown = originalPos.below().mutable();
-            while (matchBlock(posUp)) {
+            while (matchBlock(posUp) && ret.size() <= 64) {
                 ret.add(posUp.immutable());
                 posUp.move(Direction.UP);
             }
             
-            while(matchBlock(posDown)) {
+            while(matchBlock(posDown) && ret.size() <= 64) {
                 ret.add(posDown.immutable());
                 posDown.move(Direction.DOWN);
             }
@@ -104,12 +104,12 @@ public enum DyespriaMode implements StringRepresentable {
             var leftDir = clickedDir.getClockWise();
             var posRight = originalPos.relative(rightDir).mutable();
             var posDown = originalPos.relative(leftDir).mutable();
-            while (matchBlock(posRight)) {
+            while (matchBlock(posRight)  && ret.size() <= 64) {
                 ret.add(posRight.immutable());
                 posRight.move(rightDir);
             }
 
-            while(matchBlock(posDown)) {
+            while(matchBlock(posDown )  && ret.size() <= 64) {
                 ret.add(posDown.immutable());
                 posDown.move(leftDir);
             }

@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractXBushBlockUpper extends AbstractXBushBlockBase implements ModEntityBlock {
     public static final int AGE_TO_GROW_UP = 4;
 
-    public AbstractXBushBlockUpper(Properties pProperties) {
-        super(pProperties);
+    public AbstractXBushBlockUpper(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -31,14 +31,14 @@ public abstract class AbstractXBushBlockUpper extends AbstractXBushBlockBase imp
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        ENTITY_POS = pPos;
-        return new XbushBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        ENTITY_POS = pos;
+        return new XbushBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return tickerHelper(pLevel);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> pBlockEntityType) {
+        return tickerHelper(level);
     }
 }

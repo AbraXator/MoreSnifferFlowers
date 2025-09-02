@@ -35,10 +35,10 @@ import java.util.stream.Stream;
 public class ModBoatRenderer extends BoatRenderer {
     private final Map<ModBoatEntity.Type, Pair<ResourceLocation, ListModel<Boat>>> boatResources;
 
-    public ModBoatRenderer(EntityRendererProvider.Context pContext, boolean pChestBoat) {
-        super(pContext, pChestBoat);
+    public ModBoatRenderer(EntityRendererProvider.Context context, boolean pChestBoat) {
+        super(context, pChestBoat);
         this.boatResources = Stream.of(ModBoatEntity.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type,
-               type -> Pair.of(ResourceLocation.fromNamespaceAndPath(MoreSnifferFlowers.MOD_ID, getTextureLocation(type, pChestBoat)), this.createBoatModel(pContext, type, pChestBoat))));    
+               type -> Pair.of(ResourceLocation.fromNamespaceAndPath(MoreSnifferFlowers.MOD_ID, getTextureLocation(type, pChestBoat)), this.createBoatModel(context, type, pChestBoat))));    
     }
 
     @Override
@@ -83,9 +83,9 @@ public class ModBoatRenderer extends BoatRenderer {
         return pChestBoat ? "textures/entity/chest_boat/" + pType.getName() + ".png" : "textures/entity/boat/" + pType.getName() + ".png";
     }
 
-    private ListModel<Boat> createBoatModel(EntityRendererProvider.Context pContext, ModBoatEntity.Type pType, boolean pChestBoat) {
+    private ListModel<Boat> createBoatModel(EntityRendererProvider.Context context, ModBoatEntity.Type pType, boolean pChestBoat) {
         ModelLayerLocation modellayerlocation = pChestBoat ? ModBoatRenderer.createChestBoatModelName(pType) : ModBoatRenderer.createBoatModelName(pType);
-        ModelPart modelpart = pContext.bakeLayer(modellayerlocation);
+        ModelPart modelpart = context.bakeLayer(modellayerlocation);
         return pChestBoat ? new ChestBoatModel(modelpart) : new BoatModel(modelpart);
     }
 

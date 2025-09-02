@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(AgeableMob.class)
 public class AgeableMobMixin extends PathfinderMob {
-    protected AgeableMobMixin(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    protected AgeableMobMixin(EntityType<? extends PathfinderMob> entityType, Level level) {
+        super(entityType, level);
     }
 
     @ModifyVariable(method = "aiStep", at = @At(value = "STORE"), ordinal = 0)

@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.Tags;
 
 public interface ModCropBlock extends BonemealableBlock {
     IntegerProperty getAgeProperty();
@@ -38,7 +40,9 @@ public interface ModCropBlock extends BonemealableBlock {
         return blockState.getValue(getAgeProperty());
     }
 
-    default void makeGrowOnTick(Block block, BlockState blockState, Level level, BlockPos blockPos) {
+    default void makeGrowOnTick(BlockState blockState, Level level, BlockPos blockPos) {
+        if (blockState.getValue(ModStateProperties.SHEARED)) return;
+
         if (!isMaxAge(blockState) && level.isAreaLoaded(blockPos, 1) && level.getRawBrightness(blockPos, 0) >= 9) {
             float f = getGrowthSpeed(blockState, level, blockPos);
             if (CommonHooks.canCropGrow(level, blockPos, blockState, level.getRandom().nextInt((int)(25.0F / f) + 1) == 0)) {
@@ -52,11 +56,11 @@ public interface ModCropBlock extends BonemealableBlock {
         level.setBlock(blockPos, blockState.setValue(getAgeProperty(), isMaxAge(blockState) ? getAge(blockState) : getAge(blockState) + 1), 2);
     }
 
-    default boolean mayPlaceOn(BlockState pState) {
-        return pState.is(Blocks.FARMLAND) || pState.getBlock() instanceof FarmBlock || pState.is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("supplementaries", "planters")));
+    default boolean mayPlaceOn(BlockState state) {
+        return state.is(Blocks.FARMLAND) || state.getBlock() instanceof FarmBlock || state.is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("supplementaries", "planters")));
     }
-    
-    default void shear(Player player, Level level, BlockPos blockPos, BlockState blockState, InteractionHand hand) {
+
+    private static void shear(Player player, Level level, BlockPos blockPos, BlockState blockState, InteractionHand hand) {
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)player, blockPos, player.getItemInHand(hand));
         }
@@ -65,6 +69,15 @@ public interface ModCropBlock extends BonemealableBlock {
         level.playSound(null, blockPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, level.getBlockState(blockPos)));
         player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+    }
+
+    default boolean shear(Player player, Level level, BlockPos blockPos, InteractionHand hand) {
+        BlockState blockState = level.getBlockState(blockPos);
+        if (player.getItemInHand(hand).is(Tags.Items.TOOLS_SHEAR) && !blockState.getValue(ModStateProperties.SHEARED)) {
+            shear(player, level, blockPos, blockState, hand);
+            return true;
+        }
+        return false;
     }
 
     public static float getGrowthSpeed(BlockState blockState, BlockGetter p_52274_, BlockPos p_52275_) {

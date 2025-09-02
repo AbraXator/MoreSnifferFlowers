@@ -111,7 +111,15 @@ public class ModCreativeTabs {
                 output.accept(ModItems.EXTRACTION_BOTTLE.get());
                 output.accept(ModItems.BROKEN_REBREWING_STAND.get());
                 output.accept(ModItems.REBREWING_STAND.get());
-                
+
+                if (MoreSnifferFlowers.hasFarmersDelight()){
+                    output.accept(ModBlocks.GIANT_ONION.get());
+                    output.accept(ModBlocks.GIANT_CABBAGE.get());
+                    output.accept(ModBlocks.GIANT_TOMATO.get());
+                    output.accept(ModBlocks.GIANT_RICE.get());
+
+                }
+
                 output.accept(ModItems.BOBLING_SPAWN_EGG);
                 output.accept(ModItems.CORRUPTED_BOBLING_CORE);
                 output.accept(ModItems.CORRUPTED_SLIME_BALL);
@@ -191,5 +199,6 @@ public class ModCreativeTabs {
             })
             .backgroundTexture(MoreSnifferFlowers.loc("textures/gui/container/tab_items.png"))
             .withTabsImage(MoreSnifferFlowers.loc("textures/gui/container/tabs.png"))
-            .build());
+            .build()
+    );
 }

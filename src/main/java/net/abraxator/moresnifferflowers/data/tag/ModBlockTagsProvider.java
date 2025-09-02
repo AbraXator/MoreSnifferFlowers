@@ -19,8 +19,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
-    public ModBlockTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
-        super(pOutput, Registries.BLOCK, pLookupProvider, block -> block.builtInRegistryHolder().key(), MoreSnifferFlowers.MOD_ID, existingFileHelper);
+    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
+        super(output, Registries.BLOCK, pLookupProvider, block -> block.builtInRegistryHolder().key(), MoreSnifferFlowers.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -30,10 +30,9 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
 
         this.tag(BlockTags.SWORD_EFFICIENT).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH_BOTTOM.get(), ModBlocks.AMBUSH_TOP.get(), ModBlocks.CAULORFLOWER.get(), ModBlocks.BONMEELIA.get(),
                 ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get());
-        this.tag(BlockTags.MINEABLE_WITH_HOE).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH_BOTTOM.get(), ModBlocks.AMBUSH_TOP.get(), ModBlocks.BONMEELIA.get(), ModBlocks.GIANT_CARROT.get(),
-                ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get(), ModBlocks.CAULORFLOWER.get(),
-                ModBlocks.CORRUPTED_LEAVES.get(), ModBlocks.CORRUPTED_LEAVES_BUSH.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_LEAVES_SPROUT.get());
-        this.tag(BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get(), ModBlocks.CAULORFLOWER.get());
+        this.tag(BlockTags.MINEABLE_WITH_HOE).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH_BOTTOM.get(), ModBlocks.AMBUSH_TOP.get(), ModBlocks.BONMEELIA.get(), ModBlocks.CAULORFLOWER.get(),
+                ModBlocks.CORRUPTED_LEAVES.get(), ModBlocks.CORRUPTED_LEAVES_BUSH.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_LEAVES_SPROUT.get()).addTag(ModTags.ModBlockTags.GIANT_CROPS);
+        this.tag(BlockTags.MINEABLE_WITH_AXE).add(ModBlocks.CAULORFLOWER.get()).addTag(ModTags.ModBlockTags.GIANT_CROPS);
         this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(ModBlocks.CORRUPTED_SLUDGE.get(), ModBlocks.CORRUPTED_SLIME_LAYER.get(), ModBlocks.CORRUPTED_GRASS_BLOCK.get(), ModBlocks.CURED_GRASS_BLOCK.get(), ModBlocks.SALTY_CLUMP.get(), ModBlocks.SOUR_PUDDLE.get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
@@ -43,8 +42,12 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 ModBlocks.REBREWING_STAND_TOP.get(), ModBlocks.BEROOT_CAULDRON.get(), ModBlocks.DRIPSALT.get() );
         this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModBlocks.AMBER_BLOCK.get(), ModBlocks.GARNET_BLOCK.get(), ModBlocks.CROPRESSOR_OUT.get(), ModBlocks.CROPRESSOR_CENTER.get(), ModBlocks.REBREWING_STAND_BOTTOM.get(), ModBlocks.REBREWING_STAND_TOP.get());
 
-        this.tag(ModTags.ModBlockTags.BONMEELABLE).add(Blocks.WHEAT, Blocks.CARROTS, Blocks.POTATOES, Blocks.BEETROOTS, Blocks.NETHER_WART);
-        this.tag(ModTags.ModBlockTags.GIANT_CROPS).add(ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get());
+        this.tag(ModTags.ModBlockTags.BONMEELABLE).add(Blocks.WHEAT, Blocks.CARROTS, Blocks.POTATOES, Blocks.BEETROOTS, Blocks.NETHER_WART)
+                .addOptional(MoreSnifferFlowers.farmersDelightLoc("tomatoes")).addOptional(MoreSnifferFlowers.farmersDelightLoc("onions")).addOptional(MoreSnifferFlowers.farmersDelightLoc("cabbages")).addOptional(MoreSnifferFlowers.farmersDelightLoc("rice_panicles"));
+
+        this.tag(ModTags.ModBlockTags.GIANT_CROP_REPLACEABLE).addOptional(MoreSnifferFlowers.farmersDelightLoc("rice"));
+        this.tag(ModTags.ModBlockTags.GIANT_CROPS).add(ModBlocks.GIANT_CARROT.get(), ModBlocks.GIANT_POTATO.get(), ModBlocks.GIANT_NETHERWART.get(), ModBlocks.GIANT_BEETROOT.get(), ModBlocks.GIANT_WHEAT.get(), ModBlocks.GIANT_ONION.get(), ModBlocks.GIANT_TOMATO.get(), ModBlocks.GIANT_CABBAGE.get(), ModBlocks.GIANT_RICE.get());
+        this.tag(ModTags.ModBlockTags.NO_SHADING).add(ModBlocks.GIANT_RICE.get());
 
         this.tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.DECAYED_LOG.get(), ModBlocks.CORRUPTED_LOG.get(), ModBlocks.VIVICUS_LOG.get(), ModBlocks.STRIPPED_CORRUPTED_LOG.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get(), ModBlocks.CORRUPTED_WOOD.get(), ModBlocks.VIVICUS_WOOD.get(), ModBlocks.STRIPPED_CORRUPTED_WOOD.get(), ModBlocks.STRIPPED_VIVICUS_WOOD.get());
         this.tag(BlockTags.LEAVES).add(ModBlocks.CORRUPTED_LEAVES.get(), ModBlocks.CORRUPTED_LEAVES_BUSH.get(), ModBlocks.VIVICUS_LEAVES.get());

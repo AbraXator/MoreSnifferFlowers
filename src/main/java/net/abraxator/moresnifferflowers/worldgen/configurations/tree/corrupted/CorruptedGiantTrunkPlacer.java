@@ -37,35 +37,35 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
 
 
     @Override
-    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, int pFreeTreeHeight, BlockPos pPos, TreeConfiguration pConfig) {
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, int pFreeTreeHeight, BlockPos pos, TreeConfiguration config) {
         List<FoliagePlacer.FoliageAttachment> ret = new ArrayList<>();
-        BlockPos.MutableBlockPos mainTrunk = pPos.mutable();
-        BlockPos.MutableBlockPos tempTrunk = pPos.mutable();
+        BlockPos.MutableBlockPos mainTrunk = pos.mutable();
+        BlockPos.MutableBlockPos tempTrunk = pos.mutable();
         int trunkRadius = 2;
         int trunkHeight = 3;
-        int treeHeight = pRandom.nextIntBetweenInclusive(0, heightRandA) + pFreeTreeHeight;
-        int branchRnd = pRandom.nextIntBetweenInclusive(0, 3);
+        int treeHeight = random.nextIntBetweenInclusive(0, heightRandA) + pFreeTreeHeight;
+        int branchRnd = random.nextIntBetweenInclusive(0, 3);
 
         for (int d = 0; d < 12; d++){
-            addDirt(mainTrunk.immutable(), ret, pBlockSetter, pLevel, pConfig, pRandom, d);
+            addDirt(mainTrunk.immutable(), ret, blockSetter, level, config, random, d);
         }
         for(int i = 0; i < treeHeight; i++) {
 
             if (i == 0) {
                 tempTrunk.set(mainTrunk);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk, pConfig);
-               // pBlockSetter.accept(tempTrunk.above(), ModBlocks.AMBER_BLOCK.get().defaultBlockState());
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.NORTH), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.EAST), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.SOUTH), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.SOUTH), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.WEST), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.WEST), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.NORTH), pConfig);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk.move(Direction.NORTH), pConfig);
+                this.placeLog(level, blockSetter, random, tempTrunk, config);
+               // blockSetter.accept(tempTrunk.above(), ModBlocks.AMBER_BLOCK.get().defaultBlockState());
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.NORTH), config);
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.EAST), config);
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.SOUTH), config);
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.SOUTH), config);
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.WEST), config);
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.WEST), config);
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.NORTH), config);
+                this.placeLog(level, blockSetter, random, tempTrunk.move(Direction.NORTH), config);
 
                 for(int trunkOrder = 0; trunkOrder < (trunkRadius*2)*4; trunkOrder++)
-                    fattenTrunk(pLevel, pBlockSetter, pRandom, pPos, pConfig, trunkOrder, ret, trunkHeight, trunkRadius);
+                    fattenTrunk(level, blockSetter, random, pos, config, trunkOrder, ret, trunkHeight, trunkRadius);
                 for (int u = 0; u < trunkHeight*2; u++){
                     mainTrunk.move(Direction.UP);
                 }
@@ -73,20 +73,20 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
             }
             for(int u = 0 ; u < 4 ; u++){
                 tempTrunk.set(mainTrunk);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk, pConfig);
+                this.placeLog(level, blockSetter, random, tempTrunk, config);
                 int z = (u == 0) ? 1 : (u == 1) ? -1 : 0;
                 int x = (u == 2) ? 1 : (u == 3) ? -1 : 0;
                 tempTrunk.move(x,0,z);
-                this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk, pConfig);
+                this.placeLog(level, blockSetter, random, tempTrunk, config);
 
-                if (pRandom.nextFloat() < 0.3F && i < (treeHeight-4) ){
+                if (random.nextFloat() < 0.3F && i < (treeHeight-4) ){
                     tempTrunk.set(mainTrunk);
-                    Direction randDir = Direction.getRandom(pRandom);
+                    Direction randDir = Direction.getRandom(random);
                     if (randDir.getAxis() != Direction.Axis.Y) {
                         tempTrunk.move(randDir);
                         tempTrunk.move(randDir.getCounterClockWise());
-                        for (int p = 0; p < pRandom.nextIntBetweenInclusive(2, 4); p++) {
-                            this.placeLog(pLevel, pBlockSetter, pRandom, tempTrunk, pConfig);
+                        for (int p = 0; p < random.nextIntBetweenInclusive(2, 4); p++) {
+                            this.placeLog(level, blockSetter, random, tempTrunk, config);
                             tempTrunk.move(Direction.UP);
                         }
                     }
@@ -94,12 +94,12 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
             }
                 if (i % 4 == 2 && i < treeHeight-5) {
                     int branchOrder = branchRnd + Mth.floor((float)i / 4);
-                    if (pRandom.nextFloat() < 0.3F && branchOrder > 1) branchOrder = branchOrder - 2 ;
-                    addSmallBranch(mainTrunk.immutable(), ret, pBlockSetter, pLevel, pConfig, pRandom, branchOrder);
+                    if (random.nextFloat() < 0.3F && branchOrder > 1) branchOrder = branchOrder - 2 ;
+                    addSmallBranch(mainTrunk.immutable(), ret, blockSetter, level, config, random, branchOrder);
                 }
                 if (i == treeHeight-1)
                     for (int c = 0; c < heightRandB; c++){
-                        addTopBranch(mainTrunk.immutable(), ret, pBlockSetter, pLevel, pConfig, pRandom, c);
+                        addTopBranch(mainTrunk.immutable(), ret, blockSetter, level, config, random, c);
                     }
 
 
@@ -108,9 +108,9 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
         return ret;
     }
 
-    private void fattenTrunk(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, BlockPos pPos, TreeConfiguration pConfig, int trunkOrder, List<FoliagePlacer.FoliageAttachment> ret, int trunkRadius, int trunkHeight) {
-        BlockPos.MutableBlockPos pos = pPos.mutable();
-        boolean hasDoor = pRandom.nextFloat() < 0.3F && trunkOrder % 4 == 1;
+    private void fattenTrunk(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos posOriginal, TreeConfiguration config, int trunkOrder, List<FoliagePlacer.FoliageAttachment> ret, int trunkRadius, int trunkHeight) {
+        BlockPos.MutableBlockPos pos = posOriginal.mutable();
+        boolean hasDoor = random.nextFloat() < 0.3F && trunkOrder % 4 == 1;
         final Vec3i trunkOffset =
                 switch (Mth.floor((float) trunkOrder / 4)) {
                     case 0 -> new Vec3i((trunkOrder % 4)-1,0,1);
@@ -143,24 +143,24 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
                 pos.move(Direction.UP);
             }
             else {
-                this.placeLog(pLevel, pBlockSetter, pRandom, pos, pConfig);
+                this.placeLog(level, blockSetter, random, pos, config);
                 pos.move(Direction.UP);
             }
         }
         if (trunkOrder % 4 != 3) {
             for (int y = 0; y < 3; y++) {
                 pos.move(trunkDir.getOpposite());
-                this.placeLog(pLevel, pBlockSetter, pRandom, pos, pConfig);
+                this.placeLog(level, blockSetter, random, pos, config);
                 if (y == 0) {
                     pos.move(Direction.UP);
-                    this.placeLog(pLevel, pBlockSetter, pRandom, pos, pConfig);
+                    this.placeLog(level, blockSetter, random, pos, config);
                 }
                 pos.move(Direction.UP);
             }
         }
     }
 
-    private void addSmallBranch(BlockPos blockPos, List<FoliagePlacer.FoliageAttachment> ret, BiConsumer<BlockPos, BlockState> pBlockSetter, LevelSimulatedReader level, TreeConfiguration config, RandomSource random, int branchOrder) {
+    private void addSmallBranch(BlockPos blockPos, List<FoliagePlacer.FoliageAttachment> ret, BiConsumer<BlockPos, BlockState> blockSetter, LevelSimulatedReader level, TreeConfiguration config, RandomSource random, int branchOrder) {
         Direction direction = computeBranchDir(random);
         BlockPos.MutableBlockPos pos = blockPos.relative(direction).mutable();
         BlockPos.MutableBlockPos defaultPos = blockPos.relative(direction).mutable();
@@ -174,28 +174,28 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
             float branchHeightRand = (float)x / branchLength;
 
             if (branchHeightRand < random.nextFloat() & branchHeightRand > 0) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, 1, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, 1, 0), config);
             }
 
             if (branchHeightRand > random.nextFloat()/1.5 & branchHeightRand > 0.5F) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, -1, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, -1, 0), config);
             }
 
             if (x == 0) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, 0, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, 0, 0), config);
             }
 
-            this.placeLog(level, pBlockSetter, random, pos.move(v1, 0, v3), config);
+            this.placeLog(level, blockSetter, random, pos.move(v1, 0, v3), config);
            if (x > 1) ret.add(new FoliagePlacer.FoliageAttachment(pos.above(), 0, false));
 
            if(x == branchLength - 1) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, -1, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, -1, 0), config);
            //     ret.add(new FoliagePlacer.FoliageAttachment(pos.below(1), 0, false));
             }
         }
 
     }
-    private void addTopBranch(BlockPos blockPos, List<FoliagePlacer.FoliageAttachment> ret, BiConsumer<BlockPos, BlockState> pBlockSetter, LevelSimulatedReader level, TreeConfiguration config, RandomSource random, int branchOrder) {
+    private void addTopBranch(BlockPos blockPos, List<FoliagePlacer.FoliageAttachment> ret, BiConsumer<BlockPos, BlockState> blockSetter, LevelSimulatedReader level, TreeConfiguration config, RandomSource random, int branchOrder) {
         Direction direction = computeBranchDir(random);
         BlockPos.MutableBlockPos pos = blockPos.relative(direction).mutable();
         BlockPos.MutableBlockPos defaultPos = blockPos.relative(direction).mutable();
@@ -210,30 +210,30 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
             float branchHeightRand = (float)x / branchLength;
 
             if (branchHeightRand < random.nextFloat() & branchHeightRand > 0) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, 1, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, 1, 0), config);
             }
 
             if (branchHeightRand > random.nextFloat()/1.5 & branchHeightRand > 0.5F) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, -1, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, -1, 0), config);
             }
 
             if (x == 0) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, 0, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, 0, 0), config);
             }
 
-            this.placeLog(level, pBlockSetter, random, pos.move(v1, 0, v3), config);
+            this.placeLog(level, blockSetter, random, pos.move(v1, 0, v3), config);
             if (branchOrder > 3)
-                this.placeLog(level, pBlockSetter, random, pos.move(v4*v3, 0, v4*v1), config);
+                this.placeLog(level, blockSetter, random, pos.move(v4*v3, 0, v4*v1), config);
              ret.add(new FoliagePlacer.FoliageAttachment(pos.above(), 0, false));
 
             if(x == branchLength - 1) {
-                this.placeLog(level, pBlockSetter, random, pos.move(0, -1, 0), config);
+                this.placeLog(level, blockSetter, random, pos.move(0, -1, 0), config);
                 ret.add(new FoliagePlacer.FoliageAttachment(pos, 0, false));
             }
         }
 
     }
-    private void addDirt(BlockPos blockPos, List<FoliagePlacer.FoliageAttachment> ret, BiConsumer<BlockPos, BlockState> pBlockSetter, LevelSimulatedReader level, TreeConfiguration config, RandomSource random, int dirtOrder) {
+    private void addDirt(BlockPos blockPos, List<FoliagePlacer.FoliageAttachment> ret, BiConsumer<BlockPos, BlockState> blockSetter, LevelSimulatedReader level, TreeConfiguration config, RandomSource random, int dirtOrder) {
         int dirtLength = 5;
         BlockPos.MutableBlockPos pos = blockPos.below().mutable();
 
@@ -241,16 +241,16 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
         int v3 = (dirtOrder % 4 == 1) ? 1 : (dirtOrder % 4 == 3) ? -1 : 0;
         int v4 = (dirtOrder % 2 == 0) ? 1 : -1 ;
 
-         setDirtAt(level, pBlockSetter, random, pos, config);
+         setDirtAt(level, blockSetter, random, pos, config);
 
         for(int x = 0; x < dirtLength; x++) {
-            setDirtAt(level, pBlockSetter, random, pos.move(v1, 0, v3), config);
-            if ( x == 0 && dirtOrder < 4) setDirtAt(level, pBlockSetter, random, pos.move(v1, 0, v3), config);
+            setDirtAt(level, blockSetter, random, pos.move(v1, 0, v3), config);
+            if ( x == 0 && dirtOrder < 4) setDirtAt(level, blockSetter, random, pos.move(v1, 0, v3), config);
             if (dirtOrder > 3 && dirtOrder < 8) {
-                setDirtAt(level, pBlockSetter, random, pos.move(v4 * v3, 0, v4 * v1), config);
+                setDirtAt(level, blockSetter, random, pos.move(v4 * v3, 0, v4 * v1), config);
             }
             if (dirtOrder > 7) {
-                setDirtAt(level, pBlockSetter, random, pos.move(-v4 * v3, 0, -v4 * v1), config);
+                setDirtAt(level, blockSetter, random, pos.move(-v4 * v3, 0, -v4 * v1), config);
             }
         }
     }
@@ -262,7 +262,7 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
     }
     
     @Override
-    protected boolean validTreePos(LevelSimulatedReader pLevel, BlockPos pPos) {
+    protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
         return true;
     }
 }

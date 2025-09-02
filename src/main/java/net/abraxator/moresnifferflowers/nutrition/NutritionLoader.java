@@ -79,13 +79,15 @@ public class NutritionLoader extends SimpleJsonResourceReloadListener {
                             }
                         }
                         
-                        map.forEach((item, nutritionEntry) ->
-                                currentModNutritions.merge(item,
-                                new ArrayList<>(List.of(nutritionEntry)),
-                                (existingList, newList) -> {
-                                    existingList.addAll(newList);
-                                    return existingList;
-                                }));
+                        map.forEach((item, nutritionEntry) -> {
+                            if (nutritionEntry.weight() <= 0) return;
+                            currentModNutritions.merge(item,
+                                    new ArrayList<>(List.of(nutritionEntry)),
+                                    (existingList, newList) -> {
+                                        existingList.addAll(newList);
+                                        return existingList;
+                                    });
+                        });
                     }
                 }
             } catch (IllegalStateException | JsonParseException e) {

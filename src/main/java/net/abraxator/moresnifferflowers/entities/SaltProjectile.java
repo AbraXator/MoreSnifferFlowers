@@ -26,8 +26,8 @@ public class SaltProjectile extends ThrowableItemProjectile {
         super(entityType, level);
     }
 
-    public SaltProjectile(Level pLevel, LivingEntity pShooter) {
-        super(ModEntityTypes.SALT_PROJECTILE.get(), pShooter, pLevel);
+    public SaltProjectile(Level level, LivingEntity pShooter) {
+        super(ModEntityTypes.SALT_PROJECTILE.get(), pShooter, level);
     }
 
     public SaltProjectile(Level level) {

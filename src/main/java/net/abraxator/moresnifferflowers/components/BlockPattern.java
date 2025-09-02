@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.components;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.ModDataComponents;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.items.PatternspriaItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -117,7 +118,7 @@ public enum BlockPattern implements StringRepresentable {
     }
 
     public static void setPatternToHolderStack(ItemStack itemStack, ItemStack patternToInsert, int amount) {
-        setPatternToHolderStack(itemStack, patternToInsert, amount, 4);
+        setPatternToHolderStack(itemStack, patternToInsert, amount, PatternspriaItem.getPatternspriaUses(itemStack));
     }
 
     public static void setPatternToHolderStack(ItemStack itemStack, ItemStack patternToInsert, int amount, int uses) {

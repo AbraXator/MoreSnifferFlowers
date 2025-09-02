@@ -141,8 +141,8 @@ public class SaltBubbleProjectile extends ThrowableItemProjectile {
 
 
     @Override
-    protected void onHitBlock(BlockHitResult pResult) {
-        super.onHitBlock(pResult);
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
         discard();
     }
 

@@ -51,6 +51,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.FIERY_SPICE.get());
         basicItem(ModItems.SWEET_SPICE.get());
 
+        basicItem(ModBlocks.GIANT_ONION.get().asItem());
+        basicItem(ModBlocks.GIANT_TOMATO.get().asItem());
+        basicItem(ModBlocks.GIANT_CABBAGE.get().asItem());
+        basicItem(ModBlocks.GIANT_RICE.get().asItem());
+
         basicItem(ModItems.DEBUG_FLOWER.get());
 
         basicItem(ModBlocks.TORCHFLAME.get().asItem());

@@ -13,8 +13,8 @@ public class GluingGumEntity extends Entity {
         super(ModEntityTypes.GLUING_GUM_ENTITY.get(), level);
     }
 
-    public GluingGumEntity(EntityType<? extends GluingGumEntity> entityType, Level pLevel) {
-        super(entityType, pLevel);
+    public GluingGumEntity(EntityType<? extends GluingGumEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
     @Override

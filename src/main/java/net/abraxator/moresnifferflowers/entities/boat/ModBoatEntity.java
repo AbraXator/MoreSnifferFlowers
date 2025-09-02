@@ -20,8 +20,8 @@ import java.util.function.IntFunction;
 public class ModBoatEntity extends Boat {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(ModBoatEntity.class, EntityDataSerializers.INT);
 
-    public ModBoatEntity(EntityType<? extends Boat> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public ModBoatEntity(EntityType<? extends Boat> entityType, Level level) {
+        super(entityType, level);
     }
 
     public ModBoatEntity(Level level, double pX, double pY, double pZ) {
@@ -55,13 +55,13 @@ public class ModBoatEntity extends Boat {
         builder.define(DATA_ID_TYPE, Type.CORRUPTED.ordinal());
     }
 
-    protected void addAdditionalSaveData(CompoundTag pCompound) {
-        pCompound.putString("Type", this.getModVariant().getSerializedName());
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.putString("Type", this.getModVariant().getSerializedName());
     }
 
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
-        if (pCompound.contains("Type", 8)) {
-            this.setVariant(Type.byName(pCompound.getString("Type")));
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        if (tag.contains("Type", 8)) {
+            this.setVariant(Type.byName(tag.getString("Type")));
         }
     }
 

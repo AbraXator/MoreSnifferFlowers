@@ -60,6 +60,7 @@ public class MultiblockPreviewRenderer {
 
                 boolean shouldShowPreview = level.getBlockState(pos).canBeReplaced() && (!level.getBlockState(hitPos).isAir() || placeOnWater);
                 if (entity instanceof MultiBlockEntity multiBlockEntity && shouldShowPreview) {
+                    entity.setLevel(level);
 
                     PreviewMode previewMode = multiBlock.canPlace(level, pos, state) ? PreviewMode.PREVIEW : PreviewMode.INVALID;
                     multiBlockEntity.previewMode = previewMode;
@@ -110,6 +111,8 @@ public class MultiblockPreviewRenderer {
             };
 
             blockRenderer.renderBatched(state, pos, level, poseStack, tintedConsumer, false, minecraft.level.getRandom());
+
+            buffer.endLastBatch();
 
             poseStack.translate(-offset.getX(),  -offset.getY(), -offset.getZ());
         });

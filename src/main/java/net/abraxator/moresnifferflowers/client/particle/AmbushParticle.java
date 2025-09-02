@@ -11,8 +11,8 @@ import net.minecraft.util.Mth;
 import javax.annotation.Nullable;
 
 public class AmbushParticle extends SimpleAnimatedParticle {
-    public AmbushParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet pSprites) {
-        super(pLevel, pX, pY, pZ, pSprites, -0.125F);
+    public AmbushParticle(ClientLevel level, double pX, double pY, double pZ, SpriteSet pSprites) {
+        super(level, pX, pY, pZ, pSprites, -0.125F);
         this.scale(0.95F);
         this.setLifetime(30);
         this.setSpriteFromAge(pSprites);
@@ -28,8 +28,8 @@ public class AmbushParticle extends SimpleAnimatedParticle {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new AmbushParticle(pLevel, pX, pY, pZ, sprites);
+        public Particle createParticle(SimpleParticleType pType, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+            return new AmbushParticle(level, pX, pY, pZ, sprites);
         }
     }
 }

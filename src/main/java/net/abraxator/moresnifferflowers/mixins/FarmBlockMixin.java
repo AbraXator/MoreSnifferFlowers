@@ -15,13 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FarmBlock.class)
 public abstract class FarmBlockMixin extends Block {
-    public FarmBlockMixin(Properties pProperties) {
-        super(pProperties);
+    public FarmBlockMixin(Properties properties) {
+        super(properties);
     }
 
     @Inject(method = "canSurvive", at = @At("TAIL"), cancellable = true)
-    public void canSurviveGiantCrop(@NotNull BlockState pState, LevelReader pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> info) {
-        if(pLevel.getBlockState(pPos.above()).is(ModTags.ModBlockTags.GIANT_CROPS)) {
+    public void canSurviveGiantCrop(@NotNull BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> info) {
+        if(level.getBlockState(pos.above()).is(ModTags.ModBlockTags.GIANT_CROPS)) {
             info.setReturnValue(true);
         }
     }

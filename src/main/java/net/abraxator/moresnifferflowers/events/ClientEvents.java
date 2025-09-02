@@ -11,6 +11,7 @@ import net.abraxator.moresnifferflowers.client.renderer.custom.BlockPatternRende
 import net.abraxator.moresnifferflowers.client.renderer.custom.MultiblockPreviewRenderer;
 import net.abraxator.moresnifferflowers.entities.GluingGumEntity;
 import net.abraxator.moresnifferflowers.init.*;
+import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
 import net.abraxator.moresnifferflowers.networking.toServer.DyespriaModePacket;
 import net.abraxator.moresnifferflowers.networking.toServer.PatternspriaModePacket;
 import net.minecraft.client.Camera;
@@ -60,11 +61,11 @@ public class ClientEvents {
         DeltaTracker partialTick = event.getPartialTick();
 
 
-        if (stage.equals(RenderLevelStageEvent.Stage.AFTER_SKY)) {
+        if (stage.equals(RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)) {
             BlockPatternRenderer.cacheAndRender(frustum, camera, level, minecraft, poseStack);
         }
 
-        if (stage.equals(RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)){
+        if (stage.equals(RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) && ModClientConfig.DISABLE_MULTIBLOCK_PREVIEWS.isFalse()){
             MultiblockPreviewRenderer.renderMultiblockPreviews(partialTick, minecraft, level, camera, poseStack);
         }
 

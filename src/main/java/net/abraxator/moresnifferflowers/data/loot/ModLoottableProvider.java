@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ModLoottableProvider {
-    public static LootTableProvider create(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pRegistries) {
+    public static LootTableProvider create(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         return new LootTableProvider(
-                pOutput,
+                output,
                 ModBuiltinLoottables.all(),
                 List.of(
                         new LootTableProvider.SubProviderEntry(ModBlockLoottableProvider::new, LootContextParamSets.BLOCK),
@@ -20,7 +20,7 @@ public class ModLoottableProvider {
                         new LootTableProvider.SubProviderEntry(ModChestLoot::new, LootContextParamSets.CHEST),
                         new LootTableProvider.SubProviderEntry(ModEntityLoot::new, LootContextParamSets.ENTITY)
                 ),
-                pRegistries
+                registries
         );
     }
 }

@@ -10,12 +10,12 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ModEntityBlock extends EntityBlock {
     @Nullable
-     default <T extends BlockEntity> BlockEntityTicker<T> tickerHelper(Level pLevel) {
-        return (pLevel1, pPos, pState1, pBlockEntity) -> {
-            if(pLevel.isClientSide) {
-                ((ModBlockEntity) pBlockEntity).clientTick((ClientLevel) pLevel);
+     default <T extends BlockEntity> BlockEntityTicker<T> tickerHelper(Level level) {
+        return (pLevel1, pos, pState1, pBlockEntity) -> {
+            if(level.isClientSide) {
+                ((ModBlockEntity) pBlockEntity).clientTick((ClientLevel) level);
             } else {
-                ((ModBlockEntity) pBlockEntity).tick(pLevel);
+                ((ModBlockEntity) pBlockEntity).tick(level);
             }
         };
     }

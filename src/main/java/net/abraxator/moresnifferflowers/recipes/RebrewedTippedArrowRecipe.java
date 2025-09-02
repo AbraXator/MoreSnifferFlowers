@@ -19,7 +19,7 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInput pInput, Level pLevel) {
+    public boolean matches(CraftingInput pInput, Level level) {
         if (pInput.width() == 3 && pInput.height() == 3) {
             for (int i = 0; i < pInput.width(); i++) {
                 for (int j = 0; j < pInput.height(); j++) {
@@ -45,7 +45,7 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput pInput, HolderLookup.Provider pRegistries) {
+    public ItemStack assemble(CraftingInput pInput, HolderLookup.Provider registries) {
         ItemStack itemstack = pInput.getItem(1 + pInput.width());
         if (!itemstack.is(ModItems.REBREWED_LINGERING_POTION)) {
             return ItemStack.EMPTY;

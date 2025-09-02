@@ -29,8 +29,8 @@ import org.joml.Matrix4f;
 public class CropressorBlockEntityRenderer implements BlockEntityRenderer<CropressorBlockEntity> {
     private static final Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/cropressor"));
 
-    public CropressorBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
-        ModelPart modelPart = pContext.bakeLayer(ModModelLayerLocations.CROPRESSOR);
+    public CropressorBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+        ModelPart modelPart = context.bakeLayer(ModModelLayerLocations.CROPRESSOR);
     }
 
     @Override

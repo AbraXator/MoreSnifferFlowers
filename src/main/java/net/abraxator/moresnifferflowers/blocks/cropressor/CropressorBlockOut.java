@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 public class CropressorBlockOut extends CropressorBlockBase implements ModEntityBlock {
     public static final MapCodec<CropressorBlockBase> CODEC = simpleCodec(properties1 -> new CropressorBlockBase(properties1, Part.OUT));
     
-    public CropressorBlockOut(Properties pProperties, Part part) {
-        super(pProperties, part);
+    public CropressorBlockOut(Properties properties, Part part) {
+        super(properties, part);
     }
 
     @Override
@@ -27,8 +27,8 @@ public class CropressorBlockOut extends CropressorBlockBase implements ModEntity
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return tickerHelper(pLevel);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> pBlockEntityType) {
+        return tickerHelper(level);
     }
 
     @Override
@@ -42,8 +42,8 @@ public class CropressorBlockOut extends CropressorBlockBase implements ModEntity
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        ENTITY_POS = pPos;
-        return new CropressorBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        ENTITY_POS = pos;
+        return new CropressorBlockEntity(pos, state);
     }
 }

@@ -30,29 +30,29 @@ public class VivicusSaplingBlock extends SaplingBlock implements ColorableVivicu
     }
 
     @Override
-    protected void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
-        DyeColor dyeColor = Util.getRandom(DyeColor.values(), pLevel.random);
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState pOldState, boolean pMovedByPiston) {
+        DyeColor dyeColor = Util.getRandom(DyeColor.values(), level.random);
         
         if(pOldState.is(this)) {
-            dyeColor = getDyeFromBlock(pState).color();    
+            dyeColor = getDyeFromBlock(state).color();    
         }
         
-        pLevel.setBlock(pPos, pState.setValue(ModStateProperties.COLOR, dyeColor), 3);
+        level.setBlock(pos, state.setValue(ModStateProperties.COLOR, dyeColor), 3);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(ModStateProperties.COLOR);
-        pBuilder.add(ModStateProperties.VIVICUS_CURED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(ModStateProperties.COLOR);
+        builder.add(ModStateProperties.VIVICUS_CURED);
     }
 
     @Override
-    public void advanceTree(ServerLevel pLevel, BlockPos pPos, BlockState pState, RandomSource pRandom) {
-        if (pState.getValue(STAGE) == 0) {
-            pLevel.setBlock(pPos, pState.cycle(STAGE), 4);
+    public void advanceTree(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {
+        if (state.getValue(STAGE) == 0) {
+            level.setBlock(pos, state.cycle(STAGE), 4);
         } else {
-            this.vivicusTreeGrower.growTree(pLevel, pLevel.getChunkSource().getGenerator(), pPos, pState, pRandom);
+            this.vivicusTreeGrower.growTree(level, level.getChunkSource().getGenerator(), pos, state, random);
         }
     }
 

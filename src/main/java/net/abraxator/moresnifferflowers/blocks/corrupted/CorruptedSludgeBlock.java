@@ -23,7 +23,7 @@ public class CorruptedSludgeBlock extends Block implements ModEntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new CorruptedSludgeBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CorruptedSludgeBlockEntity(pos, state);
     }
 }

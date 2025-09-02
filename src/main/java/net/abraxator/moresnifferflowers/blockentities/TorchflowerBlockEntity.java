@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class TorchflowerBlockEntity extends ModBlockEntity{
-    public TorchflowerBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.TORCHFLOWER.get(), pPos, pBlockState);
+    public TorchflowerBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.TORCHFLOWER.get(), pos, state);
     }
 
     @Override

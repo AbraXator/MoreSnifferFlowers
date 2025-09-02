@@ -33,16 +33,18 @@ import java.util.Optional;
 
 public class JarOfAcidProjectile extends ThrowableItemProjectile {
     private static final Logger log = LoggerFactory.getLogger(JarOfAcidProjectile.class);
-    public JarOfAcidProjectile(LivingEntity pShooter, Level pLevel) {
-        super(ModEntityTypes.JAR_OF_ACID.get(), pShooter, pLevel);
+
+
+    public JarOfAcidProjectile(LivingEntity pShooter, Level level) {
+        super(ModEntityTypes.JAR_OF_ACID.get(), pShooter, level);
     }
     
-    public JarOfAcidProjectile(Level pLevel) {
-        super(ModEntityTypes.JAR_OF_ACID.get(), pLevel);
+    public JarOfAcidProjectile(Level level) {
+        super(ModEntityTypes.JAR_OF_ACID.get(), level);
     }
     
-    public JarOfAcidProjectile(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public JarOfAcidProjectile(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+        super(entityType, level);
     }
 
     @Override
@@ -55,10 +57,10 @@ public class JarOfAcidProjectile extends ThrowableItemProjectile {
     }
     
     @Override
-    protected void onHit(HitResult pResult) {
-        super.onHit(pResult);
+    protected void onHit(HitResult result) {
+        super.onHit(result);
         this.level().broadcastEntityEvent(this, (byte)3);
-        degrowCrops(BlockPos.containing(pResult.getLocation()));
+        degrowCrops(BlockPos.containing(result.getLocation()));
         makeAreaOfEffectCloud(new PotionContents(Potions.STRONG_POISON));
         
         this.discard();
@@ -105,9 +107,9 @@ public class JarOfAcidProjectile extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult pResult) {
-        super.onHitEntity(pResult);
-        Entity entity = pResult.getEntity();
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        Entity entity = result.getEntity();
         if(entity instanceof LivingEntity livingEntity) {
             entity.hurt(this.damageSources().thrown(this, this.getOwner()), 0.0F);
             livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 2));

@@ -234,7 +234,7 @@ public class BlockPatternRenderer {
         }
     }
 
-    public void render(PoseStack stack, MultiBufferSource bufferSource) {
+    public void render(PoseStack stack, MultiBufferSource.BufferSource bufferSource) {
         VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutoutMipped());
 
         if (ModClientConfig.CLIENT_CONFIG.isLoaded() && ModClientConfig.BLOCK_PATTERN_TRANSPARENCY.get()){
@@ -244,6 +244,8 @@ public class BlockPatternRenderer {
         for (RenderQuad quad : cachedQuads) {
             quad.render(stack, buffer);
         }
+
+        bufferSource.endLastBatch();
     }
 
     private static void translateToFace(PoseStack stack, Direction face, BlockPos pos) {

@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 
 public class GarbushBlockLower extends AbstractXBushBlockBase {
-    public GarbushBlockLower(Properties pProperties) {
-        super(pProperties);
+    public GarbushBlockLower(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -24,14 +24,14 @@ public class GarbushBlockLower extends AbstractXBushBlockBase {
     }
 
     @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(getAge(pState) == 7 && pRandom.nextInt(100) < 10 && isLower(pState)) {
-            pLevel.addAlwaysVisibleParticle(
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if(getAge(state) == 7 && random.nextInt(100) < 10 && isLower(state)) {
+            level.addAlwaysVisibleParticle(
                     ModParticles.GARBUSH.get(),
                     true,
-                    (double)pPos.getX() + 0.5 + pRandom.nextDouble() / 3.0 * (double)(pRandom.nextBoolean() ? 1 : -1),
-                    (double)pPos.getY() + pRandom.nextDouble() + pRandom.nextDouble(),
-                    (double)pPos.getZ() + 0.5 + pRandom.nextDouble() / 3.0 * (double)(pRandom.nextBoolean() ? 1 : -1),
+                    (double)pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1),
+                    (double)pos.getY() + random.nextDouble() + random.nextDouble(),
+                    (double)pos.getZ() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1),
                     0.0,
                     0.07,
                     0.0

@@ -27,8 +27,8 @@ public class SwampSnifferTempleStructure extends Structure {
     }
 
     @Override
-    protected Optional<GenerationStub> findGenerationPoint(GenerationContext pContext) {
-        return onTopOfChunkCenter(pContext, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, structurePiecesBuilder ->  this.generatePieces(structurePiecesBuilder, pContext));
+    protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+        return onTopOfChunkCenter(context, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, structurePiecesBuilder ->  this.generatePieces(structurePiecesBuilder, context));
     }
 
     private void generatePieces(StructurePiecesBuilder builder, GenerationContext context) {

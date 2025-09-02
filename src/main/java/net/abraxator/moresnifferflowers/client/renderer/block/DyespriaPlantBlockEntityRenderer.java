@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemStack;
 public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<DyespriaPlantBlockEntity> {
     private final EntityRenderDispatcher entityRenderDispatcher;
     
-    public DyespriaPlantBlockEntityRenderer(BlockEntityRendererProvider.Context pContext) {
-        entityRenderDispatcher = pContext.getEntityRenderer();
+    public DyespriaPlantBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+        entityRenderDispatcher = context.getEntityRenderer();
     }
 
     @Override

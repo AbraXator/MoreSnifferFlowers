@@ -52,16 +52,16 @@ public class PatternspriaItem extends Item {
     public static final int DEFAULT_COLOR = 0xA9948D;
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        Player player = pContext.getPlayer();
-        Level level = pContext.getLevel();
-        BlockPos blockPos = pContext.getClickedPos();
+    public InteractionResult useOn(UseOnContext context) {
+        Player player = context.getPlayer();
+        Level level = context.getLevel();
+        BlockPos blockPos = context.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
-        ItemStack stack = pContext.getItemInHand();
-        Direction horizontalDirection = pContext.getHorizontalDirection();
+        ItemStack stack = context.getItemInHand();
+        Direction horizontalDirection = context.getHorizontalDirection();
         BlockPattern fromPatternspria = BlockPattern.fromPatternspria(stack);
 
-        if (pContext.getHand() != InteractionHand.MAIN_HAND) {
+        if (context.getHand() != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
 
@@ -78,7 +78,7 @@ public class PatternspriaItem extends Item {
         if (blockState.is(ModBlocks.PATTERNFLOWER.get()) && fromPatternspria != BlockPattern.EMPTY){
             if (BlockPattern.fromState(blockState).equals(fromPatternspria)) return InteractionResult.PASS;
             level.setBlock(blockPos, blockState.setValue(ModStateProperties.BLOCK_PATTERN, fromPatternspria).setValue(ModStateProperties.EMPTY, false), 3);
-            finishColoring(fromPatternspria.getItemStack(stack), level, stack, blockPos, pContext.getClickedFace());
+            finishColoring(fromPatternspria.getItemStack(stack), level, stack, blockPos, context.getClickedFace());
             return InteractionResult.SUCCESS;
         }
 
@@ -87,14 +87,14 @@ public class PatternspriaItem extends Item {
             AtomicInteger currentCount = new AtomicInteger(oldCount);
             AtomicBoolean canContinueDyeing = new AtomicBoolean(true);
             PatternspriaMode dyespriaMode = getMode(stack);
-            PatternspriaMode.DyespriaSelector dyespriaSelector = new PatternspriaMode.DyespriaSelector(blockPos, level, pContext.getClickedFace());
+            PatternspriaMode.DyespriaSelector dyespriaSelector = new PatternspriaMode.DyespriaSelector(blockPos, level, context.getClickedFace());
 
             Set<BlockPos> set = dyespriaMode.getSelector().apply(dyespriaSelector);
             set.stream().sorted(new EntityDistanceComparator(blockPos)).takeWhile(t -> canContinueDyeing.get()).forEach(blockPos1 -> {
                 var state = level.getBlockState(blockPos1);
 
                 if(canUse(blockPos1, level, stack) && fromPatternspria != BlockPattern.EMPTY) {
-                    patternOne(stack, level, blockPos1, fromPatternspria, pContext.getClickedFace(), horizontalDirection);
+                    patternOne(stack, level, blockPos1, fromPatternspria, context.getClickedFace(), horizontalDirection);
                     currentCount.getAndDecrement();
 
                 } else if (stack.getOrDefault(ModDataComponents.AMOUNT, 0) <= 0 || fromPatternspria == BlockPattern.EMPTY){
@@ -122,7 +122,7 @@ public class PatternspriaItem extends Item {
             }
         }
 
-        return super.useOn(pContext);
+        return super.useOn(context);
     }
 
     public PatternspriaMode getMode(ItemStack stack) {
@@ -229,16 +229,17 @@ public class PatternspriaItem extends Item {
 
     public void onAddPattern(ItemStack destinationStack, ItemStack pattern, int amount) {
         destinationStack.remove(ModDataComponents.COLOR);
-        BlockPattern.setPatternToHolderStack(destinationStack, pattern, amount);
+        int uses = getPatternspriaUses(destinationStack);
+        BlockPattern.setPatternToHolderStack(destinationStack, pattern, amount, uses <= 0 ? 4 : uses);
     }
 
-    private ItemStack removePattern(ItemStack pStack) {
-        var pattern = BlockPattern.fromPatternspria(pStack);
-        int uses = getPatternspriaUses(pStack);
+    private ItemStack removePattern(ItemStack stack) {
+        var pattern = BlockPattern.fromPatternspria(stack);
+        int uses = getPatternspriaUses(stack);
 
         if(pattern != BlockPattern.EMPTY) {
-            ItemStack returnStack = pattern.getItemStack(pStack);
-            BlockPattern.removePatternFromStack(pStack);
+            ItemStack returnStack = pattern.getItemStack(stack);
+            BlockPattern.removePatternFromStack(stack);
             returnStack.shrink(uses == 4 ? 0 : 1);
             return returnStack;
         } else {
@@ -247,16 +248,16 @@ public class PatternspriaItem extends Item {
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
-        if(pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
-            if(pOther.isEmpty()) {
-                pAccess.set(removePattern(pStack));
-                playRemoveOneSound(pPlayer);
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+        if(action == ClickAction.SECONDARY && slot.allowModification(player)) {
+            if(other.isEmpty()) {
+                access.set(removePattern(stack));
+                playRemoveOneSound(player);
             } else {
-                ItemStack itemStack = addPattern(pStack, pOther);
-                pAccess.set(itemStack);
+                ItemStack itemStack = addPattern(stack, other);
+                access.set(itemStack);
                 if(itemStack.isEmpty()) {
-                    this.playInsertSound(pPlayer);
+                    this.playInsertSound(player);
                 }
             }
             return true;

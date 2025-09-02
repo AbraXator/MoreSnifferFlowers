@@ -19,8 +19,8 @@ public class GiantCropBlockEntity extends MultiBlockEntity {
     public int state = 0; //0 NONE; 1 ANIMATION; 2 SACK;
     public float staticGameTime;
 
-    public GiantCropBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.GIANT_CROP.get(), pPos, pBlockState);
+    public GiantCropBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.GIANT_CROP.get(), pos, state);
     }
 
     @Override
@@ -39,9 +39,9 @@ public class GiantCropBlockEntity extends MultiBlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         var tag = new CompoundTag();
-        saveAdditional(tag, pRegistries);
+        saveAdditional(tag, registries);
         return tag;
     }
 
@@ -52,20 +52,20 @@ public class GiantCropBlockEntity extends MultiBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-        pTag.putBoolean("canGrow", canGrow);
-        pTag.putDouble("growProgress", growProgress);
-        pTag.putFloat("staticGameTime", staticGameTime);
-        pTag.putInt("state", this.state);
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putBoolean("canGrow", canGrow);
+        tag.putDouble("growProgress", growProgress);
+        tag.putFloat("staticGameTime", staticGameTime);
+        tag.putInt("state", this.state);
     }
 
     @Override
-    public void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
-        this.canGrow = pTag.getBoolean("canGrow");
-        this.growProgress = pTag.getDouble("growProgress");
-        this.staticGameTime = pTag.getFloat("staticGameTime");
-        this.state = pTag.getInt("state");
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        this.canGrow = tag.getBoolean("canGrow");
+        this.growProgress = tag.getDouble("growProgress");
+        this.staticGameTime = tag.getFloat("staticGameTime");
+        this.state = tag.getInt("state");
     }
 }

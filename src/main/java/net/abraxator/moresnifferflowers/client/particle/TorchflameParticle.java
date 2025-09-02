@@ -28,8 +28,8 @@ public class TorchflameParticle extends SimpleAnimatedParticle {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new TorchflameParticle(pLevel, pX, pY, pZ, sprites, -0.3F);
+        public Particle createParticle(SimpleParticleType pType, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+            return new TorchflameParticle(level, pX, pY, pZ, sprites, -0.3F);
         }
     }
 }

@@ -18,11 +18,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class WandOfCubingItem extends Item {
-    public WandOfCubingItem(Properties pProperties) {
-        super(pProperties);
+    public WandOfCubingItem(Properties properties) {
+        super(properties);
     }
-    public InteractionResult useOn(UseOnContext pContext) {
-        var pos = pContext.getClickedPos().getCenter();
+    public InteractionResult useOn(UseOnContext context) {
+        var pos = context.getClickedPos().getCenter();
         var r = 5;
         float angle = Mth.PI / 4;
 
@@ -43,7 +43,7 @@ public class WandOfCubingItem extends Item {
                         //vec3.rotateX(angle);
                         //vec3.rotateZ(angle);
                         //vec3.rotateY(angle);
-                        pContext.getLevel().setBlock(new BlockPos(
+                        context.getLevel().setBlock(new BlockPos(
                                         (int) (pos.x + vec3.x),
                                         (int) (pos.y + vec3.y),
                                         (int) (pos.z + vec3.z)),
@@ -53,7 +53,7 @@ public class WandOfCubingItem extends Item {
             }
         }
 
-        return InteractionResult.sidedSuccess(pContext.getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
     }
 
     private boolean isOnEdge(int x, int y, int z, int r) {
@@ -89,21 +89,21 @@ public class WandOfCubingItem extends Item {
         return false;
     }
 
-    private void generateParticle(UseOnContext pContext, Set<Vec3> set, double xo, double yo, double zo, double r, double theta, double checkR) {
+    private void generateParticle(UseOnContext context, Set<Vec3> set, double xo, double yo, double zo, double r, double theta, double checkR) {
         var x = xo + r * Mth.cos((float) theta);
         var yx = yo + r * Mth.sin((float) theta);
         var yz = yo + r * Mth.cos((float) theta);
         var z = zo + r * Mth.sin((float) theta);
 
-        createAndAddParticle(pContext, set, checkR, new Vec3(x, yo, z));
-        createAndAddParticle(pContext, set, checkR, new Vec3(x, yx, zo));
-        createAndAddParticle(pContext, set, checkR, new Vec3(xo, yz, z));
+        createAndAddParticle(context, set, checkR, new Vec3(x, yo, z));
+        createAndAddParticle(context, set, checkR, new Vec3(x, yx, zo));
+        createAndAddParticle(context, set, checkR, new Vec3(xo, yz, z));
     }
 
-    private void createAndAddParticle(UseOnContext pContext, Set<Vec3> set, double checkR, Vec3 vec3) {
+    private void createAndAddParticle(UseOnContext context, Set<Vec3> set, double checkR, Vec3 vec3) {
         AABB aabb = AABB.ofSize(vec3, checkR, checkR, checkR);
         if (set.stream().noneMatch(aabb::contains)) {
-            pContext.getLevel().addParticle(ModParticles.CARROT.get(), vec3.x, vec3.y, vec3.z, 0, 0, 0);
+            context.getLevel().addParticle(ModParticles.CARROT.get(), vec3.x, vec3.y, vec3.z, 0, 0, 0);
             set.add(vec3);
         }
     }

@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModItems;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -368,6 +369,15 @@ public class ModBlockLoottableProvider extends BlockLootSubProvider {
         return BuiltInRegistries.BLOCK
                 .stream()
                 .filter(block -> BuiltInRegistries.BLOCK.getKey(block).getNamespace().equals(MoreSnifferFlowers.MOD_ID))
+                .filter(block -> {
+                    boolean isCompat = block.equals(ModBlocks.GIANT_CABBAGE.get())
+                            || block.equals(ModBlocks.GIANT_ONION.get())
+                            || block.equals(ModBlocks.GIANT_TOMATO.get())
+                            || block.equals(ModBlocks.GIANT_RICE.get())
+
+                            ;
+                    return !isCompat;
+                })
                 .collect(Collectors.toSet());
     }
 }

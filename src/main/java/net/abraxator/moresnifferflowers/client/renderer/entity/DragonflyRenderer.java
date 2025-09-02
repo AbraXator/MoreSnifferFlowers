@@ -18,9 +18,9 @@ public class DragonflyRenderer extends EntityRenderer<DragonflyProjectile> {
     public static final ResourceLocation TEXTURE = MoreSnifferFlowers.loc("textures/entity/dragonfly.png");
     private final DragonflyModel model;
 
-    public DragonflyRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
-        this.model = new DragonflyModel(pContext.bakeLayer(ModModelLayerLocations.DRAGONFLY));
+    public DragonflyRenderer(EntityRendererProvider.Context context) {
+        super(context);
+        this.model = new DragonflyModel(context.bakeLayer(ModModelLayerLocations.DRAGONFLY));
     }
 
     @Override

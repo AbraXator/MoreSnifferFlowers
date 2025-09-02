@@ -7,12 +7,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class XbushBlockEntity extends GrowingCropBlockEntity {
-    public XbushBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.XBUSH.get(), pPos, pBlockState, pBlockState.is(ModBlocks.AMBUSH_TOP) ? 0.001f : 0.0005F);
+    public XbushBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.XBUSH.get(), pos, state, state.is(ModBlocks.AMBUSH_TOP) ? 0.001f : 0.0005F);
     }
 
     @Override
     public boolean canGrow(float growProgress, boolean hasGrown) {
-        return this.getBlockState().getValue(ModStateProperties.AGE_8).equals(7) && super.canGrow(growProgress, hasGrown);
+        return this.getBlockState().getValue(ModStateProperties.AGE_8).equals(7)
+                && !getBlockState().getValue(ModStateProperties.SHEARED)
+                && super.canGrow(growProgress, hasGrown);
     }
 }

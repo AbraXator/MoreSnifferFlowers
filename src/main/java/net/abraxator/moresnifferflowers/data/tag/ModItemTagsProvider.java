@@ -57,7 +57,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         this.tag(ItemTags.WOODEN_TRAPDOORS).add(ModBlocks.CORRUPTED_TRAPDOOR.get().asItem(), ModBlocks.VIVICUS_TRAPDOOR.get().asItem());
         this.tag(ItemTags.PLANKS).add(ModBlocks.CORRUPTED_PLANKS.get().asItem(), ModBlocks.VIVICUS_PLANKS.get().asItem());
         this.tag(ItemTags.SAPLINGS).add(ModBlocks.CORRUPTED_SAPLING.get().asItem(), ModBlocks.VIVICUS_SAPLING.get().asItem());
-        
+
+        this.tag(ModTags.ModItemTags.COLORABLE)
+                .add(ModBlocks.STRIPPED_VIVICUS_WOOD.asItem(), ModBlocks.STRIPPED_VIVICUS_LOG.asItem(), ModBlocks.VIVICUS_BUTTON.asItem(),
+                ModBlocks.VIVICUS_DOOR.asItem(), ModBlocks.VIVICUS_FENCE.asItem(), ModBlocks.VIVICUS_FENCE_GATE.asItem(),
+                ModBlocks.VIVICUS_LEAVES.asItem(), ModBlocks.VIVICUS_LOG.asItem(), ModBlocks.VIVICUS_PLANKS.asItem(),
+                ModBlocks.VIVICUS_PRESSURE_PLATE.asItem(), ModBlocks.VIVICUS_SAPLING.asItem(), ModBlocks.VIVICUS_STAIRS.asItem(),
+                ModBlocks.VIVICUS_SLAB.asItem(), ModBlocks.VIVICUS_TRAPDOOR.asItem(), ModBlocks.VIVICUS_WOOD.asItem(),
+                ModBlocks.VIVICUS_LEAVES_SPROUT.asItem());
+
         this.tag(ItemTags.SNIFFER_FOOD).add(ModItems.DAWNBERRY.asItem());
     }
 

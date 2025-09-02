@@ -14,8 +14,8 @@ public class BoblingRenderer extends MobRenderer<BoblingEntity, BoblingModel<Bob
     public static final ResourceLocation CURED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/bobling.png");
     public static final ResourceLocation BONMEELED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/bonmeeled_bobling.png");
     
-    public BoblingRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new BoblingModel<>(pContext.bakeLayer(ModModelLayerLocations.BOBLING)), 0.4F);
+    public BoblingRenderer(EntityRendererProvider.Context context) {
+        super(context, new BoblingModel<>(context.bakeLayer(ModModelLayerLocations.BOBLING)), 0.4F);
     }
 
     @Override

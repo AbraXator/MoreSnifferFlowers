@@ -21,19 +21,19 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class VivicusSignRenderer extends SignRenderer {
-    public VivicusSignRenderer(BlockEntityRendererProvider.Context pContext) {
-        super(pContext);
+    public VivicusSignRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
-    public void renderSignWithText(SignBlockEntity pSignEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState pState, SignBlock pSignBlock, WoodType pWoodType, Model pModel) {
+    public void renderSignWithText(SignBlockEntity pSignEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState state, SignBlock pSignBlock, WoodType pWoodType, Model pModel) {
         pPoseStack.pushPose();
         pPoseStack.translate(0.5F, 0.75F * this.getSignModelRenderScale(), 0.5F);
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(-pSignBlock.getYRotationDegrees(pState)));
-        if (!(pState.getBlock() instanceof StandingSignBlock)) {
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(-pSignBlock.getYRotationDegrees(state)));
+        if (!(state.getBlock() instanceof StandingSignBlock)) {
             pPoseStack.translate(0.0F, -0.3125F, -0.4375F);
         }
-        renderVivicusSign(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pWoodType, pModel, pState);
+        renderVivicusSign(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pWoodType, pModel, state);
         this.renderSignText(
                 pSignEntity.getBlockPos(),
                 pSignEntity.getFrontText(),
@@ -57,15 +57,15 @@ public class VivicusSignRenderer extends SignRenderer {
         pPoseStack.popPose();
     }
     
-    private void renderVivicusSign(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, WoodType pWoodType, Model pModel, BlockState pState) {
+    private void renderVivicusSign(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, WoodType pWoodType, Model pModel, BlockState state) {
         pPoseStack.pushPose();
         float f = this.getSignModelRenderScale();
         pPoseStack.scale(f, -f, -f);
         Material material = Sheets.getSignMaterial(pWoodType);
         VertexConsumer vertexconsumer = material.buffer(pBuffer, pModel::renderType);
         var color = -1;
-        if(pState.getBlock() instanceof ColorableVivicusBlock colorableVivicusBlock) {
-            var dyeColor = pState.getValue(ModStateProperties.COLOR);
+        if(state.getBlock() instanceof ColorableVivicusBlock colorableVivicusBlock) {
+            var dyeColor = state.getValue(ModStateProperties.COLOR);
             color = colorableVivicusBlock.colorValues().get(dyeColor);
             vertexconsumer.setColor(color);
         }

@@ -2,22 +2,38 @@ package net.abraxator.moresnifferflowers.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.MultiBlockEntity;
 import net.abraxator.moresnifferflowers.components.PreviewMode;
+import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Matrix4f;
 
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 public interface MultiblockRender {
+
+    default BlockEntityRenderer<?> getRenderer(){
+        if (this instanceof BlockEntityRenderer<?> renderer){
+            return renderer;
+        } else {
+            throw new RuntimeException(this.getClass().getSimpleName() + " is not implemented on a BlockEntityRenderer");
+        }
+    }
 
     default Function<ResourceLocation, RenderType> getRenderTypeFunction(PreviewMode previewMode) {
        return previewMode.equals(PreviewMode.PLACED) ? RenderType::entityCutout : RenderType::entityTranslucentCull;
@@ -63,7 +79,7 @@ public interface MultiblockRender {
         float a = FastColor.ARGB32.alpha(color);
 
         switch (previewMode) {
-            case PREVIEW -> a *= PreviewMode.PREVIEW.alpha;
+            case PREVIEW -> a *= net.abraxator.moresnifferflowers.components.PreviewMode.PREVIEW.alpha;
 
             case INVALID -> {
                 r *= PreviewMode.INVALID.red;

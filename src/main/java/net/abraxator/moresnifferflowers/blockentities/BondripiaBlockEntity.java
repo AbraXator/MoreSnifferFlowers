@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BondripiaBlockEntity extends MultiBlockEntity{
-    public BondripiaBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.BONDRIPIA.get(), pPos, pBlockState);
+    public BondripiaBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.BONDRIPIA.get(), pos, state);
     }
 }

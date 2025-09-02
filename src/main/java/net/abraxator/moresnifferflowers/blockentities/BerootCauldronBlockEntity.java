@@ -23,6 +23,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
@@ -64,8 +65,8 @@ public class BerootCauldronBlockEntity extends MultiBlockEntity {
     int craftingTimeRemaining = 0;
     public boolean isCenter = false;
 
-    public BerootCauldronBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.BEROOT_CAULDRON.get(), pPos, pBlockState);
+    public BerootCauldronBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.BEROOT_CAULDRON.get(), pos, state);
     }
 
     public ItemInteractionResult addItem(ItemStack itemStack, Player player) {
@@ -147,14 +148,13 @@ public class BerootCauldronBlockEntity extends MultiBlockEntity {
         int blandThreshold = 120;
         int minFlavour = 50;
 
-
         //effect init
         List<RootedSoup.RootedEffect> effects = new ArrayList<>();
 
         for (NutritionEntry nutritionEntry : entryList) {
             if (!nutritionEntry.nutrition().equals(NutritionType.NEUTRAL)) {
                 totalFlavour += nutritionEntry.weight();
-                float ratio = nutritionEntry.weight() / (neutral * 1.2f + 1f);
+                float ratio = nutritionEntry.weight() / (neutral + 1f);
                 int amplifier = 1;
                 Boolean positive = null;
 

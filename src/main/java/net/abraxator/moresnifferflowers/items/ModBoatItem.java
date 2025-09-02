@@ -28,22 +28,22 @@ public class ModBoatItem extends Item {
     private final ModBoatEntity.Type type;
     private final boolean hasChest;
 
-    public ModBoatItem(boolean pHasChest, ModBoatEntity.Type pType, Properties pProperties) {
-        super(pProperties);
+    public ModBoatItem(boolean pHasChest, ModBoatEntity.Type pType, Properties properties) {
+        super(properties);
         this.hasChest = pHasChest;
         this.type = pType;
     }
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        HitResult hitresult = getPlayerPOVHitResult(pLevel, pPlayer, ClipContext.Fluid.ANY);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        HitResult hitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
         if (hitresult.getType() == HitResult.Type.MISS) {
             return InteractionResultHolder.pass(itemstack);
         } else {
-            Vec3 vec3 = pPlayer.getViewVector(1.0F);
-            List<Entity> list = pLevel.getEntities(pPlayer, pPlayer.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
+            Vec3 vec3 = player.getViewVector(1.0F);
+            List<Entity> list = level.getEntities(player, player.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
             if (!list.isEmpty()) {
-                Vec3 vec31 = pPlayer.getEyePosition();
+                Vec3 vec31 = player.getEyePosition();
 
                 for(Entity entity : list) {
                     AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
@@ -54,26 +54,26 @@ public class ModBoatItem extends Item {
             }
 
             if (hitresult.getType() == HitResult.Type.BLOCK) {
-                Boat boat = this.getBoat(pLevel, hitresult);
+                Boat boat = this.getBoat(level, hitresult);
                 if(boat instanceof ModChestBoatEntity chestBoat) {
                     chestBoat.setVariant(this.type);
                 } else if(boat instanceof ModBoatEntity) {
                     ((ModBoatEntity)boat).setVariant(this.type);
                 }
-                boat.setYRot(pPlayer.getYRot());
-                if (!pLevel.noCollision(boat, boat.getBoundingBox())) {
+                boat.setYRot(player.getYRot());
+                if (!level.noCollision(boat, boat.getBoundingBox())) {
                     return InteractionResultHolder.fail(itemstack);
                 } else {
-                    if (!pLevel.isClientSide) {
-                        pLevel.addFreshEntity(boat);
-                        pLevel.gameEvent(pPlayer, GameEvent.ENTITY_PLACE, hitresult.getLocation());
-                        if (!pPlayer.getAbilities().instabuild) {
+                    if (!level.isClientSide) {
+                        level.addFreshEntity(boat);
+                        level.gameEvent(player, GameEvent.ENTITY_PLACE, hitresult.getLocation());
+                        if (!player.getAbilities().instabuild) {
                             itemstack.shrink(1);
                         }
                     }
 
-                    pPlayer.awardStat(Stats.ITEM_USED.get(this));
-                    return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
                 }
             } else {
                 return InteractionResultHolder.pass(itemstack);

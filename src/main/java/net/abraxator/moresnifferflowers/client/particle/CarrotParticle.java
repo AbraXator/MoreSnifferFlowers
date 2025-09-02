@@ -10,8 +10,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import javax.annotation.Nullable;
 
 public class CarrotParticle extends SimpleAnimatedParticle {
-    protected CarrotParticle(ClientLevel pLevel, double pX, double pY, double pZ, SpriteSet pSprites) {
-        super(pLevel, pX, pY, pZ, pSprites, 0);
+    protected CarrotParticle(ClientLevel level, double pX, double pY, double pZ, SpriteSet pSprites) {
+        super(level, pX, pY, pZ, pSprites, 0);
         this.scale(2);
         this.setLifetime(200);
         this.setSpriteFromAge(pSprites);
@@ -26,8 +26,8 @@ public class CarrotParticle extends SimpleAnimatedParticle {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            return new CarrotParticle(pLevel, pX, pY, pZ, sprites);
+        public Particle createParticle(SimpleParticleType pType, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+            return new CarrotParticle(level, pX, pY, pZ, sprites);
         }
     }
 }

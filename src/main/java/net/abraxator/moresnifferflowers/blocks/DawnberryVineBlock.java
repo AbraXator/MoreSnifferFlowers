@@ -37,17 +37,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
-    public static final BooleanProperty IS_SHEARED = BooleanProperty.create("is_sheared");
-    public static final MapCodec<DawnberryVineBlock> CODEC = RecordCodecBuilder.mapCodec(p_304392_ -> 
+    public static final BooleanProperty SHEARED = ModStateProperties.SHEARED;
+    public static final MapCodec<DawnberryVineBlock> CODEC = RecordCodecBuilder.mapCodec(p_304392_ ->
             p_304392_.group(propertiesCodec(), Codec.BOOL.fieldOf("evil").forGetter(DawnberryVineBlock::isEvil))
                     .apply(p_304392_, DawnberryVineBlock::new));
 
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
     private final boolean evil;
 
-    public DawnberryVineBlock(Properties pProperties, boolean evil) {
-        super(pProperties);
-        this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0).setValue(IS_SHEARED, Boolean.FALSE));
+    public DawnberryVineBlock(Properties properties, boolean evil) {
+        super(properties);
+        this.registerDefaultState(this.defaultBlockState().setValue(AGE, 0).setValue(SHEARED, Boolean.FALSE));
 
         this.evil = evil;
     }
@@ -58,57 +58,52 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(AGE, IS_SHEARED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(AGE, SHEARED);
     }
 
     public IntegerProperty getAgeProperty() {
         return AGE;
     }
 
-    public int getAge(BlockState pState) {
-        return pState.getValue(this.getAgeProperty());
+    public int getAge(BlockState state) {
+        return state.getValue(this.getAgeProperty());
     }
 
     public int getMaxAge() {
         return AGE.getPossibleValues().stream().toList().get(AGE.getPossibleValues().size() - 1);
     }
 
-    public final boolean isMaxAge(BlockState pState) {
-        return this.getAge(pState) >= this.getMaxAge();
+    public final boolean isMaxAge(BlockState state) {
+        return this.getAge(state) >= this.getMaxAge();
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
-        return !this.isMaxAge(pState) && !pState.getValue(IS_SHEARED);
+    public boolean isRandomlyTicking(BlockState state) {
+        return !this.isMaxAge(state) && !state.getValue(SHEARED);
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        if(pStack.is(Items.SHEARS) && !(getAge(pState) >= 4) && !pState.getValue(ModStateProperties.SHEARED)) {
-            return shearAction(pState, pLevel, pPos, pPlayer, pHand, pStack);
-        } else if(pStack.is(Items.BONE_MEAL) && (getAge(pState) < 4)) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(shear(player, level, pos, hand)) {
+            return ItemInteractionResult.SUCCESS;
+        } else if(stack.is(Items.BONE_MEAL) && (getAge(state) < 4)) {
             return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
         
-        return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if (this.isMaxAge(pState)) {
-            return dropMaxAgeLoot(pState, pLevel, pPos, pPlayer);
-        } else if (pState.getValue(AGE) == 3) {
-            return dropAgeThreeLoot(pState, pLevel, pPos, pPlayer);
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (this.isMaxAge(state)) {
+            return dropMaxAgeLoot(state, level, pos, player);
+        } else if (state.getValue(AGE) == 3) {
+            return dropAgeThreeLoot(state, level, pos, player);
         }
 
         return InteractionResult.PASS;
-    }
-
-    private ItemInteractionResult shearAction(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        shear(player, level, pos, blockState, hand);
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     private InteractionResult dropMaxAgeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
@@ -136,10 +131,10 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     }
 
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (!pLevel.isAreaLoaded(pPos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
-        if (pLevel.getRawBrightness(pPos, 0) >= 9) {
-            makeGrowOnTick(this, pState, pLevel, pPos);
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.isAreaLoaded(pos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
+        if (level.getRawBrightness(pos, 0) >= 9) {
+            makeGrowOnTick(state, level, pos);
         }
     }
 
@@ -149,29 +144,29 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
-        return !isMaxAge(pState);
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return !isMaxAge(state);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {
-        //grow(pState, pLevel, pPos, pRandom);
-        int age = getAge(pState);
-        pLevel.setBlock(pPos, pState.setValue(AGE, age >= 4 ? age : age + 1), 2);
-        boolean canSpread = Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(pState, pLevel, pPos, p_153316_.getOpposite()));
-        if(pRandom.nextFloat() >= 0.3F && pRandom.nextFloat() >= 0.3F && canSpread) {
-            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
-            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(pState, pLevel, pPos, pRandom);
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        //grow(state, level, pos, random);
+        int age = getAge(state);
+        level.setBlock(pos, state.setValue(AGE, age >= 4 ? age : age + 1), 2);
+        boolean canSpread = Direction.stream().anyMatch((p_153316_) -> this.spreader.canSpreadInAnyDirection(state, level, pos, p_153316_.getOpposite()));
+        if(random.nextFloat() >= 0.3F && random.nextFloat() >= 0.3F && canSpread) {
+            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
+            this.getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
         }
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
     }
 

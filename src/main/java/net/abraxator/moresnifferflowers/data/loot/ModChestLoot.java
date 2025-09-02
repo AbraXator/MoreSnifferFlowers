@@ -16,8 +16,8 @@ import java.util.function.BiConsumer;
 
 public record ModChestLoot(HolderLookup.Provider registries) implements LootTableSubProvider {
     @Override
-    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> pOutput) {
-        pOutput.accept(
+    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+        output.accept(
                 ModBuiltinLoottables.SWAMP_SNIFFER_TEMPLE_CHEST,
                 LootTable.lootTable()
                         .withPool(

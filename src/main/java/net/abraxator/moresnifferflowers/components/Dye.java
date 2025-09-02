@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.components;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.init.ModDataComponents;
+import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +45,7 @@ public record Dye(DyeColor color, int amount) {
     }
 
     public static void setDyeToDyeHolderStack(ItemStack dyespria, ItemStack dyeToInsert, int amount) {
-        setDyeToDyeHolderStack(dyespria, dyeToInsert, amount, 4);
+        setDyeToDyeHolderStack(dyespria, dyeToInsert, amount, DyespriaItem.getDyespriaUses(dyespria));
     }
     
     public static void setDyeToDyeHolderStack(ItemStack dyespria, ItemStack dyeToInsert, int amount, int uses) {

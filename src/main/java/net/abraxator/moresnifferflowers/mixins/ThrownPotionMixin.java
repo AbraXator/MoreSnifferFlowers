@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ThrownPotion.class)
 public abstract class ThrownPotionMixin extends ThrowableItemProjectile {
-    public ThrownPotionMixin(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public ThrownPotionMixin(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+        super(entityType, level);
     }
 
     @Inject(method = "isLingering", at = @At("TAIL"), cancellable = true)

@@ -77,8 +77,8 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         }
     };
 
-    public RebrewingStandBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.REBREWING_STAND.get(), pPos, pBlockState);
+    public RebrewingStandBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.REBREWING_STAND.get(), pos, state);
     }
 
     @Override
@@ -233,8 +233,8 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     }
 
     @Override
-    public ItemStack getItem(int pSlot) {
-        return pSlot >= 0 && pSlot < this.inv.size() ? this.inv.get(pSlot) : ItemStack.EMPTY;
+    public ItemStack getItem(int slot) {
+        return slot >= 0 && slot < this.inv.size() ? this.inv.get(slot) : ItemStack.EMPTY;
     }
 
     @Override
@@ -248,25 +248,25 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     }
 
     @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        return ContainerHelper.removeItem(this.inv, pSlot, pAmount);
+    public ItemStack removeItem(int slot, int pAmount) {
+        return ContainerHelper.removeItem(this.inv, slot, pAmount);
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {
-        return ContainerHelper.takeItem(inv, pSlot);
+    public ItemStack removeItemNoUpdate(int slot) {
+        return ContainerHelper.takeItem(inv, slot);
     }
 
     @Override
-    public void setItem(int pSlot, ItemStack pStack) {
-        if (pSlot >= 0 && pSlot < this.inv.size()) {
-            this.inv.set(pSlot, pStack);
+    public void setItem(int slot, ItemStack stack) {
+        if (slot >= 0 && slot < this.inv.size()) {
+            this.inv.set(slot, stack);
         }
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
+    public boolean stillValid(Player player) {
+        return Container.stillValidBlockEntity(this, player);
     }
 
     @Override
@@ -275,20 +275,20 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-        ContainerHelper.saveAllItems(pTag, inv, pRegistries);
-        pTag.putByte("progress", ((byte) brewProgress));
-        pTag.putByte("fuel", ((byte) fuel));
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        ContainerHelper.saveAllItems(tag, inv, registries);
+        tag.putByte("progress", ((byte) brewProgress));
+        tag.putByte("fuel", ((byte) fuel));
     }
 
     @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         inv = NonNullList.withSize(6, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(pTag, inv, pRegistries);
-        fuel = pTag.getByte("fuel");
-        brewProgress = pTag.getByte("progress");
+        ContainerHelper.loadAllItems(tag, inv, registries);
+        fuel = tag.getByte("fuel");
+        brewProgress = tag.getByte("progress");
     }
 
     public static void addPotionListToStack(List<MobEffectInstance> list, ItemStack itemStack) {

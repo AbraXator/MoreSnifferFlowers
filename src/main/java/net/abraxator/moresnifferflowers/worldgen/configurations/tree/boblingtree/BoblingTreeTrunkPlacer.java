@@ -105,8 +105,8 @@ public class BoblingTreeTrunkPlacer extends TrunkPlacer {
         return List.of();
     }
 
-    protected void placeBlock(BiConsumer<BlockPos, BlockState> pBlockSetter, RandomSource pRandom, BlockPos pPos, BlockPos startPos) {
-        pBlockSetter.accept(pPos, determineBlockVariation(startPos, pPos, pRandom));
+    protected void placeBlock(BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos, BlockPos startPos) {
+        blockSetter.accept(pos, determineBlockVariation(startPos, pos, random));
     }
     
     public BlockState determineBlockVariation(BlockPos startPos, BlockPos blockPos, RandomSource random) {
@@ -123,8 +123,8 @@ public class BoblingTreeTrunkPlacer extends TrunkPlacer {
     }
 
     @Override
-    protected boolean validTreePos(LevelSimulatedReader pLevel, BlockPos pPos) {
-        return super.validTreePos(pLevel, pPos) || pLevel.isStateAtPosition(pPos, blockState -> blockState.is(ModTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
+    protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
+        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(ModTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
     }
 
     public static record Branch(BlockPos blockPos, Direction direction, int height, int maxHeight) {
