@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
     id 'net.neoforged.moddev' version '2.0.115'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 group = 'net.abraxator.moresnifferflowers'
@@ -16,14 +17,14 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven {
-        url "https://cursemaven.com"
+        url = "https://cursemaven.com"
     }
     maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://maven.blamejared.com/" }
     maven { url = "https://modmaven.dev" }
     maven {
-        name 'Shedaniel\'s Maven' //REI
-        url "https://maven.shedaniel.me"
+        name = 'Shedaniel\'s Maven' //REI
+        url = "https://maven.shedaniel.me"
     }
     maven {
         name = "TerraformersMC" //EMI
@@ -100,14 +101,34 @@ final manifestAttributes = [
         'Specification-Vendor'  : 'Nikdo53',
         'Specification-Version' : project.version,
         'Implementation-Title'  : project.name,
-        'Implementation-Version': project.jar.archiveVersion,
+        'Implementation-Version': project.version,
         'Implementation-Vendor' : 'Nikdo53',
         "MixinConfigs": "more_sniffer_flowers.neoforge.mixins.json"
 ]
 
 jar {
     manifest.attributes(manifestAttributes)
-//    finalizedBy('reobfJar')
+}
+
+publishMods {
+    file = jar.archiveFile
+    modLoaders.add("neoforge")
+    displayName = "More Sniffer Flowers $version - $minecraft_version Neoforge"
+
+    type = STABLE
+    changelog = rootProject.file("CHANGELOG.md").text
+
+    curseforge {
+        accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
+        projectId = "884119"
+        minecraftVersions.add(minecraft_version)
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        projectId = "DbriYWc8"
+        minecraftVersions.add(minecraft_version)
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
