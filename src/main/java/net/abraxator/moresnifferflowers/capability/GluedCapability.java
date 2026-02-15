@@ -25,6 +25,8 @@ public class GluedCapability {
 
     public static void setAndSync(LivingEntity entity, boolean isGlued, boolean playSound) {
         Level level = entity.level();
+        if (level.isClientSide()) return;
+
         if (playSound) playSound(level, entity);
 
         GluedCapability cap = entity.getData(ModDataAttachments.GLUED.get());
