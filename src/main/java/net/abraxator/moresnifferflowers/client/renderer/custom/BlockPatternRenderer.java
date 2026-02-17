@@ -32,6 +32,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.model.lighting.QuadLighter;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -39,6 +40,8 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static net.abraxator.moresnifferflowers.client.RenderUtils.getVisibleChunks;
 
 public class BlockPatternRenderer {
     public static final BlockPatternRenderer.CameraTracker CAMERA_TRACKER = new BlockPatternRenderer.CameraTracker();
@@ -62,14 +65,7 @@ public class BlockPatternRenderer {
         poseStack.pushPose();
         poseStack.translate(-camX, -camY, -camZ);
 
-        List<LevelChunk> levelChunks = new ArrayList<>();
-
-        ChunkPos playerChunkPos = minecraft.player.chunkPosition();
-        for (int x = -chunkRenderDistance; x < chunkRenderDistance ; x++) {
-            for (int z = -chunkRenderDistance; z < chunkRenderDistance ; z++) {
-                levelChunks.add(level.getChunk(x + playerChunkPos.x,z + playerChunkPos.z));
-            }
-        }
+        List<LevelChunk> levelChunks = getVisibleChunks(chunkRenderDistance);
 
         BUFFER_MANAGER.cachePatterns(level, camX, camY, camZ, levelChunks, frustum);
         BUFFER_MANAGER.render(poseStack, Minecraft.getInstance().renderBuffers().bufferSource());

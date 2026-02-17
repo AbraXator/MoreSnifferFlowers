@@ -9,6 +9,7 @@ import net.abraxator.moresnifferflowers.capability.SlipperyCapability;
 import net.abraxator.moresnifferflowers.client.ClientRegistration;
 import net.abraxator.moresnifferflowers.client.renderer.custom.BlockPatternRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.custom.GhostRenderer;
+import net.abraxator.moresnifferflowers.client.shaders.ShaderTagRenderer;
 import net.abraxator.moresnifferflowers.entities.GluingGumEntity;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.toServer.DyespriaModePacket;
@@ -64,6 +65,8 @@ public class ClientEvents {
             BlockPatternRenderer.cacheAndRender(frustum, camera, level, minecraft, poseStack);
             GhostRenderer.renderAll(partialTicks, frustum, camera, level, poseStack);
         }
+
+        ShaderTagRenderer.render(poseStack, camera, stage);
 
     }
 

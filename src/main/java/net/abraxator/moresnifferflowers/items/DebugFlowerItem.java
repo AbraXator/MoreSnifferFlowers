@@ -3,16 +3,29 @@ package net.abraxator.moresnifferflowers.items;
 import net.abraxator.moresnifferflowers.blockentities.BerootCauldronBlockEntity;
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
 import net.abraxator.moresnifferflowers.client.renderer.custom.GhostBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.shaders.ShaderTagAttachment;
+import net.abraxator.moresnifferflowers.client.shaders.ShaderTagRegistry;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.ModDataAttachments;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.AABB;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.blockentities.IMultiBlockEntity;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class DebugFlowerItem extends Item {
     public DebugFlowerItem(Properties properties) {
@@ -24,6 +37,7 @@ public class DebugFlowerItem extends Item {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState blockState = level.getBlockState(pos);
+        Player player = context.getPlayer();
 
         if (level.isClientSide()) System.out.println("Below this is CLIENT:");
         if (!level.isClientSide()) System.out.println("Below this is SERVER:");
@@ -47,7 +61,29 @@ public class DebugFlowerItem extends Item {
                 .addToRenderList();
 */
 
-        new GhostBlockEntityRenderer(pos, 60, new BerootCauldronBlockEntity(pos, ModBlocks.BEROOT_CAULDRON.get().defaultBlockState().setValue(ModStateProperties.CENTER, true))).addToRenderList();
+        if (player != null && player.isShiftKeyDown()) {
+            AABB area = new AABB(pos).inflate(50);
+
+            Map<ChunkPos, Set<BlockPos>> posMap = new HashMap<>();
+
+            BlockPos.betweenClosedStream(area).map(BlockPos::immutable).forEach(pos1 -> {
+                if (level.getBlockState(pos1).is(ShaderTagRegistry.CUSTOM_RENDER)){
+                    posMap.computeIfAbsent(new ChunkPos(pos1), chunkPos -> new HashSet<>()).add(pos1);
+                }
+            });
+
+            for (Map.Entry<ChunkPos, Set<BlockPos>> entry : posMap.entrySet()) {
+                LevelChunk chunk = level.getChunkAt(entry.getKey().getWorldPosition());
+
+                HashSet<BlockPos> positions = chunk.getData(ModDataAttachments.SHADER_BLOCKS).positions();
+                positions.addAll(entry.getValue());
+                chunk.setData(ModDataAttachments.SHADER_BLOCKS, new ShaderTagAttachment(positions));
+
+            }
+
+
+        }
+
 
         return super.useOn(context);
     }

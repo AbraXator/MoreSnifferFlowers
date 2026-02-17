@@ -201,21 +201,6 @@ public class ForgeEvents {
     }
 
     @SubscribeEvent
-    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-       BlockState state = event.getPlacedBlock();
-       LevelAccessor badLevel = event.getLevel();
-
-       if (state.is(ModTags.ModBlockTags.CORRUPTION_SHIELDING) && badLevel instanceof Level level){
-           LevelChunk chunk = level.getChunkAt(event.getPos());
-           CorruptionCapability cap = chunk.getData(ModDataAttachments.CHUNK_CORRUPTION);
-
-           cap.resistance++;
-           cap.isSource = false;
-           cap.flowers.add(event.getPos());
-       }
-    }
-
-    @SubscribeEvent
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
         ItemStack output = event.getCrafting();
         Container input = event.getInventory();

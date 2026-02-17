@@ -1,6 +1,8 @@
 package net.abraxator.moresnifferflowers.data.tag;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.client.shaders.ModRenderTypes;
+import net.abraxator.moresnifferflowers.client.shaders.ShaderTagRegistry;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
 import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -27,6 +29,7 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider pProvider) {
         this.tag(BlockTags.FLOWERS).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH_BOTTOM.get(), ModBlocks.AMBUSH_TOP.get(), ModBlocks.CAULORFLOWER.get(), ModBlocks.DYESPRIA_PLANT.get(), ModBlocks.BONMEELIA.get());
         this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(ModBlocks.DAWNBERRY_VINE.get(), ModBlocks.AMBUSH_BOTTOM.get(), ModBlocks.AMBUSH_TOP.get(), ModBlocks.CAULORFLOWER.get());
@@ -103,5 +106,10 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
 
         this.tag(ModTags.ModBlockTags.DYED).add(Blocks.GLASS, Blocks.GLASS_PANE, Blocks.TERRACOTTA, Blocks.SHULKER_BOX, Blocks.CANDLE)
                 .addTag(Tags.Blocks.DYED).remove(BlockTags.BEDS);
+
+        this.tag(ShaderTagRegistry.CUSTOM_RENDER).addTags(ModRenderTypes.CRUMBLING_RENDER_TAG);
+
+        this.tag(ModRenderTypes.CRUMBLING_RENDER_TAG).add(ModBlocks.VIVICUS_LEAVES.get(), Blocks.PURPLE_WOOL, Blocks.MAGENTA_STAINED_GLASS);
+        this.tag(ShaderTagRegistry.NO_RENDERING);
     }
 }
