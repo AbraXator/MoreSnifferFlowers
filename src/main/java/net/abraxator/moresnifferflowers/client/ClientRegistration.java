@@ -12,6 +12,7 @@ import net.abraxator.moresnifferflowers.client.particle.*;
 import net.abraxator.moresnifferflowers.client.renderer.block.*;
 import net.abraxator.moresnifferflowers.client.renderer.custom.BlockPatternRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.*;
+import net.abraxator.moresnifferflowers.client.shaders.ShaderTagRegistry;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
@@ -44,6 +45,7 @@ public class ClientRegistration {
         Sheets.addWoodType(ModWoodTypes.CORRUPTED);
         Sheets.addWoodType(ModWoodTypes.VIVICUS);
         ModItemProperties.register();
+        ShaderTagRegistry.registerBuiltIn();
     }
 
     @SubscribeEvent
