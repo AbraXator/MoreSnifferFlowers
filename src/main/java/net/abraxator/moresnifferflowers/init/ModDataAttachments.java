@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.init;
 import com.mojang.serialization.Codec;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.*;
+import net.abraxator.moresnifferflowers.client.shaders.ShaderTagAttachment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -12,6 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -26,6 +28,8 @@ public class ModDataAttachments {
     public static final Supplier<AttachmentType<SlipperyCapability>> SLIPPERY = ATTACHMENT_TYPES.register("slippery", () -> AttachmentType.builder(SlipperyCapability::new).serialize(SlipperyCapability.CODEC).build());
     public static final Supplier<AttachmentType<UntouchableCapability>> UNTOUCHABLE = ATTACHMENT_TYPES.register("untouchable", () -> AttachmentType.builder(UntouchableCapability::new).serialize(UntouchableCapability.CODEC).build());
     public static final Supplier<AttachmentType<NutritionCapability>> NUTRITION = ATTACHMENT_TYPES.register("nutrition", () -> AttachmentType.builder(NutritionCapability::new).serialize(NutritionCapability.CODEC).sync(ByteBufCodecs.fromCodec(NutritionCapability.CODEC)).copyOnDeath().build());
+    public static final Supplier<AttachmentType<ShaderTagAttachment>> SHADER_BLOCKS = ATTACHMENT_TYPES.register("shader_blocks", () -> AttachmentType.builder(() -> new ShaderTagAttachment(new HashSet<>(), true)).serialize(ShaderTagAttachment.CODEC).sync(ShaderTagAttachment.STREAM_CODEC).build());
+
 
 
 }
