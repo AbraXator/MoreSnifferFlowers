@@ -80,7 +80,7 @@ public class ForgeEvents {
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
         LivingEntity entity = event.getEntity();
 
-        if (effect.equals(ModEffects.GLUED)){
+        if (!entity.level().isClientSide() && effect.equals(ModEffects.GLUED)){
             GluedCapability.setAndSync(entity, true, true);
         }
     }
