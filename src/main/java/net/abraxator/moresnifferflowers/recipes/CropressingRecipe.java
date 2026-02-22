@@ -6,19 +6,14 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.init.ModRecipeSerializers;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 public record CropressingRecipe(Ingredient ingredient, int count, ItemStack result) implements Recipe<SingleRecipeInput> {
-    public static final MapCodec<CropressingRecipe> CODEC = RecordCodecBuilder.mapCodec(builder -> {
-        return builder.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CropressingRecipe::ingredient),
-                Codec.INT.fieldOf("count").forGetter(CropressingRecipe::count),
-                ItemStack.CODEC.fieldOf("result").forGetter(CropressingRecipe::result)
-        ).apply(builder, CropressingRecipe::new);
-    });
-
     @Override
     public boolean matches(SingleRecipeInput pInput, Level level) {
         ItemStack itemStack = pInput.getItem(0);
@@ -48,5 +43,31 @@ public record CropressingRecipe(Ingredient ingredient, int count, ItemStack resu
     @Override
     public RecipeType<?> getType() {
         return ModRecipeTypes.CROPRESSING.get();
+    }
+
+    public static class CropressingSerializer implements RecipeSerializer<CropressingRecipe> {
+        public static final MapCodec<CropressingRecipe> CODEC = RecordCodecBuilder.mapCodec(builder ->
+                builder.group(
+                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CropressingRecipe::ingredient),
+                        Codec.INT.fieldOf("count").forGetter(CropressingRecipe::count),
+                        ItemStack.CODEC.fieldOf("result").forGetter(CropressingRecipe::result)
+                ).apply(builder, CropressingRecipe::new));
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, CropressingRecipe> STREAM_CODEC = StreamCodec.composite(
+                Ingredient.CONTENTS_STREAM_CODEC, CropressingRecipe::ingredient,
+                ByteBufCodecs.INT, CropressingRecipe::count,
+                ItemStack.OPTIONAL_STREAM_CODEC, CropressingRecipe::result,
+                CropressingRecipe::new
+        );
+
+        @Override
+        public MapCodec<CropressingRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, CropressingRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
     }
 }

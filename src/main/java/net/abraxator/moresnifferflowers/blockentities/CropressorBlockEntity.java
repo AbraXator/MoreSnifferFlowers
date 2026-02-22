@@ -7,10 +7,12 @@ import net.abraxator.moresnifferflowers.init.ModBlockEntities;
 import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
 import net.abraxator.moresnifferflowers.init.ModSoundEvents;
 import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.networking.NBTCodecHelper;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
@@ -44,7 +46,7 @@ import java.util.stream.IntStream;
 public class CropressorBlockEntity extends ModBlockEntity implements Container {
     public static int SLOT_SIZE = 9;
     public BetterNonNullList<ItemStack> container = BetterNonNullList.withSize(SLOT_SIZE, ItemStack.EMPTY);
-    public ItemStack currentCrop = ItemStack.EMPTY;
+    public Item currentCrop = Items.AIR;
     public ItemStack result = ItemStack.EMPTY;
     public int progress = 0;
     public final int MAX_PROGRESS = 100;
@@ -108,7 +110,7 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
 
                     if (!result.isEmpty()) {
                         progress++;
-                        currentCrop = slotStack;
+                        currentCrop = slotStack.getItem();
                         barLength = Math.min(Mth.ceil((float) getTotalAmount(slotStack.getItem()) / 2), 8);
                         setChanged();
                         return;
@@ -151,7 +153,7 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
 
 
             if (success) {
-                currentCrop = new ItemStack(copy.getItem(), getTotalAmount(copy.getItem()));
+                currentCrop = copy.getItem();
                 barLength = Math.min(Mth.ceil((float) getTotalAmount(copy.getItem()) / 2), 8);
                 this.setChanged();
 
@@ -217,7 +219,7 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
     }
 
     public int getColor() {
-        Item item = currentCrop.getItem();
+        Item item = currentCrop;
         if (item.equals(Items.AIR)) return 0x000000;
 
         if (item.equals(Items.POTATO)) return 0xb88c4c;
@@ -281,7 +283,8 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider reg) {
         super.saveAdditional(tag, reg);
-        tag.put("content", currentCrop.saveOptional(reg));
+
+        NBTCodecHelper.encode(BuiltInRegistries.ITEM.byNameCodec(), currentCrop, tag, "current_crop");
         tag.putInt("progress", progress);
         tag.putInt("bar", barLength);
         tag.put("result", result.saveOptional(reg));
@@ -294,7 +297,13 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider reg) {
         super.loadAdditional(tag, reg);
-        currentCrop = ItemStack.parseOptional(reg ,tag.getCompound("content"));
+        currentCrop = NBTCodecHelper.decode(BuiltInRegistries.ITEM.byNameCodec(), tag, "current_crop");
+
+        if (currentCrop == null) { //compat < 6.6.3
+            ItemStack content = ItemStack.parseOptional(reg, tag.getCompound("content"));
+            currentCrop = content.getItem();
+        }
+
         progress = tag.getInt("progress");
         barLength = tag.getInt("bar");
         result = ItemStack.parseOptional(reg ,tag.getCompound("result"));
@@ -302,10 +311,12 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
         ContainerHelper.loadAllItems(tag.getCompound("slots"), container, reg);
 
         ListTag containerTag = tag.getList("container", 10); // maintains compatibility with < 6.5
-        for (int i = 0; i < SLOT_SIZE; i++) {
-            CompoundTag itemTag = containerTag.getCompound(i);
-            ItemStack stack = ItemStack.parseOptional(reg, itemTag);
-            container.set(i, stack);
+        if (!containerTag.isEmpty()) {
+            for (int i = 0; i < SLOT_SIZE; i++) {
+                CompoundTag itemTag = containerTag.getCompound(i);
+                ItemStack stack = ItemStack.parseOptional(reg, itemTag);
+                container.set(i, stack);
+            }
         }
     }
 

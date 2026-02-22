@@ -1,2 +1,2 @@
-- Fixed a crash when getting the glued effect
-- Converted the bobling music disc from stereo to mono so minecraft stops complaining
+- Fixed a crash from cropressor holding an itemstack with count over 99
+- Fixed cropressor recipes not allowing air as their output
