@@ -92,7 +92,10 @@ dependencies {
     jarJar(implementation("maven.modrinth:tiny-multiblock-lib:neo-1.21.1-${tiny_multiblock_lib_version}"))
 
 
-    implementation("maven.modrinth:DistantHorizons:2.4.5-b-1.21.1")
+   // implementation("maven.modrinth:DistantHorizons:2.4.5-b-1.21.1")
+    implementation "curse.maven:sodium-394468:6382651"
+    implementation "curse.maven:irisshaders-455508:6661598"
+
 }
 
 jar {

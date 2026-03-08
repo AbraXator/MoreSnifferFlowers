@@ -107,9 +107,10 @@ public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
         this.tag(ModTags.ModBlockTags.DYED).add(Blocks.GLASS, Blocks.GLASS_PANE, Blocks.TERRACOTTA, Blocks.SHULKER_BOX, Blocks.CANDLE)
                 .addTag(Tags.Blocks.DYED).remove(BlockTags.BEDS);
 
-        this.tag(ShaderTagRegistry.CUSTOM_RENDER).addTags(ModRenderTypes.CRUMBLING_RENDER_TAG);
+        this.tag(ShaderTagRegistry.CUSTOM_RENDER).addTags(ModRenderTypes.CRUMBLING_RENDER_TAG, ModRenderTypes.GOLD_RENDER_TAG);
 
         this.tag(ModRenderTypes.CRUMBLING_RENDER_TAG).add(ModBlocks.VIVICUS_LEAVES.get(), Blocks.PURPLE_WOOL, Blocks.MAGENTA_STAINED_GLASS);
-        this.tag(ShaderTagRegistry.NO_RENDERING);
+        this.tag(ModRenderTypes.GOLD_RENDER_TAG).add(Blocks.OAK_WOOD, Blocks.BRICKS);
+        this.tag(ShaderTagRegistry.NO_RENDERING).add(Blocks.OAK_WOOD, Blocks.BRICKS);
     }
 }
