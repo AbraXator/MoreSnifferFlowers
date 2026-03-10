@@ -12,6 +12,7 @@ import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTy
 import net.abraxator.moresnifferflowers.worldgen.feature.ModFeatures;
 import net.abraxator.moresnifferflowers.worldgen.structures.ModStructureTypes;
 import net.abraxator.moresnifferflowers.worldgen.structures.pieces.ModPieceTypes;
+import net.irisshaders.iris.shaderpack.loading.ProgramId;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Blocks;
@@ -32,6 +33,7 @@ import org.slf4j.Logger;
 public class MoreSnifferFlowers {
     public static final String MOD_ID = "moresnifferflowers";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static ProgramId goldProgramId = null;
 
     public MoreSnifferFlowers(IEventBus modEventBus, Dist dist, ModContainer container) {
         if(dist.isClient()) {

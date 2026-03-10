@@ -80,5 +80,23 @@ public record ShaderTagAttachment(HashSet<BlockPos> positions, boolean isDirty) 
 
             return CACHE;
         }
+
+        public static Set<BlockPos> justGetAllBlocks() {
+            Set<BlockPos> set = new HashSet<>();
+            for (LevelChunk chunk : RenderUtils.getVisibleChunks()) {
+              set.addAll(chunk.getData(ModDataAttachments.SHADER_BLOCKS).positions);
+            }
+            return set;
+        }
+
+        public static boolean isDirty(){
+           return RenderUtils.getVisibleChunks().stream().anyMatch(chunk -> chunk.getData(ModDataAttachments.SHADER_BLOCKS).isDirty);
+        }
+
+        public static void clearDirty(){
+            for (LevelChunk chunk : RenderUtils.getVisibleChunks()) {
+                chunk.setData(ModDataAttachments.SHADER_BLOCKS, chunk.getData(ModDataAttachments.SHADER_BLOCKS).setDirty(false));
+            }
+        }
     }
 }

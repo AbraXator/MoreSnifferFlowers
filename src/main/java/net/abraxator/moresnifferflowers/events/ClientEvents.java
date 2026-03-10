@@ -66,7 +66,7 @@ public class ClientEvents {
             GhostRenderer.renderAll(partialTicks, frustum, camera, level, poseStack);
         }
 
-        ShaderTagRenderer.render(poseStack, camera, stage);
+        ShaderTagRenderer.INSTANCE.render(poseStack, camera, event);
 
     }
 

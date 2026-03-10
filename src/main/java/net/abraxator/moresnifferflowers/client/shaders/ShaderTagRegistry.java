@@ -26,7 +26,7 @@ public class ShaderTagRegistry {
 
     public static void registerBuiltIn(){
         register(ModRenderTypes.CRUMBLING_RENDER_TAG, new RenderContext(ModRenderTypes.CRUMBLING_BLOCK));
-        register(ModRenderTypes.GOLD_RENDER_TAG, new RenderContext(ModRenderTypes.RENDER_TYPE_GOLD));
+        register(ModRenderTypes.GOLD_RENDER_TAG, new RenderContext(ModRenderTypes.RENDER_TYPE_GOLD, RenderLevelStageEvent.Stage.AFTER_CUTOUT_MIPPED_BLOCKS_BLOCKS));
 
     }
 

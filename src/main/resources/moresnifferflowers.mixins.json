@@ -13,6 +13,8 @@
     "FarmBlockMixin",
     "FlowerBlockMixin",
     "InventoryMenuMixin",
+    "IrisPipelineAccessor",
+    "IrisProgramIdMixin",
     "LeavesBlockMixin",
     "PlayerMixin",
     "SlotMixin",
