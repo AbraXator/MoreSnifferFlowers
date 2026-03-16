@@ -60,13 +60,12 @@ public class ClientEvents {
         Frustum frustum = event.getFrustum();
         float partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(true);
 
-
         if (stage.equals(RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)) {
             BlockPatternRenderer.cacheAndRender(frustum, camera, level, minecraft, poseStack);
             GhostRenderer.renderAll(partialTicks, frustum, camera, level, poseStack);
         }
 
-        ShaderTagRenderer.INSTANCE.render(poseStack, camera, event);
+        ShaderTagRenderer.INSTANCE.render(event);
 
     }
 

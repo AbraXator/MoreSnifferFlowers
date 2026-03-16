@@ -40,6 +40,8 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(MoreSnifferFlowers.MOD_ID);
 
+    public static final DeferredBlock<Block> TEST_BLOCK = registerBlockWithItem("test", () -> new TestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT)));
+
     public static final DeferredBlock<Block> TORCHFLOWER_AFLAME = registerBlockWithItem("torchflower_aflame", () -> new TorchflowerAflameBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TORCHFLOWER).noCollission().randomTicks().lightLevel(value -> value.getValue(ModStateProperties.AGE_2) == 1 ? 12 : 0)));
     public static final DeferredBlock<Block> TORCHFLAME = registerBlockWithItem("torchflame", () -> new TorchflameBlock(BlockBehaviour.Properties.of().sound(SoundType.EMPTY).lightLevel(value -> 12).instabreak().noOcclusion().pushReaction(PushReaction.DESTROY).noCollission()));
     public static final DeferredBlock<Block> TORCHEWFLOWER = registerBlockWithItem("torchewflower", () -> new TorchewflowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TORCHFLOWER).noCollission().randomTicks()));

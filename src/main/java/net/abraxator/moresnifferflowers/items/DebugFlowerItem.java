@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.items;
 import net.abraxator.moresnifferflowers.blockentities.BerootCauldronBlockEntity;
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
 import net.abraxator.moresnifferflowers.client.renderer.custom.GhostBlockEntityRenderer;
+import net.abraxator.moresnifferflowers.client.renderer.custom.GhostBlockRenderer;
 import net.abraxator.moresnifferflowers.client.shaders.ShaderTagAttachment;
 import net.abraxator.moresnifferflowers.client.shaders.ShaderTagRegistry;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
@@ -15,6 +16,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
@@ -83,6 +86,8 @@ public class DebugFlowerItem extends Item {
 
 
         }
+
+        new GhostBlockRenderer(pos.above(), 100, Blocks.DIAMOND_BLOCK.defaultBlockState()).addToRenderList();
 
 
         return super.useOn(context);

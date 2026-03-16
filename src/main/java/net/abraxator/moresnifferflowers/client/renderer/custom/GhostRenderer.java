@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.client.renderer.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.client.RenderUtils;
 import net.abraxator.moresnifferflowers.components.RenderOffsetType;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
@@ -45,12 +46,8 @@ public abstract class GhostRenderer {
     public static void renderAll(float partialTick, Frustum frustum, Camera camera, Level level, PoseStack poseStack){
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 
-        double camX = camera.getPosition().x;
-        double camY = camera.getPosition().y;
-        double camZ = camera.getPosition().z;
-
         poseStack.pushPose();
-        poseStack.translate(-camX, -camY, -camZ);
+        RenderUtils.translateToCamera(poseStack, camera);
 
         List<GhostRenderer> renderers = new ArrayList<>(RENDERERS);
         renderers.forEach(renderer -> renderer.prepareAndRender(partialTick, frustum, camera, level, poseStack, buffer));

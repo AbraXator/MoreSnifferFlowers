@@ -122,6 +122,8 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ModBlockEntities.SALTEMONE.get(), SaltemoneBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MOD_CAULDRON.get(), ModCauldronRenderer::new);
 
+        event.registerBlockEntityRenderer(ModBlockEntities.TEST.get(), TestBlockEntityRenderer::new);
+
     }
 
     @SubscribeEvent
