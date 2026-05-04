@@ -1,3 +1,4 @@
 - Dyescrapia should now work better with modded blocks and no longer duplicate dyes
 - Items dropped from vivicus leaves should now stack correctly
 - (1.20.1) Fixed a crash with farmers' delight
+- Bumped Tiny Multiblock Lib to 3.2.0
