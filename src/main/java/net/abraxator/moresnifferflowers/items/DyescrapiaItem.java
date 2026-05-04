@@ -95,7 +95,26 @@ public class DyescrapiaItem extends BlockItem {
             }
 
             if ((!blockId.contains("white_") || colorless) && !finalBlockId.equals(blockId)){
-                Block finalBlock = colorless ? BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId, finalBlockId)) : BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId,"white" + finalBlockId));
+
+                Block finalBlock = Blocks.AIR;
+                for (int i = 0; i < 3; i++) {
+
+                    finalBlock = switch (i) {
+                        case 0 -> BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId, finalBlockId));
+                        case 1 -> BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId,"white" + finalBlockId));
+                        case 2 -> BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId,finalBlockId + "white"));
+                        default -> Blocks.AIR;
+                    };
+
+                    if (finalBlock != Blocks.AIR) {
+                        break;
+                    }
+                }
+
+                if (finalBlock == Blocks.AIR) {
+                    return InteractionResult.FAIL;
+                }
+
                 BlockState finalBlockState = finalBlock.defaultBlockState();
 
                 BlockEntity originalShulker = level.getBlockEntity(pos);
