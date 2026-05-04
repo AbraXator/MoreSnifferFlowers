@@ -119,8 +119,8 @@ dependencies {
     compileOnly("curse.maven:zeta-968868:6432578")
 
     //farmersDelight
-    modRuntimeOnly("curse.maven:farmers-delight-398521:6917255");
-    modCompileOnly("curse.maven:farmers-delight-398521:6917255");
+    modRuntimeOnly("curse.maven:farmers-delight-398521:8007609");
+    modCompileOnly("curse.maven:farmers-delight-398521:8007609");
 
     //BotanyPots
 /*
