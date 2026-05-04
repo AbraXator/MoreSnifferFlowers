@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.mixins;
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -30,8 +31,10 @@ public class BlockMixin {
             int color = colorable.colorValues().get(DyeColor.byId(colorId));
 
             for (ItemStack stack : list) {
-                stack.getOrCreateTag().putInt(Colorable.TAG_HEX, color);
-                stack.getOrCreateTag().putInt(Colorable.TAG_ID, colorId);
+                if (stack.is(ModTags.ModItemTags.COLORABLE)) {
+                    stack.getOrCreateTag().putInt(Colorable.TAG_HEX, color);
+                    stack.getOrCreateTag().putInt(Colorable.TAG_ID, colorId);
+                }
             }
 
             cir.setReturnValue(list);
