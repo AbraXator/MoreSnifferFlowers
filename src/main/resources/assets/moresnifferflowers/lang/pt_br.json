@@ -370,7 +370,7 @@
 
 
 	"entity.moresnifferflowers.dragonfly": "Libélula",
-	"entity.moresnifferflowers.bobling": "Bulbolino",
+	"entity.moresnifferflowers.bobling": "Gomolino",
 	"entity.moresnifferflowers.corrupted_slime_ball": "Bola de Slime Corrompida",
 	"entity.moresnifferflowers.jar_od_acid": "Pote de Ácido",
 	"entity.moresnifferflowers.vivicus_boat": "Bote de Vívico",
@@ -412,7 +412,7 @@
      "moresnifferflowers.configuration.multiblocks.button": "Editar",
 
 
- 	"moresnifferflowers.configuration.restart_required": "Muitas delas exigem reiniciar o jogo, aparentemente de forma aleatória. Reinicie seu jogo anter de reportar isso como um bug!",
+ 	"moresnifferflowers.configuration.restart_required": "Muitas delas exigem reiniciar o jogo, aparentemente de forma aleatória. Reinicie seu jogo antes de reportar isso como um bug!",
 
  	"moresnifferflowers.configuration.corruption_spread_speed": "Velocidade de propagação da Corrupção",
 	"moresnifferflowers.configuration.corrupted_tree_grow_through": "Crescimento de árvores altera o ambiente",
@@ -420,10 +420,10 @@
  	"moresnifferflowers.configuration.corrupted_tree_grow_through.tooltip": "Árvores Corrompidas devem ser capazes de crescer através de blocos e destruí-los? \nPadrão = true",
  	"moresnifferflowers.configuration.corrupted_tree_bone_meal": "Farinha de Osso em árvores Corrompidas",
 	"moresnifferflowers.configuration.corrupted_tree_bone_meal.tooltip": "Mudas Corrompidas devem exigir Farinha de Osso para crescer? \nPadrão = false",
- 	"moresnifferflowers.configuration.corrupted_bobling_griefing": "Bulbolinos Corrompidos altaram o ambiente",
-	"moresnifferflowers.configuration.corrupted_bobling_griefing.tooltip": "Os Bulbolinos devem disparar projéteis ao serem atingidos e substituir blocos ao plantar? \nPadrão = true",
- 	"moresnifferflowers.configuration.corrupted_sludge_griefing": "Lodo Corrompido altera o ambiente",
-	"moresnifferflowers.configuration.corrupted_sludge_griefing.tooltip": "Lodos devem atirar projéteis quando blocos são destruídos? \nPadrão = true",
+ 	"moresnifferflowers.configuration.corrupted_bobling_griefing": "Gomolinos Corrompidos alteram o ambiente",
+	"moresnifferflowers.configuration.corrupted_bobling_griefing.tooltip": "Os Gomolinos devem disparar projéteis ao serem atingidos e substituir blocos ao plantar? \nPadrão = true",
+ 	"moresnifferflowers.configuration.corrupted_sludge_griefing": "Gosma Corrompida altera o ambiente",
+	"moresnifferflowers.configuration.corrupted_sludge_griefing.tooltip": "Gosmas devem atirar projéteis quando blocos são destruídos? \nPadrão = true",
 
  	"moresnifferflowers.configuration.saltemone_lingering": "Saltêmonas alteram o ambiente",
 	"moresnifferflowers.configuration.saltemone_lingering.tooltip": "Bolhas de Saltêmona devem soltar itens, mesmo com ninguém as estourando? \nPadrão = true",
@@ -456,7 +456,7 @@
  	
 	
 	"effect.moresnifferflowers.pants_on_fire.description":"Queima slots no inventário do alvo",
-	"effect.moresnifferflowers.hardened_mouth.description":"Fornece ao jogador 2 slots estras capazes de assar itens sem combustível",
+	"effect.moresnifferflowers.hardened_mouth.description":"Fornece ao jogador 2 slots extras capazes de assar itens sem combustível",
 	"effect.moresnifferflowers.salty.description":"Faz o usuário atacar aleatoriamente e espalhar esse efeito para criaturas próximas",
 	"effect.moresnifferflowers.combo_meal.description":"Ataques carregados consecutivos aumentam a velocidade de ataque",
 	"effect.moresnifferflowers.bland.description":"Comer alimentos é menos eficaz e inflinge Fome.",
