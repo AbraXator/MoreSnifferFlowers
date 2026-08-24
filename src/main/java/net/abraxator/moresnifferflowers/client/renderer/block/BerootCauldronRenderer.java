@@ -30,7 +30,7 @@ import org.joml.Quaternionf;
 
 import java.util.function.Function;
 
-public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> implements BlockEntityRenderer<T>, IMultiblockRenderHelper {
+public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> implements BlockEntityRenderer<T> {
     private final ModelPart cauldron;
     private final ModelPart spoon;
 
@@ -44,12 +44,11 @@ public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> impleme
         final Material CAULDRON_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/beroot_cauldron"));
         final Material SPOON_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/beroot_spoon"));
 
-        PreviewMode previewMode = blockEntity.getPreviewMode();
-        Function<ResourceLocation, RenderType> renderType = getRenderTypeFunction(previewMode);
+        Function<ResourceLocation, RenderType> renderType = RenderType::entityCutout;
 
         final VertexConsumer cauldron_consumer = CAULDRON_TEXTURE.buffer(buffer, renderType);
         final VertexConsumer spoon_consumer = SPOON_TEXTURE.buffer(buffer, renderType);
-        final RandomSource randomSource = level().getRandom();
+        final RandomSource randomSource = blockEntity.getLevel().getRandom();
         final Direction direction = blockEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 
         if(blockEntity.isCenter()) {
@@ -58,7 +57,7 @@ public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> impleme
             poseStack.translate(1, 1.5, 0);
             poseStack.mulPose(Axis.XN.rotationDegrees(-180));
             rotate(poseStack, direction, false);
-            render(cauldron, poseStack, cauldron_consumer, packedLight, packedOverlay, previewMode);
+            cauldron.render(poseStack, cauldron_consumer, packedLight, packedOverlay);
             poseStack.popPose();
 
             //SOUP
@@ -99,7 +98,7 @@ public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> impleme
                 poseStack.mulPose(Axis.XN.rotationDegrees(-180));
                 rotate(poseStack, direction, false);
                 poseStack.mulPose((new Quaternionf()).rotationY((float) (rot * (Math.PI / 180))));
-                render(spoon ,poseStack, spoon_consumer, packedLight, packedOverlay, previewMode);
+                spoon.render(poseStack, spoon_consumer, packedLight, packedOverlay);
                 poseStack.popPose();
             }
             

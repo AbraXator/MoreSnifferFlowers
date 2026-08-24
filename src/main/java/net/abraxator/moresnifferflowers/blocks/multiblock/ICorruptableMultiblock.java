@@ -21,10 +21,10 @@ public interface ICorruptableMultiblock extends IMultiBlock {
         if (level.isClientSide()) return true;
         BlockPos center = IMultiBlock.getCenter(level, pos);
 
-        boolean ret = getFullBlockShape(level, center, state).stream().allMatch(blockPos -> level.getBlockState(blockPos).is(getCuredBlock()) || level.getBlockState(blockPos).is(getCorruptedBlock()));
+        boolean ret = getFullBlockShape(level, center, state).getGlobalPositions().stream().allMatch(blockPos -> level.getBlockState(blockPos).is(getCuredBlock()) || level.getBlockState(blockPos).is(getCorruptedBlock()));
 
         if (ret && level.getBlockEntity(pos) instanceof IMultiBlockEntity entity && !entity.isPlaced()) {
-            getFullBlockShape(level, center, state).forEach(blockPos -> IMultiBlockEntity.setPlaced(level, blockPos, true));
+            getFullBlockShape(level, center, state).getGlobalPositions().forEach(blockPos -> IMultiBlockEntity.setPlaced(level, blockPos, true));
         }
 
         return ret;
@@ -36,7 +36,7 @@ public interface ICorruptableMultiblock extends IMultiBlock {
                 corruptedProjectile.discard();
                 BlockPos centrePos = entity.getCenter();
                 BlockState centreState = level.getBlockState(centrePos);
-                getFullBlockShape(level, entity.getCenter(), state).forEach(pos1 -> afterCorruption(centrePos, level, pos1));
+                getFullBlockShape(level, entity.getCenter(), state).getGlobalPositions().forEach(pos1 -> afterCorruption(centrePos, level, pos1));
             }
         }
     }

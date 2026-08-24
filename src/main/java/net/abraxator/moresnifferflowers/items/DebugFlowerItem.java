@@ -1,26 +1,12 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.blockentities.BerootCauldronBlockEntity;
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
-import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
-import net.abraxator.moresnifferflowers.client.model.block.SimpleModels;
-import net.abraxator.moresnifferflowers.client.renderer.custom.GhostBlockEntityRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.custom.GhostBlockRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.custom.GhostModelRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.custom.GhostRenderer;
 import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.blockentities.IMultiBlockEntity;
@@ -53,8 +39,6 @@ public class DebugFlowerItem extends Item {
                 .setARGB(1, 0.5f, 0.5f, 0.5f)
                 .addToRenderList();
 */
-
-        new GhostBlockEntityRenderer(pos, 60, new BerootCauldronBlockEntity(pos, ModBlocks.BEROOT_CAULDRON.get().defaultBlockState().setValue(ModStateProperties.CENTER, true))).addToRenderList();
 
         return super.useOn(context);
     }

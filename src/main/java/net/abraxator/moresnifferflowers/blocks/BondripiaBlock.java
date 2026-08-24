@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,6 +40,9 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import net.nikdo53.tinymultiblocklib.block.AbstractMultiBlock;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.block.IPreviewableMultiblock;
+import net.nikdo53.tinymultiblocklib.block.logic.MultiblockLogic;
+import net.nikdo53.tinymultiblocklib.block.shape.ShapeContext;
+import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 import net.nikdo53.tinymultiblocklib.blockentities.IMultiBlockEntity;
 import net.nikdo53.tinymultiblocklib.components.SharedStatePropertiesBuilder;
 import org.jetbrains.annotations.Nullable;
@@ -78,8 +82,8 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
     }
 
     @Override
-    public BlockState getDefaultStateForPreviews(Direction direction) {
-        return IPreviewableMultiblock.super.getDefaultStateForPreviews(direction).setValue(getAgeProperty(), getMaxAge());
+    public BlockState getDefaultStateForPreviews(BlockState state, BlockPlaceContext blockPlaceContext) {
+        return IPreviewableMultiblock.super.getDefaultStateForPreviews(state, blockPlaceContext).setValue(getAgeProperty(), getMaxAge());
     }
 
     @Override
@@ -210,9 +214,8 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
         return Block.canSupportCenter(level, pos.above(), Direction.DOWN) && !level.isWaterAt(pos);
     }
 
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public AbstractMultiBlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BondripiaBlockEntity(pos, state);
     }
 

@@ -30,6 +30,7 @@ public class ModTags {
         public static final TagKey<Item> BLOCK_PATTERNS = create(Registries.ITEM ,"block_patterns");
         public static final TagKey<Item> COLORABLE = create(Registries.ITEM ,"colorable");
 
+        public static final TagKey<Item> MSF_SNIFFER_LOOT = create(Registries.ITEM ,"msf_sniffer_loot");
     }
 
     public static class ModBlockTags {

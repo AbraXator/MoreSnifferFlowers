@@ -2,6 +2,7 @@ package net.abraxator.moresnifferflowers.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import mezz.jei.api.helpers.IColorHelper;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
@@ -66,7 +67,7 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 		Function<ResourceLocation, RenderType> renderType = getRenderTypeFunction(previewMode);
 		VertexConsumer vertexConsumer = TEXTURE.buffer(buffer, renderType);
 
-		double growProgress = previewMode.equals(PreviewMode.PLACED) ? blockEntity.growProgress : 1;
+		double growProgress = previewMode == PreviewMode.PLACED ? blockEntity.growProgress : 1;
 		float coolPartialTick = (growProgress < 1 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && blockState.getValue(ModStateProperties.CENTER)) ? partialTick : 0;
 		float coolGrowProgress = level().getGameTime() - blockEntity.staticGameTime;
 
@@ -74,7 +75,7 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 			float yCord = 0.5F;
 			float yScale = 1;
 
-			if (!previewMode.equals(PreviewMode.PLACED)) yCord++;
+			if (previewMode != PreviewMode.PLACED) yCord++;
 
 			if(growProgress < 1) {
 				yCord = (coolGrowProgress + coolPartialTick) / 4 - 2;

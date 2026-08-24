@@ -15,6 +15,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagsProvider extends ItemTagsProvider {
@@ -68,7 +69,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         this.tag(ItemTags.SNIFFER_FOOD).add(ModItems.DAWNBERRY.get().asItem());
 
-        tag(ItemTags.MUSIC_DISCS).add(ModItems.MUSIC_DISC_BOBLING.get());
+        this.tag(ItemTags.MUSIC_DISCS).add(ModItems.MUSIC_DISC_BOBLING.get());
+
+        this.tag(ModTags.ModItemTags.MSF_SNIFFER_LOOT).add(ModItems.DAWNBERRY_VINE_SEEDS.get(), ModItems.DYESPRIA_SEEDS.get(), ModItems.AMBUSH_SEEDS.get(), ModItems.CAULORFLOWER_SEEDS.get(),
+                ModItems.BONMEELIA_SEEDS.get(), ModItems.BONDRIPIA_SEEDS.get(), ModBlocks.VIVICUS_SAPLING.get().asItem(), ModItems.SALTEMONE_SEEDS.get());
     }
 
     private Item item(RegistryObject<Block> object) {

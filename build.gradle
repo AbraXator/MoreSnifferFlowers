@@ -3,12 +3,13 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev.legacyforge' version '2.0.115'
+    id 'net.neoforged.moddev.legacyforge' version '2.0.142'
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 version = mod_version
 
-group = 'net.abraxator.moresnifferflowers'
+group = 'net.abraxator'
+
 base {
     archivesName.set("MoreSnifferFlowers-${minecraft_version}-Forge")
 }
@@ -47,7 +48,12 @@ repositories {
     }
     flatDir { dir 'libs' }
 
+
+    maven {
+        url = 'https://nikdo53.github.io'
+    }
 }
+
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -101,35 +107,24 @@ dependencies {
     //jei
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-    // Sometimes JEI disappears for some reason
-     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
    // modRuntimeOnly("curse.maven:jei-238222:6075247")
 
     //mixin
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:[0.5.0,)"))
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:[0.5.4,)"))
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
 
-    // modImplementation(jarJar(group: "local", name:"tiny-multiblock-lib-forge-1.20.1", version: "[2.0,)"))
-    // modImplementation("maven.modrinth:tiny-multiblock-lib:forge-1.20.1-2.0")
-    modImplementation(jarJar("maven.modrinth:tiny-multiblock-lib:forge-1.20.1-${tiny_multiblock_lib_version}"))
+    jarJar(implementation("net.nikdo53:tiny-multiblock-lib-neoforge-1.21.1:${tiny_multiblock_lib_version}"))
+    implementation("net.nikdo53:nikdo-color:1.0.0")
 
     //quark
     compileOnly("curse.maven:quark-243121:6427817")
     compileOnly("curse.maven:zeta-968868:6432578")
 
     //farmersDelight
-    modRuntimeOnly("curse.maven:farmers-delight-398521:8007609");
-    modCompileOnly("curse.maven:farmers-delight-398521:8007609");
-
-    //BotanyPots
-/*
-    modImplementation(group: 'net.darkhax.botanypots', name: 'BotanyPots-Forge-1.20.1', version: '13.0.41')
-    modImplementation(group: 'net.darkhax.bookshelf', name: 'Bookshelf-Forge-1.20.1', version: '20.2.13')
-
-    modImplementation("curse.maven:daves-potioneering-639653:6727871")
-    modImplementation("curse.maven:geckolib-388172:7025129")
-*/
+    modRuntimeOnly("curse.maven:farmers-delight-398521:8672742");
+    modCompileOnly("curse.maven:farmers-delight-398521:8672742");
 
     // modImplementation("maven.modrinth:dye-depot:1.2.1-forge")
     // modImplementation("curse.maven:worldedit-225608:4586218")
@@ -186,6 +181,19 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         projectId = "DbriYWc8"
         minecraftVersions.add(minecraft_version)
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url = "$rootDir/build/maven"
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
     }
 }
 

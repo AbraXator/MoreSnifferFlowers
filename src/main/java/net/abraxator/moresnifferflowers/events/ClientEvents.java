@@ -1,12 +1,10 @@
 package net.abraxator.moresnifferflowers.events;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.CapabilityList;
 import net.abraxator.moresnifferflowers.client.renderer.custom.BlockPatternRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.custom.GhostRenderer;
 import net.abraxator.moresnifferflowers.entities.GluingGumEntity;
 import net.abraxator.moresnifferflowers.init.ModEffects;
 import net.abraxator.moresnifferflowers.init.ModItems;
@@ -15,10 +13,8 @@ import net.abraxator.moresnifferflowers.networking.toServer.DyespriaModePacket;
 import net.abraxator.moresnifferflowers.networking.toServer.PatternspriaModePacket;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -63,13 +59,8 @@ public class ClientEvents {
 
         if (stage.equals(RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)) {
             BlockPatternRenderer.cacheAndRender(frustum, camera, level, minecraft, poseStack);
-            GhostRenderer.renderAll(partialTicks, frustum, camera, level, poseStack);
         }
-    }
 
-    @SubscribeEvent
-    public static void clientTick(TickEvent.ClientTickEvent event){
-       if (event.phase.equals(TickEvent.Phase.END)) GhostRenderer.tickAll();
     }
 
     @SubscribeEvent

@@ -12,6 +12,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -34,6 +36,8 @@ import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.blockentities.IMultiBlockEntity;
 import net.nikdo53.tinymultiblocklib.block.AbstractMultiBlock;
 import net.nikdo53.tinymultiblocklib.block.IPreviewableMultiblock;
+import net.nikdo53.tinymultiblocklib.block.shape.MultiblockShape;
+import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 import net.nikdo53.tinymultiblocklib.components.SharedStatePropertiesBuilder;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,18 +72,18 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
     }
 
     @Override
-    public boolean extraSurviveRequirements(LevelReader level, BlockPos pos, BlockState state, BlockPos offset) {
+    public boolean extraSurviveRequirements(LevelReader level, BlockPos pos, BlockState state, BlockPos offset, MultiblockShape shape) {
         return !level.isWaterAt(pos) && level.isWaterAt(pos.below());
     }
 
     @Override
-    public @Nullable DirectionProperty getDirectionProperty() {
-        return HorizontalDirectionalBlock.FACING;
+    public @Nullable DirectionContext makeDirectional() {
+        return DirectionContext.horizontal();
     }
 
     @Override
-    public BlockState getDefaultStateForPreviews(Direction direction) {
-        return IPreviewableMultiblock.super.getDefaultStateForPreviews(direction).setValue(getAgeProperty(), getMaxAge());
+    public BlockState getDefaultStateForPreviews(BlockState state, BlockPlaceContext blockPlaceContext) {
+        return IPreviewableMultiblock.super.getDefaultStateForPreviews(state, blockPlaceContext).setValue(getAgeProperty(), getMaxAge());
     }
 
     @Override
@@ -164,7 +168,7 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public @Nullable AbstractMultiBlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new SaltemoneBlockEntity(blockPos, blockState);
     }
 

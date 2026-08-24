@@ -2,14 +2,9 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
-import net.abraxator.moresnifferflowers.blockentities.IModBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.block.SimpleModels;
-import net.abraxator.moresnifferflowers.client.renderer.custom.GhostBlockRenderer;
-import net.abraxator.moresnifferflowers.client.renderer.custom.GhostModelRenderer;
-import net.abraxator.moresnifferflowers.components.RenderOffsetType;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
@@ -52,17 +47,18 @@ import net.nikdo53.tinymultiblocklib.block.AbstractMultiBlock;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.blockentities.IMultiBlockEntity;
 import net.nikdo53.tinymultiblocklib.block.IPreviewableMultiblock;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
+import net.nikdo53.tinymultiblocklib.client.ghost.GhostBlockRenderer;
+import net.nikdo53.tinymultiblocklib.client.ghost.GhostModelRenderer;
+import net.nikdo53.tinymultiblocklib.components.RenderOffsetType;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 import vectorwing.farmersdelight.common.block.RiceBlock;
-import vectorwing.farmersdelight.common.block.TomatoVineBlock;
+import vectorwing.farmersdelight.common.block.TomatoBlock;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Stream;
 
 
 public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock, Bonmeelable, IPreviewableMultiblock, SimpleWaterloggedBlock {
@@ -194,9 +190,8 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
         builder.add(WATERLOGGED);
     }
 
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable AbstractMultiBlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GiantCropBlockEntity(pos, state);
     }
 
@@ -249,7 +244,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
         AtomicBoolean noSpace = new AtomicBoolean(false);
         boolean canRenderGhosts = player != null && level.isClientSide();
 
-        boolean canBonmeel = getFullBlockShape(level, blockPos, blockState).stream().allMatch(pos -> {
+        boolean canBonmeel = getFullBlockShape(level, blockPos, blockState).getGlobalPositions().stream().allMatch(pos -> {
             pos = pos.above();
             BlockState state = level.getBlockState(pos);
             var PROPERTY = getCropMap().get(crop).getB().getA();
@@ -269,7 +264,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
                     if (canRenderGhosts)
                         new GhostBlockRenderer(pos, 40, state.setValue(PROPERTY, MAX_AGE))
                             .setARGB(1, 0.5f, 0.5f, 0.5f)
-                            .enableFadeOut(20)
+                            .enableTimeFade(20)
                             .setRenderOffsetType(RenderOffsetType.CROSS)
                             .addToRenderList();
                 }
@@ -284,7 +279,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
                     if (canRenderGhosts)
                         new GhostModelRenderer(pos, 40, SimpleModels.simpleCube().bakeRoot(), new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/pure_white")))
                             .setARGB(1, 0.0f, 0.0f, 0.3f)
-                            .enableFadeOut(20)
+                            .enableTimeFade(20)
                             .setRenderOffsetType(RenderOffsetType.SCALED)
                             .addToRenderList();
                 }
@@ -320,7 +315,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
                 Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
 
                 ForgeRegistries.BLOCKS.getValue(MoreSnifferFlowers.farmersDelightLoc("onions")), new Pair<>(ModBlocks.GIANT_ONION.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                ForgeRegistries.BLOCKS.getValue(MoreSnifferFlowers.farmersDelightLoc("tomatoes")), new Pair<>(ModBlocks.GIANT_TOMATO.get(), new Pair<>(TomatoVineBlock.VINE_AGE, 3)),
+                ForgeRegistries.BLOCKS.getValue(MoreSnifferFlowers.farmersDelightLoc("tomatoes")), new Pair<>(ModBlocks.GIANT_TOMATO.get(), new Pair<>(TomatoBlock.VINE_AGE, 3)),
                 ForgeRegistries.BLOCKS.getValue(MoreSnifferFlowers.farmersDelightLoc("cabbages")), new Pair<>(ModBlocks.GIANT_CABBAGE.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
                 ForgeRegistries.BLOCKS.getValue(MoreSnifferFlowers.farmersDelightLoc("rice_panicles")), new Pair<>(ModBlocks.GIANT_RICE.get(), new Pair<>(RiceBlock.AGE, 3))
 

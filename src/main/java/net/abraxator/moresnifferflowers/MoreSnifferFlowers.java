@@ -52,7 +52,6 @@ public class MoreSnifferFlowers {
         ModTrunkPlacerTypes.TRUNKS.register(modEventBus);
         ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
-        ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         ModTreeDecoratorTypes.DECORATORS.register(modEventBus);
         ModBannerPatterns.BANNER_PATTERNS.register(modEventBus);
         ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
