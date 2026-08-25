@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "items": "moresnifferflowers:torchflower_aflame"
+            "items": [
+              "moresnifferflowers:torchflower_aflame"
+            ]
           }
         ]
       },
@@ -20,13 +22,14 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
-      "has_torchflower_aflame"
+      "has_torchflower_aflame",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:torchflower"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

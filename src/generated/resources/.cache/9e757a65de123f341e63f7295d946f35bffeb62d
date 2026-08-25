@@ -1,4 +1,4 @@
-// 1.20.1	2025-11-23T19:44:00.1837514	Tags for minecraft:item mod id moresnifferflowers
+// 1.20.1	2026-08-25T22:07:15.0862335	Tags for minecraft:item mod id moresnifferflowers
 840aac17023f4b3090f7a16bdac7a2917619a7ee data/forge/tags/items/seeds.json
 6d8903ab7204569206b2f7cb5c89b74235cf79d6 data/minecraft/tags/items/fence_gates.json
 333c0cd687a06b67b797ce6b6e4c0790ccab28a4 data/minecraft/tags/items/logs_that_burn.json
@@ -23,5 +23,6 @@ c1b0e8bc125bdec76aae272b8a07da9b1f16bf27 data/moresnifferflowers/tags/items/corr
 bfebd7b13f81dc723ab18466b27f49cb48207e13 data/moresnifferflowers/tags/items/cropressed_crops.json
 ef9a30a57f4fbd8cd93ac60d0c96e86895c23af5 data/moresnifferflowers/tags/items/cropressor_pieces.json
 9bf614b0d797f5099328faf4a412bb6333aaad47 data/moresnifferflowers/tags/items/crop_smithing_templates.json
+2c0ff418e7715b5b0a9e72ddc67ed48f5f13c05c data/moresnifferflowers/tags/items/msf_sniffer_loot.json
 6ef9951396298f31e3728c08cb20664e3160ab7e data/moresnifferflowers/tags/items/rebrewed_potions.json
 97baf6f97bc416efbd340b48e3a9fbf3b39e5e32 data/moresnifferflowers/tags/items/vivicus_logs.json

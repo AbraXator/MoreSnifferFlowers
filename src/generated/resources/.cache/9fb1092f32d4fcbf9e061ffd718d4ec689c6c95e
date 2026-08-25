@@ -1,5 +1,7 @@
-// 1.20.1	2025-11-23T19:24:36.0323895	Recipes
+// 1.20.1	2026-08-25T22:07:15.0805621	Recipes
+5a4d456d1f92fe43eb795624b6e185daa4ed2aef data/minecraft/advancements/recipes/misc/torchflower.json
 c9e239f3417968bd8f8a46ee1570d7c2eebc00f6 data/minecraft/recipes/rebrewed_tipped_arrow.json
+0b21155f87e62a0de482452862184e420e1a0996 data/minecraft/recipes/torchflower.json
 e914336b1df80fcd54a269f29e962bec5ccec350 data/moresnifferflowers/advancements/recipes/building_blocks/amber_mosaic.json
 83ffc42440066029a25aae373855946e924ea991 data/moresnifferflowers/advancements/recipes/building_blocks/amber_mosaic_slab.json
 3a7331b88a803e7e26baf02e855bbda9e8a19aa4 data/moresnifferflowers/advancements/recipes/building_blocks/amber_mosaic_stairs.json

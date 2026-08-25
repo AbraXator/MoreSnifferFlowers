@@ -1,4 +1,6 @@
-- Dyescrapia should now work better with modded blocks and no longer duplicate dyes
-- Items dropped from vivicus leaves should now stack correctly
-- (1.20.1) Fixed a crash with farmers' delight
-- Bumped Tiny Multiblock Lib to 3.2.0
+- Bumbed to Tiny Multiblock Lib 4.0 (fixing some crashes)
+- Fixed Beroot cauldron not being stirrable
+- Hopefully fixed saltemone getting stuck
+- The sniffer loottable is no longer hardcoded (you can change it with datapacks now!)
+- Added Portuguese translations (thanks [Leirbag](https://github.com/Brun333rp))
+- Vanilla torchflower is now craftable
