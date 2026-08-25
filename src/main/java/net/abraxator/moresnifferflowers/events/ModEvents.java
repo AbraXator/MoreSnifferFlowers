@@ -14,7 +14,6 @@ import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;

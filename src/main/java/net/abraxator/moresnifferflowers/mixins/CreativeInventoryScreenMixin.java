@@ -32,23 +32,4 @@ public abstract class CreativeInventoryScreenMixin extends EffectRenderingInvent
     public int skipExtraSlots(NonNullList<Slot> instance, Operation<Integer> original){
         return original.call(instance) - 2;
     }
-
-    @ModifyVariable(method = "renderTabButton", at = @At(value = "LOAD", ordinal = 0))
-    protected ResourceLocation[] renderTabButton(ResourceLocation[] vanillaLoc, @Local(argsOnly = true) CreativeModeTab creativeModeTab,
-                                   @Local(ordinal = 0) boolean isSelected, @Local(ordinal = 1) boolean isTop) {
-        if (ClientRegistration.isBoringLoaded()) return vanillaLoc;
-        if (creativeModeTab != ModCreativeTabs.MORESNIFFERFLOWERS_TAB.get()) return vanillaLoc;
-
-        ResourceLocation[] aresourcelocation;
-        if (isTop) {
-            aresourcelocation = isSelected ? ModCreativeTabs.SELECTED_TOP_TABS : ModCreativeTabs.UNSELECTED_TOP_TABS;
-        } else {
-            aresourcelocation = isSelected ? ModCreativeTabs.SELECTED_BOTTOM_TABS : ModCreativeTabs.UNSELECTED_BOTTOM_TABS;
-        }
-
-        return aresourcelocation;
-    }
-
-
-
 }

@@ -74,7 +74,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         } else return InteractionResult.PASS;
 
         setChanged();
-        return InteractionResult.SUCCESS;
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
     
     public void craft() {
@@ -121,7 +121,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         }
 
         int maxSoupUses = 6;
-        int soupUses = Math.clamp(Math.round(food / 3f) + (ingredients - foodLimit / 2) / 2, 1, maxSoupUses);
+        int soupUses = Mth.clamp(Math.round(food / 3f) + (ingredients - foodLimit / 2) / 2, 1, maxSoupUses);
 
 
         //For Cookbook unlocking
@@ -366,7 +366,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         for(ItemEntity itementity : getItemsAtAndAbove(level, new BlockPos(x,y,z))) {
             ItemStack itemStack = itementity.getItem().copy();
 
-            if (addItem(itemStack, null).equals(InteractionResult.SUCCESS)) {
+            if (addItem(itemStack, null).consumesAction()) {
                 itementity.setItem(itemStack);
             }
         }

@@ -70,7 +70,7 @@ public class BerootCauldronBlock extends AbstractMultiBlock implements ModEntity
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         var item = player.getItemInHand(InteractionHand.MAIN_HAND);
 
-        if(level.getBlockEntity(IMultiBlock.getCenter(level, pos)) instanceof BerootCauldronBlockEntity blockEntity) {
+        if(level.getBlockEntity(IMultiBlock.getCenter(level, pos)) instanceof BerootCauldronBlockEntity blockEntity && !player.isShiftKeyDown()) {
             InteractionResult interactionResult = blockEntity.addItem(item, player);
             if (interactionResult.consumesAction()){
                 return interactionResult;

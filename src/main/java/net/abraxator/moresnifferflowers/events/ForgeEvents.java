@@ -43,12 +43,13 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -125,7 +126,7 @@ public class ForgeEvents {
 
     @SubscribeEvent
     public static void lootTableLoad(LootTableLoadEvent event){
-        if (event.getKey().location().equals(BuiltInLootTables.SNIFFER_DIGGING.location())) {
+        if (event.getName().equals(BuiltInLootTables.SNIFFER_DIGGING)) {
             LootTable table = event.getTable();
             LootPool pool = table.getPool("main");
             if (pool == null){
@@ -136,9 +137,9 @@ public class ForgeEvents {
             List<Item> items = List.of(ModItems.DAWNBERRY_VINE_SEEDS.get(), ModItems.DYESPRIA_SEEDS.get(), ModItems.AMBUSH_SEEDS.get(), ModItems.CAULORFLOWER_SEEDS.get(),
                     ModItems.BONMEELIA_SEEDS.get(), ModItems.BONDRIPIA_SEEDS.get(), ModBlocks.VIVICUS_SAPLING.get().asItem(), ModItems.SALTEMONE_SEEDS.get());
 
-            pool.entries = new ArrayList<>(pool.entries);
-            pool.entries.addAll(items.stream().map(item -> LootItem.lootTableItem(item).build()).toList());
-            pool.entries = ImmutableList.copyOf(pool.entries);
+            List<LootPoolEntryContainer> entries = new ArrayList<>(List.of(pool.entries));
+            entries.addAll(items.stream().map(item -> LootItem.lootTableItem(item).build()).toList());
+            pool.entries = entries.toArray(new LootPoolEntryContainer[0]);
         }
 
     }
