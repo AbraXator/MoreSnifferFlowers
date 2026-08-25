@@ -244,7 +244,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
         AtomicBoolean noSpace = new AtomicBoolean(false);
         boolean canRenderGhosts = player != null && level.isClientSide();
 
-        boolean canBonmeel = getFullBlockShape(level, blockPos, blockState).getGlobalPositions().stream().allMatch(pos -> {
+        boolean canBonmeel = getMultiblockShape(level, blockPos, blockState).getGlobalPositions().stream().allMatch(pos -> {
             pos = pos.above();
             BlockState state = level.getBlockState(pos);
             var PROPERTY = getCropMap().get(crop).getB().getA();
