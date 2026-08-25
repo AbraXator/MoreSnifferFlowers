@@ -9,6 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public interface IModBlockEntity {
     default void tick(Level level) {};
 
-    default void clientTick(ClientLevel level) {};
+    default void clientTick(Level level) {};
 
 }

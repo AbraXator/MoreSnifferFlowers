@@ -218,6 +218,13 @@ public class ModRecipesProvider extends RecipeProvider {
                 .unlockedBy("cropressed_beetroot", has(ModItems.CROPRESSED_BEETROOT.get()))
                 .save(pRecipeOutput);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.TORCHFLOWER)
+                .requires(Ingredient.of(ModBlocks.TORCHFLOWER_AFLAME.asItem()), 1)
+                .requires(Ingredient.of(Items.BONE_MEAL), 3)
+                .unlockedBy("has_torchflower_aflame", has(ModBlocks.TORCHFLOWER_AFLAME.asItem()))
+                .save(recipeOutput);
+
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.MUSIC_DISC_BOBLING.get(), 1)
                 .pattern(" A ")
                 .pattern("AXA")

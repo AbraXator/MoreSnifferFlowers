@@ -13,7 +13,7 @@ public interface ModEntityBlock extends EntityBlock {
      default <T extends BlockEntity> BlockEntityTicker<T> tickerHelper(Level level) {
         return (pLevel1, pos, pState1, blockEntity) -> {
             if(level.isClientSide) {
-                ((IModBlockEntity) blockEntity).clientTick((ClientLevel) level);
+                ((IModBlockEntity) blockEntity).clientTick(level);
             } else {
                 ((IModBlockEntity) blockEntity).tick(level);
             }

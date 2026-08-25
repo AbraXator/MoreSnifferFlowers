@@ -14,6 +14,7 @@ import net.abraxator.moresnifferflowers.client.renderer.block.*;
 import net.abraxator.moresnifferflowers.client.renderer.custom.BlockPatternRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.*;
 import net.abraxator.moresnifferflowers.init.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
@@ -119,7 +120,7 @@ public class ClientRegistration {
         event.registerBlockEntityRenderer(ModBlockEntities.MOD_CAULDRON.get(), ModCauldronRenderer::new);
 
     }
-    
+
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.FLY.get(), FlyParticle.Provider::new);
@@ -178,5 +179,9 @@ public class ClientRegistration {
                 }
             });
         }
+    }
+
+    public static boolean isBoringLoaded() {
+        return Minecraft.getInstance().getResourceManager().listPacks().anyMatch(packResources -> packResources.packId().equals("more_sniffer_flowers_boring"));
     }
 }

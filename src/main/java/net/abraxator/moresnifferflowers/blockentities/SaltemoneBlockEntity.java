@@ -31,6 +31,10 @@ public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IM
 
     public int bubbleCount = 0;
     public static final int MAX_BUBBLE_COUNT = 5;
+    public int fullBubbleTicks = 0;
+
+    public static final int PROBABLY_STUCK_TICKS = 1200;
+
 
     @Override
     public @NotNull AABB getRenderBoundingBox() {
@@ -45,6 +49,15 @@ public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IM
         SaltemoneBlock saltemoneBlock = (SaltemoneBlock) state.getBlock();
         RandomSource random = getLevel().getRandom();
 
+        if (bubbleCount >= MAX_BUBBLE_COUNT){
+            fullBubbleTicks++;
+            if (fullBubbleTicks > PROBABLY_STUCK_TICKS){
+                bubbleCount = 0;
+                fullBubbleTicks = 0;
+            }
+        } else {
+            fullBubbleTicks = 0;
+        }
         if (!canSpawnBubble(state, random, saltemoneBlock))
             return;
 

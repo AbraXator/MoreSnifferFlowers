@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.init;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
@@ -15,7 +16,8 @@ public class ModCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> MORESNIFFERFLOWERS_TAB = TABS.register("moresnifferflowers_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("moresnifferflowers.creative_tab"))
-            .icon(() -> new ItemStack(ModItems.CREATIVE_TAB_ICON.get()))
+            .hideTitle()
+            .icon(() -> new ItemStack(ModItems.DYESPRIA.get()))
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.DAWNBERRY_VINE_SEEDS.get());
                 output.accept(ModItems.DAWNBERRY.get());

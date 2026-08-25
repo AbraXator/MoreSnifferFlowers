@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -70,10 +71,15 @@ public class BerootCauldronBlock extends AbstractMultiBlock implements ModEntity
         var item = player.getItemInHand(InteractionHand.MAIN_HAND);
 
         if(level.getBlockEntity(IMultiBlock.getCenter(level, pos)) instanceof BerootCauldronBlockEntity blockEntity) {
-            return blockEntity.addItem(item, player);
+            InteractionResult interactionResult = blockEntity.addItem(item, player);
+            if (interactionResult.consumesAction()){
+                return interactionResult;
+            } else {
+                return blockEntity.useWithoutItem(level);
+            }
         }
 
-        return InteractionResult.PASS;
+        return super.use(state, level, pos, player, hand, hit);
     }
 
     @Override
