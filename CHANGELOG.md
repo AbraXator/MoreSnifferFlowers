@@ -1,6 +1,1 @@
-- Bumbed to Tiny Multiblock Lib 4.0 (fixing some crashes)
-- Fixed Beroot cauldron not being stirrable
-- Hopefully fixed saltemone getting stuck
-- The sniffer loottable is no longer hardcoded (you can change it with datapacks now!)
-- Added Portuguese translations (thanks [Leirbag](https://github.com/Brun333rp))
-- Vanilla torchflower is now craftable
+- Fixed Tiny Multiblock Lib being downgraded (and crashing) when paired with starcatcher
