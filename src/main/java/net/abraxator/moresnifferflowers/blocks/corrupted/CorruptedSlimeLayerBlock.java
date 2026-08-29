@@ -34,7 +34,7 @@ public class CorruptedSlimeLayerBlock extends SnowLayerBlock {
     }
 
     @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState pOldState, boolean pIsMoving) {
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean pIsMoving) {
         if (isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
             spawnProjectile(state, level, pos);
         }
@@ -47,12 +47,12 @@ public class CorruptedSlimeLayerBlock extends SnowLayerBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pos, BlockPos pFacingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos) {
         if (isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
             spawnProjectile(state, level, pos);
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, pFacing, pFacingState, level, pos, pFacingPos);
+        return super.updateShape(state, facing, facingState, level, pos, facingPos);
     }
 
     private static void spawnProjectile(BlockState state, LevelAccessor level, BlockPos pos) {
@@ -66,21 +66,21 @@ public class CorruptedSlimeLayerBlock extends SnowLayerBlock {
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity pEntity, float pFallDistance) {
-        pEntity.playSound(SoundEvents.HONEY_BLOCK_SLIDE, 1.0F, 1.0F);
-        showParticles(pEntity, 10);
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float pFallDistance) {
+        entity.playSound(SoundEvents.HONEY_BLOCK_SLIDE, 1.0F, 1.0F);
+        showParticles(entity, 10);
 
-        if (pEntity.causeFallDamage(pFallDistance, 0.2F, level.damageSources().fall())) {
-            pEntity.playSound(this.soundType.getFallSound(), this.soundType.getVolume() * 0.5F, this.soundType.getPitch() * 0.75F);
+        if (entity.causeFallDamage(pFallDistance, 0.2F, level.damageSources().fall())) {
+            entity.playSound(this.soundType.getFallSound(), this.soundType.getVolume() * 0.5F, this.soundType.getPitch() * 0.75F);
         }
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity pEntity) {
-        double d0 = Math.abs(pEntity.getDeltaMovement().y);
-        if (d0 < 0.1 && !pEntity.isSteppingCarefully()) {
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        double d0 = Math.abs(entity.getDeltaMovement().y);
+        if (d0 < 0.1 && !entity.isSteppingCarefully()) {
             double d1 = (double) 1 / (state.getValue(LAYERS)+1) + d0 * 0.2;
-            pEntity.setDeltaMovement(pEntity.getDeltaMovement().multiply(d1, 1.0, d1));
+            entity.setDeltaMovement(entity.getDeltaMovement().multiply(d1, 1.0, d1));
         }
     }
 
@@ -88,6 +88,7 @@ public class CorruptedSlimeLayerBlock extends SnowLayerBlock {
         return 2;
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isFree(BlockState state) {
         return state.isAir() || state.is(BlockTags.FIRE) || state.liquid() || state.canBeReplaced();
     }
@@ -107,11 +108,11 @@ public class CorruptedSlimeLayerBlock extends SnowLayerBlock {
         }
     }
     
-    private void showParticles(Entity pEntity, int pParticleCount) {
-        if (pEntity.level().isClientSide) {
+    private void showParticles(Entity entity, int pParticleCount) {
+        if (entity.level().isClientSide) {
             for (int i = 0; i < pParticleCount; i++) {
-                pEntity.level()
-                        .addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.defaultBlockState()), pEntity.getX(), pEntity.getY(), pEntity.getZ(), 0.0, 0.0, 0.0);
+                entity.level()
+                        .addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.defaultBlockState()), entity.getX(), entity.getY(), entity.getZ(), 0.0, 0.0, 0.0);
             }
         }
     }

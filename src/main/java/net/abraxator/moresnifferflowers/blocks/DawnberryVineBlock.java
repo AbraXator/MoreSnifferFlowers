@@ -3,8 +3,8 @@ package net.abraxator.moresnifferflowers.blocks;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFItems;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
-    public static final BooleanProperty SHEARED = ModStateProperties.SHEARED;
+    public static final BooleanProperty SHEARED = MSFStateProperties.SHEARED;
     public static final MapCodec<DawnberryVineBlock> CODEC = RecordCodecBuilder.mapCodec(p_304392_ ->
             p_304392_.group(propertiesCodec(), Codec.BOOL.fieldOf("evil").forGetter(DawnberryVineBlock::isEvil))
                     .apply(p_304392_, DawnberryVineBlock::new));
@@ -108,7 +108,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     private InteractionResult dropMaxAgeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
         RandomSource randomSource = level.getRandom();
-        final ItemStack DAWNBERRY = new ItemStack(evil ? ModItems.GLOOMBERRY.get() : ModItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 2));
+        final ItemStack DAWNBERRY = new ItemStack(evil ? MSFItems.GLOOMBERRY.get() : MSFItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 2));
 
         popResource(level, pos, DAWNBERRY);
         level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
@@ -120,7 +120,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
 
     protected InteractionResult dropAgeThreeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
         RandomSource randomSource = level.getRandom();
-        final ItemStack DAWNBERRY = new ItemStack(evil ? ModItems.GLOOMBERRY.get() : ModItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 2));
+        final ItemStack DAWNBERRY = new ItemStack(evil ? MSFItems.GLOOMBERRY.get() : MSFItems.DAWNBERRY.get(), randomSource.nextIntBetweenInclusive(1, 2));
         
         popResource(level, pos, DAWNBERRY);
         level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);

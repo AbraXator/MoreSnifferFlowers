@@ -1,11 +1,10 @@
 package net.abraxator.moresnifferflowers.client.gui.menu;
 
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModMenuTypes;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFItems;
+import net.abraxator.moresnifferflowers.init.MSFMenuTypes;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -17,7 +16,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 
@@ -30,7 +28,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
     }
     
     public RebrewingStandMenu(int id, Inventory playerInv, Container rebrewingStandContainer, ContainerData rebrewingStandContainerData) {
-        super(ModMenuTypes.REBREWING_STAND.get(), id);
+        super(MSFMenuTypes.REBREWING_STAND.get(), id);
         checkContainerSize(rebrewingStandContainer, 6);
         checkContainerDataCount(rebrewingStandContainerData, 2);
         this.rebrewingStand = rebrewingStandContainer;
@@ -138,7 +136,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
             
         public static boolean mayPlaceItem(ItemStack itemStack) {
-            return itemStack.is(ModItems.CROPRESSED_NETHERWART.get());
+            return itemStack.is(MSFItems.CROPRESSED_NETHERWART.get());
         }
         
         @Override
@@ -158,7 +156,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
 
         public static boolean mayPlaceItem(ItemStack itemStack) {
-            return itemStack.is(ModItems.EXTRACTED_BOTTLE.get());
+            return itemStack.is(MSFItems.EXTRACTED_BOTTLE.get());
         }
 
         @Override
@@ -209,7 +207,7 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
 
         public void onTake(Player player, ItemStack stack) {
-            if (player instanceof ServerPlayer && stack.is(ModTags.ModItemTags.REBREWED_POTIONS)) {
+            if (player instanceof ServerPlayer && stack.is(MSFTags.ModItemTags.REBREWED_POTIONS)) {
                 var potion = stack.get(DataComponents.POTION_CONTENTS).potion();
                 potion.ifPresent(potionHolder -> {
                     CriteriaTriggers.BREWED_POTION.trigger((ServerPlayer)player, potionHolder);

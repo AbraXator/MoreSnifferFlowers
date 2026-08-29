@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.capability.NutritionCapability;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.networking.toClient.BerootCookbookScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -23,7 +23,7 @@ public class BerootCookbookItem extends Item {
         ItemStack itemstack = player.getItemInHand(hand);
 
         if(player instanceof ServerPlayer serverPlayer) {
-            NutritionCapability cap = serverPlayer.getData(ModDataAttachments.NUTRITION);
+            NutritionCapability cap = serverPlayer.getData(MSFDataAttachments.NUTRITION);
             cap.sync(player);
             PacketDistributor.sendToPlayer( serverPlayer, new BerootCookbookScreenPacket());
         }

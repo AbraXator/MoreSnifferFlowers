@@ -1,8 +1,8 @@
 package net.abraxator.moresnifferflowers.entities.boat;
 
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -25,7 +25,7 @@ public class ModBoatEntity extends Boat {
     }
 
     public ModBoatEntity(Level level, double pX, double pY, double pZ) {
-        this(ModEntityTypes.MOD_CORRUPTED_BOAT.get(), level);
+        this(MSFEntityTypes.MOD_CORRUPTED_BOAT.get(), level);
         this.setPos(pX, pY, pZ);
         this.xo = pX;
         this.yo = pY;
@@ -35,8 +35,8 @@ public class ModBoatEntity extends Boat {
     @Override
     public Item getDropItem() { 
         return switch (getModVariant()) {
-            case CORRUPTED -> ModItems.CORRUPTED_BOAT.get();
-            case VIVICUS -> ModItems.VIVICUS_BOAT.get();
+            case CORRUPTED -> MSFItems.CORRUPTED_BOAT.get();
+            case VIVICUS -> MSFItems.VIVICUS_BOAT.get();
         };
     }
 
@@ -66,17 +66,18 @@ public class ModBoatEntity extends Boat {
     }
 
     public enum Type implements StringRepresentable {
-        CORRUPTED(ModBlocks.CORRUPTED_PLANKS.get(), "corrupted"),
-        VIVICUS(ModBlocks.VIVICUS_PLANKS.get(),"vivicus" );
+        CORRUPTED(MSFBlocks.CORRUPTED_PLANKS.get(), "corrupted"),
+        VIVICUS(MSFBlocks.VIVICUS_PLANKS.get(),"vivicus" );
 
         private final String name;
         private final Block planks;
+        @SuppressWarnings("deprecation")
         public static final EnumCodec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
         private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
 
-        Type(Block pPlanks, String pName) {
-            this.name = pName;
-            this.planks = pPlanks;
+        Type(Block planks, String name) {
+            this.name = name;
+            this.planks = planks;
         }
 
         public String getSerializedName() {
@@ -98,12 +99,12 @@ public class ModBoatEntity extends Boat {
         /**
          * Get a boat type by its enum ordinal
          */
-        public static Type byId(int pId) {
-            return BY_ID.apply(pId);
+        public static Type byId(int id) {
+            return BY_ID.apply(id);
         }
 
-        public static Type byName(String pName) {
-            return CODEC.byName(pName, CORRUPTED);
+        public static Type byName(String name) {
+            return CODEC.byName(name, CORRUPTED);
         }
     }
 }

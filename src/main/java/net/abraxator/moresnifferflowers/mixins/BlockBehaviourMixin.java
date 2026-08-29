@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.mixins;
 
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -23,7 +23,7 @@ public class BlockBehaviourMixin {
             BlockPatternCapability.removePattern(pos, level);
         }
 
-        if (state.is(ModTags.ModBlockTags.CORRUPTION_SHIELDING) && !level.isClientSide){
+        if (state.is(MSFTags.ModBlockTags.CORRUPTION_SHIELDING) && !level.isClientSide){
             LevelChunk chunk = level.getChunkAt(pos);
             CorruptionCapability cap = CorruptionCapability.get(chunk);
             cap.flowers.remove(pos);

@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.init.ModEffects;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -14,7 +14,7 @@ public class BurnedSlotItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof Player player && !player.hasEffect(ModEffects.PANTS_ON_FIRE)) {
+        if (entity instanceof Player player && !player.hasEffect(MSFEffects.PANTS_ON_FIRE)) {
             player.inventoryMenu.getSlot(slotId).set(ItemStack.EMPTY);
         }
     }

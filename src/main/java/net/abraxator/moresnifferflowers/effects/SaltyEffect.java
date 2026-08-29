@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.effects;
 
-import net.abraxator.moresnifferflowers.init.ModEffects;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,7 +33,7 @@ public class SaltyEffect extends MobEffect {
             if (entity != null){
                 player.attack(entity);
 
-                entity.addEffect(new MobEffectInstance(ModEffects.SALTY, livingEntity.getEffect(ModEffects.SALTY).getDuration() / 2 , amplifier));
+                entity.addEffect(new MobEffectInstance(MSFEffects.SALTY, livingEntity.getEffect(MSFEffects.SALTY).getDuration() / 2 , amplifier));
 
             }
 
@@ -48,11 +48,11 @@ public class SaltyEffect extends MobEffect {
 
                 mob.doHurtTarget(entity);
 
-                entity.addEffect(new MobEffectInstance(ModEffects.SALTY, (int) (livingEntity.getEffect(ModEffects.SALTY).getDuration() / 1.5), amplifier));
+                entity.addEffect(new MobEffectInstance(MSFEffects.SALTY, (int) (livingEntity.getEffect(MSFEffects.SALTY).getDuration() / 1.5), amplifier));
             }
 
         }
-        else livingEntity.removeEffect(ModEffects.SALTY);
+        else livingEntity.removeEffect(MSFEffects.SALTY);
         return true;
     }
 

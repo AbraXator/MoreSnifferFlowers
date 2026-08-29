@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -41,8 +41,8 @@ public interface ModCropBlock extends BonemealableBlock {
     }
 
     default void makeGrowOnTick(BlockState blockState, Level level, BlockPos blockPos) {
-        if (blockState.hasProperty(ModStateProperties.SHEARED)) {
-            if (blockState.getValue(ModStateProperties.SHEARED)) return;
+        if (blockState.hasProperty(MSFStateProperties.SHEARED)) {
+            if (blockState.getValue(MSFStateProperties.SHEARED)) return;
         }
 
         if (IMultiBlock.isMultiblock(blockState)){
@@ -71,7 +71,7 @@ public interface ModCropBlock extends BonemealableBlock {
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)player, blockPos, player.getItemInHand(hand));
         }
 
-        level.setBlockAndUpdate(blockPos, blockState.trySetValue(ModStateProperties.SHEARED, true));
+        level.setBlockAndUpdate(blockPos, blockState.trySetValue(MSFStateProperties.SHEARED, true));
         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, blockState));
 
         level.playSound(null, blockPos, SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
@@ -80,26 +80,26 @@ public interface ModCropBlock extends BonemealableBlock {
 
     default boolean shear(Player player, Level level, BlockPos blockPos, InteractionHand hand) {
         BlockState blockState = level.getBlockState(blockPos);
-        if (player.getItemInHand(hand).is(Tags.Items.TOOLS_SHEAR) && !blockState.getValue(ModStateProperties.SHEARED)) {
+        if (player.getItemInHand(hand).is(Tags.Items.TOOLS_SHEAR) && !blockState.getValue(MSFStateProperties.SHEARED)) {
             shear(player, level, blockPos, blockState, hand);
             return true;
         }
         return false;
     }
 
-    static float getGrowthSpeed(BlockState blockState, BlockGetter p_52274_, BlockPos p_52275_) {
+    static float getGrowthSpeed(BlockState blockState, BlockGetter level, BlockPos pos) {
         Block p_52273_ = blockState.getBlock();
         float f = 1.0F;
-        BlockPos blockpos = p_52275_.below();
+        BlockPos blockpos = pos.below();
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 float f1 = 0.0F;
-                BlockState blockstate = p_52274_.getBlockState(blockpos.offset(i, 0, j));
-                net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(p_52274_, blockpos.offset(i, 0, j), net.minecraft.core.Direction.UP, blockState);
+                BlockState blockstate = level.getBlockState(blockpos.offset(i, 0, j));
+                net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(level, blockpos.offset(i, 0, j), net.minecraft.core.Direction.UP, blockState);
                 if (soilDecision.isDefault() ? blockstate.getBlock() instanceof net.minecraft.world.level.block.FarmBlock : soilDecision.isTrue()) {
                     f1 = 1.0F;
-                    if (blockstate.isFertile(p_52274_, p_52275_.offset(i, 0, j))) {
+                    if (blockstate.isFertile(level, pos.offset(i, 0, j))) {
                         f1 = 3.0F;
                     }
                 }
@@ -112,19 +112,19 @@ public interface ModCropBlock extends BonemealableBlock {
             }
         }
 
-        BlockPos blockpos1 = p_52275_.north();
-        BlockPos blockpos2 = p_52275_.south();
-        BlockPos blockpos3 = p_52275_.west();
-        BlockPos blockpos4 = p_52275_.east();
-        boolean flag = p_52274_.getBlockState(blockpos3).is(p_52273_) || p_52274_.getBlockState(blockpos4).is(p_52273_);
-        boolean flag1 = p_52274_.getBlockState(blockpos1).is(p_52273_) || p_52274_.getBlockState(blockpos2).is(p_52273_);
+        BlockPos blockpos1 = pos.north();
+        BlockPos blockpos2 = pos.south();
+        BlockPos blockpos3 = pos.west();
+        BlockPos blockpos4 = pos.east();
+        boolean flag = level.getBlockState(blockpos3).is(p_52273_) || level.getBlockState(blockpos4).is(p_52273_);
+        boolean flag1 = level.getBlockState(blockpos1).is(p_52273_) || level.getBlockState(blockpos2).is(p_52273_);
         if (flag && flag1) {
             f /= 2.0F;
         } else {
-            boolean flag2 = p_52274_.getBlockState(blockpos3.north()).is(p_52273_)
-                    || p_52274_.getBlockState(blockpos4.north()).is(p_52273_)
-                    || p_52274_.getBlockState(blockpos4.south()).is(p_52273_)
-                    || p_52274_.getBlockState(blockpos3.south()).is(p_52273_);
+            boolean flag2 = level.getBlockState(blockpos3.north()).is(p_52273_)
+                    || level.getBlockState(blockpos4.north()).is(p_52273_)
+                    || level.getBlockState(blockpos4.south()).is(p_52273_)
+                    || level.getBlockState(blockpos3.south()).is(p_52273_);
             if (flag2) {
                 f /= 2.0F;
             }

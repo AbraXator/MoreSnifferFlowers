@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks.corrupted;
 
-import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,14 +24,14 @@ public class CorruptedLeavesBlock extends LeavesBlock {
     }
     
     @Override
-    protected BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
-            level.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
 
-        int i = getDistanceAt(pFacingState) + 1;
+        int i = getDistanceAt(facingState) + 1;
         if (i != 1 || state.getValue(DISTANCE) != i) {
-            level.scheduleTick(pCurrentPos, this, 1);
+            level.scheduleTick(currentPos, this, 1);
         }
 
         return state;
@@ -57,7 +57,7 @@ public class CorruptedLeavesBlock extends LeavesBlock {
     }
 
     public static OptionalInt getOptionalDistanceAt(BlockState state) {
-        if (state.is(BlockTags.LOGS) || state.is(ModBlocks.CORRUPTED_SLUDGE)) {
+        if (state.is(BlockTags.LOGS) || state.is(MSFBlocks.CORRUPTED_SLUDGE)) {
             return OptionalInt.of(0);
         } else {
             return state.hasProperty(DISTANCE) ? OptionalInt.of(state.getValue(DISTANCE)) : OptionalInt.empty();

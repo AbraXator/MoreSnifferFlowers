@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.client.gui.screen.cookbook;
 
 import net.abraxator.moresnifferflowers.capability.NutritionCapability;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.nutrition.NutritionType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,7 +31,7 @@ public class EffectWidget extends AbstractWidget {
         MobEffectTextureManager mobeffecttexturemanager = Minecraft.getInstance().getMobEffectTextures();
         int id = NutritionCapability.idFromNutrition(nutrition, isPositive);
 
-        NutritionCapability capability = Minecraft.getInstance().player.getData(ModDataAttachments.NUTRITION);
+        NutritionCapability capability = Minecraft.getInstance().player.getData(MSFDataAttachments.NUTRITION);
         boolean isUnlocked = capability.unlockedEffects.contains(id);
         int size = isUnlocked ? 18 : 21;
 

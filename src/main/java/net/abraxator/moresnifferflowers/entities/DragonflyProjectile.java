@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.entities;
 
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -16,21 +16,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 
-import java.util.Comparator;
-import java.util.List;
-
 public class DragonflyProjectile extends ThrowableItemProjectile {
     public DragonflyProjectile(EntityType<? extends DragonflyProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
     public DragonflyProjectile(Level level, Player player) {
-        super(ModEntityTypes.DRAGONFLY.get(), player, level);
+        super(MSFEntityTypes.DRAGONFLY.get(), player, level);
         this.setOwner(player);
     }
     
     public DragonflyProjectile(Level level) {
-        super(ModEntityTypes.DRAGONFLY.get(), level);
+        super(MSFEntityTypes.DRAGONFLY.get(), level);
     }
 
     @Override
@@ -52,13 +49,13 @@ public class DragonflyProjectile extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.DRAGONFLY.get();
+        return MSFItems.DRAGONFLY.get();
     }
 
     @Override
     protected void onHit(HitResult result) {
         if(level() instanceof ServerLevel serverLevel) {
-            var particle = new ItemParticleOption(ParticleTypes.ITEM, ModItems.DRAGONFLY.get().getDefaultInstance());
+            var particle = new ItemParticleOption(ParticleTypes.ITEM, MSFItems.DRAGONFLY.get().getDefaultInstance());
             serverLevel.sendParticles(particle, getX(), getY(), getZ(), 10, Mth.nextDouble(random, 0, 0.3), Mth.nextDouble(random, 0, 0.3), Mth.nextDouble(random, 0, 0.3), 0);
         }
         super.onHit(result);

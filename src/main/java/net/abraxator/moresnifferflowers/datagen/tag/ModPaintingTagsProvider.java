@@ -1,0 +1,22 @@
+package net.abraxator.moresnifferflowers.datagen.tag;
+
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+
+import java.util.concurrent.CompletableFuture;
+
+public class ModPaintingTagsProvider extends TagsProvider<PaintingVariant> {
+    public ModPaintingTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
+        super(output, Registries.PAINTING_VARIANT, pLookupProvider, MoreSnifferFlowers.MOD_ID, existingFileHelper);
+    }
+
+    @Override
+    protected void addTags(HolderLookup.Provider provider) {
+        //ModPaintings.HATTED_FERGUS_TATER.unwrapKey().ifPresent(paintingVariantResourceKey -> this.tag(PaintingVariantTags.PLACEABLE).add(paintingVariantResourceKey));
+    }
+}

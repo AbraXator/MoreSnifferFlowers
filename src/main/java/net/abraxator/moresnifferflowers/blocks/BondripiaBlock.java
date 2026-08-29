@@ -2,10 +2,10 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blockentities.BondripiaBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.multiblock.ICorruptableMultiblock;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModParticles;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFParticles;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -40,8 +40,6 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.nikdo53.tinymultiblocklib.block.AbstractMultiBlock;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.block.IPreviewableMultiblock;
-import net.nikdo53.tinymultiblocklib.block.logic.MultiblockLogic;
-import net.nikdo53.tinymultiblocklib.block.shape.ShapeContext;
 import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 import net.nikdo53.tinymultiblocklib.blockentities.IMultiBlockEntity;
 import net.nikdo53.tinymultiblocklib.components.SharedStatePropertiesBuilder;
@@ -55,18 +53,18 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
         super(properties);
         this.registerDefaultState(defaultBlockState()
                 .setValue(getAgeProperty(), 0)
-                .setValue(ModStateProperties.SHEARED, false));
+                .setValue(MSFStateProperties.SHEARED, false));
     }
     private static final VoxelShape SHAPE = makeShape();
 
     @Override
     public Block getCuredBlock() {
-        return ModBlocks.BONDRIPIA.get();
+        return MSFBlocks.BONDRIPIA.get();
     }
 
     @Override
     public Block getCorruptedBlock() {
-        return ModBlocks.ACIDRIPIA.get();
+        return MSFBlocks.ACIDRIPIA.get();
     }
 
     @Override
@@ -80,14 +78,14 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
     @Override
     public void createSharedBlockStates(SharedStatePropertiesBuilder builder) {
         super.createSharedBlockStates(builder);
-        builder.add(ModStateProperties.SHEARED);
+        builder.add(MSFStateProperties.SHEARED);
         builder.add(getAgeProperty());
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(getAgeProperty(), ModStateProperties.SHEARED);
+        builder.add(getAgeProperty(), MSFStateProperties.SHEARED);
     }
 
     @Override
@@ -115,7 +113,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
     }
 
     private void spawnBonmeeliaParticles(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        boolean isAcidripia = state.is(ModBlocks.ACIDRIPIA.get());
+        boolean isAcidripia = state.is(MSFBlocks.ACIDRIPIA.get());
         if(IMultiBlock.isCenter(state) && isMaxAge(state) && level.getBlockEntity(pos) instanceof IMultiBlockEntity entity && random.nextFloat() < 0.4) {
             BlockPos.withinManhattanStream(entity.getCenter(), 1, 0, 1).forEach(blockPos -> {
 
@@ -125,8 +123,8 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
                 boolean isMid = blockPos.equals(entity.getCenter());
                 BlockPos pos2 = blockPos.below(random.nextInt(8));
 
-                SimpleParticleType dripParticles = isAcidripia ? ModParticles.ACIDRIPIA_DRIP.get() : ModParticles.BONDRIPIA_DRIP.get();
-                SimpleParticleType fallParticles = isAcidripia ? ModParticles.ACIDRIPIA_FALL.get() :ModParticles.BONDRIPIA_FALL.get();
+                SimpleParticleType dripParticles = isAcidripia ? MSFParticles.ACIDRIPIA_DRIP.get() : MSFParticles.BONDRIPIA_DRIP.get();
+                SimpleParticleType fallParticles = isAcidripia ? MSFParticles.ACIDRIPIA_FALL.get() : MSFParticles.BONDRIPIA_FALL.get();
 
                 if (random.nextFloat() < 0.5) {
                     if (isMid) {
@@ -149,7 +147,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (state.getValue(ModStateProperties.SHEARED)) return;
+        if (state.getValue(MSFStateProperties.SHEARED)) return;
         if(!isMaxAge(state) && IMultiBlock.isCenter(state)) {
             grow(level, pos, state);
         } else if (random.nextDouble() <= 0.33D && level.getBlockEntity(pos) instanceof BondripiaBlockEntity entity) {
@@ -166,7 +164,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
 
                 }
 
-                if (blockState.is(ModTags.ModBlockTags.BONMEELABLE)) {
+                if (blockState.is(MSFTags.ModBlockTags.BONMEELABLE)) {
 
                     Bonmeelable bonmeelable = (Bonmeelable) GiantCropBlock.getCropMap().get(blockState.getBlock()).getA();
                     if (bonmeelable.canBonmeel(currentPos, blockState, level, null)) {
@@ -186,7 +184,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
     }
     
     public void fillCauldron(Level level, BlockPos blockPos, BlockState blockState) {
-        BlockState blockstate = blockState.is(ModBlocks.ACIDRIPIA.get()) ? ModBlocks.ACID_FILLED_CAULDRON.get().defaultBlockState() : ModBlocks.BONMEEL_FILLED_CAULDRON.get().defaultBlockState();
+        BlockState blockstate = blockState.is(MSFBlocks.ACIDRIPIA.get()) ? MSFBlocks.ACID_FILLED_CAULDRON.get().defaultBlockState() : MSFBlocks.BONMEEL_FILLED_CAULDRON.get().defaultBlockState();
         int fluidLevel = level.getBlockState(blockPos).getOptionalValue(LayeredCauldronBlock.LEVEL).orElse(0);
         if(fluidLevel < 3) {
             level.setBlockAndUpdate(blockPos, blockstate.setValue(LayeredCauldronBlock.LEVEL, fluidLevel + 1));
@@ -214,7 +212,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
     }
     
     private boolean isBondripable(Level level, BlockPos blockPos) {
-        return level.getBlockState(blockPos).getBlock() instanceof BonemealableBlock || level.getBlockState(blockPos).is(ModTags.ModBlockTags.BONMEELABLE);
+        return level.getBlockState(blockPos).getBlock() instanceof BonemealableBlock || level.getBlockState(blockPos).is(MSFTags.ModBlockTags.BONMEELABLE);
     }
 
     @Override
@@ -234,7 +232,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
 
     @Override
     public IntegerProperty getAgeProperty() {
-        return ModStateProperties.AGE_2;
+        return MSFStateProperties.AGE_2;
     }
     
     @Override

@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.effects;
 
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -41,12 +41,12 @@ public class StickyEffect extends MobEffect {
             int delay = 600 - (amplifier * 50);
             if (delay < 1) delay = 1;
 
-            if (isRunning && level.getGameTime() % delay == 0 && state.is(ModTags.ModBlockTags.STICKABLE)) {
+            if (isRunning && level.getGameTime() % delay == 0 && state.is(MSFTags.ModBlockTags.STICKABLE)) {
                 level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 0.5F + level.getRandom().nextFloat() * 0.8F);
                 ItemEntity itemEntity = new ItemEntity(level, vec3.x, vec3.y + 0.6F, vec3.z, state.getBlock().asItem().getDefaultInstance());
                 level.addFreshEntity(itemEntity);
                 if (level.random.nextFloat() < 0.3f)
-                    livingEntity.addEffect(new MobEffectInstance(ModEffects.GLUED, 40 * amplifier, 0));
+                    livingEntity.addEffect(new MobEffectInstance(MSFEffects.GLUED, 40 * amplifier, 0));
             }
         }
         return true;

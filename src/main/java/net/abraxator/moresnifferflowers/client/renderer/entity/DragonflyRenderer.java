@@ -6,7 +6,6 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.client.model.entity.DragonflyModel;
 import net.abraxator.moresnifferflowers.entities.DragonflyProjectile;
-import net.abraxator.moresnifferflowers.init.ModMenuTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -24,19 +23,19 @@ public class DragonflyRenderer extends EntityRenderer<DragonflyProjectile> {
     }
 
     @Override
-    public void render(DragonflyProjectile pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight) {
+    public void render(DragonflyProjectile entity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight) {
         pPoseStack.pushPose();
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot()) - 180F));
-        pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, entity.yRotO, entity.getYRot()) - 180F));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, entity.xRotO, entity.getXRot())));
         pPoseStack.translate(0, -1, 0.5);
         this.model.renderToBuffer(
                 pPoseStack,
-                pBufferSource.getBuffer(this.model.renderType(this.getTextureLocation(pEntity))),
+                pBufferSource.getBuffer(this.model.renderType(this.getTextureLocation(entity))),
                 pPackedLight,
                 OverlayTexture.NO_OVERLAY);
         model.animate(pPartialTick);
         pPoseStack.popPose();
-        super.render(pEntity, pEntityYaw, pPartialTick, pPoseStack, pBufferSource, pPackedLight);
+        super.render(entity, pEntityYaw, pPartialTick, pPoseStack, pBufferSource, pPackedLight);
     }
 
     @Override

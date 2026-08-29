@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.items;
 
 import com.google.common.collect.Maps;
-import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.init.MSFParticles;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -103,7 +103,7 @@ public class WandOfCubingItem extends Item {
     private void createAndAddParticle(UseOnContext context, Set<Vec3> set, double checkR, Vec3 vec3) {
         AABB aabb = AABB.ofSize(vec3, checkR, checkR, checkR);
         if (set.stream().noneMatch(aabb::contains)) {
-            context.getLevel().addParticle(ModParticles.CARROT.get(), vec3.x, vec3.y, vec3.z, 0, 0, 0);
+            context.getLevel().addParticle(MSFParticles.CARROT.get(), vec3.x, vec3.y, vec3.z, 0, 0, 0);
             set.add(vec3);
         }
     }

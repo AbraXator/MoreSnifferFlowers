@@ -1,12 +1,9 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
-import net.abraxator.moresnifferflowers.init.ModDataComponents;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.minecraft.Util;
+import net.abraxator.moresnifferflowers.init.MSFDataComponents;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -24,7 +21,7 @@ import java.util.Map;
 
 public interface ColorableVivicusBlock extends Colorable {
     default EnumProperty<DyeColor> getColorProperty() {
-        return ModStateProperties.COLOR;
+        return MSFStateProperties.COLOR;
     }
     
     default void addDye(Level level, BlockPos blockPos, BlockState blockState, Player player) {
@@ -50,22 +47,22 @@ public interface ColorableVivicusBlock extends Colorable {
     }
 
     default int getColorId(BlockPlaceContext context){
-       return context.getItemInHand().getOrDefault(ModDataComponents.COLOR_ID, 0);
+       return context.getItemInHand().getOrDefault(MSFDataComponents.COLOR_ID, 0);
     }
 
     default @Nullable BlockState stateForPlacementHelper(BlockState state, BlockPlaceContext context) {
         if (state != null) {
-            return state.setValue(ModStateProperties.COLOR, DyeColor.byId(getColorId(context)));
+            return state.setValue(MSFStateProperties.COLOR, DyeColor.byId(getColorId(context)));
         }
         return null;
     }
 
     default @NotNull ItemStack cloneItemStackHelper(BlockState state, ItemStack stack) {
-        int colorId = state.getValue(ModStateProperties.COLOR).getId();
+        int colorId = state.getValue(MSFStateProperties.COLOR).getId();
         int color = colorValues().get(DyeColor.byId(colorId));
 
-        stack.set(ModDataComponents.COLOR, color);
-        stack.set(ModDataComponents.COLOR_ID, colorId);
+        stack.set(MSFDataComponents.COLOR, color);
+        stack.set(MSFDataComponents.COLOR_ID, colorId);
 
         return stack;
     }

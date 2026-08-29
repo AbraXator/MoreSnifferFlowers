@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import com.mojang.serialization.MapCodec;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -112,7 +112,7 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
 
     private InteractionResult takeJarOfBonmeel(Level level, BlockPos blockPos, BlockState blockState) {
         level.setBlock(blockPos, blockState.setValue(AGE, 3).setValue(HAS_BOTTLE, false), 3);
-        popResource(level, blockPos, wilted ? ModItems.JAR_OF_ACID.toStack() : ModItems.JAR_OF_BONMEEL.toStack());
+        popResource(level, blockPos, wilted ? MSFItems.JAR_OF_ACID.toStack() : MSFItems.JAR_OF_BONMEEL.toStack());
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 

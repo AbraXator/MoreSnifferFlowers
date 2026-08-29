@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.client.particle;
 
-import net.abraxator.moresnifferflowers.init.ModParticles;
+import net.abraxator.moresnifferflowers.init.MSFParticles;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
@@ -126,7 +126,7 @@ public class BondripiaParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            BondripiaParticle bondripiaParticle = new BondripiaParticle.DripHangParticle(level, pX, pY, pZ, ModParticles.BONDRIPIA_FALL.get());
+            BondripiaParticle bondripiaParticle = new BondripiaParticle.DripHangParticle(level, pX, pY, pZ, MSFParticles.BONDRIPIA_FALL.get());
             bondripiaParticle.pickSprite(this.spriteSet);
             bondripiaParticle.lifetime = (int)(16.0 / (Math.random() * 0.4 + 0.2));
             bondripiaParticle.gravity = 0.007F;
@@ -144,7 +144,7 @@ public class BondripiaParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            BondripiaParticle bondripiaParticle = new BondripiaParticle.FallAndLandParticle(level, pX, pY, pZ, ModParticles.BONDRIPIA_LAND.get());
+            BondripiaParticle bondripiaParticle = new BondripiaParticle.FallAndLandParticle(level, pX, pY, pZ, MSFParticles.BONDRIPIA_LAND.get());
             bondripiaParticle.pickSprite(this.spriteSet);
             bondripiaParticle.lifetime = (int)(16.0 / (Math.random() * 0.4 + 0.2));
             bondripiaParticle.gravity = 0.007F;
@@ -178,7 +178,7 @@ public class BondripiaParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            BondripiaParticle bondripiaParticle = new BondripiaParticle.DripHangParticle(level, pX, pY, pZ, ModParticles.ACIDRIPIA_FALL.get());
+            BondripiaParticle bondripiaParticle = new BondripiaParticle.DripHangParticle(level, pX, pY, pZ, MSFParticles.ACIDRIPIA_FALL.get());
             bondripiaParticle.pickSprite(this.spriteSet);
             bondripiaParticle.lifetime = (int)(16.0 / (Math.random() * 0.4 + 0.2));
             bondripiaParticle.gravity = 0.007F;
@@ -197,7 +197,7 @@ public class BondripiaParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            BondripiaParticle bondripiaParticle = new BondripiaParticle.FallAndLandParticle(level, pX, pY, pZ, ModParticles.ACIDRIPIA_LAND.get());
+            BondripiaParticle bondripiaParticle = new BondripiaParticle.FallAndLandParticle(level, pX, pY, pZ, MSFParticles.ACIDRIPIA_LAND.get());
             bondripiaParticle.pickSprite(this.spriteSet);
             bondripiaParticle.lifetime = (int)(16.0 / (Math.random() * 0.4 + 0.2));
             bondripiaParticle.gravity = 0.007F;

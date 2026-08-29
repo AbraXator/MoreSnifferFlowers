@@ -19,7 +19,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -30,11 +29,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onInputMouseScrolling(InputEvent.MouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if(player.isCrouching() && player.getMainHandItem().is(ModItems.DYESPRIA.get())) {
+        if(player.isCrouching() && player.getMainHandItem().is(MSFItems.DYESPRIA.get())) {
             event.setCanceled(true);
             PacketDistributor.sendToServer(new DyespriaModePacket((int) event.getScrollDeltaY()));
         }
-        if(player.isCrouching() && player.getMainHandItem().is(ModItems.PATTERNSPRIA.get())) {
+        if(player.isCrouching() && player.getMainHandItem().is(MSFItems.PATTERNSPRIA.get())) {
             event.setCanceled(true);
             PacketDistributor.sendToServer(new PatternspriaModePacket((int) event.getScrollDeltaY()));
         }
@@ -53,7 +52,7 @@ public class ClientEvents {
     public static void renderLiving(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity entity = event.getEntity();
 
-        GluedCapability cap = entity.getData(ModDataAttachments.GLUED);
+        GluedCapability cap = entity.getData(MSFDataAttachments.GLUED);
         if (cap.isGlued) {
             Vec3 pos = entity.position();
             Minecraft minecraft = Minecraft.getInstance();
@@ -77,8 +76,8 @@ public class ClientEvents {
         Player player = event.getEntity();
         PoseStack pose = event.getPoseStack();
 
-        if (player.hasEffect(ModEffects.SLIPPERY)){
-            SlipperyCapability cap = player.getData(ModDataAttachments.SLIPPERY);
+        if (player.hasEffect(MSFEffects.SLIPPERY)){
+            SlipperyCapability cap = player.getData(MSFDataAttachments.SLIPPERY);
 
             if (cap.isFallen){
                 pose.mulPose(Axis.ZP.rotationDegrees(180.0F));

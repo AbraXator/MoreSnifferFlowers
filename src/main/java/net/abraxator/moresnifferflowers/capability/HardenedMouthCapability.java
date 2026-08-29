@@ -1,29 +1,23 @@
 package net.abraxator.moresnifferflowers.capability;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.client.gui.slot.HardenedMouthSlot;
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.networking.toClient.SyncGluedPacket;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.networking.toClient.SyncMouthSlotsPacket;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -33,8 +27,8 @@ public class HardenedMouthCapability {
     public int cooldown;
 
     public static final Codec<ItemStack> SAFE_ITEMSTACK_CODEC = ItemStack.OPTIONAL_CODEC.xmap(
-            stack -> stack.is(ModItems.PLACEHOLDER) ? ItemStack.EMPTY : stack,
-            stack -> stack.isEmpty() ? ModItems.PLACEHOLDER.toStack() : stack
+            stack -> stack.is(MSFItems.PLACEHOLDER) ? ItemStack.EMPTY : stack,
+            stack -> stack.isEmpty() ? MSFItems.PLACEHOLDER.toStack() : stack
     );
 
     public static final Codec<HardenedMouthCapability> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -101,7 +95,7 @@ public class HardenedMouthCapability {
 
     public void tick(Player player) {
 
-        if (player.level().isClientSide || !player.hasEffect(ModEffects.HARDENED_MOUTH)) return;
+        if (player.level().isClientSide || !player.hasEffect(MSFEffects.HARDENED_MOUTH)) return;
 
         ItemStack input = this.getItem(0);
         ItemStack output = this.getItem(1);
@@ -149,7 +143,7 @@ public class HardenedMouthCapability {
     
     public int getMaxCooldown(Player player) {
         int amplifier = 0;
-        if (player.hasEffect(ModEffects.HARDENED_MOUTH)) amplifier = player.getEffect(ModEffects.HARDENED_MOUTH).getAmplifier();
+        if (player.hasEffect(MSFEffects.HARDENED_MOUTH)) amplifier = player.getEffect(MSFEffects.HARDENED_MOUTH).getAmplifier();
 
         return Math.max(1, 80 - amplifier * 10);
     }

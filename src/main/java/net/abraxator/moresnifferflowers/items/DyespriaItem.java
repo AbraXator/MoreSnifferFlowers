@@ -1,18 +1,15 @@
 package net.abraxator.moresnifferflowers.items;
 
-import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
 import net.abraxator.moresnifferflowers.client.ModColorHandler;
 import net.abraxator.moresnifferflowers.client.gui.screen.DyespriaTooltip;
 import net.abraxator.moresnifferflowers.components.*;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModDataComponents;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.abraxator.moresnifferflowers.init.ModTags;
-import net.abraxator.moresnifferflowers.networking.toClient.DyespriaDisplayModeChangePacket;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFDataComponents;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,7 +40,6 @@ import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +49,7 @@ import java.util.stream.Collectors;
 
 public class DyespriaItem extends BlockItem implements Colorable {
     public DyespriaItem(Properties properties) {
-        super(ModBlocks.DYESPRIA_PLANT.get(), properties);
+        super(MSFBlocks.DYESPRIA_PLANT.get(), properties);
     }
 
     @Override
@@ -70,7 +66,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
         }
 
         if (checkDyedBlock(blockState) || blockState.getBlock() instanceof Colorable && !dye.isEmpty() || (BlockPatternCapability.hasPattern(blockPos, level) && !player.isCrouching())) {
-            DyespriaMode dyespriaMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
+            DyespriaMode dyespriaMode = stack.getOrDefault(MSFDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
             AtomicBoolean canContinueDyeing = new AtomicBoolean(true);
             DyespriaMode.DyespriaSelector dyespriaSelector = new DyespriaMode.DyespriaSelector(blockPos, blockState, getMatchTag(blockState), level, context.getClickedFace(), player.isCrouching());
             Set<BlockPos> set = dyespriaMode.getSelector().apply(dyespriaSelector);
@@ -112,7 +108,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
         var state = super.getPlacementState(context);
-        return state == null ? null : state.setValue(ModStateProperties.AGE_3, 3);
+        return state == null ? null : state.setValue(MSFStateProperties.AGE_3, 3);
     }
 
     public void colorOne(ItemStack stack, Level level, BlockPos blockPos, BlockState blockState, Direction face, Player player, boolean clickedPattern) {
@@ -199,19 +195,19 @@ public class DyespriaItem extends BlockItem implements Colorable {
     }
     
     public static int getDyespriaUses(ItemStack stack) {
-        return stack.getOrDefault(ModDataComponents.COLOR, 4);
+        return stack.getOrDefault(MSFDataComponents.COLOR, 4);
     }
     
     public static void setDyespriaUses(ItemStack stack, int uses) {
-        stack.set(ModDataComponents.COLOR, uses);
+        stack.set(MSFDataComponents.COLOR, uses);
     }
     
     private boolean canDye(BlockState blockState, Dye dye) {
-        return (blockState.hasProperty(ModStateProperties.COLOR) && !blockState.getValue(ModStateProperties.COLOR).equals(dye.color())) || !dye.isEmpty();
+        return (blockState.hasProperty(MSFStateProperties.COLOR) && !blockState.getValue(MSFStateProperties.COLOR).equals(dye.color())) || !dye.isEmpty();
     }
 
     public static boolean checkDyedBlock(BlockState blockState) {
-        return blockState.is(ModTags.ModBlockTags.DYED);
+        return blockState.is(MSFTags.ModBlockTags.DYED);
     }
 
     private void dyeNonColorableBlock(BlockState blockState, BlockPos blockPos, DyeColor newColor, Level level) {
@@ -336,12 +332,12 @@ public class DyespriaItem extends BlockItem implements Colorable {
         }
     }
 
-    private void playRemoveOneSound(Entity pEntity) {
-        pEntity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
+    private void playRemoveOneSound(Entity entity) {
+        entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
     }
 
-    private void playInsertSound(Entity pEntity) {
-        pEntity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + pEntity.level().getRandom().nextFloat() * 0.4F);
+    private void playInsertSound(Entity entity) {
+        entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
     }
 
     @Override
@@ -369,7 +365,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
     }
 
     public static DyespriaMode getCurrentMode(ItemStack itemStack) {
-        return itemStack.getOrDefault(ModDataComponents.DYESPRIA_MODE.get(), DyespriaMode.SINGLE);
+        return itemStack.getOrDefault(MSFDataComponents.DYESPRIA_MODE.get(), DyespriaMode.SINGLE);
     }
 
     public static Component getCurrentModeComponent(DyespriaMode dyespriaMode) {
@@ -379,9 +375,9 @@ public class DyespriaItem extends BlockItem implements Colorable {
     }
     
     public void changeMode(ServerPlayer player, ItemStack stack, int amount) {
-        var currentMode = stack.getOrDefault(ModDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
+        var currentMode = stack.getOrDefault(MSFDataComponents.DYESPRIA_MODE, DyespriaMode.SINGLE);
         var newMode = DyespriaMode.shift(currentMode, amount);
-        stack.set(ModDataComponents.DYESPRIA_MODE, newMode);
+        stack.set(MSFDataComponents.DYESPRIA_MODE, newMode);
         player.displayClientMessage(DyespriaItem.getCurrentModeComponent(DyespriaMode.byIndex(newMode.ordinal())), true);
     }
 

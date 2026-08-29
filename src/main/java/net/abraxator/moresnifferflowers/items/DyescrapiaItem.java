@@ -6,9 +6,9 @@ import net.abraxator.moresnifferflowers.client.ModColorHandler;
 import net.abraxator.moresnifferflowers.components.BlockPattern;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModDataComponents;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFDataComponents;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +35,7 @@ import static net.abraxator.moresnifferflowers.items.DyespriaItem.copyAllBlockSt
 
 public class DyescrapiaItem extends BlockItem {
     public DyescrapiaItem(Properties properties) {
-        super(ModBlocks.DYESCRAPIA_PLANT.get(), properties);
+        super(MSFBlocks.DYESCRAPIA_PLANT.get(), properties);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class DyescrapiaItem extends BlockItem {
                 uses = 0;
             }
             BlockPatternCapability.removePattern(pos, level);
-            stack.set(ModDataComponents.USES, uses);
+            stack.set(MSFDataComponents.USES, uses);
 
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
@@ -69,10 +69,10 @@ public class DyescrapiaItem extends BlockItem {
                     uses = 0;
                 }
 
-                stack.set(ModDataComponents.USES, uses);
+                stack.set(MSFDataComponents.USES, uses);
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }            
-        } else if (state.is(ModTags.ModBlockTags.DYED)){
+        } else if (state.is(MSFTags.ModBlockTags.DYED)){
 
             ResourceLocation location = BuiltInRegistries.BLOCK.getKey(state.getBlock());
             String modId = location.getNamespace();
@@ -134,7 +134,7 @@ public class DyescrapiaItem extends BlockItem {
                     uses = 0;
                 }
 
-                stack.set(ModDataComponents.USES, uses);
+                stack.set(MSFDataComponents.USES, uses);
                 return InteractionResult.sidedSuccess(level.isClientSide);
 
             } else return InteractionResult.FAIL;
@@ -177,7 +177,7 @@ public class DyescrapiaItem extends BlockItem {
     }
 
     public static int getDyescrapiaUses(ItemStack stack) {
-        return stack.getOrDefault(ModDataComponents.USES, 0);
+        return stack.getOrDefault(MSFDataComponents.USES, 0);
     }
 
     @Override

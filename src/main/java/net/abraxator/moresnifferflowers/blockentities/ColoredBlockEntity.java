@@ -2,7 +2,7 @@ package net.abraxator.moresnifferflowers.blockentities;
 
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -45,10 +45,10 @@ public class ColoredBlockEntity extends ModBlockEntity implements Colorable {
     
     @Override
     public void setChanged() {
-        BlockState blockState = getBlockState().setValue(ModStateProperties.COLOR, dye.color());
+        BlockState blockState = getBlockState().setValue(MSFStateProperties.COLOR, dye.color());
 
         if(dye.isEmpty()) {
-            blockState.setValue(ModStateProperties.COLOR, DyeColor.WHITE);
+            blockState.setValue(MSFStateProperties.COLOR, DyeColor.WHITE);
         }
 
         level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);

@@ -27,14 +27,14 @@ DragonflyItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity pEntity) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 72000;
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity pLivingEntity, int pTimeCharged) {
-        if (pLivingEntity instanceof Player player) {
-            int useDuration = getUseDuration(stack, pLivingEntity) - pTimeCharged;
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
+        if (livingEntity instanceof Player player) {
+            int useDuration = getUseDuration(stack, livingEntity) - timeCharged;
             if(useDuration >= 10) {
                 if(!player.getAbilities().instabuild) stack.shrink(1);
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -48,8 +48,8 @@ DragonflyItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
-        player.startUsingItem(pUsedHand);
-        return InteractionResultHolder.consume(player.getItemInHand(pUsedHand));
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        player.startUsingItem(usedHand);
+        return InteractionResultHolder.consume(player.getItemInHand(usedHand));
     }
 }

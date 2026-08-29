@@ -53,7 +53,6 @@ import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 import vectorwing.farmersdelight.common.block.RiceBlock;
 import vectorwing.farmersdelight.common.block.TomatoBlock;
-import vectorwing.farmersdelight.common.block.TomatoVineBlock;
 
 import java.util.List;
 import java.util.Map;
@@ -87,7 +86,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
 
     @Override
     public List<BlockPos> makeFullBlockShape(Level level, BlockPos center, BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable Direction direction) {
-        if (this.equals(ModBlocks.GIANT_CABBAGE.get())){
+        if (this.equals(MSFBlocks.GIANT_CABBAGE.get())){
             return IMultiBlock.posStreamToList(BlockPos.betweenClosedStream(
                     center.getX() - 1,
                     center.getY() - 1,
@@ -164,14 +163,14 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
 
     @Override
     public boolean canPlaceLiquid(@javax.annotation.Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-        if (!this.defaultBlockState().is(ModTags.ModBlockTags.WATERLOGGABLE)) return false;
+        if (!this.defaultBlockState().is(MSFTags.ModBlockTags.WATERLOGGABLE)) return false;
         return SimpleWaterloggedBlock.super.canPlaceLiquid(player, level, pos, state, fluid);
     }
 
 
     @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState pOldState, boolean pMovedByPiston) {
-        super.onPlace(state, level, pos, pOldState, pMovedByPiston);
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
         if(IMultiBlock.isCenter(state)) {
             level.getBlockTicks().schedule(new ScheduledTick<>(this, pos, level.getGameTime() + 7, level.nextSubTickCount()));
             if(level.getBlockEntity(pos) instanceof GiantCropBlockEntity entity && entity.state == 0) {
@@ -179,7 +178,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
             }
 
             if(level instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ModParticles.GIANT_CROP.get(), pos.getCenter().x, pos.getCenter().y, pos.getCenter().z, 1, 0, 0, 0, 0);
+                serverLevel.sendParticles(MSFParticles.GIANT_CROP.get(), pos.getCenter().x, pos.getCenter().y, pos.getCenter().z, 1, 0, 0, 0, 0);
             }
         }
     }
@@ -202,7 +201,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> pBlockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return (pLevel1, pos, pState1, blockEntity) -> {
             GiantCropBlockEntity blockEntity1 = (GiantCropBlockEntity) blockEntity;
             if (!blockEntity1.canGrow) return;
@@ -220,7 +219,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
         place(level, blockPos.above(), this.defaultBlockState());
 
         if (player instanceof ServerPlayer serverPlayer)
-            ModAdvancementCritters.USED_BONMEEL.get().trigger(serverPlayer);
+            MSFAdvancementCritters.USED_BONMEEL.get().trigger(serverPlayer);
 
         level.playLocalSound(blockPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
     }
@@ -252,7 +251,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
 
             if (pos.getY() == cropY) {
                 // Check crops
-                boolean isCorrectCrop = state.is(crop) && state.is(ModTags.ModBlockTags.BONMEELABLE);
+                boolean isCorrectCrop = state.is(crop) && state.is(MSFTags.ModBlockTags.BONMEELABLE);
                 if (!isCorrectCrop) {
                     hasMixedCrops.set(true);
                     return false;
@@ -273,7 +272,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
 
             } else {
                 // Checks free space
-                boolean hasFreeSpace = state.canBeReplaced() || state.is(ModTags.ModBlockTags.GIANT_CROP_REPLACEABLE) || state.is(crop);
+                boolean hasFreeSpace = state.canBeReplaced() || state.is(MSFTags.ModBlockTags.GIANT_CROP_REPLACEABLE) || state.is(crop);
                 if (!hasFreeSpace) {
                     noSpace.set(true);
                     if (canRenderGhosts)
@@ -308,27 +307,27 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
 
     private static Map<Block, Pair<Block, Pair<IntegerProperty, Integer>>> cropMapCompat() {
         return Map.of(
-                Blocks.CARROTS, new Pair<>(ModBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.POTATOES, new Pair<>(ModBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.NETHER_WART, new Pair<>(ModBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
-                Blocks.BEETROOTS, new Pair<>(ModBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
-                Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                Blocks.CARROTS, new Pair<>(MSFBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                Blocks.POTATOES, new Pair<>(MSFBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                Blocks.NETHER_WART, new Pair<>(MSFBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
+                Blocks.BEETROOTS, new Pair<>(MSFBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
+                Blocks.WHEAT, new Pair<>(MSFBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
 
-                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("onions")), new Pair<>(ModBlocks.GIANT_ONION.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("tomatoes")), new Pair<>(ModBlocks.GIANT_TOMATO.get(), new Pair<>(TomatoBlock.VINE_AGE, 3)),
-                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("cabbages")), new Pair<>(ModBlocks.GIANT_CABBAGE.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("rice_panicles")), new Pair<>(ModBlocks.GIANT_RICE.get(), new Pair<>(RiceBlock.AGE, 3))
+                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("onions")), new Pair<>(MSFBlocks.GIANT_ONION.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("tomatoes")), new Pair<>(MSFBlocks.GIANT_TOMATO.get(), new Pair<>(TomatoBlock.VINE_AGE, 3)),
+                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("cabbages")), new Pair<>(MSFBlocks.GIANT_CABBAGE.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("rice_panicles")), new Pair<>(MSFBlocks.GIANT_RICE.get(), new Pair<>(RiceBlock.AGE, 3))
 
         );
     }
 
     private static Map<Block, Pair<Block, Pair<IntegerProperty, Integer>>> cropMapVanilla() {
         return Map.of(
-                Blocks.CARROTS, new Pair<>(ModBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.POTATOES, new Pair<>(ModBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.NETHER_WART, new Pair<>(ModBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
-                Blocks.BEETROOTS, new Pair<>(ModBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
-                Blocks.WHEAT, new Pair<>(ModBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
+                Blocks.CARROTS, new Pair<>(MSFBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                Blocks.POTATOES, new Pair<>(MSFBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                Blocks.NETHER_WART, new Pair<>(MSFBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
+                Blocks.BEETROOTS, new Pair<>(MSFBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
+                Blocks.WHEAT, new Pair<>(MSFBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
         );
     }
 
@@ -344,15 +343,15 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
             return shape;
         }
 
-        if (this.equals(ModBlocks.GIANT_POTATO.get())) shape = SHAPE_POTATO;
-        if (this.equals(ModBlocks.GIANT_CARROT.get())) shape = SHAPE_CARROT;
-        if (this.equals(ModBlocks.GIANT_BEETROOT.get())) shape = SHAPE_BEET;
-        if (this.equals(ModBlocks.GIANT_NETHERWART.get())) shape = SHAPE_NETHERWART;
-        if (this.equals(ModBlocks.GIANT_WHEAT.get())) shape = SHAPE_WHEAT;
-        if (this.equals(ModBlocks.GIANT_ONION.get())) shape = SHAPE_ONION;
-        if (this.equals(ModBlocks.GIANT_TOMATO.get())) shape = SHAPE_TOMATO;
-        if (this.equals(ModBlocks.GIANT_CABBAGE.get())) shape = SHAPE_CABBAGE;
-        if (this.equals(ModBlocks.GIANT_RICE.get())) shape = SHAPE_RICE;
+        if (this.equals(MSFBlocks.GIANT_POTATO.get())) shape = SHAPE_POTATO;
+        if (this.equals(MSFBlocks.GIANT_CARROT.get())) shape = SHAPE_CARROT;
+        if (this.equals(MSFBlocks.GIANT_BEETROOT.get())) shape = SHAPE_BEET;
+        if (this.equals(MSFBlocks.GIANT_NETHERWART.get())) shape = SHAPE_NETHERWART;
+        if (this.equals(MSFBlocks.GIANT_WHEAT.get())) shape = SHAPE_WHEAT;
+        if (this.equals(MSFBlocks.GIANT_ONION.get())) shape = SHAPE_ONION;
+        if (this.equals(MSFBlocks.GIANT_TOMATO.get())) shape = SHAPE_TOMATO;
+        if (this.equals(MSFBlocks.GIANT_CABBAGE.get())) shape = SHAPE_CABBAGE;
+        if (this.equals(MSFBlocks.GIANT_RICE.get())) shape = SHAPE_RICE;
 
 
         return voxelShapeHelper(state, getter, pos, shape, 0, -1, 0);

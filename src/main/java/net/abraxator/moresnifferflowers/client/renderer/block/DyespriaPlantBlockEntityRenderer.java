@@ -8,7 +8,7 @@ import net.abraxator.moresnifferflowers.client.ModColorHandler;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -27,8 +27,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.awt.*;
-
 public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<DyespriaPlantBlockEntity> {
     private final EntityRenderDispatcher entityRenderDispatcher;
     private final ModelPart modelPart;
@@ -41,7 +39,7 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
     @Override
     public void render(DyespriaPlantBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         BlockState state = blockEntity.getBlockState();
-        var isGrown = state.getValue(ModStateProperties.AGE_3) >= 3;
+        var isGrown = state.getValue(MSFStateProperties.AGE_3) >= 3;
         Dye dye = blockEntity.dye;
         var hasDye = !dye.isEmpty();
 
@@ -77,9 +75,9 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
             poseStack.popPose();
         }
 
-        if(isGrown && hasDye && !state.getValue(ModStateProperties.SHEARED)) {
+        if(isGrown && hasDye && !state.getValue(MSFStateProperties.SHEARED)) {
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-            DyeItem dyeItem = DyeItem.byColor(state.getValue(ModStateProperties.COLOR));
+            DyeItem dyeItem = DyeItem.byColor(state.getValue(MSFStateProperties.COLOR));
             poseStack.pushPose();
             poseStack.translate(0.5, 0.9375, 0.5);
             poseStack.mulPose(entityRenderDispatcher.cameraOrientation());

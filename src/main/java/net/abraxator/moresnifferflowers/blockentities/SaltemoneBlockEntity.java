@@ -1,30 +1,25 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.blocks.ModEntityBlock;
 import net.abraxator.moresnifferflowers.blocks.SaltemoneBlock;
 import net.abraxator.moresnifferflowers.entities.SaltBubbleProjectile;
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
+import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.abraxator.moresnifferflowers.networking.toClient.SaltemoneParticlePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 
 public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IModBlockEntity {
     public SaltemoneBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.SALTEMONE.get(), pos, state);
+        super(MSFBlockEntities.SALTEMONE.get(), pos, state);
     }
 
     public int bubbleCount = 0;
@@ -72,7 +67,7 @@ public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IM
     }
 
     private boolean canSpawnBubble(BlockState state, RandomSource random, SaltemoneBlock saltemoneBlock) {
-        if (state.getValue(ModStateProperties.SHEARED)) return false;
+        if (state.getValue(MSFStateProperties.SHEARED)) return false;
         if (bubbleCount >= MAX_BUBBLE_COUNT) return false;
         if (!(getLevel().getGameTime() % 160 == 0 && random.nextFloat() < 0.20f)) return false;
         if (!isCenter()) return false;

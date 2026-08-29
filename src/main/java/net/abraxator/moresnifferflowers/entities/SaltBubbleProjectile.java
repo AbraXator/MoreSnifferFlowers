@@ -1,10 +1,9 @@
 package net.abraxator.moresnifferflowers.entities;
 
 import net.abraxator.moresnifferflowers.blockentities.SaltemoneBlockEntity;
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
-import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.abraxator.moresnifferflowers.networking.toClient.SaltemoneParticlePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -42,7 +41,7 @@ public class SaltBubbleProjectile extends ThrowableItemProjectile {
     }
 
     public SaltBubbleProjectile(double x, double y, double z, Level level, BlockPos pos) {
-        super(ModEntityTypes.SALT_BUBBLE.get(), x, y, z , level);
+        super(MSFEntityTypes.SALT_BUBBLE.get(), x, y, z , level);
         this.pos = new Vector3f((float) x, (float) y, (float) z);
         this.height = level.random.nextIntBetweenInclusive(10, 20) + level.random.nextFloat();
         this.slowdown = 1.0f + 0.10f / (height * 2);
@@ -159,7 +158,7 @@ public class SaltBubbleProjectile extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.SALTY_SPICE.get();
+        return MSFItems.SALTY_SPICE.get();
     }
 
     public boolean isCorrupted() {

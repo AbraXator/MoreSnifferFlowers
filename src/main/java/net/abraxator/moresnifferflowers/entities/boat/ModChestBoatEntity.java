@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.entities.boat;
 
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.ChestBoat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import org.openjdk.nashorn.api.tree.ForInLoopTree;
 
 public class ModChestBoatEntity extends ChestBoat {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(ModChestBoatEntity.class, EntityDataSerializers.INT);
@@ -20,7 +19,7 @@ public class ModChestBoatEntity extends ChestBoat {
     }
 
     public ModChestBoatEntity(Level level, double pX, double pY, double pZ) {
-        this(ModEntityTypes.MOD_CORRUPTED_CHEST_BOAT.get(), level);
+        this(MSFEntityTypes.MOD_CORRUPTED_CHEST_BOAT.get(), level);
         this.setPos(pX, pY, pZ);
         this.xo = pX;
         this.yo = pY;
@@ -30,8 +29,8 @@ public class ModChestBoatEntity extends ChestBoat {
     @Override
     public Item getDropItem() {
         return switch (getModVariant()) {
-            case CORRUPTED -> ModItems.CORRUPTED_CHEST_BOAT.get();
-            case VIVICUS -> ModItems.VIVICUS_CHEST_BOAT.get();
+            case CORRUPTED -> MSFItems.CORRUPTED_CHEST_BOAT.get();
+            case VIVICUS -> MSFItems.VIVICUS_CHEST_BOAT.get();
         };
     }
     

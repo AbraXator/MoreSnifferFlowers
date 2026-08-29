@@ -1,9 +1,8 @@
 package net.abraxator.moresnifferflowers.client.gui.slot;
 
 import net.abraxator.moresnifferflowers.capability.HardenedMouthCapability;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.minecraft.core.NonNullList;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
@@ -61,7 +60,7 @@ public class HardenedMouthSlot extends Slot {
 
     @Override
     public void setChanged() {
-        player.getData(ModDataAttachments.HARDENED_MOUTH).sync(player);
+        player.getData(MSFDataAttachments.HARDENED_MOUTH).sync(player);
     }
 
     public void handleCapabilitySlotClick(HardenedMouthSlot slot, Player player, ClickType clickType, int dragType) {
@@ -158,6 +157,6 @@ public class HardenedMouthSlot extends Slot {
     }
 
     public boolean hasHardenedMouthEffect() {
-        return player.hasEffect(ModEffects.HARDENED_MOUTH);
+        return player.hasEffect(MSFEffects.HARDENED_MOUTH);
     }
 }

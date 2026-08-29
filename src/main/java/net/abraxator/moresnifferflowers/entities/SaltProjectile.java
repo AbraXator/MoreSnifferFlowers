@@ -1,9 +1,9 @@
 package net.abraxator.moresnifferflowers.entities;
 
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -32,11 +32,11 @@ public class SaltProjectile extends ThrowableItemProjectile {
     }
 
     public SaltProjectile(Level level, LivingEntity pShooter) {
-        super(ModEntityTypes.SALT_PROJECTILE.get(), pShooter, level);
+        super(MSFEntityTypes.SALT_PROJECTILE.get(), pShooter, level);
     }
 
     public SaltProjectile(Level level) {
-        super(ModEntityTypes.SALT_PROJECTILE.get(), level);
+        super(MSFEntityTypes.SALT_PROJECTILE.get(), level);
     }
 
     @Override
@@ -68,18 +68,18 @@ public class SaltProjectile extends ThrowableItemProjectile {
     public boolean placeBlockSalt(BlockPos pos, BlockState state) {
         Level level = this.level();
         if (state.canBeReplaced()){
-            if (!ModBlocks.SALTY_CLUMP.get().defaultBlockState().canSurvive(level, pos)){
+            if (!MSFBlocks.SALTY_CLUMP.get().defaultBlockState().canSurvive(level, pos)){
                 return true;
             }
-            level.setBlock(pos, ModBlocks.SALTY_CLUMP.get().defaultBlockState().setValue(ModStateProperties.AMOUNT_4, 1), 2);
+            level.setBlock(pos, MSFBlocks.SALTY_CLUMP.get().defaultBlockState().setValue(MSFStateProperties.AMOUNT_4, 1), 2);
             return true;
         }
-        if (state.is(ModBlocks.SALTY_CLUMP.get())){
-           int amount = state.getValue(ModStateProperties.AMOUNT_4);
+        if (state.is(MSFBlocks.SALTY_CLUMP.get())){
+           int amount = state.getValue(MSFStateProperties.AMOUNT_4);
            if (amount < 4){
-               level.setBlock(pos, state.setValue(ModStateProperties.AMOUNT_4, amount+1), 3);
+               level.setBlock(pos, state.setValue(MSFStateProperties.AMOUNT_4, amount+1), 3);
            } else
-               level.setBlock(pos, ModBlocks.DRIPSALT.get().defaultBlockState().setValue(BlockStateProperties.VERTICAL_DIRECTION, Direction.UP), 3);
+               level.setBlock(pos, MSFBlocks.DRIPSALT.get().defaultBlockState().setValue(BlockStateProperties.VERTICAL_DIRECTION, Direction.UP), 3);
            return true;
         }
         return false;
@@ -92,12 +92,12 @@ public class SaltProjectile extends ThrowableItemProjectile {
         if (loop > 2) return false;
 
         if (state.canBeReplaced()) {
-            if (!ModBlocks.SOUR_PUDDLE.get().defaultBlockState().canSurvive(level, pos)){
+            if (!MSFBlocks.SOUR_PUDDLE.get().defaultBlockState().canSurvive(level, pos)){
                 return true;
             }
 
             if (level instanceof ServerLevel serverLevel) {
-                BlockState stateForPlacement = ModBlocks.SOUR_PUDDLE.get().getStateForPlacement(
+                BlockState stateForPlacement = MSFBlocks.SOUR_PUDDLE.get().getStateForPlacement(
                         new BlockPlaceContext(
                                 new UseOnContext(
                                         FakePlayerFactory.getMinecraft(serverLevel),
@@ -110,7 +110,7 @@ public class SaltProjectile extends ThrowableItemProjectile {
             }
             return true;
         }
-        if (state.is(ModBlocks.SOUR_PUDDLE.get())){
+        if (state.is(MSFBlocks.SOUR_PUDDLE.get())){
             return placeBlockSour(aroundPos(pos, random.nextInt(7)), loop+1, hitResult);
         }
         return false;
@@ -132,7 +132,7 @@ public class SaltProjectile extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.SALTY_SPICE.get();
+        return MSFItems.SALTY_SPICE.get();
     }
 
 

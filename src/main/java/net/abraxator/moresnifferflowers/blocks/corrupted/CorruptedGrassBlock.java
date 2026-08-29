@@ -2,10 +2,9 @@ package net.abraxator.moresnifferflowers.blocks.corrupted;
 
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.abraxator.moresnifferflowers.init.ModStatePropertiesUnsafe;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
 import net.abraxator.moresnifferflowers.networking.toClient.CorruptionParticlePacket;
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -46,7 +44,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
 
     public CorruptedGrassBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(ModStateProperties.CROWDED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(MSFStateProperties.CROWDED, false));
     }
 
     @Override
@@ -60,18 +58,18 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity pEntity) {
-        double d0 = Math.abs(pEntity.getDeltaMovement().y);
-        if (d0 < 0.1 && !pEntity.isSteppingCarefully()) {
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        double d0 = Math.abs(entity.getDeltaMovement().y);
+        if (d0 < 0.1 && !entity.isSteppingCarefully()) {
             double d1 = 0.8;
-            pEntity.setDeltaMovement(pEntity.getDeltaMovement().multiply(d1, 1.0, d1));
+            entity.setDeltaMovement(entity.getDeltaMovement().multiply(d1, 1.0, d1));
         }
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(ModStateProperties.CROWDED);
+        builder.add(MSFStateProperties.CROWDED);
     }
 
 
@@ -151,7 +149,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
         super.onRemove(state, level, pos, newState, movedByPiston);
         LevelChunk chunk = level.getChunkAt(pos);
 
-        CorruptionCapability cap = chunk.getData(ModDataAttachments.CHUNK_CORRUPTION);
+        CorruptionCapability cap = chunk.getData(MSFDataAttachments.CHUNK_CORRUPTION);
         if (cap.count > 0) cap.count--;
     }
 
@@ -162,7 +160,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
             level.setBlockAndUpdate(pos, Blocks.COARSE_DIRT.defaultBlockState());
         } else {
             if (!level.isAreaLoaded(pos, 3)) return;
-            if (state.getValue(ModStateProperties.CROWDED)) return;
+            if (state.getValue(MSFStateProperties.CROWDED)) return;
             if (level.getMaxLocalRawBrightness(pos.above()) <=6 && random.nextDouble() < 0.2D *  ModServerConfig.CORRUPTION_SPREAD_SPEED.get()) {
                 BlockState blockstate = this.defaultBlockState();
                 boolean spreadSuccess = false;
@@ -181,8 +179,8 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
         BlockPos blockPos1 = pos.above(random.nextInt(6));
         BlockState state2 = level.getBlockState(blockPos1);
 
-        if (state2.getOptionalValue(ModStatePropertiesUnsafe.NOT_CORRUPTED).isPresent() && state2.getValue(ModStatePropertiesUnsafe.NOT_CORRUPTED)){
-            level.setBlock(blockPos1, state2.setValue(ModStatePropertiesUnsafe.NOT_CORRUPTED, false), 3);
+        if (state2.getOptionalValue(MSFStateProperties.NOT_CORRUPTED).isPresent() && state2.getValue(MSFStateProperties.NOT_CORRUPTED)){
+            level.setBlock(blockPos1, state2.setValue(MSFStateProperties.NOT_CORRUPTED, false), 3);
         }
     }
 
@@ -190,7 +188,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
         BlockPos pos1 = pos.offset(random.nextIntBetweenInclusive(-2,2), random.nextIntBetweenInclusive(-2,2), random.nextIntBetweenInclusive(-2,2));
         BlockState state1 = level.getBlockState(pos1);
 
-        boolean canSpread = state1.is(BlockTags.DIRT) && canPropagate(blockstate, level, pos1) && !state1.is(ModBlocks.CURED_GRASS_BLOCK.get()) && !state1.is(ModBlocks.CORRUPTED_GRASS_BLOCK.get());
+        boolean canSpread = state1.is(BlockTags.DIRT) && canPropagate(blockstate, level, pos1) && !state1.is(MSFBlocks.CURED_GRASS_BLOCK.get()) && !state1.is(MSFBlocks.CORRUPTED_GRASS_BLOCK.get());
 
         if (canSpread) {
 
@@ -202,7 +200,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
 
             BlockPos posAbove = pos1.above();
             if (random.nextFloat() < 0.10F && level.getBlockState(posAbove).isAir()){
-                level.setBlock(posAbove, ModBlocks.CORRUPTED_WART.get().defaultBlockState(), 3);
+                level.setBlock(posAbove, MSFBlocks.CORRUPTED_WART.get().defaultBlockState(), 3);
             }
 
             return true;
@@ -229,7 +227,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
 
         if (differentChunk) {
            if (isSourceOriginal) {
-               chunkNew.getData(ModDataAttachments.CHUNK_CORRUPTION).isNeighbor = true;
+               chunkNew.getData(MSFDataAttachments.CHUNK_CORRUPTION).isNeighbor = true;
 
            } else if (isNeighborNew) {
                return true;
@@ -263,7 +261,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
     }
 
     private static void setCrowded(ServerLevel level, BlockPos pos, BlockState blockstate, int resistance, LevelChunk chunkOriginal) {
-        level.setBlock(pos, blockstate.setValue(ModStateProperties.CROWDED, true), 3);
+        level.setBlock(pos, blockstate.setValue(MSFStateProperties.CROWDED, true), 3);
 
         boolean isPositive = resistance > 0;
         PacketDistributor.sendToAllPlayers(new CorruptionParticlePacket(pos, isPositive, false));
@@ -275,11 +273,11 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
 
     private static void placeTallGrass(ServerLevel level, BlockPos pos) {
         if (level.getBlockState(pos.above()).is(Blocks.SHORT_GRASS))
-            level.setBlock(pos.above(), ModBlocks.CORRUPTED_GRASS.get().defaultBlockState(), 18);
+            level.setBlock(pos.above(), MSFBlocks.CORRUPTED_GRASS.get().defaultBlockState(), 18);
 
         if (level.getBlockState(pos.above()).is(Blocks.TALL_GRASS)) {
-            level.setBlock(pos.above(), ModBlocks.CORRUPTED_TALL_GRASS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER), 18);
-            level.setBlock(pos.above(2), ModBlocks.CORRUPTED_TALL_GRASS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER), 18);
+            level.setBlock(pos.above(), MSFBlocks.CORRUPTED_TALL_GRASS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER), 18);
+            level.setBlock(pos.above(2), MSFBlocks.CORRUPTED_TALL_GRASS.get().defaultBlockState().setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER), 18);
         }
     }
 }

@@ -1,10 +1,9 @@
 package net.abraxator.moresnifferflowers.effects;
 
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 public class SlipperyEffect extends MobEffect {
     public SlipperyEffect(MobEffectCategory category, int color) {
@@ -13,8 +12,7 @@ public class SlipperyEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity instanceof Player player)
-            player.getData(ModDataAttachments.SLIPPERY.get()).tick(player, amplifier);
+        livingEntity.getData(MSFDataAttachments.SLIPPERY.get()).tick(livingEntity, amplifier);
         return true;
     }
 

@@ -1,14 +1,11 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import com.google.common.collect.Maps;
 import net.abraxator.moresnifferflowers.components.BlockPattern;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.minecraft.Util;
+import net.abraxator.moresnifferflowers.init.MSFAdvancementCritters;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -43,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
-import static net.abraxator.moresnifferflowers.init.ModStateProperties.*;
+import static net.abraxator.moresnifferflowers.init.MSFStateProperties.*;
 
 public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock, Colorable, Corruptable {
     public CaulorflowerBlock(Properties properties) {
@@ -71,9 +68,9 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        if(canSurvive(state, level, pCurrentPos)) {
-            return state.setValue(FLIPPED, pCurrentPos.getY() % 2 == 0);
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        if(canSurvive(state, level, currentPos)) {
+            return state.setValue(FLIPPED, currentPos.getY() % 2 == 0);
         } else {
             return Blocks.AIR.defaultBlockState();
         }
@@ -95,7 +92,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
         BlockState blockState = level.getBlockState(blockPos);
         BlockPos wallPos = pos.relative(state.getValue(FACING).getOpposite());
         BlockState wallState = level.getBlockState(wallPos);
-        return ((blockState.is(ModBlocks.CAULORFLOWER.get()) || blockState.is(ModBlocks.PATTERNFLOWER.get())) && getAge(blockState) > 0) || blockState.isFaceSturdy(level, blockPos, Direction.UP) || wallState.isFaceSturdy(level, wallPos, state.getValue(FACING));
+        return ((blockState.is(MSFBlocks.CAULORFLOWER.get()) || blockState.is(MSFBlocks.PATTERNFLOWER.get())) && getAge(blockState) > 0) || blockState.isFaceSturdy(level, blockPos, Direction.UP) || wallState.isFaceSturdy(level, wallPos, state.getValue(FACING));
     }
 
     @Override
@@ -202,6 +199,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public BlockState mirror(BlockState state, Mirror pMirror) {
         return state.rotate(pMirror.getRotation(state.getValue(FACING)));
     }
@@ -212,13 +210,13 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
             return;
         }
 
-        if (newState.is(ModBlocks.PATTERNFLOWER.get())){
+        if (newState.is(MSFBlocks.PATTERNFLOWER.get())){
             return;
         }
 
         var stateBelow = level.getBlockState(pos.below());
         if(!stateBelow.is(this) && !stateBelow.is(Blocks.AIR)) {
-            popResource(level, pos, new ItemStack(ModItems.CAULORFLOWER_SEEDS.get()));
+            popResource(level, pos, new ItemStack(MSFItems.CAULORFLOWER_SEEDS.get()));
         }
         
         if(!isColorEmpty(state) && isMaxAge(state)) {
@@ -235,7 +233,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCr
     public void colorBlock(Level level, BlockPos blockPos, BlockState blockState, Dye dye) {
         Colorable.super.colorBlock(level, blockPos, blockState.setValue(getColorAndEmptyProperties().getB(), false), dye);
         if(level.getNearestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 6, false) instanceof ServerPlayer serverPlayer)
-            ModAdvancementCritters.USED_DYESPRIA.get().trigger(serverPlayer);
+            MSFAdvancementCritters.USED_DYESPRIA.get().trigger(serverPlayer);
     }
 
     @Override

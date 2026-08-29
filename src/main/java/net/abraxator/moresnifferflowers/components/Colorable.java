@@ -25,8 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static net.abraxator.moresnifferflowers.init.ModStateProperties.COLOR;
-import static net.abraxator.moresnifferflowers.init.ModStateProperties.EMPTY;
+import static net.abraxator.moresnifferflowers.init.MSFStateProperties.COLOR;
+import static net.abraxator.moresnifferflowers.init.MSFStateProperties.EMPTY;
 
 public interface Colorable {
     String TAG_HEX = "MSF_Hex";

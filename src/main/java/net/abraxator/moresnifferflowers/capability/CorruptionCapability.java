@@ -2,11 +2,9 @@ package net.abraxator.moresnifferflowers.capability;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.networking.toClient.CorruptionParticlePacket;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -41,7 +39,7 @@ public class CorruptionCapability {
     }));
 
     public static void sendFlowerParticles(LevelChunk chunk){
-        CorruptionCapability cap = chunk.getData(ModDataAttachments.CHUNK_CORRUPTION.get());
+        CorruptionCapability cap = chunk.getData(MSFDataAttachments.CHUNK_CORRUPTION.get());
         int count = 0;
 
         for (BlockPos pos : cap.flowers){
@@ -54,7 +52,7 @@ public class CorruptionCapability {
 
     public static void onCorruptionSource(Level level, BlockPos pos){
         LevelChunk chunk = level.getChunkAt(pos);
-        CorruptionCapability cap = chunk.getData(ModDataAttachments.CHUNK_CORRUPTION.get());
+        CorruptionCapability cap = chunk.getData(MSFDataAttachments.CHUNK_CORRUPTION.get());
 
         boolean hasResistance = cap.resistance > 0;
         cap.isSource = !hasResistance;
@@ -66,7 +64,7 @@ public class CorruptionCapability {
     }
 
     public static void cure(LevelChunk chunk){
-        CorruptionCapability cap = chunk.getData(ModDataAttachments.CHUNK_CORRUPTION.get());
+        CorruptionCapability cap = chunk.getData(MSFDataAttachments.CHUNK_CORRUPTION.get());
 
         cap.count = 0;
         cap.isSource = false;
@@ -78,12 +76,12 @@ public class CorruptionCapability {
     }
 
     public static CorruptionCapability get(LevelChunk chunk) {
-        return chunk.getData(ModDataAttachments.CHUNK_CORRUPTION.get());
+        return chunk.getData(MSFDataAttachments.CHUNK_CORRUPTION.get());
     }
 
     public static void printDebug(LevelChunk chunk){
         if (chunk.getLevel().isClientSide()) return;
-        CorruptionCapability cap = chunk.getData(ModDataAttachments.CHUNK_CORRUPTION.get());
+        CorruptionCapability cap = chunk.getData(MSFDataAttachments.CHUNK_CORRUPTION.get());
         System.out.println(("Count: " + cap.count + " Resistance: " + cap.resistance + " isSource: " + cap.isSource + " isNeighbor: " + cap.isNeighbor + " Flowers size: " + cap.flowers.size()));
     }
 }

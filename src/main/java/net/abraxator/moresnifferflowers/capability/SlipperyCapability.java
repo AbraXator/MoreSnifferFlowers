@@ -3,13 +3,15 @@ package net.abraxator.moresnifferflowers.capability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.networking.toClient.SyncSlipperyPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -43,36 +45,43 @@ public class SlipperyCapability{
             }));
 
 
-    public void onEffectEnd(Player player) {
+    public void onEffectEnd(LivingEntity player) {
         lastSpeed = 0;
         lastYaw = 0;
         if (isFallen) getUp(player);
     }
 
-    public void tick(Player player, int amplifier) {
-        float yaw = player.getYRot();
-        Vec3 motion = player.getDeltaMovement();
+    public void tick(LivingEntity entity, int amplifier) {
+        float yaw = entity.getYRot();
+        Vec3 motion = entity.getDeltaMovement();
         float speed = (float) (motion.x + motion.y + motion.z);
 
         if (isFallen){
             fallenTicks--;
-            player.setJumping(false);
-            player.setDeltaMovement(motion.x, Math.min(motion.y, 0), motion.z);
+            entity.setJumping(false);
+            entity.setDeltaMovement(motion.x, Math.min(motion.y, 0), motion.z);
 
-            if (!player.getPose().equals(Pose.SWIMMING)) player.setForcedPose(Pose.SWIMMING);
-
-            if (fallenTicks <= 0){
-                getUp(player);
+            if (!entity.getPose().equals(Pose.SWIMMING)){
+                if (entity instanceof Player player) {
+                    player.setForcedPose(Pose.SWIMMING);
+                } else {
+                    entity.setPose(Pose.SLEEPING);
+                }
             }
 
-        } else if (!player.level().isClientSide && !(lastSpeed == 0 && lastYaw == 0)){
+
+            if (fallenTicks <= 0){
+                getUp(entity);
+            }
+
+        } else if (!entity.level().isClientSide && !(lastSpeed == 0 && lastYaw == 0)){
 
             boolean speedChange = Math.abs(speed - lastSpeed) > 0.60f; // this only works for falling down for some reason
             float rotationLimit = Math.max(90f - amplifier*10, 15f);
-            boolean rotationChange = Math.abs(Mth.wrapDegrees(yaw - lastYaw)) > rotationLimit && player.isSprinting();
+            boolean rotationChange = Math.abs(Mth.wrapDegrees(yaw - lastYaw)) > rotationLimit && entity.isSprinting();
 
-            if (player.onGround() && (speedChange || rotationChange)) {
-                fallDown(player, amplifier);
+            if (entity.onGround() && (speedChange || rotationChange)) {
+                fallDown(entity, amplifier);
             }
         }
 
@@ -82,36 +91,46 @@ public class SlipperyCapability{
 
 
 
-    public void fallDown(Player player, int amplifier) {
+
+    public void fallDown(LivingEntity entity, int amplifier) {
         isFallen = true;
         maxFallenTicks = 30 + amplifier * 10;
         fallenTicks = maxFallenTicks;
 
-        player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(ID);
+        AttributeInstance attribute = entity.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (attribute == null) return;
+
+        attribute.removeModifier(ID);
         AttributeModifier mod = new AttributeModifier(ID, -100, AttributeModifier.Operation.ADD_VALUE);
-        player.getAttribute(Attributes.MOVEMENT_SPEED).addTransientModifier(mod);
+        attribute.addTransientModifier(mod);
 
-        player.level().playSound(null, player.blockPosition(), SoundEvents.SLIME_SQUISH, SoundSource.PLAYERS, 1f, 1f);
+        entity.level().playSound(null, entity.blockPosition(), SoundEvents.SLIME_SQUISH, SoundSource.PLAYERS, 1f, 1f);
 
-        sync(player);
+        sync(entity);
     }
 
-    public void getUp(Player player) {
+    public void getUp(LivingEntity entity) {
         fallenTicks = 0;
         isFallen = false;
 
-        player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(ID);
-        player.setForcedPose(null);
-       if (!player.level().isClientSide) sync(player);
+        AttributeInstance attribute = entity.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (attribute != null) attribute.removeModifier(ID);
+
+        if (entity instanceof Player player)
+            player.setForcedPose(null);
+        else entity.setPose(Pose.STANDING);
+
+       if (!entity.level().isClientSide())
+           sync(entity);
     }
 
 
 
-    public void sync(Player player){
-        PacketDistributor.sendToAllPlayers(new SyncSlipperyPacket(this, player.getId()));
+    public void sync(LivingEntity entity){
+        PacketDistributor.sendToAllPlayers(new SyncSlipperyPacket(this, entity.getId()));
     }
 
-    public static SlipperyCapability get(Player player) {
-       return player.getData(ModDataAttachments.SLIPPERY);
+    public static SlipperyCapability get(LivingEntity entity) {
+       return entity.getData(MSFDataAttachments.SLIPPERY);
     }
 }

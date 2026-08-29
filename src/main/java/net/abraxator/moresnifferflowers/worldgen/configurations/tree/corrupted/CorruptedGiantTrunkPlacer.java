@@ -2,8 +2,7 @@ package net.abraxator.moresnifferflowers.worldgen.configurations.tree.corrupted;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
+import net.abraxator.moresnifferflowers.init.MSFWood;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -32,7 +30,7 @@ public class CorruptedGiantTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<?> type() {
-        return ModTrunkPlacerTypes.CORRUPTED_GIANT_TRUNK_PLACER.get();
+        return MSFWood.TrunkPlacerTypes.CORRUPTED_GIANT_TRUNK_PLACER.get();
     }
 
 

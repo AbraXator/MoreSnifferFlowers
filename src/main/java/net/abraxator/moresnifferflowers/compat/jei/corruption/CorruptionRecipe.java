@@ -1,11 +1,10 @@
 package net.abraxator.moresnifferflowers.compat.jei.corruption;
 
 import com.mojang.datafixers.util.Pair;
-import net.abraxator.moresnifferflowers.data.datamaps.Corruptable;
-import net.abraxator.moresnifferflowers.data.datamaps.ModDataMaps;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.minecraft.core.HolderLookup;
+import net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable;
+import net.abraxator.moresnifferflowers.init.MSFDataMaps;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -20,7 +19,7 @@ public record CorruptionRecipe(ItemStack source, ItemStack corrupted, int chance
     public static List<CorruptionRecipe> createRecipes() {
         List<CorruptionRecipe> recipes = new ArrayList<>();
 
-        for(Map.Entry<ResourceKey<Block>, Corruptable> entry : BuiltInRegistries.BLOCK.getDataMap(ModDataMaps.CORRUPTABLE).entrySet()) {
+        for(Map.Entry<ResourceKey<Block>, Corruptable> entry : BuiltInRegistries.BLOCK.getDataMap(MSFDataMaps.CORRUPTABLE).entrySet()) {
             Item source = BuiltInRegistries.BLOCK.get(entry.getKey()).asItem();
             int totalWeight = 0;
             for(Pair<Block, Integer> pair : entry.getValue().list()) {
@@ -34,9 +33,9 @@ public record CorruptionRecipe(ItemStack source, ItemStack corrupted, int chance
         }
         
         for(Map.Entry<Block, Block> entry : Corruptable.HARDCODED_BLOCK.entrySet()) {
-            if(entry.getKey() == ModBlocks.AMBUSH_BOTTOM.get()) {
-                recipes.add(new CorruptionRecipe(ModItems.AMBUSH_SEEDS.toStack(), ModItems.GARBUSH_SEEDS.toStack(), 100));
-            } else if(entry.getKey() == ModBlocks.AMBUSH_TOP.get()) {
+            if(entry.getKey() == MSFBlocks.AMBUSH_BOTTOM.get()) {
+                recipes.add(new CorruptionRecipe(MSFItems.AMBUSH_SEEDS.toStack(), MSFItems.GARBUSH_SEEDS.toStack(), 100));
+            } else if(entry.getKey() == MSFBlocks.AMBUSH_TOP.get()) {
                 continue;
             }
             

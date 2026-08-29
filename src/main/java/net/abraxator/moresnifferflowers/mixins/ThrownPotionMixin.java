@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.mixins;
 
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.entity.projectile.ThrownPotion;
@@ -19,6 +19,6 @@ public abstract class ThrownPotionMixin extends ThrowableItemProjectile {
 
     @Inject(method = "isLingering", at = @At("TAIL"), cancellable = true)
     private void isLingering(CallbackInfoReturnable<Boolean> callback) {
-        callback.setReturnValue(getItem().is(ModItems.REBREWED_LINGERING_POTION.get()) || getItem().is(Items.LINGERING_POTION));
+        callback.setReturnValue(getItem().is(MSFItems.REBREWED_LINGERING_POTION.get()) || getItem().is(Items.LINGERING_POTION));
     }
 }

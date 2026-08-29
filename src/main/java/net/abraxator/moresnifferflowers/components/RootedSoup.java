@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.components;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -28,6 +29,7 @@ public record RootedSoup(int food, float saturation, int maxUses) {
     public static final Codec<List<ItemStack>> ITEM_LIST_CODEC =
             ItemStack.CODEC.listOf();
 
+
     public record RootedEffect(int id, boolean isPositive, int length, int amplifier){
         public static final Codec<RootedEffect> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
@@ -37,6 +39,17 @@ public record RootedSoup(int food, float saturation, int maxUses) {
                         Codec.INT.fieldOf("amplifier").forGetter(RootedEffect::amplifier)
                 ).apply(instance, RootedEffect::new)
         );
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, RootedEffect> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.INT, RootedEffect::id,
+                ByteBufCodecs.BOOL, RootedEffect::isPositive,
+                ByteBufCodecs.INT, RootedEffect::length,
+                ByteBufCodecs.INT, RootedEffect::amplifier,
+                RootedEffect::new
+        );
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, List<RootedEffect>> LIST_STREAM_CODEC = STREAM_CODEC.apply(ByteBufCodecs.list());
+
 
         public static final Codec<List<RootedEffect>> LIST_CODEC =
                 CODEC.listOf()

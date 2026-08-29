@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -65,7 +65,7 @@ public class VivicusSignRenderer extends SignRenderer {
         VertexConsumer vertexconsumer = material.buffer(pBuffer, pModel::renderType);
         var color = -1;
         if(state.getBlock() instanceof ColorableVivicusBlock colorableVivicusBlock) {
-            var dyeColor = state.getValue(ModStateProperties.COLOR);
+            var dyeColor = state.getValue(MSFStateProperties.COLOR);
             color = colorableVivicusBlock.colorValues().get(dyeColor);
             vertexconsumer.setColor(color);
         }

@@ -3,10 +3,7 @@ package net.abraxator.moresnifferflowers.blockentities;
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
 import net.abraxator.moresnifferflowers.client.ModColorHandler;
 import net.abraxator.moresnifferflowers.components.BetterNonNullList;
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
-import net.abraxator.moresnifferflowers.init.ModSoundEvents;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.NBTCodecHelper;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.core.BlockPos;
@@ -51,11 +48,11 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
     public int progress = 0;
     public final int MAX_PROGRESS = 100;
     private static final int INV_SIZE = 16;
-    private final RecipeManager.CachedCheck<SingleRecipeInput, CropressingRecipe> quickCheck = RecipeManager.createCheck(ModRecipeTypes.CROPRESSING.get());
+    private final RecipeManager.CachedCheck<SingleRecipeInput, CropressingRecipe> quickCheck = RecipeManager.createCheck(MSFRecipes.Types.CROPRESSING.get());
     public int barLength = 0;
 
     public CropressorBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.CROPRESSOR.get(), pos, state);
+        super(MSFBlockEntities.CROPRESSOR.get(), pos, state);
     }
 
     @Override
@@ -65,7 +62,7 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
         if (progress > 0 && gameTime % 3 == 0) {
             progress++;
             if (progress % 20 == 0) {
-                level.playSound(null, worldPosition, ModSoundEvents.CROPRESSOR_BELT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + (level.getRandom().nextFloat() * 0.2)));
+                level.playSound(null, worldPosition, MSFSounds.CROPRESSOR_BELT.get(), SoundSource.BLOCKS, 1.0F, (float) (1.0F + (level.getRandom().nextFloat() * 0.2)));
             }
 
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
@@ -128,7 +125,7 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
         boolean success = false;
         ItemStack copy = stack.copy();
 
-        if (stack.is(ModTags.ModItemTags.CROPRESSABLE)) {
+        if (stack.is(MSFTags.ModItemTags.CROPRESSABLE)) {
 
             if (this.hasAnyOf(Set.of(stack.getItem()))) {
                 for (int slot = 0; slot < SLOT_SIZE && !stack.isEmpty(); slot++) {

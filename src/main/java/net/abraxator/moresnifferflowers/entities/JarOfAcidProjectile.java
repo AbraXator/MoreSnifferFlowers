@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.entities;
 
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -36,11 +36,11 @@ public class JarOfAcidProjectile extends ThrowableItemProjectile {
 
 
     public JarOfAcidProjectile(LivingEntity pShooter, Level level) {
-        super(ModEntityTypes.JAR_OF_ACID.get(), pShooter, level);
+        super(MSFEntityTypes.JAR_OF_ACID.get(), pShooter, level);
     }
     
     public JarOfAcidProjectile(Level level) {
-        super(ModEntityTypes.JAR_OF_ACID.get(), level);
+        super(MSFEntityTypes.JAR_OF_ACID.get(), level);
     }
     
     public JarOfAcidProjectile(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
@@ -49,7 +49,7 @@ public class JarOfAcidProjectile extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.JAR_OF_ACID.get();
+        return MSFItems.JAR_OF_ACID.get();
     }
 
     private ParticleOptions getParticle() {
@@ -117,8 +117,8 @@ public class JarOfAcidProjectile extends ThrowableItemProjectile {
     }
 
     @Override
-    public void handleEntityEvent(byte pId) {
-        if (pId == 3) {
+    public void handleEntityEvent(byte id) {
+        if (id == 3) {
             ParticleOptions particleoptions = this.getParticle();
 
             for (int i = 0; i < 8; i++) {

@@ -3,13 +3,10 @@ package net.abraxator.moresnifferflowers.items;
 import net.abraxator.moresnifferflowers.capability.NutritionCapability;
 import net.abraxator.moresnifferflowers.client.ModColorHandler;
 import net.abraxator.moresnifferflowers.components.RootedSoup;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
-import net.abraxator.moresnifferflowers.init.ModDataComponents;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataComponents;
 import net.abraxator.moresnifferflowers.nutrition.NutritionType;
 import net.minecraft.core.Holder;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
@@ -42,13 +39,13 @@ public class RootedSoupItem extends Item {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         Player player = (Player) livingEntity;
         FoodData foodData = player.getFoodData();
-        RootedSoup soup = stack.get(ModDataComponents.ROOTED_SOUP);
+        RootedSoup soup = stack.get(MSFDataComponents.ROOTED_SOUP);
         if (soup == null) return stack;
 
         int food = soup.food();
         float sat = soup.saturation();
 
-        List<RootedSoup.RootedEffect> rootedEffects = stack.get(ModDataComponents.ROOTED_EFFECTS);
+        List<RootedSoup.RootedEffect> rootedEffects = stack.get(MSFDataComponents.ROOTED_EFFECTS);
         List<MobEffectInstance> effects = new ArrayList<>();
 
         if (rootedEffects != null) {
@@ -59,7 +56,7 @@ public class RootedSoupItem extends Item {
                 int amp = effect.amplifier();
                 boolean positive = effect.isPositive();
 
-                player.getData(ModDataAttachments.NUTRITION).unlockedEffects.add(NutritionCapability.idFromNutrition(NutritionType.byId(id), positive));
+                player.getData(MSFDataAttachments.NUTRITION).unlockedEffects.add(NutritionCapability.idFromNutrition(NutritionType.byId(id), positive));
 
                 Holder<MobEffect> mobEffect = NutritionType.getEffect(NutritionType.byId(id), positive);
                 if (mobEffect != null) {
@@ -75,21 +72,21 @@ public class RootedSoupItem extends Item {
             }
         }
 
-        int uses = stack.getOrDefault(ModDataComponents.USES, 1) - 1;
+        int uses = stack.getOrDefault(MSFDataComponents.USES, 1) - 1;
 
         if(uses <= 0) {
             return Items.BOWL.getDefaultInstance();
         }
 
         // Cookbook unlocking
-        List<ItemStack> ingredients = stack.getOrDefault(ModDataComponents.ROOTED_INGREDIENTS, new ArrayList<>());
+        List<ItemStack> ingredients = stack.getOrDefault(MSFDataComponents.ROOTED_INGREDIENTS, new ArrayList<>());
 
         for (ItemStack ingredient : ingredients) {
-            player.getData(ModDataAttachments.NUTRITION).addItem(ingredient.getItem());
+            player.getData(MSFDataAttachments.NUTRITION).addItem(ingredient.getItem());
         }
 
 
-        stack.set(ModDataComponents.USES, uses);
+        stack.set(MSFDataComponents.USES, uses);
         return stack;
     }
 
@@ -105,13 +102,13 @@ public class RootedSoupItem extends Item {
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return stack.getOrDefault(ModDataComponents.USES, 0) > 0;
+        return stack.getOrDefault(MSFDataComponents.USES, 0) > 0;
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        int input = stack.getOrDefault(ModDataComponents.USES, 0);
-        RootedSoup soup = stack.get(ModDataComponents.ROOTED_SOUP);
+        int input = stack.getOrDefault(MSFDataComponents.USES, 0);
+        RootedSoup soup = stack.get(MSFDataComponents.ROOTED_SOUP);
 
         if (soup == null) return 0;
 
@@ -122,8 +119,8 @@ public class RootedSoupItem extends Item {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        int input = stack.getOrDefault(ModDataComponents.USES, 0);
-        RootedSoup soup = stack.get(ModDataComponents.ROOTED_SOUP);
+        int input = stack.getOrDefault(MSFDataComponents.USES, 0);
+        RootedSoup soup = stack.get(MSFDataComponents.ROOTED_SOUP);
 
         if (soup == null) return 0;
 

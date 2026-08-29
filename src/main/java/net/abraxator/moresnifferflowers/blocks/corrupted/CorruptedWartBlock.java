@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks.corrupted;
 
 import com.mojang.serialization.MapCodec;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -11,7 +11,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.GrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -32,21 +31,21 @@ public class CorruptedWartBlock extends BushBlock {
     private static final VoxelShape SHAPE = Block.box(4, 0,  4, 12, 5, 12);
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity pEntity) {
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         explode(pos, level);
     }
 
     @Override
     public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
-        return level.getBlockState(blockPos.below()).is(ModBlocks.CORRUPTED_GRASS_BLOCK.get());
+        return level.getBlockState(blockPos.below()).is(MSFBlocks.CORRUPTED_GRASS_BLOCK.get());
     }
 
     @Override
-    public BlockState updateShape(BlockState stateOriginal, Direction dir, BlockState stateNew, LevelAccessor level, BlockPos pCurrentPos, BlockPos pNewPos) {
+    public BlockState updateShape(BlockState stateOriginal, Direction dir, BlockState stateNew, LevelAccessor level, BlockPos currentPos, BlockPos pNewPos) {
 
-        if (!canSurvive(stateOriginal, level, pCurrentPos)) {
-            boolean drop = !level.getBlockState(pCurrentPos.below()).is(ModBlocks.CURED_GRASS_BLOCK.get());
-            level.destroyBlock(pCurrentPos, drop);
+        if (!canSurvive(stateOriginal, level, currentPos)) {
+            boolean drop = !level.getBlockState(currentPos.below()).is(MSFBlocks.CURED_GRASS_BLOCK.get());
+            level.destroyBlock(currentPos, drop);
         }
         return stateOriginal;
     }
@@ -56,7 +55,7 @@ public class CorruptedWartBlock extends BushBlock {
     }
 
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.is(ModBlocks.CORRUPTED_GRASS_BLOCK.get());
+        return state.is(MSFBlocks.CORRUPTED_GRASS_BLOCK.get());
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

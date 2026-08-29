@@ -2,20 +2,18 @@ package net.abraxator.moresnifferflowers.worldgen.configurations.tree.vivicus;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.init.ModTags;
-import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
+import net.abraxator.moresnifferflowers.init.MSFTags;
+import net.abraxator.moresnifferflowers.init.MSFWood;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import org.antlr.v4.runtime.atn.LL1Analyzer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -34,7 +32,7 @@ public class VivicusTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<?> type() {
-        return ModTrunkPlacerTypes.VIVICUS_TRUNK_PLACER.get();
+        return MSFWood.TrunkPlacerTypes.VIVICUS_TRUNK_PLACER.get();
     }
 
     @Override
@@ -95,6 +93,6 @@ public class VivicusTrunkPlacer extends TrunkPlacer {
     
     @Override
     protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
-        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(ModTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
+        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(MSFTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
     }
 }

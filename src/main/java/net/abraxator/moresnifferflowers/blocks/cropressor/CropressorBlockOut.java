@@ -27,7 +27,7 @@ public class CropressorBlockOut extends CropressorBlockBase implements ModEntity
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> pBlockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return tickerHelper(level);
     }
 

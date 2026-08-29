@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.components;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -128,8 +128,8 @@ public enum DyespriaMode implements StringRepresentable {
             var state = level.getBlockState(pos);
             boolean isVanilla = DyespriaItem.checkDyedBlock(state);
             boolean isColorableAndColored = state.is(blockState.getBlock()) 
-                    && state.hasProperty(ModStateProperties.COLOR) 
-                    && state.getValue(ModStateProperties.COLOR).equals(blockState.getValue(ModStateProperties.COLOR));
+                    && state.hasProperty(MSFStateProperties.COLOR)
+                    && state.getValue(MSFStateProperties.COLOR).equals(blockState.getValue(MSFStateProperties.COLOR));
 
             if (BlockPatternCapability.hasPattern(originalPos, level)){
                 if (!BlockPatternCapability.hasPattern(pos, level) || isCrouching) return false;

@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.networking.toClient;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.networking.MSFClientPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -21,7 +21,7 @@ public record SyncUntouchablePacket() implements MSFClientPacket {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handleClientPacket(Player player, Level level) {
-        player.getData(ModDataAttachments.UNTOUCHABLE).onAttacked();
+        player.getData(MSFDataAttachments.UNTOUCHABLE).onAttacked();
     }
 
     @Override

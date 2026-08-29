@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.worldgen.configurations.tree.vivicus;
 
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -26,7 +26,7 @@ public class VivicusTreeGrower {
 
     @Nullable
     private ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, BlockState saplingState) {
-        return saplingState.getValue(ModStateProperties.VIVICUS_CURED) == false ? corrupted_tree : cured_tree;
+        return saplingState.getValue(MSFStateProperties.VIVICUS_CURED) == false ? corrupted_tree : cured_tree;
     }
 
     public boolean growTree(ServerLevel level, ChunkGenerator pChunkGenerator, BlockPos pos, BlockState saplingState, RandomSource random) {

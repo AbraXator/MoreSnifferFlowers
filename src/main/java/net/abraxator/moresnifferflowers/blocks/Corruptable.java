@@ -3,7 +3,6 @@ package net.abraxator.moresnifferflowers.blocks;
 import net.abraxator.moresnifferflowers.entities.CorruptedProjectile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -15,7 +14,7 @@ import java.util.Optional;
 
 public interface Corruptable {
     default Optional<Block> getCorruptedBlock(Block block, RandomSource random) {
-        return net.abraxator.moresnifferflowers.data.datamaps.Corruptable.getCorruptedBlock(block, random);
+        return net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable.getCorruptedBlock(block, random);
     }
     
     default void onCorrupt(Level level, BlockPos pos, BlockState oldState, Block corruptedBlock) {
@@ -24,7 +23,7 @@ public interface Corruptable {
     }
 
     default void onCorruptByEntity(Entity entity, BlockPos blockPos, BlockState blockState, Block block, Level level) {
-        if(entity instanceof CorruptedProjectile corruptedProjectile && net.abraxator.moresnifferflowers.data.datamaps.Corruptable.canBeCorrupted(block, level)) {
+        if(entity instanceof CorruptedProjectile corruptedProjectile && net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable.canBeCorrupted(block, level)) {
             onCorrupt(level, blockPos, blockState, getCorruptedBlock(block, level.random).get());
             corruptedProjectile.remove(Entity.RemovalReason.DISCARDED);
 

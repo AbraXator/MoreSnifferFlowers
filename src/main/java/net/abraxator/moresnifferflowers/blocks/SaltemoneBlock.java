@@ -2,8 +2,8 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.blockentities.SaltemoneBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.multiblock.ICorruptableMultiblock;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -18,14 +18,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -45,21 +43,21 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
         super(properties);
         this.registerDefaultState(defaultBlockState()
                 .setValue(getAgeProperty(), 0)
-                .setValue(ModStateProperties.SHEARED, false));
+                .setValue(MSFStateProperties.SHEARED, false));
     }
     protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
 
     @Override
     public void createSharedBlockStates(SharedStatePropertiesBuilder builder) {
         super.createSharedBlockStates(builder);
-        builder.add(ModStateProperties.SHEARED);
+        builder.add(MSFStateProperties.SHEARED);
         builder.add(getAgeProperty());
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add( getAgeProperty(), ModStateProperties.SHEARED);
+        builder.add( getAgeProperty(), MSFStateProperties.SHEARED);
     }
 
     @Override
@@ -97,7 +95,7 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
 
     @Override
     public IntegerProperty getAgeProperty() {
-        return ModStateProperties.AGE_2;
+        return MSFStateProperties.AGE_2;
     }
 
     @Override
@@ -133,7 +131,7 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.randomTick(state, level, pos, random);
 
-        if (IMultiBlock.isCenter(state) && !state.getValue(ModStateProperties.SHEARED)) {
+        if (IMultiBlock.isCenter(state) && !state.getValue(MSFStateProperties.SHEARED)) {
             makeGrowOnTick(state, level, pos);
         }
     }
@@ -162,11 +160,11 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
 
     @Override
     public Block getCuredBlock() {
-        return ModBlocks.SALTEMONE.get();
+        return MSFBlocks.SALTEMONE.get();
     }
 
     @Override
     public Block getCorruptedBlock() {
-        return ModBlocks.SOURLEMONE.get();
+        return MSFBlocks.SOURLEMONE.get();
     }
 }

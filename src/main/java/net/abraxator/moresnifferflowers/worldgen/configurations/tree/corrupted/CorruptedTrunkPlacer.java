@@ -2,8 +2,8 @@ package net.abraxator.moresnifferflowers.worldgen.configurations.tree.corrupted;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.abraxator.moresnifferflowers.init.MSFWood;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
-import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -29,7 +29,7 @@ public class CorruptedTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<?> type() {
-        return ModTrunkPlacerTypes.CORRUPTED_TRUNK_PLACER.get();
+        return MSFWood.TrunkPlacerTypes.CORRUPTED_TRUNK_PLACER.get();
     }
 
 

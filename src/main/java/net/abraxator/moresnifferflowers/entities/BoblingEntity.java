@@ -1,13 +1,12 @@
 package net.abraxator.moresnifferflowers.entities;
 
-import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingAttackPlayerGoal;
 import net.abraxator.moresnifferflowers.entities.goals.BoblingAvoidPlayerGoal;
-import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFAdvancementCritters;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,8 +14,6 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -66,7 +63,7 @@ public class BoblingEntity extends PathfinderMob {
     }
 
     public BoblingEntity(Level level, boolean type) {
-        this(ModEntityTypes.BOBLING.get(), level, type);
+        this(MSFEntityTypes.BOBLING.get(), level, type);
     }
 
     public boolean isCured() {
@@ -155,7 +152,7 @@ public class BoblingEntity extends PathfinderMob {
             Set<Vec3> set = new HashSet<>();
 
             if (damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
-                ModAdvancementCritters.BOBLING_ATTACK.get().trigger(serverPlayer);
+                MSFAdvancementCritters.BOBLING_ATTACK.get().trigger(serverPlayer);
             }
 
             if (ModServerConfig.CORRUPTED_BOBLING_GRIEFING.get()) {
@@ -224,9 +221,9 @@ public class BoblingEntity extends PathfinderMob {
                 boolean isReplaceable = level().getBlockState(blockPos).canBeReplaced();
 
                 if (config || isReplaceable) {
-                    this.level().setBlockAndUpdate(blockPos, ModBlocks.CORRUPTED_SAPLING.get().defaultBlockState());
+                    this.level().setBlockAndUpdate(blockPos, MSFBlocks.CORRUPTED_SAPLING.get().defaultBlockState());
                     if (level().getBlockState(blockPos.below()).canBeReplaced())
-                        this.level().setBlockAndUpdate(blockPos.below(), ModBlocks.CORRUPTED_GRASS_BLOCK.get().defaultBlockState());
+                        this.level().setBlockAndUpdate(blockPos.below(), MSFBlocks.CORRUPTED_GRASS_BLOCK.get().defaultBlockState());
                 }
 
             }
@@ -267,7 +264,7 @@ public class BoblingEntity extends PathfinderMob {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         
-        if (itemStack.is(ModItems.VIVICUS_ANTIDOTE) && !isCured()) {
+        if (itemStack.is(MSFItems.VIVICUS_ANTIDOTE) && !isCured()) {
             this.setCured(true);
 
             particles(new DustParticleOptions(Vec3.fromRGB24(7118872).toVector3f(), 1));

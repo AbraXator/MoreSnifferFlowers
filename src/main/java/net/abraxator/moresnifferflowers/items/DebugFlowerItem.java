@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -25,7 +25,7 @@ public class DebugFlowerItem extends Item {
         if (level.isClientSide()) System.out.println("Below this is CLIENT:");
         if (!level.isClientSide()) System.out.println("Below this is SERVER:");
 
-        if (blockState.is(ModBlocks.CORRUPTED_GRASS_BLOCK.get())){
+        if (blockState.is(MSFBlocks.CORRUPTED_GRASS_BLOCK.get())){
             CorruptionCapability.printDebug(level.getChunkAt(pos));
         }
 

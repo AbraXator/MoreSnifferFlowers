@@ -16,10 +16,10 @@ public class DyescrapiaPlantBlock extends Block {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        return !state.canSurvive(level, pCurrentPos)
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        return !state.canSurvive(level, currentPos)
                 ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(state, pFacing, pFacingState, level, pCurrentPos, pFacingPos);
+                : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override

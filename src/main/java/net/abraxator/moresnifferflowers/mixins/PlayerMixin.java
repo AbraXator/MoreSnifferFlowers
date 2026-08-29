@@ -1,24 +1,17 @@
 package net.abraxator.moresnifferflowers.mixins;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.abraxator.moresnifferflowers.init.ModEffects;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
@@ -32,8 +25,8 @@ public abstract class PlayerMixin {
     public void blandEffectInject(Level level, ItemStack food, FoodProperties foodProperties, CallbackInfoReturnable<ItemStack> cir){
         Player player = (Player)(Object)this;
 
-        if (player.hasEffect(ModEffects.BLAND)) {
-            int amplifier = Objects.requireNonNull(player.getEffect(ModEffects.BLAND)).getAmplifier() + 1;
+        if (player.hasEffect(MSFEffects.BLAND)) {
+            int amplifier = Objects.requireNonNull(player.getEffect(MSFEffects.BLAND)).getAmplifier() + 1;
             float division =  1f + amplifier / 2f;
             float hungerChance = 0.2f + amplifier / 10f;
 

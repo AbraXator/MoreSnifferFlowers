@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -26,19 +26,19 @@ public class CreativeTabItem extends Item {
         var state = level.getBlockState(pos);
         boolean isVanilla = DyespriaItem.checkDyedBlock(state);
         boolean isColorableAndColored = state.is(blockState.getBlock())
-                && state.hasProperty(ModStateProperties.COLOR)
-                && state.getValue(ModStateProperties.COLOR).equals(blockState.getValue(ModStateProperties.COLOR));
+                && state.hasProperty(MSFStateProperties.COLOR)
+                && state.getValue(MSFStateProperties.COLOR).equals(blockState.getValue(MSFStateProperties.COLOR));
         return isVanilla || isColorableAndColored;
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity pEntity, int pSlotId, boolean pIsSelected) {
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int pSlotId, boolean pIsSelected) {
         var list = BuiltInRegistries.MOB_EFFECT.stream().toList();
         var effect = Util.getRandom(list, level.random);
         var stew = new ItemStack(Items.SUSPICIOUS_STEW);
         var stewComponent = new SuspiciousStewEffects(List.of(new SuspiciousStewEffects.Entry(Holder.direct(effect), Integer.MAX_VALUE)));
         
-        if(pEntity instanceof Player player) {
+        if(entity instanceof Player player) {
             stew.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, stewComponent);
             player.addItem(stew);
         }

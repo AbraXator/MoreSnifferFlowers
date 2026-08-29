@@ -2,12 +2,11 @@ package net.abraxator.moresnifferflowers.entities.boat;
 
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
 import net.abraxator.moresnifferflowers.components.Dye;
-import net.abraxator.moresnifferflowers.init.ModAdvancementCritters;
-import net.abraxator.moresnifferflowers.init.ModEntityTypes;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFAdvancementCritters;
+import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.QuartPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -28,7 +27,7 @@ public class VivicusBoatEntity extends ModBoatEntity implements ColorableVivicus
     }
 
     public VivicusBoatEntity(Level level, double pX, double pY, double pZ) {
-        this(ModEntityTypes.MOD_VIVICUS_BOAT.get(), level);
+        this(MSFEntityTypes.MOD_VIVICUS_BOAT.get(), level);
         this.setPos(pX, pY, pZ);
         this.xo = pX;
         this.yo = pY;
@@ -52,7 +51,7 @@ public class VivicusBoatEntity extends ModBoatEntity implements ColorableVivicus
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         var dyespria = player.getMainHandItem();
-        if (dyespria.is(ModItems.DYESPRIA)) {
+        if (dyespria.is(MSFItems.DYESPRIA)) {
             var dye = Dye.getDyeFromDyespria(dyespria);
             int uses = DyespriaItem.getDyespriaUses(dyespria);
             int dyeCount;
@@ -70,7 +69,7 @@ public class VivicusBoatEntity extends ModBoatEntity implements ColorableVivicus
             Dye.setDyeToDyeHolderStack(dyespria, stack, stack.getCount());
             
             if(player instanceof ServerPlayer serverPlayer) {
-                ModAdvancementCritters.DYE_BOAT.get().trigger(serverPlayer);
+                MSFAdvancementCritters.DYE_BOAT.get().trigger(serverPlayer);
             }
             
             if(this.level().isClientSide) {

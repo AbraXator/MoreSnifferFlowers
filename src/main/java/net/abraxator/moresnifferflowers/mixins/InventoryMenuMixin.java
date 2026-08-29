@@ -1,14 +1,11 @@
 package net.abraxator.moresnifferflowers.mixins;
 
-import net.abraxator.moresnifferflowers.capability.HardenedMouthCapability;
 import net.abraxator.moresnifferflowers.client.gui.slot.HardenedMouthSlot;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,8 +32,8 @@ public abstract class InventoryMenuMixin extends RecipeBookMenu<CraftingInput, C
 
         }
 
-        this.addSlot(new HardenedMouthSlot(owner , 0, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 4, () -> owner.getData(ModDataAttachments.HARDENED_MOUTH)));
-        this.addSlot(new HardenedMouthSlot(owner , 1, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 40, () -> owner.getData(ModDataAttachments.HARDENED_MOUTH)));
+        this.addSlot(new HardenedMouthSlot(owner , 0, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 4, () -> owner.getData(MSFDataAttachments.HARDENED_MOUTH)));
+        this.addSlot(new HardenedMouthSlot(owner , 1, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 40, () -> owner.getData(MSFDataAttachments.HARDENED_MOUTH)));
     }
 
     @Override

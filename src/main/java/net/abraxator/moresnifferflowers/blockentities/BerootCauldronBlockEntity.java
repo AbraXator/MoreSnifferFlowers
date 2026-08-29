@@ -3,14 +3,12 @@ package net.abraxator.moresnifferflowers.blockentities;
 import net.abraxator.moresnifferflowers.blocks.BerootCauldronBlock;
 import net.abraxator.moresnifferflowers.components.BetterNonNullList;
 import net.abraxator.moresnifferflowers.components.RootedSoup;
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModDataComponents;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.networking.toClient.BerootCauldronSuckPacket;
+import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
+import net.abraxator.moresnifferflowers.init.MSFDataComponents;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.nutrition.Nutrition;
 import net.abraxator.moresnifferflowers.nutrition.NutritionEntry;
 import net.abraxator.moresnifferflowers.nutrition.NutritionType;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -36,7 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,11 +55,11 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
     int craftingTicks = -1;
 
     public BerootCauldronBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.BEROOT_CAULDRON.get(), pos, state);
+        super(MSFBlockEntities.BEROOT_CAULDRON.get(), pos, state);
     }
 
     public ItemInteractionResult addItem(ItemStack itemStack, Player player) {
-        if(itemStack.is(ModItems.CROPRESSED_BEETROOT.get()) && this.beetroots < BEETROOT_LIMIT && !this.isCrafted) {
+        if(itemStack.is(MSFItems.CROPRESSED_BEETROOT.get()) && this.beetroots < BEETROOT_LIMIT && !this.isCrafted) {
             addBeetroot(itemStack, player);
             this.redSoup = true;
         } else if (!itemStack.isEmpty() && !ingredients.isFull() && !Nutrition.getNutritionForItem(itemStack.getItem()).isEmpty() && !this.isCrafted && this.beetroots > 0) {
@@ -85,7 +82,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         this.isCrafted = true;
 
         Map<NutritionType, Integer> map = new HashMap<>();
-        ItemStack soup = ModItems.ROOTED_SOUP.get().getDefaultInstance();
+        ItemStack soup = MSFItems.ROOTED_SOUP.get().getDefaultInstance();
         CompoundTag tag = new CompoundTag();
         int neutral = 0;
         this.ingredients.validStream().forEach(stack -> {
@@ -123,9 +120,9 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         int soupUses = Math.clamp(Math.round(food / 3f) + (ingredients - foodLimit / 2) / 2, 1, maxSoupUses);
 
 
-        soup.set(ModDataComponents.ROOTED_INGREDIENTS, this.ingredients.validStream().toList()); //For Cookbook unlocking
-        soup.set(ModDataComponents.ROOTED_SOUP, new RootedSoup(soupFood, soupSat, soupUses));
-        soup.set(ModDataComponents.USES, soupUses);
+        soup.set(MSFDataComponents.ROOTED_INGREDIENTS, this.ingredients.validStream().toList()); //For Cookbook unlocking
+        soup.set(MSFDataComponents.ROOTED_SOUP, new RootedSoup(soupFood, soupSat, soupUses));
+        soup.set(MSFDataComponents.USES, soupUses);
 
         float positiveThreshold = 0.5f;
         float negativeThreshold = 0.75f;
@@ -178,10 +175,10 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
             effects.add(new RootedSoup.RootedEffect(NutritionType.NEUTRAL.ordinal(), positive, duration, amplifier ));
         }
 
-        soup.set(ModDataComponents.ROOTED_EFFECTS, effects);
+        soup.set(MSFDataComponents.ROOTED_EFFECTS, effects);
 
         Vec3 color = color();
-        soup.set(ModDataComponents.COLOR, FastColor.ARGB32.color((int) color.x, (int) color.y, (int) color.z));
+        soup.set(MSFDataComponents.COLOR, FastColor.ARGB32.color((int) color.x, (int) color.y, (int) color.z));
 
         this.soup = soup;
         setChanged();

@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.worldgen.configurations.tree.corrupted;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.worldgen.configurations.ModTreeDecoratorTypes;
+import net.abraxator.moresnifferflowers.init.MSFWood;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -66,6 +66,6 @@ public class CorruptedSludgeDecorator extends TreeDecorator {
 
     @Override
     protected TreeDecoratorType<?> type() {
-        return ModTreeDecoratorTypes.CORRUPTED_SLUDGE.get();
+        return MSFWood.TreeDecoratorTypes.CORRUPTED_SLUDGE.get();
     }
 }

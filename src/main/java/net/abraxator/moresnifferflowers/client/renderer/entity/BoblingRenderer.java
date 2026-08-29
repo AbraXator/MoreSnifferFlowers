@@ -18,8 +18,8 @@ public class BoblingRenderer extends MobRenderer<BoblingEntity, BoblingModel<Bob
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BoblingEntity pEntity) {
-        if (!pEntity.isCured()) {
+    public ResourceLocation getTextureLocation(BoblingEntity entity) {
+        if (!entity.isCured()) {
             return CORRUPTED_TEXTURE;
         } else {
             return CURED_TEXTURE;

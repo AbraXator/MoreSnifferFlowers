@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks.multiblock;
 
-import net.abraxator.moresnifferflowers.data.datamaps.Corruptable;
+import net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable;
 import net.abraxator.moresnifferflowers.entities.CorruptedProjectile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +30,7 @@ public interface ICorruptableMultiblock extends IMultiBlock {
     }
 
     default void corruptionHelper(BlockState state, Level level, BlockPos pos, Entity entityInside){
-        if(entityInside instanceof CorruptedProjectile corruptedProjectile && net.abraxator.moresnifferflowers.data.datamaps.Corruptable.canBeCorrupted(state.getBlock(), level.random)) {
+        if(entityInside instanceof CorruptedProjectile corruptedProjectile && net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable.canBeCorrupted(state.getBlock(), level.random)) {
             if(level.getBlockEntity(pos) instanceof IMultiBlockEntity entity) {
                 corruptedProjectile.discard();
                 BlockPos centrePos = entity.getCenter();
@@ -41,7 +41,7 @@ public interface ICorruptableMultiblock extends IMultiBlock {
     }
 
     default void afterCorruption(BlockPos centrePos, Level level, BlockPos pos){
-        if (!net.abraxator.moresnifferflowers.data.datamaps.Corruptable.canBeCorrupted(level.getBlockState(pos).getBlock(), level.random)) return;
+        if (!net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable.canBeCorrupted(level.getBlockState(pos).getBlock(), level.random)) return;
 
         Block corruptedBlock = Corruptable.getCorruptedBlock(level.getBlockState(pos).getBlock(), level.getRandom()).get();
         level.setBlockAndUpdate(pos, corruptedBlock.withPropertiesOf(level.getBlockState(pos)));

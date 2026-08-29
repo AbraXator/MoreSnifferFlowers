@@ -1,11 +1,10 @@
 package net.abraxator.moresnifferflowers.components;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModDataComponents;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFDataComponents;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.abraxator.moresnifferflowers.items.PatternspriaItem;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
@@ -75,12 +74,12 @@ public enum BlockPattern implements StringRepresentable {
     }
 
     public static BlockPattern fromState(BlockState state) {
-        return state.getValue(ModStateProperties.BLOCK_PATTERN);
+        return state.getValue(MSFStateProperties.BLOCK_PATTERN);
     }
 
     public static BlockPattern fromPatternspria(ItemStack stack) {
-        if (stack.has(ModDataComponents.PATTERN_ID)) {
-            int patternId = stack.getOrDefault(ModDataComponents.PATTERN_ID, 0);
+        if (stack.has(MSFDataComponents.PATTERN_ID)) {
+            int patternId = stack.getOrDefault(MSFDataComponents.PATTERN_ID, 0);
             return fromId(patternId);
         }
         return EMPTY;
@@ -108,12 +107,12 @@ public enum BlockPattern implements StringRepresentable {
     }
 
     public boolean isSamePattern(ItemStack patternspria) {
-        int patternId = patternspria.getOrDefault(ModDataComponents.PATTERN_ID, 0);
+        int patternId = patternspria.getOrDefault(MSFDataComponents.PATTERN_ID, 0);
         return patternId == this.id;
     }
 
     public ItemStack getItemStack(ItemStack patternspria) {
-        int amount = patternspria.getOrDefault(ModDataComponents.AMOUNT, 1);
+        int amount = patternspria.getOrDefault(MSFDataComponents.AMOUNT, 1);
         return getItem().getDefaultInstance().copyWithCount(amount);
     }
 
@@ -131,18 +130,18 @@ public enum BlockPattern implements StringRepresentable {
             return;
         }
         int patternId = Objects.requireNonNull(fromItem(patternToInsert.getItem())).getId();
-        itemStack.set(ModDataComponents.AMOUNT, amount);
-        itemStack.set(ModDataComponents.PATTERN_ID, patternId);
-        itemStack.set(ModDataComponents.USES, uses);
+        itemStack.set(MSFDataComponents.AMOUNT, amount);
+        itemStack.set(MSFDataComponents.PATTERN_ID, patternId);
+        itemStack.set(MSFDataComponents.USES, uses);
     }
 
     public static void removePatternFromStack(ItemStack itemStack) {
-        itemStack.set(ModDataComponents.AMOUNT, 0);
-        itemStack.set(ModDataComponents.PATTERN_ID, -1);
-        itemStack.set(ModDataComponents.USES, 0);
+        itemStack.set(MSFDataComponents.AMOUNT, 0);
+        itemStack.set(MSFDataComponents.PATTERN_ID, -1);
+        itemStack.set(MSFDataComponents.USES, 0);
     }
 
     public static boolean isEmpty(BlockState state) {
-        return state.getValue(ModStateProperties.BLOCK_PATTERN) == EMPTY;
+        return state.getValue(MSFStateProperties.BLOCK_PATTERN) == EMPTY;
     }
 }

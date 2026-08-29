@@ -1,8 +1,8 @@
 package net.abraxator.moresnifferflowers.items;
 
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFItems;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
@@ -31,22 +31,22 @@ public class BottleOfExtractionItem extends Item {
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity pLivingEntity) {
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
 
-        if (pLivingEntity instanceof Player player && !level.isClientSide) {
+        if (livingEntity instanceof Player player && !level.isClientSide) {
 
-            if (pLivingEntity instanceof ServerPlayer serverplayer) {
+            if (livingEntity instanceof ServerPlayer serverplayer) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, stack);
                 serverplayer.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            if (player.hasEffect(ModEffects.EXTRACTED)) {
+            if (player.hasEffect(MSFEffects.EXTRACTED)) {
                 doCheaterEasterEgg(level, player);
                 return new ItemStack(Items.POISONOUS_POTATO);
             }
 
             List<MobEffectInstance> activeEffects = new ArrayList<>(player.getActiveEffects());
-            activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(ModTags.ModEffectTags.EXTRACTION_BLACKLIST)).toList();
+            activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(MSFTags.ModEffectTags.EXTRACTION_BLACKLIST)).toList();
 
             stack = initPotion(activeEffects);
 
@@ -56,23 +56,23 @@ public class BottleOfExtractionItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if (!canExtract(level, player)) {
-            return InteractionResultHolder.pass(player.getItemInHand(pUsedHand));
+            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
         } else {
-            player.startUsingItem(pUsedHand);
-            return InteractionResultHolder.consume(player.getItemInHand(pUsedHand));
+            player.startUsingItem(usedHand);
+            return InteractionResultHolder.consume(player.getItemInHand(usedHand));
         }
     }
 
     private ItemStack initPotion(List<MobEffectInstance> activeEffects) {
-        var stack = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
+        var stack = MSFItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
         stack.set(DataComponents.POTION_CONTENTS, new PotionContents(Optional.empty(), Optional.of(PotionContents.getColor(activeEffects)), new ArrayList<>(activeEffects)));
         return stack;
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity pEntity) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 32;
     }
 
@@ -83,9 +83,9 @@ public class BottleOfExtractionItem extends Item {
 
     private boolean canExtract(Level level, Player player) {
         List<MobEffectInstance> activeEffects = new ArrayList<>(player.getActiveEffects());
-        activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(ModTags.ModEffectTags.EXTRACTION_BLACKLIST)).toList();
+        activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(MSFTags.ModEffectTags.EXTRACTION_BLACKLIST)).toList();
 
-        return !level.isClientSide && !activeEffects.isEmpty() && !player.hasEffect(ModEffects.EXTRACTED);
+        return !level.isClientSide && !activeEffects.isEmpty() && !player.hasEffect(MSFEffects.EXTRACTED);
     }
 
     private static void doCheaterEasterEgg(Level level, Player player) {

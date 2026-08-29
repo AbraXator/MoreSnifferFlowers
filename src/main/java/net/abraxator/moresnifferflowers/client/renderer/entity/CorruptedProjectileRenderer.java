@@ -13,7 +13,7 @@ public class CorruptedProjectileRenderer extends CoolProjectileRenderer<Corrupte
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CorruptedProjectile pEntity) {
+    public ResourceLocation getTextureLocation(CorruptedProjectile entity) {
         return TEXTURE;
     }
 }

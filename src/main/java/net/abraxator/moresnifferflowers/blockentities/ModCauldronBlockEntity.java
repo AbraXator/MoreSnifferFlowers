@@ -1,9 +1,7 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
+import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ModCauldronBlockEntity extends BlockEntity {
     public ModCauldronBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.MOD_CAULDRON.get(), pos, blockState);
+        super(MSFBlockEntities.MOD_CAULDRON.get(), pos, blockState);
     }
 
     public BlockState originalCauldron = Blocks.CAULDRON.defaultBlockState();

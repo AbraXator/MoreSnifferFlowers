@@ -2,7 +2,7 @@ package net.abraxator.moresnifferflowers.components;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.init.ModDataComponents;
+import net.abraxator.moresnifferflowers.init.MSFDataComponents;
 import net.abraxator.moresnifferflowers.items.DyespriaItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
@@ -27,7 +27,7 @@ public record Dye(DyeColor color, int amount) {
     }
     
     public static Dye getDyeFromDyespria(ItemStack dyespria) {
-        return dyespria.getOrDefault(ModDataComponents.DYE, EMPTY);
+        return dyespria.getOrDefault(MSFDataComponents.DYE, EMPTY);
     }
     
     public static ItemStack stackFromDye(Dye dye) {
@@ -54,12 +54,12 @@ public record Dye(DyeColor color, int amount) {
     
     public static void setDyeToDyeHolderStack(ItemStack dyespria, ItemStack dyeToInsert, int amount, int uses) {
         var dyeColor = dyeToInsert.getItem() instanceof DyeItem ? ((DyeItem) dyeToInsert.getItem()).getDyeColor() : DyeColor.WHITE;
-        dyespria.set(ModDataComponents.DYE, new Dye(dyeColor, amount));
-        dyespria.set(ModDataComponents.COLOR, uses);
+        dyespria.set(MSFDataComponents.DYE, new Dye(dyeColor, amount));
+        dyespria.set(MSFDataComponents.COLOR, uses);
     }
     
     public static void setDyeColorToStack(ItemStack stack, DyeColor color, int amount) {
-        stack.set(ModDataComponents.DYE, new Dye(color, amount));
+        stack.set(MSFDataComponents.DYE, new Dye(color, amount));
     }
     
     public static DyeColor colorFromId(int id) {

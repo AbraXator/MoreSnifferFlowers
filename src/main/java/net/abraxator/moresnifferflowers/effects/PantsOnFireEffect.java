@@ -1,8 +1,7 @@
 package net.abraxator.moresnifferflowers.effects;
 
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.minecraft.core.Holder;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -28,12 +27,12 @@ public class PantsOnFireEffect extends MobEffect {
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         Level level = livingEntity.level();
 
-        if (livingEntity instanceof Player player && player.hasEffect(ModEffects.PANTS_ON_FIRE) && !level.isClientSide){
+        if (livingEntity instanceof Player player && player.hasEffect(MSFEffects.PANTS_ON_FIRE) && !level.isClientSide){
             int burnedSlots = 0;
             final int maxBurnedSlots = (1 + 2*amplifier);
 
             for (Slot slot : player.inventoryMenu.slots){
-                if (slot.getItem().is(ModItems.BURNED_SLOT.get())) burnedSlots++;
+                if (slot.getItem().is(MSFItems.BURNED_SLOT.get())) burnedSlots++;
                 if (burnedSlots >= maxBurnedSlots) return true;
             }
 
@@ -42,14 +41,14 @@ public class PantsOnFireEffect extends MobEffect {
                 InventoryMenu menu = player.inventoryMenu;
                 Slot slot = menu.getSlot(slotId);
 
-                if (slot.getItem().is(ModItems.BURNED_SLOT.get())){
+                if (slot.getItem().is(MSFItems.BURNED_SLOT.get())){
                     return true;
                 }
 
                 ItemStack stack = slot.getItem();
                 player.drop(stack, true);
 
-                slot.set(ModItems.BURNED_SLOT.get().getDefaultInstance());
+                slot.set(MSFItems.BURNED_SLOT.get().getDefaultInstance());
             }
 
             level.playSound(null, livingEntity, SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS ,1, 1);

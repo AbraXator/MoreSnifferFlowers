@@ -3,8 +3,6 @@ package net.abraxator.moresnifferflowers.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.abraxator.moresnifferflowers.blockentities.XbushBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.xbush.AbstractXBushBlockUpper;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;

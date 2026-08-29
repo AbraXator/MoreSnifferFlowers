@@ -2,16 +2,12 @@ package net.abraxator.moresnifferflowers.worldgen.configurations.tree.boblingtre
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.init.ModTags;
-import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
-import net.abraxator.moresnifferflowers.worldgen.configurations.tree.vivicus.VivicusTrunkPlacer;
-import net.minecraft.Util;
+import net.abraxator.moresnifferflowers.init.MSFTags;
+import net.abraxator.moresnifferflowers.init.MSFWood;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
-import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,12 +17,10 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import org.openjdk.nashorn.internal.objects.NativeWeakMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 public class BoblingTreeTrunkPlacer extends TrunkPlacer {
     public static final MapCodec<BoblingTreeTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec(
@@ -59,7 +53,7 @@ public class BoblingTreeTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected TrunkPlacerType<?> type() {
-        return ModTrunkPlacerTypes.BOBLING_TREE_TRUNK.get();
+        return MSFWood.TrunkPlacerTypes.BOBLING_TREE_TRUNK.get();
     }
 
     @Override
@@ -124,7 +118,7 @@ public class BoblingTreeTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
-        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(ModTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
+        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(MSFTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
     }
 
     public static record Branch(BlockPos blockPos, Direction direction, int height, int maxHeight) {

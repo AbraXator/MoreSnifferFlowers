@@ -30,10 +30,10 @@ public abstract class CoolProjectileRenderer<T extends Entity> extends EntityRen
         }
     }
 
-    public static void projectileRendering(Entity pEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, Model model, ResourceLocation location) {
+    public static void projectileRendering(Entity entity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, Model model, ResourceLocation location) {
         pPoseStack.pushPose();
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot()) - 180F));
-        pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, entity.yRotO, entity.getYRot()) - 180F));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, entity.xRotO, entity.getXRot())));
         pPoseStack.translate(0, -0.5, 0);
         float scale = 0.6F;
         pPoseStack.scale(scale, scale, scale);

@@ -2,13 +2,11 @@ package net.abraxator.moresnifferflowers.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mezz.jei.api.helpers.IColorHelper;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -31,30 +29,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implements BlockEntityRenderer<T>, IMultiblockRenderHelper {
+public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implements BlockEntityRenderer<T> {
 	private final Map<Block, ModelPart> modelPartMap = new HashMap<>();
 
 
     public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         ModelPart carrot = context.bakeLayer(ModModelLayerLocations.GIANT_CARROT).getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_CARROT.get(), carrot);
+		this.modelPartMap.put(MSFBlocks.GIANT_CARROT.get(), carrot);
         ModelPart potato = context.bakeLayer(ModModelLayerLocations.GIANT_POTATO).getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_POTATO.get(), potato);
+		this.modelPartMap.put(MSFBlocks.GIANT_POTATO.get(), potato);
         ModelPart netherwart = context.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART).getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_NETHERWART.get(), netherwart);
+		this.modelPartMap.put(MSFBlocks.GIANT_NETHERWART.get(), netherwart);
         ModelPart beetroot = context.bakeLayer(ModModelLayerLocations.GIANT_BEETROOT).getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_BEETROOT.get(), beetroot);
+		this.modelPartMap.put(MSFBlocks.GIANT_BEETROOT.get(), beetroot);
         ModelPart wheat = context.bakeLayer(ModModelLayerLocations.GIANT_WHEAT).getChild("root");
-		this.modelPartMap.put(ModBlocks.GIANT_WHEAT.get(), wheat);
+		this.modelPartMap.put(MSFBlocks.GIANT_WHEAT.get(), wheat);
 
         ModelPart onion = context.bakeLayer(ModModelLayerLocations.GIANT_ONION).getChild("root");
-        this.modelPartMap.put(ModBlocks.GIANT_ONION.get(), onion);
+        this.modelPartMap.put(MSFBlocks.GIANT_ONION.get(), onion);
         ModelPart tomato = context.bakeLayer(ModModelLayerLocations.GIANT_TOMATO).getChild("root");
-        this.modelPartMap.put(ModBlocks.GIANT_TOMATO.get(), tomato);
+        this.modelPartMap.put(MSFBlocks.GIANT_TOMATO.get(), tomato);
         ModelPart cabbage = context.bakeLayer(ModModelLayerLocations.GIANT_CABBAGE).getChild("root");
-        this.modelPartMap.put(ModBlocks.GIANT_CABBAGE.get(), cabbage);
+        this.modelPartMap.put(MSFBlocks.GIANT_CABBAGE.get(), cabbage);
         ModelPart rice = context.bakeLayer(ModModelLayerLocations.GIANT_RICE).getChild("root");
-        this.modelPartMap.put(ModBlocks.GIANT_RICE.get(), rice);
+        this.modelPartMap.put(MSFBlocks.GIANT_RICE.get(), rice);
 
     }
 
@@ -65,14 +63,14 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 		Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/" + path));
 
 		PreviewMode previewMode = blockEntity.getPreviewMode();
-		Function<ResourceLocation, RenderType> renderType = getRenderTypeFunction(previewMode);
+		Function<ResourceLocation, RenderType> renderType = RenderType::entityCutout;
 		VertexConsumer vertexConsumer = TEXTURE.buffer(buffer, renderType);
 
 		double growProgress = previewMode == PreviewMode.PLACED ? blockEntity.growProgress : 1;
-		float coolPartialTick = (growProgress < 1 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) ? partialTick : 0;
-		float coolGrowProgress = level().getGameTime() - blockEntity.staticGameTime;
+		float coolPartialTick = (growProgress < 1 && blockState.is(MSFTags.ModBlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) ? partialTick : 0;
+		float coolGrowProgress = blockEntity.getLevel().getGameTime() - blockEntity.staticGameTime;
 
-		if(growProgress > 0 && blockState.is(ModTags.ModBlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) {
+		if(growProgress > 0 && blockState.is(MSFTags.ModBlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) {
 			float yCord = 0.5F;
 			float yScale = 1;
 
@@ -88,7 +86,7 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 			poseStack.scale(1, yScale, 1);
 			poseStack.mulPose(new Quaternionf().rotateX((float) (Math.PI)));
 
-            if (blockState.is(ModTags.ModBlockTags.NO_SHADING)) {
+            if (blockState.is(MSFTags.ModBlockTags.NO_SHADING)) {
                 vertexConsumer = new VertexConsumerWrapper(vertexConsumer) {
                     @Override
                     public VertexConsumer setNormal(float x, float y, float z) {
@@ -97,7 +95,7 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
                 };
             }
 
-            render(modelPartMap.get(blockState.getBlock()), poseStack, vertexConsumer, packedLight, packedOverlay, blockEntity.getPreviewMode());
+            modelPartMap.get(blockState.getBlock()).render(poseStack, vertexConsumer, packedLight, packedOverlay);
 
 			poseStack.popPose();
 		}

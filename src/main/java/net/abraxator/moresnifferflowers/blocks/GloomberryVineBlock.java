@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks;
 
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,15 +21,15 @@ public class GloomberryVineBlock extends DawnberryVineBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity pEntity) {
-        if(pEntity instanceof LivingEntity livingEntity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if(entity instanceof LivingEntity livingEntity) {
             livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON, 30, 0));
         }
     }
 
     @Override
     protected InteractionResult dropAgeThreeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
-        final ItemStack DAWNBERRY = new ItemStack(ModItems.GLOOMBERRY.get());
+        final ItemStack DAWNBERRY = new ItemStack(MSFItems.GLOOMBERRY.get());
         popResource(level, pos, DAWNBERRY);
         level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
         BlockState state = blockState.setValue(AGE, 2);

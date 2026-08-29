@@ -2,10 +2,10 @@ package net.abraxator.moresnifferflowers.blocks.cropressor;
 
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.blockentities.CropressorBlockEntity;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFItems;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
@@ -72,7 +71,7 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, ModStateProperties.FULLNESS);
+        builder.add(FACING, MSFStateProperties.FULLNESS);
     }
 
     private Direction getNeighbourDirection(Part part, Direction direction) {
@@ -80,24 +79,25 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction pDirection, BlockState pNeighborState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pNeighborPos) {
+    public BlockState updateShape(BlockState state, Direction pDirection, BlockState pNeighborState, LevelAccessor level, BlockPos currentPos, BlockPos pNeighborPos) {
         if(pDirection == getNeighbourDirection(PART, state.getValue(FACING))) {
             var b = pNeighborState.getBlock() instanceof CropressorBlockBase;
             var b1 = getPartFromState(pNeighborState) != PART;
             if(b && b1) {
-                return super.updateShape(state, pDirection, pNeighborState, level, pCurrentPos, pNeighborPos);
+                return super.updateShape(state, pDirection, pNeighborState, level, currentPos, pNeighborPos);
             } else {
                 return Blocks.AIR.defaultBlockState();
             }
         }
         
-        return super.updateShape(state, pDirection, pNeighborState, level, pCurrentPos, pNeighborPos);
+        return super.updateShape(state, pDirection, pNeighborState, level, currentPos, pNeighborPos);
             
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-        return ModItems.CROPRESSOR.get().getDefaultInstance();
+        return MSFItems.CROPRESSOR.get().getDefaultInstance();
     }
 
     @Nullable
@@ -121,7 +121,7 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
         super.setPlacedBy(level, pos, state, pPlacer, stack);
         if(!level.isClientSide) {
             BlockPos blockPos = pos.relative(state.getValue(FACING));
-            level.setBlock(blockPos, ModBlocks.CROPRESSOR_CENTER.get().defaultBlockState().setValue(FACING, state.getValue(FACING)), 3);
+            level.setBlock(blockPos, MSFBlocks.CROPRESSOR_CENTER.get().defaultBlockState().setValue(FACING, state.getValue(FACING)), 3);
             level.blockUpdated(pos, Blocks.AIR);
             state.updateNeighbourShapes(level, pos, 3);
         }
@@ -129,7 +129,7 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
 
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide && level.getBlockEntity(getEntityPos(level, pos, PART)) instanceof CropressorBlockEntity entity && entity.canInteract() && player.getMainHandItem().is(ModTags.ModItemTags.CROPRESSABLE)) {
+        if (!level.isClientSide && level.getBlockEntity(getEntityPos(level, pos, PART)) instanceof CropressorBlockEntity entity && entity.canInteract() && player.getMainHandItem().is(MSFTags.ModItemTags.CROPRESSABLE)) {
 
             return entity.addItem(player.getItemInHand(hand));
         }
@@ -160,7 +160,6 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
         CENTER("center"),
         OUT("out");
 
-        public static final StringRepresentable.EnumCodec<DyeColor> CODEC = StringRepresentable.fromEnum(DyeColor::values);
         private String name;
 
         Part(String name) {

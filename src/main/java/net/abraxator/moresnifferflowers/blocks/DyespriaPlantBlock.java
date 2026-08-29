@@ -48,8 +48,8 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
         super(properties);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(getAgeProperty(), 0)
-                .setValue(ModStateProperties.SHEARED, false)
-                .setValue(ModStateProperties.COLOR, DyeColor.WHITE));
+                .setValue(MSFStateProperties.SHEARED, false)
+                .setValue(MSFStateProperties.COLOR, DyeColor.WHITE));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(getAgeProperty()).add(ModStateProperties.COLOR).add(ModStateProperties.SHEARED);
+        builder.add(getAgeProperty()).add(MSFStateProperties.COLOR).add(MSFStateProperties.SHEARED);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity pPlacer, ItemStack stack) {
         if(pPlacer instanceof ServerPlayer serverPlayer) {
-            ModAdvancementCritters.PLACED_DYESPRIA_PLANT.get().trigger(serverPlayer);
+            MSFAdvancementCritters.PLACED_DYESPRIA_PLANT.get().trigger(serverPlayer);
         }
     }
 
@@ -117,8 +117,8 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        return canSurvive(state, level, pCurrentPos) ? state : Blocks.AIR.defaultBlockState();
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        return canSurvive(state, level, currentPos) ? state : Blocks.AIR.defaultBlockState();
     }
 
     @Override
@@ -127,16 +127,16 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     }
     
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pMovedByPiston) {
-        if(!pNewState.is(ModBlocks.DYESCRAPIA_PLANT.get()) && !state.is(pNewState.getBlock()) && level.getBlockEntity(pos) instanceof DyespriaPlantBlockEntity entity && isMaxAge(state)) {
-            ItemStack dyespria = ModItems.DYESPRIA.get().getDefaultInstance();
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if(!newState.is(MSFBlocks.DYESCRAPIA_PLANT.get()) && !state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof DyespriaPlantBlockEntity entity && isMaxAge(state)) {
+            ItemStack dyespria = MSFItems.DYESPRIA.get().getDefaultInstance();
 
-            dyespria.set(ModDataComponents.DYE, entity.dye);
+            dyespria.set(MSFDataComponents.DYE, entity.dye);
 
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), dyespria);
         }
 
-        super.onRemove(state, level, pos, pNewState, pMovedByPiston);
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
 
@@ -158,7 +158,7 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
 
     @Override
     public IntegerProperty getAgeProperty() {
-        return ModStateProperties.AGE_3;
+        return MSFStateProperties.AGE_3;
     }
 
     @Override
@@ -189,12 +189,12 @@ public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEn
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         if(player.isShiftKeyDown() && isMaxAge(state) && level.getBlockEntity(pos) instanceof DyespriaPlantBlockEntity entity) {
-            var stack =  ModItems.DYESPRIA.toStack();
-            stack.set(ModDataComponents.DYE, entity.dye);
+            var stack =  MSFItems.DYESPRIA.toStack();
+            stack.set(MSFDataComponents.DYE, entity.dye);
             return stack;
         }
         
-        return ModItems.DYESPRIA_SEEDS.toStack();
+        return MSFItems.DYESPRIA_SEEDS.toStack();
     }
 
     @Nullable

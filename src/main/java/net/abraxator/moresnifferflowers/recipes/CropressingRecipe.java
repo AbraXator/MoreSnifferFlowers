@@ -3,8 +3,7 @@ package net.abraxator.moresnifferflowers.recipes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.abraxator.moresnifferflowers.init.ModRecipeSerializers;
-import net.abraxator.moresnifferflowers.init.ModRecipeTypes;
+import net.abraxator.moresnifferflowers.init.MSFRecipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -37,12 +36,12 @@ public record CropressingRecipe(Ingredient ingredient, int count, ItemStack resu
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.CROPRESSING.get();
+        return MSFRecipes.Serializer.CROPRESSING.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipeTypes.CROPRESSING.get();
+        return MSFRecipes.Types.CROPRESSING.get();
     }
 
     public static class CropressingSerializer implements RecipeSerializer<CropressingRecipe> {

@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
+import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -9,7 +9,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +20,7 @@ public class GiantCropBlockEntity extends AbstractMultiBlockEntity implements IM
     public float staticGameTime;
 
     public GiantCropBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.GIANT_CROP.get(), pos, state);
+        super(MSFBlockEntities.GIANT_CROP.get(), pos, state);
     }
 
     @Override

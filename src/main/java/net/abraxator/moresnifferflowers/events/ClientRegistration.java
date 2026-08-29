@@ -38,14 +38,14 @@ import java.util.Optional;
 public class ClientRegistration {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
-        Sheets.addWoodType(ModWoodTypes.CORRUPTED);
-        Sheets.addWoodType(ModWoodTypes.VIVICUS);
-        ModItemProperties.register();
+        Sheets.addWoodType(MSFWood.WoodTypes.CORRUPTED);
+        Sheets.addWoodType(MSFWood.WoodTypes.VIVICUS);
+        MSFItems.ModelProperties.register();
     }
 
     @SubscribeEvent
     public static void onRegisterMenuScreenEvent(RegisterMenuScreensEvent event) {
-        event.register(ModMenuTypes.REBREWING_STAND.get(), RebrewingStandScreen::new);
+        event.register(MSFMenuTypes.REBREWING_STAND.get(), RebrewingStandScreen::new);
     }
 
     @SubscribeEvent
@@ -88,54 +88,54 @@ public class ClientRegistration {
 
     @SubscribeEvent
     public static void entityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntityTypes.BOBLING.get(), BoblingRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.DRAGONFLY.get(), DragonflyRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), CorruptedProjectileRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.MOD_CORRUPTED_BOAT.get(), context -> new ModBoatRenderer(context, false));
-        event.registerEntityRenderer(ModEntityTypes.MOD_CORRUPTED_CHEST_BOAT.get(), context -> new ModBoatRenderer(context, true));
-        event.registerEntityRenderer(ModEntityTypes.MOD_VIVICUS_BOAT.get(), context -> new ModBoatRenderer(context, false));
-        event.registerEntityRenderer(ModEntityTypes.MOD_VIVICUS_CHEST_BOAT.get(), context -> new ModBoatRenderer(context, true));
-        event.registerEntityRenderer(ModEntityTypes.JAR_OF_ACID.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.SALT_BUBBLE.get(), SaltBubbleRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.SALT_PROJECTILE.get(), SaltProjectileRenderer::new);
-        event.registerEntityRenderer(ModEntityTypes.GLUING_GUM_ENTITY.get(), GluingGumRenderer::new);
+        event.registerEntityRenderer(MSFEntityTypes.BOBLING.get(), BoblingRenderer::new);
+        event.registerEntityRenderer(MSFEntityTypes.DRAGONFLY.get(), DragonflyRenderer::new);
+        event.registerEntityRenderer(MSFEntityTypes.CORRUPTED_SLIME_BALL.get(), CorruptedProjectileRenderer::new);
+        event.registerEntityRenderer(MSFEntityTypes.MOD_CORRUPTED_BOAT.get(), context -> new ModBoatRenderer(context, false));
+        event.registerEntityRenderer(MSFEntityTypes.MOD_CORRUPTED_CHEST_BOAT.get(), context -> new ModBoatRenderer(context, true));
+        event.registerEntityRenderer(MSFEntityTypes.MOD_VIVICUS_BOAT.get(), context -> new ModBoatRenderer(context, false));
+        event.registerEntityRenderer(MSFEntityTypes.MOD_VIVICUS_CHEST_BOAT.get(), context -> new ModBoatRenderer(context, true));
+        event.registerEntityRenderer(MSFEntityTypes.JAR_OF_ACID.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(MSFEntityTypes.SALT_BUBBLE.get(), SaltBubbleRenderer::new);
+        event.registerEntityRenderer(MSFEntityTypes.SALT_PROJECTILE.get(), SaltProjectileRenderer::new);
+        event.registerEntityRenderer(MSFEntityTypes.GLUING_GUM_ENTITY.get(), GluingGumRenderer::new);
 
     }
 
     @SubscribeEvent
     public static void blockRenderer(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntities.XBUSH.get(), AmbushBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.GIANT_CROP.get(), GiantCropBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.CROPRESSOR.get(), CropressorBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.DYESPRIA_PLANT.get(), DyespriaPlantBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.MOD_SIGN.get(), SignRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.VIVICUS_SIGN.get(), VivicusSignRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.MOD_HANGING_SIGN.get(), HangingSignRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.VIVICUS_HANGING_SIGN.get(), VivicusHangingSignRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.BONDRIPIA.get(), BondripiaBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.BEROOT_CAULDRON.get(), BerootCauldronRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.SALTEMONE.get(), SaltemoneBlockEntityRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.MOD_CAULDRON.get(), ModCauldronRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.XBUSH.get(), AmbushBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.GIANT_CROP.get(), GiantCropBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.CROPRESSOR.get(), CropressorBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.DYESPRIA_PLANT.get(), DyespriaPlantBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.MOD_SIGN.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.VIVICUS_SIGN.get(), VivicusSignRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.MOD_HANGING_SIGN.get(), HangingSignRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.VIVICUS_HANGING_SIGN.get(), VivicusHangingSignRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.BONDRIPIA.get(), BondripiaBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.BEROOT_CAULDRON.get(), BerootCauldronRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.SALTEMONE.get(), SaltemoneBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(MSFBlockEntities.MOD_CAULDRON.get(), ModCauldronRenderer::new);
 
     }
 
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(ModParticles.FLY.get(), FlyParticle.Provider::new);
-        event.registerSpriteSet(ModParticles.CARROT.get(), CarrotParticle.Provider::new);
-        event.registerSpriteSet(ModParticles.AMBUSH.get(), AmbushParticle.Provider::new);
-        event.registerSpriteSet(ModParticles.GARBUSH.get(), AmbushParticle.Provider::new);
-        event.registerSpriteSet(ModParticles.GIANT_CROP.get(), GiantCropParticle.Provider::new);
-        event.registerSpriteSet(ModParticles.BONDRIPIA_DRIP.get(), BondripiaParticle.BondripiaDripProvider::new);
-        event.registerSpriteSet(ModParticles.BONDRIPIA_FALL.get(), BondripiaParticle.BondripiaFallProvider::new);
-        event.registerSpriteSet(ModParticles.BONDRIPIA_LAND.get(), BondripiaParticle.BondripiaLandProvider::new);
+        event.registerSpriteSet(MSFParticles.FLY.get(), FlyParticle.Provider::new);
+        event.registerSpriteSet(MSFParticles.CARROT.get(), CarrotParticle.Provider::new);
+        event.registerSpriteSet(MSFParticles.AMBUSH.get(), AmbushParticle.Provider::new);
+        event.registerSpriteSet(MSFParticles.GARBUSH.get(), AmbushParticle.Provider::new);
+        event.registerSpriteSet(MSFParticles.GIANT_CROP.get(), GiantCropParticle.Provider::new);
+        event.registerSpriteSet(MSFParticles.BONDRIPIA_DRIP.get(), BondripiaParticle.BondripiaDripProvider::new);
+        event.registerSpriteSet(MSFParticles.BONDRIPIA_FALL.get(), BondripiaParticle.BondripiaFallProvider::new);
+        event.registerSpriteSet(MSFParticles.BONDRIPIA_LAND.get(), BondripiaParticle.BondripiaLandProvider::new);
 
-        event.registerSpriteSet(ModParticles.ACIDRIPIA_DRIP.get(), BondripiaParticle.AcidripiaDripProvider::new);
-        event.registerSpriteSet(ModParticles.ACIDRIPIA_FALL.get(), BondripiaParticle.AcidripiaFallProvider::new);
-        event.registerSpriteSet(ModParticles.ACIDRIPIA_LAND.get(), BondripiaParticle.AcidripiaLandProvider::new);
+        event.registerSpriteSet(MSFParticles.ACIDRIPIA_DRIP.get(), BondripiaParticle.AcidripiaDripProvider::new);
+        event.registerSpriteSet(MSFParticles.ACIDRIPIA_FALL.get(), BondripiaParticle.AcidripiaFallProvider::new);
+        event.registerSpriteSet(MSFParticles.ACIDRIPIA_LAND.get(), BondripiaParticle.AcidripiaLandProvider::new);
 
-        event.registerSpriteSet(ModParticles.TORCHFLAME.get(), TorchflameParticle.Provider::new);
-        event.registerSpriteSet(ModParticles.BUBBLE.get(), ModBubbleParticle.Provider::new);
+        event.registerSpriteSet(MSFParticles.TORCHFLAME.get(), TorchflameParticle.Provider::new);
+        event.registerSpriteSet(MSFParticles.BUBBLE.get(), ModBubbleParticle.Provider::new);
 
     }
 

@@ -2,12 +2,11 @@ package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.blocks.Bonmeelable;
 import net.abraxator.moresnifferflowers.blocks.GiantCropBlock;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -29,7 +28,7 @@ public class JarOfBonmeelItem extends Item {
         BlockState blockState = context.getLevel().getBlockState(blockPos);
         Player player = context.getPlayer();
 
-        if(blockState.is(ModTags.ModBlockTags.BONMEELABLE)) {
+        if(blockState.is(MSFTags.ModBlockTags.BONMEELABLE)) {
             Block block = GiantCropBlock.getCropMap().get(blockState.getBlock()).getA();
             if(block instanceof Bonmeelable bonmeelable && player != null && bonmeelable.canBonmeel(blockPos,blockState,level,player)) {
                 bonmeelable.performBonmeel(blockPos, blockState, level, player);

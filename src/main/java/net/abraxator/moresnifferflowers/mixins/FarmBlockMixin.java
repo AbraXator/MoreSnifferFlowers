@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.mixins;
 
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -21,14 +21,14 @@ public abstract class FarmBlockMixin extends Block {
 
     @Inject(method = "canSurvive", at = @At("TAIL"), cancellable = true)
     public void canSurviveGiantCrop(@NotNull BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> info) {
-        if(level.getBlockState(pos.above()).is(ModTags.ModBlockTags.GIANT_CROPS)) {
+        if(level.getBlockState(pos.above()).is(MSFTags.ModBlockTags.GIANT_CROPS)) {
             info.setReturnValue(true);
         }
     }
 
     @Inject(method = "shouldMaintainFarmland", at = @At("TAIL"), cancellable = true)
     private static void shouldMaintainFarmlandGiantCrop(@NotNull BlockGetter blockGetter, BlockPos pos, CallbackInfoReturnable<Boolean> info) {
-        if(blockGetter.getBlockState(pos.above()).is(ModTags.ModBlockTags.GIANT_CROPS)) {
+        if(blockGetter.getBlockState(pos.above()).is(MSFTags.ModBlockTags.GIANT_CROPS)) {
             info.setReturnValue(true);
         }
     }

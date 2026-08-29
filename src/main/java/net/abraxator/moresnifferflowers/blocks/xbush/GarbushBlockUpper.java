@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks.xbush;
 
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,31 +17,31 @@ public class GarbushBlockUpper extends AbstractXBushBlockUpper{
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return ModItems.GARBUSH_SEEDS.get().getDefaultInstance();
+        return MSFItems.GARBUSH_SEEDS.get().getDefaultInstance();
     }
 
     @Override
     public Block getDropBlock() {
-        return ModBlocks.GARNET_BLOCK.get();
+        return MSFBlocks.GARNET_BLOCK.get();
     }
 
     @Override
     public Block getLowerBlock() {
-        return ModBlocks.GARBUSH_BOTTOM.get();
+        return MSFBlocks.GARBUSH_BOTTOM.get();
     }
 
     @Override
     public Block getCorruptedLowerBlock() {
-        return ModBlocks.AMBUSH_BOTTOM.get();
+        return MSFBlocks.AMBUSH_BOTTOM.get();
     }
 
     @Override
     public Block getUpperBlock() {
-        return ModBlocks.GARBUSH_TOP.get();
+        return MSFBlocks.GARBUSH_TOP.get();
     }
 
     @Override
     public Block getCorruptedUpperBlock() {
-        return ModBlocks.AMBUSH_TOP.get();
+        return MSFBlocks.AMBUSH_TOP.get();
     }
 }

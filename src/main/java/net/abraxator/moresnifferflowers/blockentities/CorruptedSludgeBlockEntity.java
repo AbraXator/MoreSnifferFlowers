@@ -1,11 +1,11 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.data.datamaps.Corruptable;
+import net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable;
 import net.abraxator.moresnifferflowers.entities.CorruptedProjectile;
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
 import net.abraxator.moresnifferflowers.networking.toClient.CorruptedSludgePacket;
 import net.minecraft.core.BlockPos;
@@ -38,7 +38,7 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
     public int stateChange = 1;
     
     public CorruptedSludgeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.CORRUPTED_SLUDGE.get(), pos, state);
+        super(MSFBlockEntities.CORRUPTED_SLUDGE.get(), pos, state);
         this.corruptedSludgeListener = new CorruptedSludgeListener(new BlockPositionSource(pos));
         this.stateChange = usesLeft / 4;
     }
@@ -50,8 +50,8 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
             this.stateChange = usesLeft / 4;
         }
 
-        if(this.usesLeft % stateChange == 0 && this.getBlockState().getValue(ModStateProperties.USES_4) - 1 != -1) {
-            this.level.setBlockAndUpdate(this.getBlockPos(), this.getBlockState().setValue(ModStateProperties.USES_4, this.getBlockState().getValue(ModStateProperties.USES_4) - 1));
+        if(this.usesLeft % stateChange == 0 && this.getBlockState().getValue(MSFStateProperties.USES_4) - 1 != -1) {
+            this.level.setBlockAndUpdate(this.getBlockPos(), this.getBlockState().setValue(MSFStateProperties.USES_4, this.getBlockState().getValue(MSFStateProperties.USES_4) - 1));
         }
 
         if(this.usesLeft <= 0) {
@@ -99,25 +99,25 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
 
 
         @Override
-        public boolean handleGameEvent(ServerLevel level, Holder<GameEvent> pGameEvent, GameEvent.Context context, Vec3 pos) {
+        public boolean handleGameEvent(ServerLevel level, Holder<GameEvent> gameEvent, GameEvent.Context context, Vec3 pos) {
             CorruptedSludgeBlockEntity entity;
 
             if(level.getBlockEntity(BlockPos.containing(this.positionSource.getPosition(level).get())) instanceof CorruptedSludgeBlockEntity entity1) {
                 entity = entity1;
             } else return false;
             
-            boolean validEvent = (pGameEvent != GameEvent.BLOCK_PLACE || pGameEvent != GameEvent.BLOCK_DESTROY);
+            boolean validEvent = (gameEvent != GameEvent.BLOCK_PLACE || gameEvent != GameEvent.BLOCK_DESTROY);
             
             if (entity.usesLeft == -1) {
                 entity.usesLeft = level.random.nextIntBetweenInclusive(16, 32) - 1;
                 entity.stateChange = entity.usesLeft / 4;
             }
             
-            if(entity.usesLeft <= 0 || entity.getBlockState().getValue(ModStateProperties.CURED) || !validEvent) {
+            if(entity.usesLeft <= 0 || entity.getBlockState().getValue(MSFStateProperties.CURED) || !validEvent) {
                 return false;
             }
 
-            if(pGameEvent.is(GameEvent.BLOCK_PLACE) && Corruptable.canBeCorrupted(context.affectedState().getBlock(), level.random)) {
+            if(gameEvent.is(GameEvent.BLOCK_PLACE) && Corruptable.canBeCorrupted(context.affectedState().getBlock(), level.random)) {
                 Vec3 startPos = this.getListenerSource().getPosition(level).get();
                 Vec3 dirNormal = new Vec3(pos.x - startPos.x, pos.y - startPos.y, pos.z - startPos.z).normalize();
                 Optional<Block> corrupted = Corruptable.getCorruptedBlock(context.affectedState().getBlock(), level.random);
@@ -144,8 +144,8 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
             }
 
             if (ModServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) {
-                if (pGameEvent.is(GameEvent.BLOCK_DESTROY) && context.affectedState().is(ModTags.ModBlockTags.CORRUPTED_SLUDGE) && !pos.equals(this.positionSource.getPosition(level).get()) && context.sourceEntity() instanceof Player player) {
-                    var projectileNumber = context.affectedState().is(ModBlocks.CORRUPTED_LEAVES) || context.affectedState().is(ModBlocks.CORRUPTED_LEAVES_BUSH) ? level.random.nextInt(1) + 1 : level.random.nextInt(5) + 1;
+                if (gameEvent.is(GameEvent.BLOCK_DESTROY) && context.affectedState().is(MSFTags.ModBlockTags.CORRUPTED_SLUDGE) && !pos.equals(this.positionSource.getPosition(level).get()) && context.sourceEntity() instanceof Player player) {
+                    var projectileNumber = context.affectedState().is(MSFBlocks.CORRUPTED_LEAVES) || context.affectedState().is(MSFBlocks.CORRUPTED_LEAVES_BUSH) ? level.random.nextInt(1) + 1 : level.random.nextInt(5) + 1;
                     shootProjectiles(this.positionSource.getPosition(level).get(), projectileNumber, level);
                     entity.updateUses();
                     return false;

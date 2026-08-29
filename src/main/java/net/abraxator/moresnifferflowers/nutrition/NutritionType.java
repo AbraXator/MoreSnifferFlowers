@@ -1,10 +1,7 @@
 package net.abraxator.moresnifferflowers.nutrition;
 
-import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModEffects;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.world.effect.MobEffect;
 
@@ -42,18 +39,18 @@ public enum NutritionType {
     }
 
     public static final Map<NutritionType, Holder<MobEffect>> NEGATIVE_SOUP_EFFECT_MAP = Map.of(
-            SOUR, ModEffects.SLIPPERY,
-            SALTY, ModEffects.SALTY,
-            SPICY, ModEffects.PANTS_ON_FIRE,
-            SWEET, ModEffects.STICKY,
-            NEUTRAL, ModEffects.BLAND
+            SOUR, MSFEffects.SLIPPERY,
+            SALTY, MSFEffects.SALTY,
+            SPICY, MSFEffects.PANTS_ON_FIRE,
+            SWEET, MSFEffects.STICKY,
+            NEUTRAL, MSFEffects.BLAND
     );
 
     public static final Map<NutritionType, Holder<MobEffect>> POSITIVE_SOUP_EFFECT_MAP = Map.of(
-            SOUR, ModEffects.UNTOUCHABLE,
-            SALTY,  ModEffects.COMBO_MEAL,
-            SPICY,  ModEffects.HARDENED_MOUTH,
-            SWEET,  ModEffects.GLUING_TOUCH,
-            NEUTRAL, ModEffects.WELL_BALANCED
+            SOUR, MSFEffects.UNTOUCHABLE,
+            SALTY,  MSFEffects.COMBO_MEAL,
+            SPICY,  MSFEffects.HARDENED_MOUTH,
+            SWEET,  MSFEffects.GLUING_TOUCH,
+            NEUTRAL, MSFEffects.WELL_BALANCED
     );
 }

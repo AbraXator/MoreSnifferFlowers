@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.entities;
 
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
-import net.abraxator.moresnifferflowers.data.datamaps.Corruptable;
+import net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,16 +37,16 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
     }
 
     public CorruptedProjectile(Level level, LivingEntity pShooter) {
-        super(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), pShooter, level);
+        super(MSFEntityTypes.CORRUPTED_SLIME_BALL.get(), pShooter, level);
     }
 
     public CorruptedProjectile(Level level) {
-        super(ModEntityTypes.CORRUPTED_SLIME_BALL.get(), level);
+        super(MSFEntityTypes.CORRUPTED_SLIME_BALL.get(), level);
     }
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.CORRUPTED_SLIME_BALL.get();
+        return MSFItems.CORRUPTED_SLIME_BALL.get();
     }
 
     private ParticleOptions getParticle() {
@@ -82,6 +82,7 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         var pos = result.getBlockPos();
@@ -92,22 +93,22 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
         var stateRelative = this.level().getBlockState(posRelative);
         var stateRelativeBelow = this.level().getBlockState(result.getBlockPos().relative(result.getDirection()).below());
 
-        if (this.level().getBlockState(pos).is(ModTags.ModBlockTags.NO_CORRUPTED_SLIME_COLLISION)) return;
+        if (this.level().getBlockState(pos).is(MSFTags.ModBlockTags.NO_CORRUPTED_SLIME_COLLISION)) return;
 
         if(checkState(this.level().getBlockState(result.getBlockPos()))) {
-            var layer = state.getValue(ModStateProperties.LAYER);
+            var layer = state.getValue(MSFStateProperties.LAYER);
             this.level().setBlockAndUpdate(
                     pos,
-                    ModBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(ModStateProperties.LAYER, layer + 1));
+                    MSFBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(MSFStateProperties.LAYER, layer + 1));
 
         } else {
             transformBlock(this.level(), pos);
 
             if (checkState(this.level().getBlockState(result.getBlockPos().relative(result.getDirection())))) {
-                var layerRelative = stateRelative.getValue(ModStateProperties.LAYER);
+                var layerRelative = stateRelative.getValue(MSFStateProperties.LAYER);
                 this.level().setBlockAndUpdate(
                         posRelative,
-                        ModBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(ModStateProperties.LAYER, layerRelative + 1));
+                        MSFBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(MSFStateProperties.LAYER, layerRelative + 1));
             }
 
             if (stateRelative.is(Blocks.AIR) || stateRelative.is(BlockTags.FIRE) || (stateRelative.canBeReplaced() && !stateRelative.liquid())) {
@@ -115,7 +116,7 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
                     if(result.getDirection() == Direction.UP && !state.is(Blocks.AIR)) {
                         this.level().setBlockAndUpdate(
                                 result.getBlockPos().relative(result.getDirection()),
-                                ModBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(ModStateProperties.LAYER, 1));
+                                MSFBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(MSFStateProperties.LAYER, 1));
                         this.discard();
                     } else {
                         CorruptedProjectile projectile = new CorruptedProjectile(this.level());
@@ -150,7 +151,7 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
                 }
 
                 if (level.getNearestPlayer(this, 15) instanceof ServerPlayer serverPlayer) {
-                    ModAdvancementCritters.CORRUPTED_BLOCK.get().trigger(serverPlayer);
+                    MSFAdvancementCritters.CORRUPTED_BLOCK.get().trigger(serverPlayer);
                 }
 
                 level.addParticle(
@@ -166,6 +167,6 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
     }
 
     private static boolean checkState(BlockState state) {
-        return state.is(ModBlocks.CORRUPTED_SLIME_LAYER) && state.getValue(ModStateProperties.LAYER) != 8;
+        return state.is(MSFBlocks.CORRUPTED_SLIME_LAYER) && state.getValue(MSFStateProperties.LAYER) != 8;
     }
 }

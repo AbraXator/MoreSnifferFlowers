@@ -3,19 +3,14 @@ package net.abraxator.moresnifferflowers.capability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class ComboMealCapability {
     public static final Codec<ComboMealCapability> CODEC =
@@ -35,7 +30,7 @@ public class ComboMealCapability {
     public void setDuration(int duration) { this.duration = duration; }
 
     public static ComboMealCapability getCapability(Player player) {
-       return player.getData(ModDataAttachments.COMBO_MEAL.get());
+       return player.getData(MSFDataAttachments.COMBO_MEAL.get());
     }
 
     public ComboMealCapability(float speed, int duration) {
@@ -50,7 +45,7 @@ public class ComboMealCapability {
     }
 
     public void onAttack(Player player, boolean isCharged) {
-        int amplifier = Objects.requireNonNull(player.getEffect(ModEffects.COMBO_MEAL)).getAmplifier();
+        int amplifier = Objects.requireNonNull(player.getEffect(MSFEffects.COMBO_MEAL)).getAmplifier();
 
         if (isCharged){
             speed *= 1 + (amplifier / 4f + 1) / 10f;

@@ -9,7 +9,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.recipes.CropressingRecipe;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -20,7 +20,7 @@ public class CropressingRecipeCategory implements IRecipeCategory<CropressingRec
     private final Component localizedName;
 
     public CropressingRecipeCategory(IGuiHelper helper) {
-        this.icon = helper.createDrawableItemStack(ModItems.CROPRESSOR.get().getDefaultInstance());
+        this.icon = helper.createDrawableItemStack(MSFItems.CROPRESSOR.get().getDefaultInstance());
         this.localizedName = Component.translatableWithFallback("gui.mores_sniffer_flowers.cropressing_category", "Cropressing");
     }
 

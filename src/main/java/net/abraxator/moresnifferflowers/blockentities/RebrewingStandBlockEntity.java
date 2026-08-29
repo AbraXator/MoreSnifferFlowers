@@ -3,9 +3,9 @@ package net.abraxator.moresnifferflowers.blockentities;
 import com.google.common.collect.Lists;
 import net.abraxator.moresnifferflowers.blocks.rebrewingstand.RebrewingStandBlockBase;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
-import net.abraxator.moresnifferflowers.init.ModBlockEntities;
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -78,7 +78,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
     };
 
     public RebrewingStandBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.REBREWING_STAND.get(), pos, state);
+        super(MSFBlockEntities.REBREWING_STAND.get(), pos, state);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         var potionBits = getPotionBits();
         cost = 0;
 
-        if(fuel < MAX_FUEL && fuelStack.is(ModItems.CROPRESSED_NETHERWART.get())) {
+        if(fuel < MAX_FUEL && fuelStack.is(MSFItems.CROPRESSED_NETHERWART.get())) {
             fuel++;
             fuelStack.shrink(1);
             setChanged();
@@ -133,12 +133,12 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
             for (int i : index) {
                 ItemStack itemStack = inv.get(i);
                 if (!itemStack.is(ItemStack.EMPTY.getItem())) {
-                    ItemStack outputPotion = ModItems.REBREWED_POTION.get().getDefaultInstance();
+                    ItemStack outputPotion = MSFItems.REBREWED_POTION.get().getDefaultInstance();
 
                     if(ingredientStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_SPLASH.get()))) {
-                        outputPotion = ModItems.REBREWED_SPLASH_POTION.get().getDefaultInstance();
+                        outputPotion = MSFItems.REBREWED_SPLASH_POTION.get().getDefaultInstance();
                     } else if (ingredientStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LINGERING.get()))) {
-                        outputPotion = ModItems.REBREWED_LINGERING_POTION.get().getDefaultInstance();
+                        outputPotion = MSFItems.REBREWED_LINGERING_POTION.get().getDefaultInstance();
                     }
 
 
@@ -172,13 +172,13 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
     private boolean canBrew() {
         boolean ret = false;
-        boolean correctInvContent = !inv.get(2).isEmpty() && inv.get(1).is(ModItems.EXTRACTED_BOTTLE.get());
+        boolean correctInvContent = !inv.get(2).isEmpty() && inv.get(1).is(MSFItems.EXTRACTED_BOTTLE.get());
         boolean hasFuel = fuel >= 1 && this.fuel >= this.cost;
         boolean correctCost = this.cost <= 16;
 
 
         for(int i = 3; i <= 5; i++) {
-            if(!inv.get(i).isEmpty() && !inv.get(i).is(ModItems.REBREWED_POTION.get())) {
+            if(!inv.get(i).isEmpty() && !inv.get(i).is(MSFItems.REBREWED_POTION.get())) {
                 ret = true;
             }
         }
@@ -217,7 +217,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         });
 
         int maxInt = Collections.max(durList);
-        ret.add(new MobEffectInstance(ModEffects.EXTRACTED, maxInt));
+        ret.add(new MobEffectInstance(MSFEffects.EXTRACTED, maxInt));
 
         return new Pair<>(new PotionContents(Optional.of(Potions.WATER), Optional.of(PotionContents.getColor(ret)), ret), ret);
     }

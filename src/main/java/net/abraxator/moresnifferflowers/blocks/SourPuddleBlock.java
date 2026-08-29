@@ -1,15 +1,15 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import net.abraxator.moresnifferflowers.entities.SaltProjectile;
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -37,7 +37,7 @@ public class SourPuddleBlock extends Block implements SimpleWaterloggedBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(PipeBlock.NORTH, Boolean.FALSE)
                 .setValue(PipeBlock.EAST, Boolean.FALSE).setValue(PipeBlock.WEST, Boolean.FALSE)
-                .setValue(PipeBlock.SOUTH, Boolean.FALSE).setValue(ModStateProperties.FULL, Boolean.FALSE)
+                .setValue(PipeBlock.SOUTH, Boolean.FALSE).setValue(MSFStateProperties.FULL, Boolean.FALSE)
                 .setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
 
     }
@@ -53,7 +53,7 @@ public class SourPuddleBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(PipeBlock.EAST, this.connectsTo(blockgetter, blockpos, Direction.EAST))
                 .setValue(PipeBlock.SOUTH, this.connectsTo(blockgetter, blockpos, Direction.SOUTH))
                 .setValue(PipeBlock.WEST, this.connectsTo(blockgetter, blockpos, Direction.WEST))
-                .setValue(ModStateProperties.FULL, this.isFull(blockgetter, blockpos))
+                .setValue(MSFStateProperties.FULL, this.isFull(blockgetter, blockpos))
                 .setValue(WATERLOGGED, flag);
     }
 
@@ -87,7 +87,7 @@ public class SourPuddleBlock extends Block implements SimpleWaterloggedBlock {
             case WEST -> state.setValue(PipeBlock.WEST, isThis);
         };
         if (newState.getValue(PipeBlock.WEST) && newState.getValue(PipeBlock.EAST) && newState.getValue(PipeBlock.NORTH) && newState.getValue(PipeBlock.SOUTH))
-            return super.updateShape(newState.setValue(ModStateProperties.FULL, true), facing, facingState, level, currentPos, facingPos);
+            return super.updateShape(newState.setValue(MSFStateProperties.FULL, true), facing, facingState, level, currentPos, facingPos);
 
         if (isFree(level.getBlockState(currentPos.below()))  && currentPos.getY() >= level.getMinBuildHeight()){
 
@@ -105,15 +105,15 @@ public class SourPuddleBlock extends Block implements SimpleWaterloggedBlock {
             return Blocks.AIR.defaultBlockState();
         }
 
-        return super.updateShape(newState.setValue(ModStateProperties.FULL, false), facing, facingState, level, currentPos, facingPos);
+        return super.updateShape(newState.setValue(MSFStateProperties.FULL, false), facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         super.entityInside(state, level, pos, entity);
 
-        if (!level.isClientSide && entity instanceof Player player){
-            player.addEffect(new MobEffectInstance(ModEffects.SLIPPERY, 40, 5));
+        if (!level.isClientSide && entity instanceof LivingEntity livingEntity){
+            livingEntity.addEffect(new MobEffectInstance(MSFEffects.SLIPPERY, 40, 5));
         }
     }
 
@@ -128,6 +128,6 @@ public class SourPuddleBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(PipeBlock.NORTH, PipeBlock.EAST, PipeBlock.WEST, PipeBlock.SOUTH, ModStateProperties.FULL, WATERLOGGED);
+        builder.add(PipeBlock.NORTH, PipeBlock.EAST, PipeBlock.WEST, PipeBlock.SOUTH, MSFStateProperties.FULL, WATERLOGGED);
     }
 }

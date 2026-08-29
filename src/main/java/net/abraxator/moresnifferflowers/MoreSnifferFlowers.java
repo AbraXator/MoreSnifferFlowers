@@ -7,9 +7,6 @@ import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
-import net.abraxator.moresnifferflowers.worldgen.configurations.ModTreeDecoratorTypes;
-import net.abraxator.moresnifferflowers.worldgen.configurations.ModTrunkPlacerTypes;
-import net.abraxator.moresnifferflowers.worldgen.feature.ModFeatures;
 import net.abraxator.moresnifferflowers.worldgen.structures.ModStructureTypes;
 import net.abraxator.moresnifferflowers.worldgen.structures.pieces.ModPieceTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -43,78 +40,77 @@ public class MoreSnifferFlowers {
         container.registerConfig(ModConfig.Type.CLIENT, ModClientConfig.CLIENT_CONFIG);
 
 
-        ModItems.ITEMS.register(modEventBus);
-        ModBlocks.BLOCKS.register(modEventBus);
-        ModLoot.CONDITIONS.register(modEventBus);
-        ModFeatures.FEATURES.register(modEventBus);
-        ModCreativeTabs.TABS.register(modEventBus);
-        ModEffects.EFFECTS.register(modEventBus);
-        ModSoundEvents.SOUNDS.register(modEventBus);
-        ModPaintings.PAINTINGS.register(modEventBus);
-        ModParticles.PARTICLES.register(modEventBus);
-        ModMenuTypes.MENU_TYPES.register(modEventBus);
-        ModEntityTypes.ENTITIES.register(modEventBus);
-        ModTrunkPlacerTypes.TRUNKS.register(modEventBus);
-        ModRecipeTypes.RECIPE_TYPES.register(modEventBus);
+        MSFItems.ITEMS.register(modEventBus);
+        MSFBlocks.BLOCKS.register(modEventBus);
+        MSFWorldGen.Features.FEATURES.register(modEventBus);
+        MSFCreativeTabs.TABS.register(modEventBus);
+        MSFEffects.EFFECTS.register(modEventBus);
+        MSFSounds.SOUNDS.register(modEventBus);
+        MSFParticles.PARTICLES.register(modEventBus);
+        MSFMenuTypes.MENU_TYPES.register(modEventBus);
+        MSFEntityTypes.ENTITIES.register(modEventBus);
+        MSFWood.TrunkPlacerTypes.TRUNKS.register(modEventBus);
+        MSFRecipes.Types.RECIPE_TYPES.register(modEventBus);
         ModPieceTypes.STRUCTURE_PIECE.register(modEventBus);
-        ModAdvancementCritters.TRIGGERS.register(modEventBus);
-        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
-        ModTreeDecoratorTypes.DECORATORS.register(modEventBus);
+        MSFAdvancementCritters.TRIGGERS.register(modEventBus);
+        MSFBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        MSFWood.TreeDecoratorTypes.DECORATORS.register(modEventBus);
         ModStructureTypes.STRUCTURE_PIECE.register(modEventBus);
-        ModDataComponents.DATA_COMPONENTS.register(modEventBus);
-        ModDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
-        ModEntityDataSerializers.SERIALIZERS.register(modEventBus);
-        ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        MSFDataComponents.DATA_COMPONENTS.register(modEventBus);
+        MSFLoot.LootConditions.CONDITIONS.register(modEventBus);
+        MSFDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
+        MSFRecipes.Serializer.RECIPE_SERIALIZERS.register(modEventBus);
 
         ModPacketHandler.register(modEventBus, 1);
     }
-    
+
+   @SuppressWarnings("deprecation")
     private void commonSetup(final FMLCommonSetupEvent event) {
         AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
-        AxeItem.STRIPPABLES.put(ModBlocks.CORRUPTED_LOG.get(), ModBlocks.STRIPPED_CORRUPTED_LOG.get());
-        AxeItem.STRIPPABLES.put(ModBlocks.VIVICUS_LOG.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get());
-        AxeItem.STRIPPABLES.put(ModBlocks.CORRUPTED_WOOD.get(), ModBlocks.STRIPPED_CORRUPTED_WOOD.get());
-        AxeItem.STRIPPABLES.put(ModBlocks.VIVICUS_WOOD.get(), ModBlocks.STRIPPED_VIVICUS_WOOD.get());
+        AxeItem.STRIPPABLES.put(MSFBlocks.CORRUPTED_LOG.get(), MSFBlocks.STRIPPED_CORRUPTED_LOG.get());
+        AxeItem.STRIPPABLES.put(MSFBlocks.VIVICUS_LOG.get(), MSFBlocks.STRIPPED_VIVICUS_LOG.get());
+        AxeItem.STRIPPABLES.put(MSFBlocks.CORRUPTED_WOOD.get(), MSFBlocks.STRIPPED_CORRUPTED_WOOD.get());
+        AxeItem.STRIPPABLES.put(MSFBlocks.VIVICUS_WOOD.get(), MSFBlocks.STRIPPED_VIVICUS_WOOD.get());
 
         FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
-        pot.addPlant(ModBlocks.DYESPRIA_PLANT.getId(), ModBlocks.POTTED_DYESPRIA);
-        pot.addPlant(ModBlocks.CORRUPTED_SAPLING.getId(), ModBlocks.POTTED_CORRUPTED_SAPLING);
-        pot.addPlant(ModBlocks.VIVICUS_SAPLING.getId(), ModBlocks.POTTED_VIVICUS_SAPLING);
+        pot.addPlant(MSFBlocks.DYESPRIA_PLANT.getId(), MSFBlocks.POTTED_DYESPRIA);
+        pot.addPlant(MSFBlocks.CORRUPTED_SAPLING.getId(), MSFBlocks.POTTED_CORRUPTED_SAPLING);
+        pot.addPlant(MSFBlocks.VIVICUS_SAPLING.getId(), MSFBlocks.POTTED_VIVICUS_SAPLING);
 
         FireBlock fireBlock = (FireBlock) Blocks.FIRE;
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_LOG.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_WOOD.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.STRIPPED_CORRUPTED_LOG.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.STRIPPED_CORRUPTED_WOOD.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_PLANKS.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_STAIRS.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_SLAB.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_FENCE.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_FENCE_GATE.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_DOOR.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_TRAPDOOR.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_PRESSURE_PLATE.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_BUTTON.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_LEAVES.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.CORRUPTED_SAPLING.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_LOG.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_WOOD.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.STRIPPED_VIVICUS_LOG.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.STRIPPED_VIVICUS_WOOD.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_PLANKS.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_STAIRS.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_SLAB.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_FENCE.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_FENCE_GATE.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_DOOR.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_TRAPDOOR.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_PRESSURE_PLATE.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_BUTTON.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_LEAVES.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_SAPLING.get(), 5, 20);
-        fireBlock.setFlammable(ModBlocks.VIVICUS_LEAVES_SPROUT.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_LOG.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_WOOD.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.STRIPPED_CORRUPTED_LOG.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.STRIPPED_CORRUPTED_WOOD.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_PLANKS.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_STAIRS.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_SLAB.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_FENCE.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_FENCE_GATE.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_DOOR.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_TRAPDOOR.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_PRESSURE_PLATE.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_BUTTON.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_LEAVES.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.CORRUPTED_SAPLING.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_LOG.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_WOOD.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.STRIPPED_VIVICUS_LOG.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.STRIPPED_VIVICUS_WOOD.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_PLANKS.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_STAIRS.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_SLAB.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_FENCE.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_FENCE_GATE.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_DOOR.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_TRAPDOOR.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_PRESSURE_PLATE.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_BUTTON.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_LEAVES.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_SAPLING.get(), 5, 20);
+        fireBlock.setFlammable(MSFBlocks.VIVICUS_LEAVES_SPROUT.get(), 5, 20);
 
-        ModCauldronInteractions.bootstrap();
+        MSFCauldronInteractions.bootstrap();
     }
 
     public static boolean hasFarmersDelight(){

@@ -1,10 +1,9 @@
 package net.abraxator.moresnifferflowers.recipes;
 
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModRecipeSerializers;
+import net.abraxator.moresnifferflowers.init.MSFItems;
+import net.abraxator.moresnifferflowers.init.MSFRecipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -29,7 +28,7 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
                     }
 
                     if (i == 1 && j == 1) {
-                        if (!itemstack.is(ModItems.REBREWED_LINGERING_POTION)) {
+                        if (!itemstack.is(MSFItems.REBREWED_LINGERING_POTION)) {
                             return false;
                         }
                     } else if (!itemstack.is(Items.ARROW)) {
@@ -47,7 +46,7 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     @Override
     public ItemStack assemble(CraftingInput pInput, HolderLookup.Provider registries) {
         ItemStack itemstack = pInput.getItem(1 + pInput.width());
-        if (!itemstack.is(ModItems.REBREWED_LINGERING_POTION)) {
+        if (!itemstack.is(MSFItems.REBREWED_LINGERING_POTION)) {
             return ItemStack.EMPTY;
         } else {
             ItemStack itemstack1 = new ItemStack(Items.TIPPED_ARROW, 8);
@@ -63,6 +62,6 @@ public class RebrewedTippedArrowRecipe extends CustomRecipe {
     
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.REBREWED_TIPPED_ARROW.get();
+        return MSFRecipes.Serializer.REBREWED_TIPPED_ARROW.get();
     }
 }

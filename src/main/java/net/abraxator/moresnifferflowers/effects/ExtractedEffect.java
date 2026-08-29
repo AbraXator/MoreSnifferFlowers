@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.effects;
 
-import net.abraxator.moresnifferflowers.init.ModEffects;
-import net.abraxator.moresnifferflowers.init.ModTags;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,10 +24,10 @@ public class ExtractedEffect extends MobEffect {
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         List<MobEffectInstance> activeEffects = new ArrayList<>(livingEntity.getActiveEffects());
-        activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(ModTags.ModEffectTags.EXTRACTION_BLACKLIST)).toList();
+        activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(MSFTags.ModEffectTags.EXTRACTION_BLACKLIST)).toList();
 
         if (activeEffects.size() <= 1){
-            livingEntity.removeEffect(ModEffects.EXTRACTED);
+            livingEntity.removeEffect(MSFEffects.EXTRACTED);
         };
 
         return false;

@@ -4,13 +4,12 @@ import net.abraxator.moresnifferflowers.blockentities.XbushBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.Corruptable;
 import net.abraxator.moresnifferflowers.blocks.ModCropBlock;
 import net.abraxator.moresnifferflowers.blocks.ModEntityDoubleTallBlock;
-import net.abraxator.moresnifferflowers.init.ModParticles;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFParticles;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -31,7 +30,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -42,12 +40,12 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
 
     public AbstractXBushBlockBase(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(ModStateProperties.SHEARED, false));
+        registerDefaultState(defaultBlockState().setValue(MSFStateProperties.SHEARED, false));
     }
     
     @Override
     public IntegerProperty getAgeProperty() {
-        return ModStateProperties.AGE_8;
+        return MSFStateProperties.AGE_8;
     }
 
     @Override   
@@ -82,17 +80,17 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ModStateProperties.AGE_8);
-        builder.add(ModStateProperties.SHEARED);
+        builder.add(MSFStateProperties.AGE_8);
+        builder.add(MSFStateProperties.SHEARED);
     }
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity pEntity) {
-        if(pEntity instanceof Ravager && level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-            level.destroyBlock(pos, true, pEntity);
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if(entity instanceof Ravager && level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            level.destroyBlock(pos, true, entity);
         }
 
-        super.entityInside(state, level, pos, pEntity);
+        super.entityInside(state, level, pos, entity);
     }
 
     @Override
@@ -104,7 +102,7 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if(getAge(state) == 7 && random.nextInt(100) < 10 && isLower(state)) {
             level.addAlwaysVisibleParticle(
-                    ModParticles.AMBUSH.get(), 
+                    MSFParticles.AMBUSH.get(),
                     true,
                     (double)pos.getX() + 0.5 + random.nextDouble() / 3.0 * (double)(random.nextBoolean() ? 1 : -1),
                     (double)pos.getY() + random.nextDouble() + random.nextDouble(),
@@ -118,7 +116,7 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (state.getValue(ModStateProperties.SHEARED)) return;
+        if (state.getValue(MSFStateProperties.SHEARED)) return;
         float f = ModCropBlock.getGrowthSpeed(state, level, pos);
         if(random.nextInt((int) ((25.0F / f) + 1)) == 0) {
             this.grow(level, state, pos, 1);
@@ -232,7 +230,7 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         this.getLowerHalf(level, pos, state).ifPresent(posAndState -> {
-            if(state.getValue(ModStateProperties.AGE_8) < 8) {
+            if(state.getValue(MSFStateProperties.AGE_8) < 8) {
                 this.grow(level, posAndState.state(), posAndState.blockPos(), 1);
             } 
         });

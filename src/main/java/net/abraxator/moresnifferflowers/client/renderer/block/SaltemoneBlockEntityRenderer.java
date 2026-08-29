@@ -6,8 +6,8 @@ import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.SaltemoneBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -19,7 +19,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.client.IMultiblockRenderHelper;
 import net.nikdo53.tinymultiblocklib.components.PreviewMode;
@@ -39,9 +38,9 @@ public class SaltemoneBlockEntityRenderer<T extends SaltemoneBlockEntity> implem
     @Override
     public void render(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         BlockState blockState = blockEntity.getBlockState();
-        if(IMultiBlock.isCenter(blockState) && blockState.getValue(ModStateProperties.AGE_2) >= 2) {
+        if(IMultiBlock.isCenter(blockState) && blockState.getValue(MSFStateProperties.AGE_2) >= 2) {
             PreviewMode previewMode = blockEntity.getPreviewMode();
-            VertexConsumer consumer = getConsumer(buffer, blockEntity, SALTEMONE_TEXTURE, SOURLEMON_TEXTURE, ModBlocks.SOURLEMONE.get());
+            VertexConsumer consumer = getConsumer(buffer, blockEntity, SALTEMONE_TEXTURE, SOURLEMON_TEXTURE, MSFBlocks.SOURLEMONE.get());
 
             poseStack.pushPose();
             Direction direction = blockState.getValue(HorizontalDirectionalBlock.FACING);

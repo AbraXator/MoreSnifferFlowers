@@ -2,7 +2,7 @@ package net.abraxator.moresnifferflowers.blocks.corrupted;
 
 import net.abraxator.moresnifferflowers.blockentities.CorruptedSludgeBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.ModEntityBlock;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -13,12 +13,12 @@ import org.jetbrains.annotations.Nullable;
 public class CorruptedSludgeBlock extends Block implements ModEntityBlock {
     public CorruptedSludgeBlock(Properties p_49795_) {
         super(p_49795_);
-        this.registerDefaultState(defaultBlockState().setValue(ModStateProperties.USES_4, 3).setValue(ModStateProperties.CURED, false));
+        this.registerDefaultState(defaultBlockState().setValue(MSFStateProperties.USES_4, 3).setValue(MSFStateProperties.CURED, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ModStateProperties.USES_4, ModStateProperties.CURED);
+        builder.add(MSFStateProperties.USES_4, MSFStateProperties.CURED);
     }
 
     @Nullable

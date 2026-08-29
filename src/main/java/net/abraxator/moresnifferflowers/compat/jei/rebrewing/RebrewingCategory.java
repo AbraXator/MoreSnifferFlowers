@@ -9,7 +9,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -20,7 +20,7 @@ public class RebrewingCategory implements IRecipeCategory<JeiRebrewingRecipe> {
     private final Component localizedName;
 
     public RebrewingCategory(IGuiHelper guiHelper) {
-        this.icon = guiHelper.createDrawableItemStack(ModItems.REBREWING_STAND.get().getDefaultInstance());
+        this.icon = guiHelper.createDrawableItemStack(MSFItems.REBREWING_STAND.get().getDefaultInstance());
         this.localizedName = Component.translatableWithFallback("gui.moresnifferflowers.rebrewing_category", "Rebrewing");
     }
 
@@ -52,7 +52,7 @@ public class RebrewingCategory implements IRecipeCategory<JeiRebrewingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, JeiRebrewingRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 26, 40).addItemStack(ModItems.CROPRESSED_NETHERWART.get().getDefaultInstance());
+        builder.addSlot(RecipeIngredientRole.INPUT, 26, 40).addItemStack(MSFItems.CROPRESSED_NETHERWART.get().getDefaultInstance());
         builder.addSlot(RecipeIngredientRole.INPUT, 62, 36).addItemStack(recipe.extractedPotion());
         builder.addSlot(RecipeIngredientRole.INPUT, 90, 36).addItemStack(recipe.ingredient());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 133, 36).addItemStack(recipe.rebrewedPotion());

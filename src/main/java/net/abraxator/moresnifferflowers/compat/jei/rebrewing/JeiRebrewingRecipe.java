@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.compat.jei.rebrewing;
 
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -34,10 +34,10 @@ public record JeiRebrewingRecipe(ItemStack extractedPotion, ItemStack rebrewedPo
                 PotionContents extractedPotionContents = new PotionContents(Optional.of(Potions.WATER), Optional.of(PotionContents.getColor(extractedEffect)), extractedEffect);
                 PotionContents rebrewedPotionContents = new PotionContents(Optional.of(Potions.WATER), Optional.of(PotionContents.getColor(rebrewedEffect)), rebrewedEffect);
 
-                ItemStack extractedPotion = ModItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
-                var rebrewedPotion = item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_SPLASH.get())) ? ModItems.REBREWED_SPLASH_POTION.get().getDefaultInstance() :
-                        item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LINGERING.get())) ? ModItems.REBREWED_LINGERING_POTION.get().getDefaultInstance() :
-                                ModItems.REBREWED_POTION.get().getDefaultInstance();
+                ItemStack extractedPotion = MSFItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
+                var rebrewedPotion = item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_SPLASH.get())) ? MSFItems.REBREWED_SPLASH_POTION.get().getDefaultInstance() :
+                        item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LINGERING.get())) ? MSFItems.REBREWED_LINGERING_POTION.get().getDefaultInstance() :
+                                MSFItems.REBREWED_POTION.get().getDefaultInstance();
 
                 extractedPotion.set(DataComponents.POTION_CONTENTS, extractedPotionContents);
                 rebrewedPotion.set(DataComponents.POTION_CONTENTS, rebrewedPotionContents);

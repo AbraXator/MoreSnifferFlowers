@@ -17,14 +17,13 @@
     "PlayerMixin",
     "SlotMixin",
     "SnifferEggMixin",
-    "SpriteResourceLoaderMixin",
     "ThrownPotionMixin"
   ],
   "client": [
-    "BiomeColorsMixin",
-    "CreativeInventoryScreenMixin",
-    "InventoryScreenMixin",
-    "SpriteResourceLoaderMixin$PalettedPermutationsAccessor"
+    "client.BiomeColorsMixin",
+    "client.CreativeInventoryScreenMixin",
+    "client.InventoryScreenMixin",
+    "client.SpriteResourceLoaderMixin"
   ],
   "mixinextras": {
     "minVersion": "0.5.0"

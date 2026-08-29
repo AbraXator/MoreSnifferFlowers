@@ -6,10 +6,11 @@ import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.BondripiaBlockEntity;
 import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -19,7 +20,7 @@ import net.nikdo53.tinymultiblocklib.client.IMultiblockRenderHelper;
 import net.nikdo53.tinymultiblocklib.components.PreviewMode;
 import org.jetbrains.annotations.NotNull;
 
-public class BondripiaBlockEntityRenderer<T extends BondripiaBlockEntity> implements BlockEntityRenderer<T>, IMultiblockRenderHelper {
+public class BondripiaBlockEntityRenderer<T extends BondripiaBlockEntity> implements BlockEntityRenderer<T> {
     private ModelPart model;
     private static final Material BONDRIPIA_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/bondripia"));
     private static final Material ACIDRIPIA_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/acidripia"));
@@ -30,15 +31,15 @@ public class BondripiaBlockEntityRenderer<T extends BondripiaBlockEntity> implem
 
     @Override
     public void render(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        if(blockEntity.isCenter() && blockEntity.getBlockState().getValue(ModStateProperties.AGE_2) >= 2) {
-
+        if(blockEntity.isCenter() && blockEntity.getBlockState().getValue(MSFStateProperties.AGE_2) >= 2) {
             poseStack.translate(0.5, 1.5, 0.5);
             poseStack.mulPose(Axis.XP.rotationDegrees(180));
-            PreviewMode previewMode = blockEntity.getPreviewMode();
 
-            VertexConsumer consumer = getConsumer(buffer, blockEntity, BONDRIPIA_TEXTURE, ACIDRIPIA_TEXTURE, ModBlocks.ACIDRIPIA.get());
+            Material material = blockEntity.getBlockState().is(MSFBlocks.ACIDRIPIA.get()) ? ACIDRIPIA_TEXTURE : BONDRIPIA_TEXTURE;
 
-            render(model, poseStack, consumer, packedLight, packedOverlay, previewMode);
+            VertexConsumer consumer = material.buffer(buffer, RenderType::entityCutout);
+
+            model.render(poseStack, consumer, packedLight, packedOverlay);
         }
     }
 

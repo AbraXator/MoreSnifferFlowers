@@ -43,10 +43,10 @@ public class ModColorHandler {
                 }
             }
             return -1;
-        }, ModBlocks.CAULORFLOWER.get());
+        }, MSFBlocks.CAULORFLOWER.get());
         event.register((state, level, pos, tintIndex) -> {
-            int color = state.getValue(ModStateProperties.BLOCK_PATTERN).getColor();
-            if (state.getValue(ModStateProperties.EMPTY)) color = 0xFFFFFF;
+            int color = state.getValue(MSFStateProperties.BLOCK_PATTERN).getColor();
+            if (state.getValue(MSFStateProperties.EMPTY)) color = 0xFFFFFF;
             if (tintIndex == 0) {
                 float[] colorHSB = getColorHSB(color);
                 return Color.HSBtoRGB(colorHSB[0], Math.max(colorHSB[1] / 1.7F, 0), Math.max(colorHSB[2], 0));
@@ -57,7 +57,7 @@ public class ModColorHandler {
             }
 
             return -1;
-        }, ModBlocks.PATTERNFLOWER.get());
+        }, MSFBlocks.PATTERNFLOWER.get());
         event.register((state, level, pos, tintIndex) -> {
                     var colorable = ((ColorableVivicusBlock) state.getBlock());
                     if(tintIndex == 0) {
@@ -72,7 +72,7 @@ public class ModColorHandler {
                             if (colorHSB[2] > 1) colorHSB[2] = 1f;
                         }
 
-                        if(state.is(ModBlocks.VIVICUS_LEAVES.get()) || state.is(ModBlocks.VIVICUS_LEAVES_SPROUT.get())) {
+                        if(state.is(MSFBlocks.VIVICUS_LEAVES.get()) || state.is(MSFBlocks.VIVICUS_LEAVES_SPROUT.get())) {
                             if (pos == null) pos = new BlockPos(0,0,0);
                             float hue = colorHSB[0] + ((1+ Mth.sin((float)pos.getX() + (float)pos.getY() + (float)pos.getZ())) / 15);
 
@@ -92,13 +92,13 @@ public class ModColorHandler {
                     }
 
                     return -1;
-                }, ModBlocks.VIVICUS_LOG.get(), ModBlocks.VIVICUS_WOOD.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get(),
-                ModBlocks.STRIPPED_VIVICUS_WOOD.get(), ModBlocks.VIVICUS_PLANKS.get(), ModBlocks.VIVICUS_STAIRS.get(),
-                ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_FENCE.get(), ModBlocks.VIVICUS_FENCE_GATE.get(),
-                ModBlocks.VIVICUS_DOOR.get(), ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get(),
-                ModBlocks.VIVICUS_BUTTON.get(), ModBlocks.VIVICUS_LEAVES.get(), ModBlocks.VIVICUS_SAPLING.get(),
-                ModBlocks.VIVICUS_LEAVES_SPROUT.get(), ModBlocks.VIVICUS_SIGN.get(), ModBlocks.VIVICUS_HANGING_SIGN.get(),
-                ModBlocks.VIVICUS_SAPLING.get());
+                }, MSFBlocks.VIVICUS_LOG.get(), MSFBlocks.VIVICUS_WOOD.get(), MSFBlocks.STRIPPED_VIVICUS_LOG.get(), MSFBlocks.STRIPPED_VIVICUS_LOG.get(),
+                MSFBlocks.STRIPPED_VIVICUS_WOOD.get(), MSFBlocks.VIVICUS_PLANKS.get(), MSFBlocks.VIVICUS_STAIRS.get(),
+                MSFBlocks.VIVICUS_SLAB.get(), MSFBlocks.VIVICUS_FENCE.get(), MSFBlocks.VIVICUS_FENCE_GATE.get(),
+                MSFBlocks.VIVICUS_DOOR.get(), MSFBlocks.VIVICUS_TRAPDOOR.get(), MSFBlocks.VIVICUS_PRESSURE_PLATE.get(),
+                MSFBlocks.VIVICUS_BUTTON.get(), MSFBlocks.VIVICUS_LEAVES.get(), MSFBlocks.VIVICUS_SAPLING.get(),
+                MSFBlocks.VIVICUS_LEAVES_SPROUT.get(), MSFBlocks.VIVICUS_SIGN.get(), MSFBlocks.VIVICUS_HANGING_SIGN.get(),
+                MSFBlocks.VIVICUS_SAPLING.get());
     }
 
     @SubscribeEvent
@@ -110,29 +110,29 @@ public class ModColorHandler {
             } else {
                 return Dye.colorForDye(((DyespriaItem) stack.getItem()), dye.color());
             }
-        }, ModItems.DYESPRIA.get());
+        }, MSFItems.DYESPRIA.get());
 
         event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor(),
-                ModItems.EXTRACTED_BOTTLE.get(), ModItems.REBREWED_POTION.get(), ModItems.REBREWED_SPLASH_POTION.get(), ModItems.REBREWED_LINGERING_POTION.get());
+                MSFItems.EXTRACTED_BOTTLE.get(), MSFItems.REBREWED_POTION.get(), MSFItems.REBREWED_SPLASH_POTION.get(), MSFItems.REBREWED_LINGERING_POTION.get());
 
         event.register(((stack, tintIndex) ->{
            BlockPattern pattern = BlockPattern.fromPatternspria(stack);
            if(tintIndex != 0 || pattern == BlockPattern.EMPTY) return -1;
-           return alphaFixer(stack.getOrDefault(ModDataComponents.COLOR.get(), pattern.getColor()));
-        }), ModItems.PATTERNSPRIA.get());
+           return alphaFixer(stack.getOrDefault(MSFDataComponents.COLOR.get(), pattern.getColor()));
+        }), MSFItems.PATTERNSPRIA.get());
 
         event.register(((stack, tintIndex) ->{
             if (tintIndex != 0) return -1;
-            return alphaFixer(stack.getOrDefault(ModDataComponents.COLOR.get(), 0xffffffff));
-        }), ModItems.ROOTED_SOUP.get());
+            return alphaFixer(stack.getOrDefault(MSFDataComponents.COLOR.get(), 0xffffffff));
+        }), MSFItems.ROOTED_SOUP.get());
 
 
         event.register(((stack, tintIndex) -> {
                     if (tintIndex != 0) return -1;
 
-                    if (stack.has(ModDataComponents.COLOR)) {
-                        int color = stack.getOrDefault(ModDataComponents.COLOR, 0xffffffff);
-                        int colorId = stack.getOrDefault(ModDataComponents.COLOR_ID, 0);
+                    if (stack.has(MSFDataComponents.COLOR)) {
+                        int color = stack.getOrDefault(MSFDataComponents.COLOR, 0xffffffff);
+                        int colorId = stack.getOrDefault(MSFDataComponents.COLOR_ID, 0);
 
                         if (Colorable.isModdedDye(DyeColor.byId(colorId))) {
                             float[] colorHSB = getColorHSB(color);
@@ -149,10 +149,10 @@ public class ModColorHandler {
                     }
                     return -1;
                 }
-        ), ModBlocks.VIVICUS_LOG.get(),  ModBlocks.VIVICUS_WOOD.get(), ModBlocks.STRIPPED_VIVICUS_LOG.get(),  ModBlocks.STRIPPED_VIVICUS_WOOD.get(), ModBlocks.VIVICUS_PLANKS.get(),
-                ModBlocks.VIVICUS_STAIRS.get(), ModBlocks.VIVICUS_SLAB.get(), ModBlocks.VIVICUS_FENCE.get(), ModBlocks.VIVICUS_FENCE_GATE.get(), ModBlocks.VIVICUS_DOOR.get(),
-                ModBlocks.VIVICUS_TRAPDOOR.get(), ModBlocks.VIVICUS_PRESSURE_PLATE.get(), ModBlocks.VIVICUS_BUTTON.get(), ModBlocks.VIVICUS_LEAVES.get(),
-                ModBlocks.VIVICUS_LEAVES_SPROUT.get(), ModItems.VIVICUS_SIGN.get(), ModItems.VIVICUS_HANGING_SIGN.get(), ModItems.VIVICUS_BOAT.get(), ModItems.VIVICUS_CHEST_BOAT.get());
+        ), MSFBlocks.VIVICUS_LOG.get(),  MSFBlocks.VIVICUS_WOOD.get(), MSFBlocks.STRIPPED_VIVICUS_LOG.get(),  MSFBlocks.STRIPPED_VIVICUS_WOOD.get(), MSFBlocks.VIVICUS_PLANKS.get(),
+                MSFBlocks.VIVICUS_STAIRS.get(), MSFBlocks.VIVICUS_SLAB.get(), MSFBlocks.VIVICUS_FENCE.get(), MSFBlocks.VIVICUS_FENCE_GATE.get(), MSFBlocks.VIVICUS_DOOR.get(),
+                MSFBlocks.VIVICUS_TRAPDOOR.get(), MSFBlocks.VIVICUS_PRESSURE_PLATE.get(), MSFBlocks.VIVICUS_BUTTON.get(), MSFBlocks.VIVICUS_LEAVES.get(),
+                MSFBlocks.VIVICUS_LEAVES_SPROUT.get(), MSFItems.VIVICUS_SIGN.get(), MSFItems.VIVICUS_HANGING_SIGN.get(), MSFItems.VIVICUS_BOAT.get(), MSFItems.VIVICUS_CHEST_BOAT.get());
 
     }
 
@@ -241,7 +241,7 @@ public class ModColorHandler {
            return original;
         }
 
-        if (ModStatePropertiesUnsafe.hasCustomLeavesProperties(blockState) && !blockState.getValue(ModStatePropertiesUnsafe.NOT_CORRUPTED)) {
+        if (MSFStateProperties.hasCustomLeavesProperties(blockState) && !blockState.getValue(MSFStateProperties.NOT_CORRUPTED)) {
             float[] colorHSB = ModColorHandler.getColorHSB(original);
             original = (Color.HSBtoRGB(-colorHSB[0] / 1.5F, colorHSB[1] - 0.25F, colorHSB[2] - 0.23F));
         }

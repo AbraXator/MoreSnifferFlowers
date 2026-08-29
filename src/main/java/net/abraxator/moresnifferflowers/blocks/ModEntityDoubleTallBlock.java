@@ -52,18 +52,18 @@ public abstract class ModEntityDoubleTallBlock extends Block implements IModEnti
     }
 
     @Override
-    public void onRemove(@NotNull BlockState state, Level level, BlockPos pos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(@NotNull BlockState state, Level level, BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
         if(isUpper(state)) {
-            Containers.dropContentsOnDestroy(state, pNewState, level, pos);
+            Containers.dropContentsOnDestroy(state, newState, level, pos);
         }
 
-        super.onRemove(state, level, pos, pNewState, pMovedByPiston);
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
     
     @Override
-    public BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        if (pFacing.getAxis() != Direction.Axis.Y || isLower(state) != (pFacing == Direction.UP) || isStateThis(pFacingState) && !areTwoHalfSame(state, pFacingState)) {
-            return isLower(state) && pFacing == Direction.DOWN && !canSurvive(state, level, pCurrentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, pFacing, pFacingState, level, pCurrentPos, pFacingPos);
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        if (facing.getAxis() != Direction.Axis.Y || isLower(state) != (facing == Direction.UP) || isStateThis(facingState) && !areTwoHalfSame(state, facingState)) {
+            return isLower(state) && facing == Direction.DOWN && !canSurvive(state, level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         } else {
             return Blocks.AIR.defaultBlockState();
         }

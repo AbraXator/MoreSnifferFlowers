@@ -1,8 +1,8 @@
 package net.abraxator.moresnifferflowers.blocks;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.abraxator.moresnifferflowers.init.ModBlocks;
-import net.abraxator.moresnifferflowers.init.ModItems;
+import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -92,7 +91,7 @@ public class DripsaltBlock extends PointedDripstoneBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.is(ModItems.SALTY_SPICE.get()) && stack.getCount() >= 5){
+        if (stack.is(MSFItems.SALTY_SPICE.get()) && stack.getCount() >= 5){
             for (int i = 0; i < 5; i++){
                 if (level.getBlockState(pos.above(i + 1)).isAir() && level.getBlockState(pos.above(i)).is(this)) {
                     level.setBlock(pos.above(i + 1), this.defaultBlockState(), 3);
@@ -367,7 +366,7 @@ public class DripsaltBlock extends PointedDripstoneBlock {
     }
 
     private static void createDripstone(LevelAccessor level, BlockPos pos, Direction direction, DripstoneThickness thickness) {
-        BlockState blockstate = ModBlocks.DRIPSALT.get().defaultBlockState().setValue(TIP_DIRECTION, direction).setValue(THICKNESS, thickness).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(pos).getType() == Fluids.WATER));
+        BlockState blockstate = MSFBlocks.DRIPSALT.get().defaultBlockState().setValue(TIP_DIRECTION, direction).setValue(THICKNESS, thickness).setValue(WATERLOGGED, Boolean.valueOf(level.getFluidState(pos).getType() == Fluids.WATER));
         level.setBlock(pos, blockstate, 3);
     }
 
@@ -410,7 +409,7 @@ public class DripsaltBlock extends PointedDripstoneBlock {
         } else {
             Direction direction = state.getValue(TIP_DIRECTION);
             BiPredicate<BlockPos, BlockState> bipredicate = (p_202023_, p_202024_) -> {
-                return p_202024_.is(ModBlocks.DRIPSALT.get()) && p_202024_.getValue(TIP_DIRECTION) == direction;
+                return p_202024_.is(MSFBlocks.DRIPSALT.get()) && p_202024_.getValue(TIP_DIRECTION) == direction;
             };
             return findBlockVertical(level, pos, direction.getAxisDirection(), bipredicate, (p_154168_) -> {
                 return isTip(p_154168_, isTipMerge);
@@ -470,10 +469,10 @@ public class DripsaltBlock extends PointedDripstoneBlock {
     private static Optional<BlockPos> findRootBlock(Level level, BlockPos pos, BlockState state, int maxIterations) {
         Direction direction = state.getValue(TIP_DIRECTION);
         BiPredicate<BlockPos, BlockState> bipredicate = (p_202015_, p_202016_) -> {
-            return p_202016_.is(ModBlocks.DRIPSALT.get()) && p_202016_.getValue(TIP_DIRECTION) == direction;
+            return p_202016_.is(MSFBlocks.DRIPSALT.get()) && p_202016_.getValue(TIP_DIRECTION) == direction;
         };
         return findBlockVertical(level, pos, direction.getOpposite().getAxisDirection(), bipredicate, (p_154245_) -> {
-            return !p_154245_.is(ModBlocks.DRIPSALT.get());
+            return !p_154245_.is(MSFBlocks.DRIPSALT.get());
         }, maxIterations);
     }
 
@@ -484,7 +483,7 @@ public class DripsaltBlock extends PointedDripstoneBlock {
     }
 
     private static boolean isTip(BlockState state, boolean isTipMerge) {
-        if (!state.is(ModBlocks.DRIPSALT.get())) {
+        if (!state.is(MSFBlocks.DRIPSALT.get())) {
             return false;
         } else {
             DripstoneThickness dripstonethickness = state.getValue(THICKNESS);
@@ -505,7 +504,7 @@ public class DripsaltBlock extends PointedDripstoneBlock {
     }
 
     private static boolean isStalactiteStartPos(BlockState state, LevelReader level, BlockPos pos) {
-        return isStalactite(state) && !level.getBlockState(pos.above()).is(ModBlocks.DRIPSALT.get());
+        return isStalactite(state) && !level.getBlockState(pos.above()).is(MSFBlocks.DRIPSALT.get());
     }
 
     public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
@@ -513,7 +512,7 @@ public class DripsaltBlock extends PointedDripstoneBlock {
     }
 
     private static boolean isPointedDripstoneWithDirection(BlockState state, Direction dir) {
-        return state.is(ModBlocks.DRIPSALT.get()) && state.getValue(TIP_DIRECTION) == dir;
+        return state.is(MSFBlocks.DRIPSALT.get()) && state.getValue(TIP_DIRECTION) == dir;
     }
 
     @Nullable

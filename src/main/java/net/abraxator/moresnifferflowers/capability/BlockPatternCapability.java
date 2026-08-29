@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.client.MSFClientUtils;
-import net.abraxator.moresnifferflowers.init.ModDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -53,14 +53,14 @@ public class BlockPatternCapability {
     }
 
     protected static BlockPatternCapability getBlockPatterns(LevelChunk chunk){
-        return chunk.getData(ModDataAttachments.BLOCK_PATTERNS.get());
+        return chunk.getData(MSFDataAttachments.BLOCK_PATTERNS.get());
     }
 
    //Doesnt rebuild rendering
     protected static void operation(LevelChunk chunk, Consumer<Map<BlockPos, PatternData>> updater) {
-        BlockPatternCapability data = chunk.getData(ModDataAttachments.BLOCK_PATTERNS);
+        BlockPatternCapability data = chunk.getData(MSFDataAttachments.BLOCK_PATTERNS);
         updater.accept(data.patterns);
-        chunk.setData(ModDataAttachments.BLOCK_PATTERNS.get(), data);
+        chunk.setData(MSFDataAttachments.BLOCK_PATTERNS.get(), data);
     }
 
     protected static void operation(Level level, BlockPos pos, Consumer<Map<BlockPos, PatternData>> updater) {
@@ -96,7 +96,7 @@ public class BlockPatternCapability {
 
     public static PatternData getPattern(BlockPos pos, Level level){
         LevelChunk chunk = level.getChunkAt(pos);
-        return chunk.getData(ModDataAttachments.BLOCK_PATTERNS).patterns.get(pos);
+        return chunk.getData(MSFDataAttachments.BLOCK_PATTERNS).patterns.get(pos);
     }
 
 

@@ -2,9 +2,9 @@ package net.abraxator.moresnifferflowers.blocks;
 
 import com.mojang.serialization.MapCodec;
 import net.abraxator.moresnifferflowers.blockentities.TorchflowerBlockEntity;
-import net.abraxator.moresnifferflowers.init.ModItems;
-import net.abraxator.moresnifferflowers.init.ModParticles;
-import net.abraxator.moresnifferflowers.init.ModStateProperties;
+import net.abraxator.moresnifferflowers.init.MSFItems;
+import net.abraxator.moresnifferflowers.init.MSFParticles;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.core.BlockPos;
@@ -32,8 +32,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -50,7 +48,7 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, Mo
 
     public TorchflowerAflameBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(defaultBlockState().setValue(getAgeProperty(), 0).setValue(ModStateProperties.FIRE_TICKS, 0));
+        this.registerDefaultState(defaultBlockState().setValue(getAgeProperty(), 0).setValue(MSFStateProperties.FIRE_TICKS, 0));
     }
 
     @Override
@@ -60,14 +58,14 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, Mo
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(getAgeProperty()).add(ModStateProperties.FIRE_TICKS);
+        builder.add(getAgeProperty()).add(MSFStateProperties.FIRE_TICKS);
     }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
         if (getAge(state) == getMaxAge()){
-            popResource(level, pos, ModItems.FIERY_SPICE.get().getDefaultInstance());
+            popResource(level, pos, MSFItems.FIERY_SPICE.get().getDefaultInstance());
         }
     }
 
@@ -96,7 +94,7 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, Mo
                 double d1 = center.x + random.nextDouble() / 3;
                 double d2 = (center.y + 0.7) - random.nextDouble() / 2;
                 double d3 = center.z + random.nextDouble() / 3;
-                Particle particle = Minecraft.getInstance().particleEngine.createParticle(ModParticles.TORCHFLAME.get(), d1, d2, d3, 0.0D, 0.0D, 0.0D);
+                Particle particle = Minecraft.getInstance().particleEngine.createParticle(MSFParticles.TORCHFLAME.get(), d1, d2, d3, 0.0D, 0.0D, 0.0D);
                 if (particle != null) {
                     particle.scale(0.5F + random.nextFloat());
                 }
@@ -119,10 +117,10 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, Mo
             makeGrowOnTick(state, level, pos);
         }
         if (age == 1 && (!level.getBlockState(pos.below(2)).is(Blocks.NETHERRACK) || level.isRainingAt(pos))) {
-            int fire = state.getValue(ModStateProperties.FIRE_TICKS);
+            int fire = state.getValue(MSFStateProperties.FIRE_TICKS);
 
             if (fire < 5 && !level.isRainingAt(pos)) {
-                level.setBlockAndUpdate(pos, state.setValue(ModStateProperties.FIRE_TICKS, fire + 1));
+                level.setBlockAndUpdate(pos, state.setValue(MSFStateProperties.FIRE_TICKS, fire + 1));
             } else {
                 level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
                 level.setBlockAndUpdate(pos, state.setValue(getAgeProperty(), 2));
@@ -145,7 +143,7 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, Mo
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         int age = getAge(state);
-        int fire = state.getValue(ModStateProperties.FIRE_TICKS);
+        int fire = state.getValue(MSFStateProperties.FIRE_TICKS);
 
 
         if (age == 0 && stack.is(Items.BONE_MEAL)) {
@@ -172,7 +170,7 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, Mo
             if (!player.isCreative()) player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
 
             if (fire < 5) {
-                level.setBlockAndUpdate(pos, state.setValue(ModStateProperties.FIRE_TICKS, fire + 1));
+                level.setBlockAndUpdate(pos, state.setValue(MSFStateProperties.FIRE_TICKS, fire + 1));
                 level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
 
             } else {
@@ -219,6 +217,6 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, Mo
 
     @Override
     public IntegerProperty getAgeProperty() {
-        return ModStateProperties.AGE_2;
+        return MSFStateProperties.AGE_2;
     }
 }
