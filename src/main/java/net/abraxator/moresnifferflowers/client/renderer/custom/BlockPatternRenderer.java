@@ -1,150 +1,109 @@
 package net.abraxator.moresnifferflowers.client.renderer.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
-import net.abraxator.moresnifferflowers.client.ClientRegistration;
 import net.abraxator.moresnifferflowers.components.BlockPattern;
 import net.abraxator.moresnifferflowers.init.ModDataAttachments;
 import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.event.AddSectionGeometryEvent;
 import net.neoforged.neoforge.client.model.lighting.QuadLighter;
-import org.joml.Matrix3f;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.*;
 
 public class BlockPatternRenderer {
-    public static final BlockPatternRenderer.CameraTracker CAMERA_TRACKER = new BlockPatternRenderer.CameraTracker();
-    public static final BlockPatternRenderer BUFFER_MANAGER = new BlockPatternRenderer();
+    public static void renderAll(AddSectionGeometryEvent.@NotNull SectionRenderingContext context, Set<BlockPatternQuad> quads) {
+        boolean isTransparent = ModClientConfig.CLIENT_CONFIG.isLoaded() && ModClientConfig.BLOCK_PATTERN_TRANSPARENCY.get();
 
-    private boolean dirty = true;
-    private final List<RenderQuad> cachedQuads = new ArrayList<>();
+        PoseStack poseStack = context.getPoseStack();
 
-    public static void cacheAndRender(Frustum frustum, Camera camera, Level level, Minecraft minecraft, PoseStack poseStack) {
-        double camX = camera.getPosition().x;
-        double camY = camera.getPosition().y;
-        double camZ = camera.getPosition().z;
+        for (BlockPatternQuad quad : quads) {
+            BlockPos pos = quad.pos();
+            poseStack.pushPose();
+            poseStack.translate(SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()));
 
-        if (level == null || minecraft.player == null) return;
+            quad.render(poseStack, context.getOrCreateChunkBuffer(isTransparent ? RenderType.translucent() : RenderType.cutout()));
 
-        if (CAMERA_TRACKER.hasMoved(camera)) {
-            BUFFER_MANAGER.markDirty();
+            poseStack.popPose();
         }
-        int chunkRenderDistance = Math.min(ModClientConfig.getBlockPatternRenderDistance(), minecraft.options.getEffectiveRenderDistance());
+    }
 
-        poseStack.pushPose();
-        poseStack.translate(-camX, -camY, -camZ);
+    public static boolean isInsideSection(BlockPos origin, BlockPos pos) {
+        return SectionPos.of(origin).equals(SectionPos.of(pos));
+    }
 
-        List<LevelChunk> levelChunks = new ArrayList<>();
+    @SuppressWarnings("deprecation")
+    public static Set<BlockPatternQuad> cache(Level level, BlockPos origin) {
+        Set<BlockPatternQuad> quads = new HashSet<>();
 
-        ChunkPos playerChunkPos = minecraft.player.chunkPosition();
-        for (int x = -chunkRenderDistance; x < chunkRenderDistance ; x++) {
-            for (int z = -chunkRenderDistance; z < chunkRenderDistance ; z++) {
-                levelChunks.add(level.getChunk(x + playerChunkPos.x,z + playerChunkPos.z));
+        Map<BlockPos, BlockPatternCapability.PatternData> patterns = BlockPatternCapability.getPatterns(level, origin);
+        for (BlockPos pos : patterns.keySet()) {
+            if (!isInsideSection(origin, pos) ) continue;
+
+            BlockPatternCapability.PatternData data = patterns.get(pos);
+
+            ResourceLocation resourceLocation = MoreSnifferFlowers.loc("block/block_pattern/" + BlockPattern.fromId(data.patternId()).getSerializedName());
+            TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getSprite(resourceLocation);
+            BlockState state = level.getBlockState(pos);
+            if (state.isAir()) continue;
+
+            for (Direction dir : Direction.values()) {
+                BlockPos relativePos = pos.relative(dir);
+                BlockState relativeState = level.getBlockState(relativePos);
+
+                boolean faceSturdy = state.isFaceSturdy(level, pos, dir);
+                boolean notBlocked = !relativeState.isFaceSturdy(level, relativePos, dir.getOpposite());
+                boolean noOcclusion = !relativeState.canOcclude();
+
+                boolean canRenderFace = faceSturdy && (notBlocked || noOcclusion);
+                if (!canRenderFace) continue;
+
+                float[] brightness = new float[]{1,1,1,1};
+                int[] lightmap;
+                boolean smoothLighting = ModClientConfig.BLOCK_PATTERN_SMOOTH_LIGHTING.get();
+
+                if (smoothLighting) {
+                    ModelBlockRenderer.AmbientOcclusionFace aoFace = new ModelBlockRenderer.AmbientOcclusionFace();
+                    aoFace.calculate(level, state, relativePos, dir, new float[Direction.values().length * 2], new BitSet(3), true);
+                    brightness = aoFace.brightness;
+                    lightmap = aoFace.lightmap;
+
+                } else {
+                    int packed = getPackedLight(level, relativePos);
+                    if (data.isGlowing()) packed = LightTexture.FULL_BRIGHT;
+                    lightmap = new int[]{packed,packed,packed,packed};
+                }
+
+                quads.add(new BlockPatternQuad(pos, dir, data.color(), sprite, smoothLighting, data.direction(), data.isGlowing(), brightness, lightmap));
             }
         }
-
-        BUFFER_MANAGER.cachePatterns(level, camX, camY, camZ, levelChunks, frustum);
-        BUFFER_MANAGER.render(poseStack, Minecraft.getInstance().renderBuffers().bufferSource());
-
-        poseStack.popPose();
-    }
-
-    public void markDirty() {
-        this.dirty = true;
-    }
-
-    public void cachePatterns(Level level, double camX, double camY, double camZ, List<LevelChunk> levelChunks, Frustum frustum) {
-        if (!dirty) return;
-        dirty = false;
-        cachedQuads.clear();
-
-        frustum.prepare(camX, camY, camZ);
-
-        for (LevelChunk chunk : levelChunks) {
-            BlockPatternCapability storage = chunk.getData(ModDataAttachments.BLOCK_PATTERNS);
-
-                Stream<BlockPos> patternPositions = storage.getPatterns().keySet().stream();
-
-                patternPositions.forEach(pos -> {
-                    BlockPatternCapability.PatternData data = storage.getPattern(pos);
-
-                    if (!(data != null && frustum.isVisible(new AABB(pos)))) return;
-
-                    ResourceLocation resourceLocation = MoreSnifferFlowers.loc("block/block_pattern/" + BlockPattern.fromId(data.patternId()).getSerializedName());
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getSprite(resourceLocation);
-                    BlockState state = level.getBlockState(pos);
-
-                    for (Direction dir : Direction.values()) {
-                        BlockPos relativePos = pos.relative(dir);
-                        BlockState relativeState = level.getBlockState(relativePos);
-
-                        boolean faceSturdy = state.isFaceSturdy(level, pos, dir);
-                        boolean notBlocked = !relativeState.isFaceSturdy(level, relativePos, dir.getOpposite());
-                        boolean noOcclusion = !relativeState.canOcclude();
-
-                        boolean canRenderFace = faceSturdy && (notBlocked || noOcclusion);
-                        if (!canRenderFace) continue;
-
-                        float[] brightness = new float[]{1,1,1,1};
-                        int[] lightmap;
-                        boolean smoothLighting = ModClientConfig.BLOCK_PATTERN_SMOOTH_LIGHTING.get();
-
-                        if (smoothLighting) {
-                            ModelBlockRenderer.AmbientOcclusionFace aoFace = new ModelBlockRenderer.AmbientOcclusionFace();
-                            aoFace.calculate(level, state, relativePos, dir, new float[Direction.values().length * 2], new BitSet(3), true);
-                            brightness = aoFace.brightness;
-                            lightmap = aoFace.lightmap;
-
-                        } else {
-                            int packed = getPackedLight(level, relativePos);
-                            if (data.isGlowing()) packed = LightTexture.FULL_BRIGHT;
-                            lightmap = new int[]{packed,packed,packed,packed};
-                        }
-
-                        cachedQuads.add(RenderQuad.create(pos, dir, data.color(), sprite, smoothLighting, data.direction(), data.isGlowing(), brightness, lightmap));
-                    }
-                });
-        }
+        return quads;
     }
 
 
-    public record RenderQuad(BlockPos pos, Direction direction, int color, TextureAtlasSprite sprite, boolean smoothLighting, Direction rotation, boolean isGlowing, float[] brightness, int[] lightmap) {
-
-        public static RenderQuad create(BlockPos pos, Direction face, int color, TextureAtlasSprite sprite, boolean smoothLighting, Direction rotation, boolean isGlowing, float[] brightness, int[] lightmap) {
-            return new RenderQuad(pos.immutable(), face, color, sprite, smoothLighting, rotation, isGlowing, brightness, lightmap);
-        }
-
+    public record BlockPatternQuad(BlockPos pos, Direction direction, int color, TextureAtlasSprite sprite, boolean smoothLighting, Direction rotation, boolean isGlowing, float[] brightness, int[] lightmap) {
         private void render(PoseStack poseStack, VertexConsumer buffer) {
             poseStack.pushPose();
-            poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
+         //   poseStack.translate(pos.getX(), pos.getY(), pos.getZ());
             translateToFace(poseStack, direction, pos);
 
             Vec3i n = direction.getNormal();
@@ -241,20 +200,6 @@ public class BlockPatternRenderer {
         }
     }
 
-    public void render(PoseStack stack, MultiBufferSource.BufferSource bufferSource) {
-        VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutoutMipped());
-
-        if (ModClientConfig.CLIENT_CONFIG.isLoaded() && ModClientConfig.BLOCK_PATTERN_TRANSPARENCY.get()){
-            buffer = bufferSource.getBuffer(RenderType.translucent());
-        }
-
-        for (RenderQuad quad : cachedQuads) {
-            quad.render(stack, buffer);
-        }
-
-        bufferSource.endLastBatch();
-    }
-
     private static void translateToFace(PoseStack stack, Direction face, BlockPos pos) {
         double configOffset = 0.001f;
         float distance = (float) (configOffset * (Math.abs((pos.getX() + pos.getY() + pos.getZ()) % 4) + 1));
@@ -313,40 +258,5 @@ public class BlockPatternRenderer {
         int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
         int skyLight = level.getBrightness(LightLayer.SKY, pos);
         return LightTexture.pack(blockLight, skyLight);
-    }
-
-    public static class CameraTracker {
-        private Vec3 lastPosition = Vec3.ZERO;
-        private float lastYaw = 0f;
-        private float lastPitch = 0f;
-
-        private static final double MOVE_THRESHOLD = 0.01f; // blocks
-        private static final float ROTATE_THRESHOLD = 0.2f; // degrees
-
-        public boolean hasMoved(Camera camera) {
-            Vec3 currentPos = camera.getPosition();
-            float yaw = camera.getYRot();
-            float pitch = camera.getXRot();
-
-            double dx = currentPos.x - lastPosition.x;
-            double dy = currentPos.y - lastPosition.y;
-            double dz = currentPos.z - lastPosition.z;
-
-            double distSq = dx * dx + dy * dy + dz * dz;
-            float deltaYaw = Math.abs(yaw - lastYaw);
-            float deltaPitch = Math.abs(pitch - lastPitch);
-
-            update(camera);
-
-            return distSq > MOVE_THRESHOLD * MOVE_THRESHOLD ||
-                    deltaYaw > ROTATE_THRESHOLD ||
-                    deltaPitch > ROTATE_THRESHOLD;
-        }
-
-        public void update(Camera camera) {
-            this.lastPosition = camera.getPosition();
-            this.lastYaw = camera.getYRot();
-            this.lastPitch = camera.getXRot();
-        }
     }
 }

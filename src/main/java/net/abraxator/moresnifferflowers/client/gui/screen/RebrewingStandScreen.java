@@ -1,9 +1,8 @@
 package net.abraxator.moresnifferflowers.client.gui.screen;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.client.ClientRegistration;
+import net.abraxator.moresnifferflowers.events.ClientRegistration;
 import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

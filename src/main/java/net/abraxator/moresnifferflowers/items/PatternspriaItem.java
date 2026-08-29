@@ -2,8 +2,6 @@ package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
-import net.abraxator.moresnifferflowers.client.ClientRegistration;
-import net.abraxator.moresnifferflowers.client.ModColorHandler;
 import net.abraxator.moresnifferflowers.client.gui.screen.DyespriaTooltip;
 import net.abraxator.moresnifferflowers.components.BlockPattern;
 import net.abraxator.moresnifferflowers.components.DyespriaMode;
@@ -16,7 +14,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -26,12 +23,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.tooltip.BundleTooltip;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +36,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.text.WordUtils;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.*;
@@ -53,7 +47,6 @@ public class PatternspriaItem extends Item {
         super(properties);
     }
 
-    private final Map<BlockPos, BlockPatternCapability.PatternData> cached_patterns = new HashMap<>();
     public static final int DEFAULT_COLOR = 0xA9948D;
 
     @Override
@@ -76,7 +69,7 @@ public class PatternspriaItem extends Item {
             }
             if (stack.getOrDefault(ModDataComponents.COLOR, DEFAULT_COLOR) != BlockPatternCapability.getPattern(blockPos, level).color() ) {
                 copyColor(stack, level, blockPos);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.sidedSuccess(level.isClientSide());
             }
         }
 
@@ -95,11 +88,12 @@ public class PatternspriaItem extends Item {
             PatternspriaMode.DyespriaSelector dyespriaSelector = new PatternspriaMode.DyespriaSelector(blockPos, level, context.getClickedFace());
 
             Set<BlockPos> set = dyespriaMode.getSelector().apply(dyespriaSelector);
+            final Map<BlockPos, BlockPatternCapability.PatternData> cachedPatterns = BlockPatternCapability.getPatterns(level, blockPos);
+
             set.stream().sorted(new EntityDistanceComparator(blockPos)).takeWhile(t -> canContinueDyeing.get()).forEach(blockPos1 -> {
-                var state = level.getBlockState(blockPos1);
 
                 if(canUse(blockPos1, level, stack) && fromPatternspria != BlockPattern.EMPTY) {
-                    patternOne(stack, level, blockPos1, fromPatternspria, context.getClickedFace(), horizontalDirection);
+                    patternOne(stack, level, blockPos1, fromPatternspria, context.getClickedFace(), horizontalDirection, cachedPatterns);
                     currentCount.getAndDecrement();
 
                 } else if (stack.getOrDefault(ModDataComponents.AMOUNT, 0) <= 0 || fromPatternspria == BlockPattern.EMPTY){
@@ -111,18 +105,16 @@ public class PatternspriaItem extends Item {
                 }
             });
 
-            if (!level.isClientSide) {
-                BlockPatternCapability.setBulkPatterns(cached_patterns, level);
-                cached_patterns.clear();
-            }
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            BlockPatternCapability.setBulkPatterns(cachedPatterns, level);
+
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
 
         BlockPattern pattern = fromPatternspria;
         if (BlockPatternCapability.hasPattern(blockPos, level) && pattern != BlockPattern.EMPTY ) {
             BlockPatternCapability.PatternData patternData = BlockPatternCapability.getPattern(blockPos, level);
             if (!patternData.direction().equals(horizontalDirection) && pattern.getId() == patternData.patternId()){
-                BlockPatternCapability.setPattern(blockPos,new BlockPatternCapability.PatternData(patternData.patternId(), patternData.color(), horizontalDirection, patternData.isGlowing() ) ,  level);
+                BlockPatternCapability.setPattern(level,blockPos, new BlockPatternCapability.PatternData(patternData.patternId(), patternData.color(), horizontalDirection, patternData.isGlowing() ));
                 return InteractionResult.SUCCESS;
             }
         }
@@ -134,21 +126,14 @@ public class PatternspriaItem extends Item {
         return stack.getOrDefault(ModDataComponents.PATTERNSPRIA_MODE, PatternspriaMode.SINGLE);
     }
 
-    public boolean patternOne(ItemStack stack, Level level, BlockPos blockPos, BlockPattern pattern, Direction face, Direction horizontalDirection) {
-        if (!canUse(blockPos, level, stack) && pattern == BlockPattern.EMPTY) {
-            return false;
-        }
+    public void patternOne(ItemStack stack, Level level, BlockPos blockPos, BlockPattern pattern, Direction face, Direction horizontalDirection, Map<BlockPos, BlockPatternCapability.PatternData> cachedPatterns) {
 
         int color = getColor(stack);
         if (BlockPatternCapability.hasPattern(blockPos, level)) color = BlockPatternCapability.getPattern(blockPos, level).color();
 
-        if (!level.isClientSide) {
-            cached_patterns.put(blockPos.immutable(), new BlockPatternCapability.PatternData(pattern.getId(), color, horizontalDirection, false));
-        }
+        cachedPatterns.put(blockPos.immutable(), new BlockPatternCapability.PatternData(pattern.getId(), color, horizontalDirection, false));
 
         finishColoring(pattern.getItemStack(stack), level, stack, blockPos, face);
-
-        return true;
     }
 
     private boolean canUse(BlockPos pos, Level level, ItemStack patternspria) {
@@ -190,7 +175,7 @@ public class PatternspriaItem extends Item {
 
 
         BlockPattern.setPatternToHolderStack(patternspria, blockPattern, blockPattern.getCount(), getPatternspriaUses(patternspria));
-        if (level.isClientSide && pattern != BlockPattern.EMPTY) {
+        if (level.isClientSide() && pattern != BlockPattern.EMPTY) {
             spawnParticles(level.getRandom(), level, pattern, blockPos, face, patternspria);
         }
     }

@@ -33,7 +33,6 @@ public class ModPacketHandler {
         registrar.play(CorruptionParticlePacket.TYPE, CorruptionParticlePacket.STREAM_CODEC);
         registrar.play(DyespriaDisplayModeChangePacket.TYPE, DyespriaDisplayModeChangePacket.STREAM_CODEC);
         registrar.play(SaltemoneParticlePacket.TYPE, SaltemoneParticlePacket.STREAM_CODEC);
-        registrar.play(SyncBlockPatternsPacket.TYPE, SyncBlockPatternsPacket.STREAM_CODEC);
         registrar.play(SyncGluedPacket.TYPE, SyncGluedPacket.STREAM_CODEC);
         registrar.play(SyncMouthSlotsPacket.TYPE, SyncMouthSlotsPacket.STREAM_CODEC);
         registrar.play(SyncSlipperyPacket.TYPE, SyncSlipperyPacket.STREAM_CODEC);

@@ -1,7 +1,6 @@
-package net.abraxator.moresnifferflowers.client;
+package net.abraxator.moresnifferflowers.events;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.blockentities.ModCauldronBlockEntity;
 import net.abraxator.moresnifferflowers.client.gui.screen.ClientDyespriaTooltip;
 import net.abraxator.moresnifferflowers.client.gui.screen.DyespriaTooltip;
 import net.abraxator.moresnifferflowers.client.gui.screen.GluedOverlay;
@@ -11,7 +10,6 @@ import net.abraxator.moresnifferflowers.client.model.block.*;
 import net.abraxator.moresnifferflowers.client.model.entity.*;
 import net.abraxator.moresnifferflowers.client.particle.*;
 import net.abraxator.moresnifferflowers.client.renderer.block.*;
-import net.abraxator.moresnifferflowers.client.renderer.custom.BlockPatternRenderer;
 import net.abraxator.moresnifferflowers.client.renderer.entity.*;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.client.Minecraft;

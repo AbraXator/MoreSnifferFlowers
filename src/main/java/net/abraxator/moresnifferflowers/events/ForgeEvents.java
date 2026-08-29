@@ -75,14 +75,6 @@ public class ForgeEvents {
     }
 
     @SubscribeEvent
-    public static void onChunkWatch(ChunkWatchEvent.Watch.Sent event) {
-        ServerLevel level = event.getLevel();
-
-        LevelChunk chunk = event.getChunk();
-        chunk.getData(ModDataAttachments.BLOCK_PATTERNS).sync(chunk.getPos().getMiddleBlockPosition(0), level);
-    }
-
-    @SubscribeEvent
     public static void onEffectAdded(MobEffectEvent.Added event){
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
         LivingEntity entity = event.getEntity();

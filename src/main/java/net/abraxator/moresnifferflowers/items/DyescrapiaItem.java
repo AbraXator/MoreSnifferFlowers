@@ -49,16 +49,14 @@ public class DyescrapiaItem extends BlockItem {
 
 
         if (BlockPatternCapability.hasPattern(pos, level)) {
-            if (!level.isClientSide){
-                if(uses >= 4) {
-                    player.addItem(BlockPattern.fromId(BlockPatternCapability.getPattern(pos, level).patternId()).getItem().getDefaultInstance());
-                    uses = 0;
-                }
-                BlockPatternCapability.removePattern(pos, level);
-                stack.set(ModDataComponents.USES, uses);
-
+            if(uses >= 4) {
+                player.addItem(BlockPattern.fromId(BlockPatternCapability.getPattern(pos, level).patternId()).getItem().getDefaultInstance());
+                uses = 0;
             }
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            BlockPatternCapability.removePattern(pos, level);
+            stack.set(ModDataComponents.USES, uses);
+
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
 
         if(state.getBlock() instanceof Colorable colorable) {
@@ -72,7 +70,7 @@ public class DyescrapiaItem extends BlockItem {
                 }
 
                 stack.set(ModDataComponents.USES, uses);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.sidedSuccess(level.isClientSide());
             }            
         } else if (state.is(ModTags.ModBlockTags.DYED)){
 

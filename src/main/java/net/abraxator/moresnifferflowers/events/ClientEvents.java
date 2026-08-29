@@ -10,13 +10,10 @@ import net.abraxator.moresnifferflowers.entities.GluingGumEntity;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.toServer.DyespriaModePacket;
 import net.abraxator.moresnifferflowers.networking.toServer.PatternspriaModePacket;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -25,7 +22,8 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.joml.Matrix4f;
+
+import java.util.Set;
 
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
@@ -43,22 +41,13 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void renderLevelStage(RenderLevelStageEvent event){
-        RenderLevelStageEvent.Stage stage = event.getStage();
-        PoseStack poseStack = event.getPoseStack();
-        Camera camera = event.getCamera();
-        Matrix4f projectionMatrix = event.getProjectionMatrix();
-        Minecraft minecraft = Minecraft.getInstance();
-        Level level = minecraft.level;
-        Frustum frustum = event.getFrustum();
-        float partialTicks = event.getPartialTick().getGameTimeDeltaPartialTick(true);
-
-
-        if (stage.equals(RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)) {
-            BlockPatternRenderer.cacheAndRender(frustum, camera, level, minecraft, poseStack);
+    public static void addSectionGeometry(AddSectionGeometryEvent event) {
+        Set<BlockPatternRenderer.BlockPatternQuad> cache = BlockPatternRenderer.cache(event.getLevel(), event.getSectionOrigin());
+        if (!cache.isEmpty()) {
+            event.addRenderer(ctx -> BlockPatternRenderer.renderAll(ctx, cache));
         }
-
     }
+
 
     @SubscribeEvent
     public static void renderLiving(RenderLivingEvent.Post<?, ?> event) {
@@ -105,18 +94,6 @@ public class ClientEvents {
         if (player.getDeltaMovement() != Vec3.ZERO && player.level().getGameTime() % 10 == 0){
          //   ClientRegistration.getBlockPatternRenderer().markDirty();
         }
-    }
-
-    @SubscribeEvent
-    public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        BlockPatternRenderer.BUFFER_MANAGER.markDirty();
-
-    }
-
-    @SubscribeEvent
-    public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event) {
-        BlockPatternRenderer.BUFFER_MANAGER.markDirty();
-
     }
 
 }

@@ -3,25 +3,21 @@ package net.abraxator.moresnifferflowers.capability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.abraxator.moresnifferflowers.components.RootedSoup;
+import net.abraxator.moresnifferflowers.client.MSFClientUtils;
 import net.abraxator.moresnifferflowers.init.ModDataAttachments;
-import net.abraxator.moresnifferflowers.networking.toClient.SyncBlockPatternsPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
 
 public class BlockPatternCapability {
-    public Map<BlockPos, PatternData> patterns;
+    protected Map<BlockPos, PatternData> patterns;
     public static final Codec<Long> LONG_STRING_CODEC = Codec.STRING.xmap(Long::parseLong, Object::toString);
 
     public static final Codec<BlockPos> BLOCKPOS_LONG_CODEC = LONG_STRING_CODEC.xmap(
@@ -48,121 +44,79 @@ public class BlockPatternCapability {
         this.patterns = new HashMap<>(patterns);
     }
 
-    public Map<BlockPos, PatternData> getPatterns() {
-        return patterns;
+    public static Map<BlockPos, PatternData> getPatterns(Level level, BlockPos pos) {
+        return new HashMap<>(getBlockPatterns(level.getChunkAt(pos)).patterns);
     }
 
-    public static BlockPatternCapability getBlockPatterns(BlockPos pos, Level level){
+    protected static BlockPatternCapability getBlockPatterns(Level level, BlockPos pos){
         return getBlockPatterns(level.getChunkAt(pos));
     }
 
-    public static BlockPatternCapability getBlockPatterns(LevelChunk chunk){
+    protected static BlockPatternCapability getBlockPatterns(LevelChunk chunk){
         return chunk.getData(ModDataAttachments.BLOCK_PATTERNS.get());
     }
 
-
-    public static void setPattern(BlockPos pos, PatternData pattern, Level level) {
-        level.getChunkAt(pos).setUnsaved(true);
-
-        BlockPatternCapability capability = getBlockPatterns(pos, level);
-        capability.setPattern(pos, pattern);
-        if (!level.isClientSide) capability.sync(pos, level);
+   //Doesnt rebuild rendering
+    protected static void operation(LevelChunk chunk, Consumer<Map<BlockPos, PatternData>> updater) {
+        BlockPatternCapability data = chunk.getData(ModDataAttachments.BLOCK_PATTERNS);
+        updater.accept(data.patterns);
+        chunk.setData(ModDataAttachments.BLOCK_PATTERNS.get(), data);
     }
 
-    public void setPattern(BlockPos pos, PatternData pattern) {
-        patterns.put(pos.immutable(), pattern);
+    protected static void operation(Level level, BlockPos pos, Consumer<Map<BlockPos, PatternData>> updater) {
+        operation(level.getChunkAt(pos), updater);
+        if (level.isClientSide()){
+            MSFClientUtils.rebuildChunkSection(pos);
+        }
+    }
+
+
+    public static void setPattern(Level level, BlockPos pos, PatternData pattern) {
+        operation(level, pos, patterns -> patterns.put(pos, pattern));
     }
 
     public static void setBulkPatterns(Map<BlockPos, PatternData> patternMap, Level level) {
-        if (level.isClientSide) return;
-
-        for (var entry : patternMap.entrySet()) {
-            BlockPos pos = entry.getKey();
-            PatternData patternData = entry.getValue();
-
-            BlockPatternCapability capability = getBlockPatterns(pos, level);
-            capability.setPattern(pos, patternData);
-            level.getChunkAt(pos).setUnsaved(true);
+        Map<ChunkPos, Map<BlockPos, PatternData>> chunkPatterns = new HashMap<>();
+        for (Map.Entry<BlockPos, PatternData> blockPosPatternDataEntry : patternMap.entrySet()) {
+            BlockPos pos = blockPosPatternDataEntry.getKey();
+            chunkPatterns.computeIfAbsent(new ChunkPos(pos), k -> new HashMap<>()).put(pos, blockPosPatternDataEntry.getValue());
         }
 
-        Set<BlockPos> blockPosList = patternMap.keySet();
-        Set<ChunkPos> chunkPositions = blockPosList.stream()
-                .map(ChunkPos::new)
-                .collect(Collectors.toSet());
-
-        List<LevelChunk> levelChunks = chunkPositions.stream()
-                .map(pos -> level.getChunk(pos.x, pos.z))
-                .toList();
-
-        for (LevelChunk levelChunk : levelChunks) {
-             getBlockPatterns(levelChunk).sync(levelChunk.getPos().getWorldPosition(), level);
+        for (Map.Entry<ChunkPos, Map<BlockPos, PatternData>> chunkPosMapEntry : chunkPatterns.entrySet()) {
+            LevelChunk chunk = level.getChunkAt(chunkPosMapEntry.getKey().getWorldPosition());
+            operation(chunk, patterns -> patterns.putAll(chunkPosMapEntry.getValue()));
+            if (level.isClientSide()){
+                for (BlockPos blockPos : chunkPosMapEntry.getValue().keySet()) {
+                    MSFClientUtils.rebuildChunkSection(blockPos);
+                }
+            }
         }
     }
 
 
     public static PatternData getPattern(BlockPos pos, Level level){
         LevelChunk chunk = level.getChunkAt(pos);
-        return chunk.getData(ModDataAttachments.BLOCK_PATTERNS).getPattern(pos);
+        return chunk.getData(ModDataAttachments.BLOCK_PATTERNS).patterns.get(pos);
     }
 
-    public PatternData getPattern(BlockPos pos) {
-        return patterns.get(pos);
-    }
 
     public static boolean hasPattern(BlockPos pos, Level level){
-        BlockPatternCapability capability = getBlockPatterns(pos, level);
-        return capability.hasPattern(pos);
-    }
-
-    public boolean hasPattern(BlockPos pos) {
-        return patterns.containsKey(pos);
+        BlockPatternCapability capability = getBlockPatterns(level, pos);
+        return capability.patterns.containsKey(pos);
     }
 
     public static void removePattern(BlockPos pos, Level level) {
-        BlockPatternCapability capability = getBlockPatterns(pos, level);
-        capability.removePattern(pos);
-        level.getChunkAt(pos).setUnsaved(true);
-
-        if (!level.isClientSide){
-           capability.sync(pos, level);
-        }
-    }
-
-    public void removePattern(BlockPos pos) {
-        patterns.remove(pos);
-    }
-
-    public Stream<BlockPos> getPatternPositionsNear(BlockPos pos, int renderDistance) {
-        return patterns.keySet().stream().filter(p -> p.closerThan(pos, renderDistance)) ;
-    }
-
-    public boolean isEmpty() {
-        return patterns.isEmpty();
-    }
-
-    public void sync(BlockPos pos, Level level) {
-        PacketDistributor.sendToAllPlayers(new SyncBlockPatternsPacket(this, pos));
-    }
-
-
-    public void load(BlockPatternCapability capability){
-        patterns.clear();
-        patterns.putAll(capability.patterns);
-    }
-    public int count() {
-        return patterns.size();
+        operation(level, pos, patterns -> patterns.remove(pos));
     }
 
     public static void recolor(Level level, BlockPos pos, int color) {
-        PatternData data = getPattern(pos, level);
-        setPattern(pos, new PatternData(data.patternId, color, data.direction, data.isGlowing), level);
-        level.getChunkAt(pos).setUnsaved(true);
+        operation(level, pos,
+                patterns -> patterns.computeIfPresent(pos, (k, data) -> new PatternData(data.patternId, color, data.direction, data.isGlowing)));
     }
 
     public static void enableGlowing(Level level, BlockPos pos) {
-        PatternData data = getPattern(pos, level);
-        setPattern(pos, new PatternData(data.patternId, data.color, data.direction, true), level);
-        level.getChunkAt(pos).setUnsaved(true);
+        operation(level, pos,
+                patterns -> patterns.computeIfPresent(pos, (k, data) -> new PatternData(data.patternId, data.color, data.direction, true)));
     }
 
     // pattern=pat color=6, direction=dir, glowing=glow
