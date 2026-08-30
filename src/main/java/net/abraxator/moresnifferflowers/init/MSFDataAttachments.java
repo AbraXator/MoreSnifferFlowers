@@ -3,6 +3,7 @@ package net.abraxator.moresnifferflowers.init;
 import com.mojang.serialization.Codec;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.*;
+import net.abraxator.moresnifferflowers.components.BetterNonNullList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.ItemStack;
@@ -38,10 +39,18 @@ public interface MSFDataAttachments {
                     .serialize(Codec.BOOL)
                     .build());
 
-    Supplier<AttachmentType<HardenedMouthCapability>> HARDENED_MOUTH = ATTACHMENT_TYPES.register("hardened_mouth",
-            () -> AttachmentType.builder(() -> new HardenedMouthCapability(NonNullList.withSize(2, ItemStack.EMPTY), 0))
-                    .serialize(HardenedMouthCapability.CODEC)
+    Supplier<AttachmentType<BetterNonNullList<ItemStack>>> HARDENED_MOUTH_SLOTS = ATTACHMENT_TYPES.register("hardened_mouth_slots",
+            () -> AttachmentType.builder(() -> BetterNonNullList.withSize(2, ItemStack.EMPTY))
+                    .serialize(BetterNonNullList.codecOf(ItemStack.OPTIONAL_CODEC))
+                    .sync(BetterNonNullList.streamCodecOf(ItemStack.OPTIONAL_STREAM_CODEC))
                     .build());
+
+    Supplier<AttachmentType<Integer>> HARDENED_MOUTH_COOLDOWN = ATTACHMENT_TYPES.register("hardened_mouth_cooldown",
+            () -> AttachmentType.builder(() -> 0)
+                    .serialize(Codec.INT)
+                    .sync(ByteBufCodecs.VAR_INT)
+                    .build());
+
 
     Supplier<AttachmentType<SlipperyCapability>> SLIPPERY = ATTACHMENT_TYPES.register("slippery",
             () -> AttachmentType.builder(SlipperyCapability::new)

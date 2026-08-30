@@ -32,8 +32,8 @@ public abstract class InventoryMenuMixin extends RecipeBookMenu<CraftingInput, C
 
         }
 
-        this.addSlot(new HardenedMouthSlot(owner , 0, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 4, () -> owner.getData(MSFDataAttachments.HARDENED_MOUTH)));
-        this.addSlot(new HardenedMouthSlot(owner , 1, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 40, () -> owner.getData(MSFDataAttachments.HARDENED_MOUTH)));
+        this.addSlot(new HardenedMouthSlot(owner , 0, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 4));
+        this.addSlot(new HardenedMouthSlot(owner , 1, moreSnifferFlowers$mouthSlotX + 4, moreSnifferFlowers$mouthSlotY + 40));
     }
 
     @Override

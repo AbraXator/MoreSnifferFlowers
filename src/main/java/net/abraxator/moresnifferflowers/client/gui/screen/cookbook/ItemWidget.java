@@ -1,22 +1,20 @@
 package net.abraxator.moresnifferflowers.client.gui.screen.cookbook;
 
 
-import com.mojang.datafixers.util.Pair;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
-import net.abraxator.moresnifferflowers.nutrition.Nutrition;
+import net.abraxator.moresnifferflowers.components.nutrition.Nutrition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
 
 public class ItemWidget extends AbstractWidget {
-    private final Nutrition.Pair nutrition;
+    private final Nutrition.NutritionPair nutrition;
     private final CookbookScreen screen;
     private final boolean unlocked;
     
-    public ItemWidget(int x, int y, Component message, Nutrition.Pair nutrition, CookbookScreen screen) {
+    public ItemWidget(int x, int y, Component message, Nutrition.NutritionPair nutrition, CookbookScreen screen) {
         super(x, y, 16, 16, message);
         this.nutrition = nutrition;
         this.screen = screen;

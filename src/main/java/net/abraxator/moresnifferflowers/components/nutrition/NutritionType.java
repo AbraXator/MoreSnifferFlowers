@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.nutrition;
+package net.abraxator.moresnifferflowers.components.nutrition;
 
 import com.mojang.serialization.Codec;
 import net.abraxator.moresnifferflowers.init.MSFEffects;
@@ -6,8 +6,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffect;
-import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
-import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import java.util.Map;
 import java.util.function.IntFunction;

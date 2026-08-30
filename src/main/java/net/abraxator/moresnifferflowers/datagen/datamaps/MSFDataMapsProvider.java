@@ -5,7 +5,7 @@ import net.abraxator.moresnifferflowers.components.Corruptable;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFDataMaps;
 import net.abraxator.moresnifferflowers.init.MSFItems;
-import net.abraxator.moresnifferflowers.nutrition.Nutrition;
+import net.abraxator.moresnifferflowers.components.nutrition.Nutrition;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;

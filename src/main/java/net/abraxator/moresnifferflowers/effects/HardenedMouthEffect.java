@@ -1,22 +1,105 @@
 package net.abraxator.moresnifferflowers.effects;
 
+import net.abraxator.moresnifferflowers.client.gui.slot.HardenedMouthSlot;
+import net.abraxator.moresnifferflowers.components.BetterNonNullList;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFEffects;
+import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.level.Level;
 
-public class HardenedMouthEffect extends MobEffect {
+import java.util.Optional;
+
+public class HardenedMouthEffect extends MobEffect implements IMSFPotionEffect {
     public HardenedMouthEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
 
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity instanceof Player player)
-            player.getData(MSFDataAttachments.HARDENED_MOUTH.get()).tick(player);
+        if (!(livingEntity instanceof Player player)) return false;
+        if (player.level().isClientSide() || !player.hasEffect(MSFEffects.HARDENED_MOUTH)) return true;
+
+        BetterNonNullList<ItemStack> data = player.getData(MSFDataAttachments.HARDENED_MOUTH_SLOTS.get());
+        int cooldown = player.getData(MSFDataAttachments.HARDENED_MOUTH_COOLDOWN.get());
+        ItemStack input = data.get(0);
+        ItemStack output = data.get(1);
+
+
+        Optional<ItemStack> smeltingResult = getSmeltingResult(player.level(), input);
+        if (smeltingResult.isEmpty() || (!smeltingResult.get().is(output.getItem()) && !output.isEmpty())){
+            if (cooldown < getMaxCooldown(amplifier))
+                setMaxCooldown(player, amplifier);
+            return true;
+        }
+
+        if (cooldown > 0) {
+            cooldown--;
+            player.setData(MSFDataAttachments.HARDENED_MOUTH_COOLDOWN.get(), cooldown);
+            player.setData(MSFDataAttachments.HARDENED_MOUTH_SLOTS.get(), data);
+            return true;
+        }
+
+        smeltingResult.ifPresent(result -> {
+
+            if (output.isEmpty() || (ItemStack.isSameItemSameComponents(output, result) && output.getCount() < output.getMaxStackSize())) {
+                input.shrink(1);
+
+                if (output.isEmpty()) {
+                    player.setData(MSFDataAttachments.HARDENED_MOUTH_SLOTS.get(), data);
+                    data.set(1, result.copy());
+                } else {
+                    output.grow(1);
+                    data.set(1, output);
+                }
+
+                data.set(0, input);
+
+            }
+        });
+
+
+        player.setData(MSFDataAttachments.HARDENED_MOUTH_COOLDOWN.get(), getMaxCooldown(amplifier));
+        player.setData(MSFDataAttachments.HARDENED_MOUTH_SLOTS.get(), data);
+
         return true;
     }
+
+    @Override
+    public void onEffectEnd(LivingEntity entity, MobEffectInstance instance) {
+        if (!(entity instanceof Player player)) return;
+        player.getData(MSFDataAttachments.HARDENED_MOUTH_SLOTS.get()).forEach(itemStack -> {
+            if (HardenedMouthSlot.moveToPlayerInventory(player.inventoryMenu, itemStack)) return;
+            if (itemStack.isEmpty()) return;
+            player.drop(itemStack, true);
+        });
+
+        player.removeData(MSFDataAttachments.HARDENED_MOUTH_SLOTS);
+        player.removeData(MSFDataAttachments.HARDENED_MOUTH_COOLDOWN);
+
+    }
+
+    public void setMaxCooldown(Player player, int amplifier) {
+        player.setData(MSFDataAttachments.HARDENED_MOUTH_COOLDOWN.get(), getMaxCooldown(amplifier));
+    }
+
+    public static int getMaxCooldown(int amplifier) {
+        return Math.max(1, 80 - amplifier * 10);
+    }
+
+    public Optional<ItemStack> getSmeltingResult(Level level, ItemStack input) {
+        return level.getRecipeManager()
+                .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(input), level)
+                .map(recipe -> recipe.value().getResultItem(level.registryAccess()));
+    }
+
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {

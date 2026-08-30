@@ -25,13 +25,14 @@ public class ModPacketHandler {
     }
     
     protected void registerServerToClient(ModPacketRegistrar registrar) {
-        registrar.play(CorruptedSludgePacket.TYPE, CorruptedSludgePacket.STREAM_CODEC);
+        registrar.play(CorruptedSludgeParticlePacket.TYPE, CorruptedSludgeParticlePacket.STREAM_CODEC);
         registrar.play(CorruptionParticlePacket.TYPE, CorruptionParticlePacket.STREAM_CODEC);
-        registrar.play(DyespriaDisplayModeChangePacket.TYPE, DyespriaDisplayModeChangePacket.STREAM_CODEC);
         registrar.play(SaltemoneParticlePacket.TYPE, SaltemoneParticlePacket.STREAM_CODEC);
-        registrar.play(SyncMouthSlotsPacket.TYPE, SyncMouthSlotsPacket.STREAM_CODEC);
         registrar.play(SyncSlipperyPacket.TYPE, SyncSlipperyPacket.STREAM_CODEC);
         registrar.play(SyncUntouchablePacket.TYPE, SyncUntouchablePacket.STREAM_CODEC);
+        registrar.play(RebuildChunkSectionPacket.TYPE, RebuildChunkSectionPacket.STREAM_CODEC);
+        registrar.play(SyncBerootCauldronPacket.TYPE, SyncBerootCauldronPacket.STREAM_CODEC);
+
     }
 
     public static ModPacketHandler register(IEventBus iEventBus, int version) {

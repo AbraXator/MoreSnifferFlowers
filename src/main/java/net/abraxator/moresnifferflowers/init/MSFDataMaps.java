@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.init;
 import com.mojang.serialization.Codec;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.components.Corruptable;
-import net.abraxator.moresnifferflowers.nutrition.Nutrition;
+import net.abraxator.moresnifferflowers.components.nutrition.Nutrition;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;

@@ -5,6 +5,7 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
 import net.abraxator.moresnifferflowers.effects.GluedEffect;
+import net.abraxator.moresnifferflowers.effects.IMSFPotionEffect;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -76,7 +77,7 @@ public class ForgeEvents {
         LivingEntity entity = event.getEntity();
 
         if (effect == null) return;
-        onEffectEnd(effect.getEffect(), entity);
+        onEffectEnd(effect, entity);
     }
 
     @SubscribeEvent
@@ -85,15 +86,16 @@ public class ForgeEvents {
         LivingEntity entity = event.getEntity();
 
         if (effect == null) return;
-        onEffectEnd(effect.getEffect(), entity);
+        onEffectEnd(effect, entity);
     }
 
-    public static void onEffectEnd(Holder<MobEffect> effect, LivingEntity entity) {
+    public static void onEffectEnd(MobEffectInstance effectInstance, LivingEntity entity) {
+        Holder<MobEffect> effect = effectInstance.getEffect();
+        if (effect.value() instanceof IMSFPotionEffect msfEffect){
+            msfEffect.onEffectEnd(entity, effectInstance);
+        }
 
         if (entity instanceof Player player) {
-            if (effect.equals(MSFEffects.HARDENED_MOUTH))
-                player.getData(MSFDataAttachments.HARDENED_MOUTH).onEffectEnd(player);
-
             if (effect.equals(MSFEffects.COMBO_MEAL))
                 player.getData(MSFDataAttachments.COMBO_MEAL).onEffectEnd(player);
 

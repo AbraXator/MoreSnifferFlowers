@@ -2,7 +2,7 @@ package net.abraxator.moresnifferflowers.client.gui.screen.cookbook;
 
 import net.abraxator.moresnifferflowers.capability.NutritionCapability;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
-import net.abraxator.moresnifferflowers.nutrition.NutritionType;
+import net.abraxator.moresnifferflowers.components.nutrition.NutritionType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;

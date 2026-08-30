@@ -2,9 +2,8 @@ package net.abraxator.moresnifferflowers.networking.toClient;
 
 import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.networking.MSFClientPacket;
-import net.abraxator.moresnifferflowers.networking.MSFServerPacket;
-import net.minecraft.client.Minecraft;
+import net.abraxator.moresnifferflowers.networking.MSFPacket;
+import net.abraxator.moresnifferflowers.networking.MSFToClientPacket;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -12,19 +11,16 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-public record CorruptedSludgePacket(Vector3f start, Vector3f target, Vector3f direction) implements MSFClientPacket {
-    public static final CustomPacketPayload.Type<CorruptedSludgePacket> TYPE = new CustomPacketPayload.Type<>(MoreSnifferFlowers.loc("send_sludge_particle"));
-    public static final StreamCodec<ByteBuf, CorruptedSludgePacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VECTOR3F, CorruptedSludgePacket::start,
-            ByteBufCodecs.VECTOR3F, CorruptedSludgePacket::target,
-            ByteBufCodecs.VECTOR3F, CorruptedSludgePacket::direction,
-            CorruptedSludgePacket::new
+public record CorruptedSludgeParticlePacket(Vector3f start, Vector3f target, Vector3f direction) implements MSFToClientPacket {
+    public static final CustomPacketPayload.Type<CorruptedSludgeParticlePacket> TYPE = MSFPacket.makeType("send_sludge_particle", CorruptedSludgeParticlePacket.class);
+    public static final StreamCodec<ByteBuf, CorruptedSludgeParticlePacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VECTOR3F, CorruptedSludgeParticlePacket::start,
+            ByteBufCodecs.VECTOR3F, CorruptedSludgeParticlePacket::target,
+            ByteBufCodecs.VECTOR3F, CorruptedSludgeParticlePacket::direction,
+            CorruptedSludgeParticlePacket::new
     );
 
     @Override

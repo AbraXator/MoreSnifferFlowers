@@ -5,7 +5,7 @@ import net.abraxator.moresnifferflowers.client.MSFColorHandler;
 import net.abraxator.moresnifferflowers.components.RootedSoup;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.init.MSFDataComponents;
-import net.abraxator.moresnifferflowers.nutrition.NutritionType;
+import net.abraxator.moresnifferflowers.components.nutrition.NutritionType;
 import net.minecraft.core.Holder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

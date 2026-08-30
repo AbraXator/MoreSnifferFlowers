@@ -1,4 +1,4 @@
-package net.abraxator.moresnifferflowers.nutrition;
+package net.abraxator.moresnifferflowers.components.nutrition;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -57,5 +57,5 @@ public record Nutrition(Map<NutritionType, Integer> nutritionEntries) {
         ).apply(instance, NutritionEntry::new));
     }
 
-    public record Pair(Item item, Nutrition nutrition){}
+    public record NutritionPair(Item item, Nutrition nutrition){}
 }

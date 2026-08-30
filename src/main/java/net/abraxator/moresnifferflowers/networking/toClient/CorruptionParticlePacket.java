@@ -2,9 +2,8 @@ package net.abraxator.moresnifferflowers.networking.toClient;
 
 import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.networking.MSFClientPacket;
-import net.abraxator.moresnifferflowers.networking.MSFServerPacket;
-import net.minecraft.client.Minecraft;
+import net.abraxator.moresnifferflowers.networking.MSFPacket;
+import net.abraxator.moresnifferflowers.networking.MSFToClientPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -17,14 +16,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-public record CorruptionParticlePacket (BlockPos pos, boolean isPositive, boolean isFlower) implements MSFClientPacket {
-    public static final CustomPacketPayload.Type<CorruptionParticlePacket> TYPE = new CustomPacketPayload.Type<>(MoreSnifferFlowers.loc("corruption_particle"));
+public record CorruptionParticlePacket (BlockPos pos, boolean isPositive, boolean isFlower) implements MSFToClientPacket {
+    public static final CustomPacketPayload.Type<CorruptionParticlePacket> TYPE = MSFPacket.makeType("corruption_particle", CorruptionParticlePacket.class);
     public static final StreamCodec<ByteBuf, CorruptionParticlePacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, CorruptionParticlePacket::pos,
             ByteBufCodecs.BOOL, CorruptionParticlePacket::isPositive,
@@ -33,7 +29,6 @@ public record CorruptionParticlePacket (BlockPos pos, boolean isPositive, boolea
     );
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void handleClientPacket(Player player, Level level) {
         RandomSource random = level.random;
         BlockState state = level.getBlockState(pos);

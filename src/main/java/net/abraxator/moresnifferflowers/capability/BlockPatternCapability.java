@@ -5,13 +5,17 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.abraxator.moresnifferflowers.client.MSFClientUtils;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
+import net.abraxator.moresnifferflowers.networking.toClient.RebuildChunkSectionPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -67,6 +71,9 @@ public class BlockPatternCapability {
         operation(level.getChunkAt(pos), updater);
         if (level.isClientSide()){
             MSFClientUtils.rebuildChunkSection(pos);
+        } else if (level instanceof ServerLevel serverLevel){
+            SectionPos sectionPos = SectionPos.of(pos);
+            PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(pos), new RebuildChunkSectionPacket(sectionPos.x(), sectionPos.y(), sectionPos.z()));
         }
     }
 
@@ -85,12 +92,15 @@ public class BlockPatternCapability {
         for (Map.Entry<ChunkPos, Map<BlockPos, PatternData>> chunkPosMapEntry : chunkPatterns.entrySet()) {
             LevelChunk chunk = level.getChunkAt(chunkPosMapEntry.getKey().getWorldPosition());
             operation(chunk, patterns -> patterns.putAll(chunkPosMapEntry.getValue()));
-            if (level.isClientSide()){
-                for (BlockPos blockPos : chunkPosMapEntry.getValue().keySet()) {
-                    MSFClientUtils.rebuildChunkSection(blockPos);
-                }
-            }
         }
+
+        patternMap.keySet().stream().map(SectionPos::of).distinct().forEach(sectionPos -> {
+            if (level.isClientSide()){
+                MSFClientUtils.rebuildChunkSection(sectionPos);
+            } else if (level instanceof ServerLevel serverLevel){
+                PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(sectionPos.center()), new RebuildChunkSectionPacket(sectionPos.x(), sectionPos.y(), sectionPos.z()));
+            }
+        });
     }
 
 

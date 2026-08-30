@@ -23,6 +23,7 @@ public abstract class CreativeInventoryScreenMixin extends EffectRenderingInvent
         super(menu, playerInventory, title);
     }
 
+    //ignore this
     @WrapOperation(method = "selectTab", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/NonNullList;size()I"))
     public int skipExtraSlots(NonNullList<Slot> instance, Operation<Integer> original){
         return original.call(instance) - 2;

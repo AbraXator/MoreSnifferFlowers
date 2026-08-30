@@ -1,11 +1,10 @@
 package net.abraxator.moresnifferflowers.client.gui.screen.cookbook;
 
-import com.mojang.datafixers.util.Pair;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.init.MSFDataMaps;
-import net.abraxator.moresnifferflowers.nutrition.Nutrition;
-import net.abraxator.moresnifferflowers.nutrition.NutritionType;
+import net.abraxator.moresnifferflowers.components.nutrition.Nutrition;
+import net.abraxator.moresnifferflowers.components.nutrition.NutritionType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
@@ -39,7 +38,7 @@ public class CookbookScreen extends Screen {
     public Page page = Page.CONTENTS;
     public int guide_page = 0;
     public NutritionType type;
-    private List<Nutrition.Pair> nutritions = new ArrayList<>();
+    private List<Nutrition.NutritionPair> nutritions = new ArrayList<>();
     private float scrollOffs;
     private int startIndex;
     private boolean isScrolling;
@@ -85,7 +84,7 @@ public class CookbookScreen extends Screen {
         guiGraphics.blit(TEXTURE, x, y, 0, 0, 272, 180, 512, 256);
     }
 
-    public void renderNutritionInfo(GuiGraphics guiGraphics, Nutrition.Pair nutrition) {
+    public void renderNutritionInfo(GuiGraphics guiGraphics, Nutrition.NutritionPair nutrition) {
         int x = (this.width - 272) / 2;
         int y = (this.height - 180) / 2;
         int xPos = x + 150;
@@ -132,10 +131,10 @@ public class CookbookScreen extends Screen {
         guiGraphics.blit(RENDERABLES, x + 17, y + 15, 25, 0, 111, 144);
 
         for (int i = startIndex * COLUMNS + 1; i < startIndex * COLUMNS  + 1 + PAGE_SIZE && i < this.nutritions.size() + 1; i++) {
-            Nutrition.Pair nutrition = nutritions.get(i - 1);
+            Nutrition.NutritionPair nutrition = nutritions.get(i - 1);
             boolean unlocked = minecraft.player.getData(MSFDataAttachments.NUTRITION).unlockedItems().contains(nutrition.item());
 
-            nutrition = unlocked ? nutrition : new Nutrition.Pair(nutrition.item(), Nutrition.EMPTY);
+            nutrition = unlocked ? nutrition : new Nutrition.NutritionPair(nutrition.item(), Nutrition.EMPTY);
             if (yPos >= 16) addRenderableWidget(new ItemWidget(x + xPos, y + yPos, Component.empty(), nutrition, this));
 
             if (i % COLUMNS != 0) {
@@ -183,9 +182,9 @@ public class CookbookScreen extends Screen {
             return;
         }
 
-        List<Nutrition.Pair> list = new ArrayList<>(nutritionTypeSet.entrySet().stream()
+        List<Nutrition.NutritionPair> list = new ArrayList<>(nutritionTypeSet.entrySet().stream()
                 .filter(entry -> entry.getValue().hasType(type))
-                .map(e -> new Nutrition.Pair(BuiltInRegistries.ITEM.get(e.getKey()), e.getValue())).toList());
+                .map(e -> new Nutrition.NutritionPair(BuiltInRegistries.ITEM.get(e.getKey()), e.getValue())).toList());
 
         list.sort(Comparator.comparing( pair -> {
             float weight = 0;

@@ -34,7 +34,8 @@ public class CropressorBlockOut extends CropressorBlockBase implements ModEntity
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if(level.getBlockEntity(pos) instanceof CropressorBlockEntity entity && !newState.is(this)) {
-            Containers.dropContents(level, pos, entity.container);
+            entity.container.forEach(stack -> Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack));
+
         }
         
         super.onRemove(state, level, pos, newState, movedByPiston);

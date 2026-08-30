@@ -1,6 +1,5 @@
 package net.abraxator.moresnifferflowers.client.gui.slot;
 
-import net.abraxator.moresnifferflowers.capability.HardenedMouthCapability;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.world.entity.player.Player;
@@ -15,14 +14,11 @@ import java.util.function.Supplier;
 public class HardenedMouthSlot extends Slot {
     private final Player player;
     private final int index;
-    private final Supplier<HardenedMouthCapability> itemStorage;
 
-    public HardenedMouthSlot(Player player, int index, int x, int y, Supplier<HardenedMouthCapability> itemStorage) {
+    public HardenedMouthSlot(Player player, int index, int x, int y) {
         super(DummyContainer.INSTANCE, index, x, y); // Prevents saving to normal inventory
         this.player = player;
         this.index = index;
-        this.itemStorage = itemStorage;
-
     }
 
     @Override
@@ -47,20 +43,21 @@ public class HardenedMouthSlot extends Slot {
 
     @Override
     public ItemStack getItem() {
-        return itemStorage.get().getItem(index);
+        return player.getData(MSFDataAttachments.HARDENED_MOUTH_SLOTS).get(index);
     }
 
     @Override
     public void set(ItemStack stack) {
-        if (!mayPlace(stack) || itemStorage.get() == null) {
+        if (!mayPlace(stack)) {
             return;
         }
-        itemStorage.get().setItem(index, stack);
+        player.getData(MSFDataAttachments.HARDENED_MOUTH_SLOTS).set(index, stack);
     }
 
     @Override
     public void setChanged() {
-        player.getData(MSFDataAttachments.HARDENED_MOUTH).sync(player);
+        super.setChanged();
+        player.syncData(MSFDataAttachments.HARDENED_MOUTH_SLOTS);
     }
 
     public void handleCapabilitySlotClick(HardenedMouthSlot slot, Player player, ClickType clickType, int dragType) {
@@ -69,7 +66,7 @@ public class HardenedMouthSlot extends Slot {
         ItemStack carried = menu.getCarried();
         boolean isRightClick = dragType == 1;
 
-        if (player.level().isClientSide) return;
+        if (player.level().isClientSide()) return;
 
         switch (clickType){
             case PICKUP, QUICK_CRAFT, PICKUP_ALL -> {

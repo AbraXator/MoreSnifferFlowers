@@ -6,19 +6,24 @@ import net.abraxator.moresnifferflowers.components.RootedSoup;
 import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
 import net.abraxator.moresnifferflowers.init.MSFDataComponents;
 import net.abraxator.moresnifferflowers.init.MSFItems;
-import net.abraxator.moresnifferflowers.nutrition.Nutrition;
-import net.abraxator.moresnifferflowers.nutrition.NutritionType;
+import net.abraxator.moresnifferflowers.components.nutrition.Nutrition;
+import net.abraxator.moresnifferflowers.components.nutrition.NutritionType;
+import net.abraxator.moresnifferflowers.networking.MSFStreamCodecs;
+import net.abraxator.moresnifferflowers.networking.toClient.SyncBerootCauldronPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -29,10 +34,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,24 +48,51 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implements IModBlockEntity {
+    static final int FOOD_LIMIT = 8;
+    static final int BEETROOT_LIMIT = 4;
+    public static final StreamCodec<RegistryFriendlyByteBuf, Data> DATA_STREAM_CODEC = NeoForgeStreamCodecs.composite(
+            ByteBufCodecs.INT, Data::beetroots,
+            BetterNonNullList.streamCodecOf(ItemStack.OPTIONAL_STREAM_CODEC), Data::ingredients,
+            ByteBufCodecs.INT, Data::soupCount,
+            ByteBufCodecs.BOOL, Data::isCrafted,
+            ByteBufCodecs.INT, Data::spoonRotation,
+            ByteBufCodecs.BOOL, Data::redSoup,
+            ByteBufCodecs.INT, Data::craftingTicks,
+            Data::new
+    );
+
     public int beetroots = 0;
-    private final int foodLimit = 8;
-    public BetterNonNullList<ItemStack> ingredients = BetterNonNullList.withSize(foodLimit, ItemStack.EMPTY);
+    public BetterNonNullList<ItemStack> ingredients = BetterNonNullList.withSize(FOOD_LIMIT, ItemStack.EMPTY);
     public int itemRot = 0;
     public ItemStack soup = ItemStack.EMPTY;
     public int soupCount = 0;
     public boolean isCrafted = false;
-    public final int MAX_SOUP_COUNT = 6;
-    private static final int BEETROOT_LIMIT = 4;
     int spoonRotation = 0;
     public boolean redSoup = true;
     int craftingTicks = -1;
+
+    public record Data(int beetroots, BetterNonNullList<ItemStack> ingredients, int soupCount, boolean isCrafted, int spoonRotation, boolean redSoup, int craftingTicks) {}
+
+    public void loadData(Data data) {
+        this.beetroots = data.beetroots();
+        data.ingredients().copyTo(this.ingredients);
+        this.soupCount = data.soupCount();
+        this.isCrafted = data.isCrafted();
+        this.spoonRotation = data.spoonRotation();
+        this.redSoup = data.redSoup();
+        this.craftingTicks = data.craftingTicks();
+    }
+
+    public Data saveData() {
+        return new Data(beetroots, ingredients, soupCount, isCrafted, spoonRotation, redSoup, craftingTicks);
+    }
+
 
     public BerootCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(MSFBlockEntities.BEROOT_CAULDRON.get(), pos, state);
     }
 
-    public ItemInteractionResult addItem(ItemStack itemStack, Player player) {
+    public ItemInteractionResult addItem(ItemStack itemStack, @Nullable Player player) {
         if(itemStack.is(MSFItems.CROPRESSED_BEETROOT.get()) && this.beetroots < BEETROOT_LIMIT && !this.isCrafted) {
             addBeetroot(itemStack, player);
             this.redSoup = true;
@@ -69,7 +104,8 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         } else return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         setChanged();
-        return ItemInteractionResult.SUCCESS;
+        sync();
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
     
     public void craft() {
@@ -116,7 +152,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         }
 
         int maxSoupUses = 6;
-        int soupUses = Math.clamp(Math.round(food / 3f) + (ingredients - foodLimit / 2) / 2, 1, maxSoupUses);
+        int soupUses = Math.clamp(Math.round(food / 3f) + (ingredients - FOOD_LIMIT / 2) / 2, 1, maxSoupUses);
 
 
         soup.set(MSFDataComponents.ROOTED_INGREDIENTS, this.ingredients.validStream().toList()); //For Cookbook unlocking
@@ -181,6 +217,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
 
         this.soup = soup;
         setChanged();
+        sync();
     }
 
     @Override
@@ -218,6 +255,8 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
 
         if (!ingredients.isFullyDefault() && !this.isCrafted && craftingTicks <= 0) {
             this.craftingTicks = 9;
+            sync();
+            setChanged();
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
         return InteractionResult.PASS;
@@ -249,34 +288,35 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
     }
 
 
-    private ItemInteractionResult giveSoup(ItemStack itemStack, Player player) {
+    private ItemInteractionResult giveSoup(ItemStack itemStack, @Nullable Player player) {
         boolean b = !hasSoup();
         boolean b1 = !this.isCrafted;
-        boolean isServer = !level.isClientSide;
-
-        if (b || b1){
+        if (b || b1 || player == null){
             return ItemInteractionResult.FAIL;
         }
-        itemStack.shrink(1);
+        if (!level.isClientSide()) {
+            itemStack.shrink(1);
 
-        ItemStack soup1 = this.soup.copy();
-        player.setItemInHand(InteractionHand.MAIN_HAND, ItemUtils.createFilledResult(player.getItemInHand(InteractionHand.MAIN_HAND), player, soup1, false));
-        this.soupCount -= 1;
-        if (this.soupCount <= 0){
-            this.soup = ItemStack.EMPTY;
-            clearIngredients();
+            ItemStack soup1 = this.soup.copy();
+            player.setItemInHand(InteractionHand.MAIN_HAND, ItemUtils.createFilledResult(player.getItemInHand(InteractionHand.MAIN_HAND), player, soup1, false));
+            this.soupCount -= 1;
+            if (this.soupCount <= 0) {
+                this.soup = ItemStack.EMPTY;
+                clearIngredients();
+            }
+
+            setChanged();
+            sync();
         }
-
-        setChanged();
-        return ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    private void addIngredient(ItemStack itemStack, Player player) {
+    private void addIngredient(ItemStack itemStack, @Nullable  Player player) {
         this.ingredients.set(ingredients.getFirstEmptySlot() ,new ItemStack(itemStack.getItem(), 1));
         int ingredients = this.ingredients.getValidSize();
         this.soupCount = this.beetroots + (ingredients / 4);
 
-        if (level.isClientSide){
+        if (level.isClientSide()){
             Vec3 center = getMiddle();
             for (int i = 0; i < 360; i++) {
                 if(i % 20 == 0) {
@@ -290,18 +330,15 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
 
         itemStack.shrink(1);
         setChanged();
+        sync();
     }
     
-    private void addBeetroot(ItemStack itemStack, Player player) {
+    private void addBeetroot(ItemStack itemStack, @Nullable  Player player) {
         this.beetroots++;
         int ingredients = this.ingredients.getValidSize();
         this.soupCount = this.beetroots + (ingredients / 4);
 
         itemStack.shrink(1);
-
-        if(!this.level.isClientSide) {
-            return;
-        }
 
         Vec3 center = getMiddle();
         for (int i = 0; i < 360; i++) {
@@ -313,6 +350,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
             }
         }
         setChanged();
+        sync();
     }
 
 
@@ -333,7 +371,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         for(ItemEntity itementity : getItemsAtAndAbove(level, new BlockPos(x,y,z))) {
             ItemStack itemStack = itementity.getItem().copy();
 
-            if (addItem(itemStack, null).equals(ItemInteractionResult.SUCCESS)) {
+            if (addItem(itemStack, null).consumesAction()) {
                 itementity.setItem(itemStack);
             }
         }
@@ -379,6 +417,12 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         this.isCrafted = false;
     }
 
+    public void sync(){
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        if (!isCenter()) return;
+
+        PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(worldPosition), new SyncBerootCauldronPacket(worldPosition, saveData()));
+    }
 
     
     @Override
@@ -388,7 +432,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
 
         tag.putInt("beetroots", this.beetroots);
 
-        ContainerHelper.saveAllItems(tag, ingredients, registries);
+        ingredients.writeToTag(ItemStack.OPTIONAL_CODEC, tag, "ingredients");
 
         tag.putInt("soupCount", this.soupCount);
         tag.putInt("crafting", this.craftingTicks);
@@ -411,7 +455,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         this.ingredients.clear();
         this.beetroots = tag.getInt("beetroots");
 
-        ContainerHelper.loadAllItems(tag, ingredients, registries);
+        BetterNonNullList.readFromTag(this.ingredients, ItemStack.OPTIONAL_CODEC, tag, "ingredients");
 
         this.soupCount = tag.getInt("soupCount");
         this.craftingTicks = tag.getInt("crafting");

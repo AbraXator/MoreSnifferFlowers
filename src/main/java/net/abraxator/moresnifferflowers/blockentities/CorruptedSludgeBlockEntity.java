@@ -7,7 +7,7 @@ import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
-import net.abraxator.moresnifferflowers.networking.toClient.CorruptedSludgePacket;
+import net.abraxator.moresnifferflowers.networking.toClient.CorruptedSludgeParticlePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -123,7 +123,7 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
                 Optional<Block> corrupted = Corruptable.getCorruptedBlock(context.affectedState().getBlock(), level.random);
                 BlockPos blockPos = BlockPos.containing(pos);
                 corrupted.ifPresent(block -> {
-                    PacketDistributor.sendToAllPlayers(new CorruptedSludgePacket(startPos.toVector3f(), pos.toVector3f(), dirNormal.toVector3f()));
+                    PacketDistributor.sendToAllPlayers(new CorruptedSludgeParticlePacket(startPos.toVector3f(), pos.toVector3f(), dirNormal.toVector3f()));
                     if(level.getBlockState(BlockPos.containing(pos)).getBlock() instanceof net.abraxator.moresnifferflowers.blocks.Corruptable corruptable) {
                         corruptable.onCorrupt(level, blockPos, level.getBlockState(BlockPos.containing(pos)), block);
                     } else {

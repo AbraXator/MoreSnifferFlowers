@@ -1,39 +1,70 @@
 package net.abraxator.moresnifferflowers.components;
 
 import com.google.common.collect.Lists;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import net.abraxator.moresnifferflowers.networking.NBTCodecHelper;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.List;
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class BetterNonNullList<E> extends NonNullList<E> {
-    private final List<E> list;
-    @Nullable
-    private final E defaultValue;
+public class BetterNonNullList<E> extends AbstractList<E> {
+    protected final List<E> list;
+    protected final E defaultValue;
+
+    public static <E> Codec<BetterNonNullList<E>> codecOf(Codec<E> entryCodec) {
+        return RecordCodecBuilder.create(instance -> instance.group(
+                entryCodec.listOf().fieldOf("list").forGetter(l ->l.list),
+                entryCodec.fieldOf("defaultValue").forGetter(l->l.defaultValue)
+        ).apply(instance, BetterNonNullList::new));
+    }
+
+    public static <E> StreamCodec<RegistryFriendlyByteBuf, BetterNonNullList<E>> streamCodecOf(StreamCodec<RegistryFriendlyByteBuf, E> entryCodec) {
+        return StreamCodec.composite(
+                entryCodec.apply(ByteBufCodecs.list()), l ->l.list,
+                entryCodec, l->l.defaultValue,
+                BetterNonNullList::new
+        );
+    }
+
+    public void copyTo(BetterNonNullList<E> list) {
+        for (int i = 0; i < this.list.size(); i++) {
+            list.set(i, this.list.get(i));
+        }
+    }
 
 
-    protected BetterNonNullList(List<E> list, @Nullable E defaultValue) {
-        super(list, defaultValue);
+    public void writeToTag(Codec<E> codec, CompoundTag tag, String key) {
+        NBTCodecHelper.encode(codecOf(codec), this, tag, key);
+    }
+
+    public static <E> void readFromTag(BetterNonNullList<E> listToWriteTo, Codec<E> codec, CompoundTag tag, String key) {
+        BetterNonNullList<E> decode = NBTCodecHelper.decode(codecOf(codec), tag, key);
+        if (decode != null) {
+            decode.copyTo(listToWriteTo);
+        }
+    }
+
+    protected BetterNonNullList(List<E> list, E defaultValue) {
         this.list = list;
         this.defaultValue = defaultValue;
 
     }
 
-    public static <E> BetterNonNullList<E> create() {
-        return new BetterNonNullList<>(Lists.newArrayList(), (E)null);
-    }
-
-    public static <E> BetterNonNullList<E> createWithCapacity(int initialCapacity) {
-        return new BetterNonNullList<>(Lists.newArrayListWithCapacity(initialCapacity), (E)null);
-    }
-
     @SuppressWarnings("unchecked")
     public static <E> BetterNonNullList<E> withSize(int size, E defaultValue) {
-        Validate.notNull(defaultValue);
+        if (defaultValue == null) throw new IllegalArgumentException("defaultValue must not be null");
         Object[] aobject = new Object[size];
         Arrays.fill(aobject, defaultValue);
         return new BetterNonNullList<>(Arrays.asList((E[])aobject), defaultValue);
@@ -75,7 +106,8 @@ public class BetterNonNullList<E> extends NonNullList<E> {
     }
 
     public boolean isDefault(E o) {
-        return o.toString().equals(defaultValue.toString()) || o.equals(defaultValue);
+        if (o == null) return defaultValue == null;
+        return o.equals(defaultValue);
     }
 
     public boolean isFullyDefault() {
@@ -99,5 +131,42 @@ public class BetterNonNullList<E> extends NonNullList<E> {
         E ret = this.get(index);
         list.set(index, defaultValue);
         return ret;
+    }
+
+    @Nonnull
+    @Override
+    public E get(int index) {
+        return this.list.get(index);
+    }
+
+    @Override
+    public E set(int index, E value) {
+        if (value == null) throw new NullPointerException();
+        return this.list.set(index, value);
+    }
+
+    @Override
+    public void add(int index, E value) {
+        if (value == null) throw new NullPointerException();
+        this.list.add(index, value);
+    }
+
+    @Override
+    public E remove(int index) {
+        return this.list.remove(index);
+    }
+
+    @Override
+    public int size() {
+        return this.list.size();
+    }
+
+    @Override
+    public void clear() {
+        if (this.defaultValue == null) {
+            super.clear();
+        } else {
+            Collections.fill(this, this.defaultValue);
+        }
     }
 }

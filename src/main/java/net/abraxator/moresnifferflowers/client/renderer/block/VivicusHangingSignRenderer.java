@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+
 public class VivicusHangingSignRenderer extends HangingSignRenderer {
     public VivicusHangingSignRenderer(BlockEntityRendererProvider.Context context) {
         super(context);

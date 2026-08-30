@@ -8,7 +8,10 @@ import net.minecraft.world.level.Level;
 public class MSFClientUtils {
 
     public static void rebuildChunkSection(BlockPos pos) {
-        SectionPos sectionPos = SectionPos.of(pos);
+        rebuildChunkSection(SectionPos.of(pos));
+    }
+    public static void rebuildChunkSection(SectionPos sectionPos) {
         Minecraft.getInstance().levelRenderer.setSectionDirty(sectionPos.x(), sectionPos.y(), sectionPos.z());
     }
+
 }

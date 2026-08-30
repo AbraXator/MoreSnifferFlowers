@@ -37,6 +37,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -286,26 +287,19 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
         tag.putInt("bar", barLength);
         tag.put("result", result.saveOptional(reg));
 
-        CompoundTag slots = new CompoundTag();
-        ContainerHelper.saveAllItems(slots, container, reg);
-        tag.put("slots", slots);
+        container.writeToTag(ItemStack.OPTIONAL_CODEC, tag, "slots");
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider reg) {
         super.loadAdditional(tag, reg);
-        currentCrop = NBTCodecHelper.decode(BuiltInRegistries.ITEM.byNameCodec(), tag, "current_crop");
-
-        if (currentCrop == null) { //compat < 6.6.3
-            ItemStack content = ItemStack.parseOptional(reg, tag.getCompound("content"));
-            currentCrop = content.getItem();
-        }
+        this.currentCrop = Objects.requireNonNull(NBTCodecHelper.decode(BuiltInRegistries.ITEM.byNameCodec(), tag, "current_crop"));
 
         progress = tag.getInt("progress");
         barLength = tag.getInt("bar");
         result = ItemStack.parseOptional(reg ,tag.getCompound("result"));
 
-        ContainerHelper.loadAllItems(tag.getCompound("slots"), container, reg);
+        BetterNonNullList.readFromTag(container, ItemStack.OPTIONAL_CODEC, tag, "slots");
 
         ListTag containerTag = tag.getList("container", 10); // maintains compatibility with < 6.5
         if (!containerTag.isEmpty()) {
