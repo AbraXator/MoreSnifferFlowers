@@ -5,7 +5,7 @@ import net.abraxator.moresnifferflowers.client.gui.screen.ClientDyespriaTooltip;
 import net.abraxator.moresnifferflowers.client.gui.screen.DyespriaTooltip;
 import net.abraxator.moresnifferflowers.client.gui.screen.GluedOverlay;
 import net.abraxator.moresnifferflowers.client.gui.screen.RebrewingStandScreen;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+
 import net.abraxator.moresnifferflowers.client.model.block.*;
 import net.abraxator.moresnifferflowers.client.model.entity.*;
 import net.abraxator.moresnifferflowers.client.particle.*;
@@ -51,37 +51,36 @@ public class ClientRegistration {
     @SubscribeEvent
     public static void onEntityRenderersRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         //CENTER
-        event.registerLayerDefinition(ModModelLayerLocations.BOBLING, BoblingModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.DRAGONFLY, DragonflyModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.CORRUPTED_PROJECTILE, CorruptedProjectileModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.CORRUPTED_BOAT_LAYER, BoatModel::createBodyModel);
-        event.registerLayerDefinition(ModModelLayerLocations.CORRUPTED_CHEST_BOAT_LAYER, ChestBoatModel::createBodyModel);
-        event.registerLayerDefinition(ModModelLayerLocations.VIVICUS_BOAT_LAYER, BoatModel::createBodyModel);
-        event.registerLayerDefinition(ModModelLayerLocations.VIVICUS_CHEST_BOAT_LAYER, ChestBoatModel::createBodyModel);
-        event.registerLayerDefinition(ModModelLayerLocations.SALT_BUBBLE, SaltBubbleModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GLUING_GUM, GluingGumModel::createBodyLayer);
+        event.registerLayerDefinition(BoblingModel.BOBLING, BoblingModel::createBodyLayer);
+        event.registerLayerDefinition(DragonflyModel.DRAGONFLY, DragonflyModel::createBodyLayer);
+        event.registerLayerDefinition(CorruptedProjectileModel.CORRUPTED_PROJECTILE, CorruptedProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(ModBoatRenderer.CORRUPTED_BOAT_LAYER, BoatModel::createBodyModel);
+        event.registerLayerDefinition(ModBoatRenderer.CORRUPTED_CHEST_BOAT_LAYER, ChestBoatModel::createBodyModel);
+        event.registerLayerDefinition(ModBoatRenderer.VIVICUS_BOAT_LAYER, BoatModel::createBodyModel);
+        event.registerLayerDefinition(ModBoatRenderer.VIVICUS_CHEST_BOAT_LAYER, ChestBoatModel::createBodyModel);
+        event.registerLayerDefinition(SaltBubbleModel.SALT_BUBBLE, SaltBubbleModel::createBodyLayer);
+        event.registerLayerDefinition(GluingGumModel.GLUING_GUM, GluingGumModel::createBodyLayer);
 
         //BLOCK
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_CARROT, GiantCropModels::createGiantCarrotLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_POTATO, GiantCropModels::createGiantPotatoLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_NETHERWART, GiantCropModels::createNetherwartLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_BEETROOT, GiantCropModels::createBeetrootLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_WHEAT, GiantCropModels::createWheatLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_ONION, GiantCropModels::createOnionLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_TOMATO, GiantCropModels::createTomatoLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_CABBAGE, GiantCropModels::createCabbageLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.GIANT_RICE, GiantCropModels::createRiceLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_CARROT, GiantCropModels::createGiantCarrotLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_POTATO, GiantCropModels::createGiantPotatoLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_NETHERWART, GiantCropModels::createNetherwartLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_BEETROOT, GiantCropModels::createBeetrootLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_WHEAT, GiantCropModels::createWheatLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_ONION, GiantCropModels::createOnionLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_TOMATO, GiantCropModels::createTomatoLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_CABBAGE, GiantCropModels::createCabbageLayer);
+        event.registerLayerDefinition(GiantCropModels.GIANT_RICE, GiantCropModels::createRiceLayer);
 
-        event.registerLayerDefinition(ModModelLayerLocations.CROPRESSOR, CropressorModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.BONDRIPIA, BondripiaModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.BEROOT_CAULDRON, BerootCauldronModel::createCauldronLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.BEROOT_SPOON, BerootCauldronModel::createSpoonLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.SALTEMONE, SaltemoneModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.SALTEMONE_TOP, SaltemoneModel::createTopLayer);
-        event.registerLayerDefinition(ModModelLayerLocations.DYESPRIA, DyespriaModel::createBodyLayer);
+        event.registerLayerDefinition(BondripiaModel.BONDRIPIA, BondripiaModel::createBodyLayer);
+        event.registerLayerDefinition(BerootCauldronModel.BEROOT_CAULDRON, BerootCauldronModel::createCauldronLayer);
+        event.registerLayerDefinition(BerootCauldronModel.BEROOT_SPOON, BerootCauldronModel::createSpoonLayer);
+        event.registerLayerDefinition(SaltemoneModel.SALTEMONE, SaltemoneModel::createBodyLayer);
+        event.registerLayerDefinition(SaltemoneModel.SALTEMONE_TOP, SaltemoneModel::createTopLayer);
+        event.registerLayerDefinition(DyespriaModel.DYESPRIA, DyespriaModel::createBodyLayer);
 
-        event.registerLayerDefinition(ModModelLayerLocations.SIMPLE_CUBE, SimpleModels::simpleCube);
-        event.registerLayerDefinition(ModModelLayerLocations.INVERTED_CUBE, SimpleModels::invertedCube);
+        event.registerLayerDefinition(SimpleModels.SIMPLE_CUBE, SimpleModels::simpleCube);
+        event.registerLayerDefinition(SimpleModels.INVERTED_CUBE, SimpleModels::invertedCube);
 
 
     }

@@ -14,19 +14,18 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public interface MSFAdvancementCritters {
-
     DeferredRegister<CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, MoreSnifferFlowers.MOD_ID);
 
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> EARN_SNIFFER_ADVANCEMENT = TRIGGERS.register("earn_sniffer_advancement", SimpleAdvancementTrigger::new);
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> USED_DYESPRIA = TRIGGERS.register("used_dyespria", SimpleAdvancementTrigger::new);
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> USED_BONMEEL = TRIGGERS.register("used_bonmeel", SimpleAdvancementTrigger::new);
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> PLACED_DYESPRIA_PLANT = TRIGGERS.register("placed_dyespria_plant", SimpleAdvancementTrigger::new);
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> BOBLING_ATTACK = TRIGGERS.register("bobling_attack", SimpleAdvancementTrigger::new);
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> DYE_BOAT = TRIGGERS.register("dye_boat", SimpleAdvancementTrigger::new);
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> USED_CURE = TRIGGERS.register("used_cure", SimpleAdvancementTrigger::new);
-    DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> CORRUPTED_BLOCK = TRIGGERS.register("corrupted_block", SimpleAdvancementTrigger::new);
+    Supplier<SimpleAdvancementTrigger> USED_DYESPRIA = TRIGGERS.register("used_dyespria", SimpleAdvancementTrigger::new);
+    Supplier<SimpleAdvancementTrigger> USED_BONMEEL = TRIGGERS.register("used_bonmeel", SimpleAdvancementTrigger::new);
+    Supplier<SimpleAdvancementTrigger> PLACED_DYESPRIA_PLANT = TRIGGERS.register("placed_dyespria_plant", SimpleAdvancementTrigger::new);
+    Supplier<SimpleAdvancementTrigger> BOBLING_ATTACK = TRIGGERS.register("bobling_attack", SimpleAdvancementTrigger::new);
+    Supplier<SimpleAdvancementTrigger> DYE_BOAT = TRIGGERS.register("dye_boat", SimpleAdvancementTrigger::new);
+    Supplier<SimpleAdvancementTrigger> USED_CURE = TRIGGERS.register("used_cure", SimpleAdvancementTrigger::new);
+    Supplier<SimpleAdvancementTrigger> CORRUPTED_BLOCK = TRIGGERS.register("corrupted_block", SimpleAdvancementTrigger::new);
 
     class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvancementTrigger.TriggerInstance> {
 

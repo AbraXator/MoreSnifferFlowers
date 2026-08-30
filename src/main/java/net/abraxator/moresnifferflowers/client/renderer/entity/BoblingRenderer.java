@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.client.renderer.entity;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+
 import net.abraxator.moresnifferflowers.client.model.entity.BoblingModel;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,7 +14,7 @@ public class BoblingRenderer extends MobRenderer<BoblingEntity, BoblingModel<Bob
     public static final ResourceLocation BONMEELED_TEXTURE = MoreSnifferFlowers.loc("textures/entity/bobling/bonmeeled_bobling.png");
     
     public BoblingRenderer(EntityRendererProvider.Context context) {
-        super(context, new BoblingModel<>(context.bakeLayer(ModModelLayerLocations.BOBLING)), 0.4F);
+        super(context, new BoblingModel<>(context.bakeLayer(BoblingModel.BOBLING)), 0.4F);
     }
 
     @Override

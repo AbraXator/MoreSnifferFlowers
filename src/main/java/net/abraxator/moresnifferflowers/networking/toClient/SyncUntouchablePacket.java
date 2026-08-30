@@ -26,6 +26,6 @@ public record SyncUntouchablePacket() implements MSFClientPacket {
 
     @Override
     public @NotNull Type<? extends CustomPacketPayload> type() {
-        return new CustomPacketPayload.Type<>(MoreSnifferFlowers.loc("sync_untouchable"));
+        return TYPE;
     }
 }

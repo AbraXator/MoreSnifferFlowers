@@ -4,8 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
-import net.abraxator.moresnifferflowers.client.ModColorHandler;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+import net.abraxator.moresnifferflowers.client.MSFColorHandler;
+import net.abraxator.moresnifferflowers.client.model.block.DyespriaModel;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
@@ -33,7 +33,7 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
 
     public DyespriaPlantBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         entityRenderDispatcher = context.getEntityRenderer();
-        modelPart = context.bakeLayer(ModModelLayerLocations.DYESPRIA);
+        modelPart = context.bakeLayer(DyespriaModel.DYESPRIA);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DyespriaPlantBlockEntityRenderer implements BlockEntityRenderer<Dye
             float b = 1f;
 
             if (isModdedDye){
-             float[] rgb = ModColorHandler.hexToRGB(dye.color().getTextColor());
+             float[] rgb = MSFColorHandler.hexToRGB(dye.color().getTextColor());
 
              r = rgb[0];
              g = rgb[1];

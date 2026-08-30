@@ -13,158 +13,145 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 public interface MSFItems {
-    DeferredRegister.Items ITEMS =
-            DeferredRegister.createItems(MoreSnifferFlowers.MOD_ID);
-    DeferredItem<Item> DAWNBERRY_VINE_SEEDS = ITEMS.register("dawnberry_vine_seeds", () -> new ItemNameBlockItem(MSFBlocks.DAWNBERRY_VINE.get(), new Item.Properties()));
-    DeferredItem<Item> GLOOMBERRY_VINE_SEEDS = ITEMS.register("gloomberry_vine_seeds", () -> new ItemNameBlockItem(MSFBlocks.GLOOMBERRY_VINE.get(), new Item.Properties()));
-    DeferredItem<Item> DAWNBERRY = ITEMS.register("dawnberry", () -> new Item(new Item.Properties().food(Food.DAWNBERRY)));
-    DeferredItem<Item> GLOOMBERRY = ITEMS.register("gloomberry", () -> new Item(new Item.Properties().food(Food.GLOOMBERRY)));
+    DeferredRegister.Items ITEMS = DeferredRegister.createItems(MoreSnifferFlowers.MOD_ID);
 
-    DeferredItem<Item> AMBUSH_SEEDS = ITEMS.register("ambush_seeds", () -> new ItemNameBlockItem(MSFBlocks.AMBUSH_BOTTOM.get(), new Item.Properties()));
-    DeferredItem<Item> GARBUSH_SEEDS = ITEMS.register("garbush_seeds", () -> new ItemNameBlockItem(MSFBlocks.GARBUSH_BOTTOM.get(), new Item.Properties()));
+    DeferredItem<Item> DAWNBERRY_VINE_SEEDS = registerBlockItem("dawnberry_vine_seeds", MSFBlocks.DAWNBERRY_VINE);
+    DeferredItem<Item> GLOOMBERRY_VINE_SEEDS = registerBlockItem("gloomberry_vine_seeds", MSFBlocks.GLOOMBERRY_VINE);
+    DeferredItem<Item> DAWNBERRY = register("dawnberry", Item::new, (p) -> p.food(Food.DAWNBERRY));
+    DeferredItem<Item> GLOOMBERRY = register("gloomberry", Item::new, (p) -> p.food(Food.GLOOMBERRY));
 
-    DeferredItem<Item> AMBUSH_BANNER_PATTERN = ITEMS.register("ambush_banner_pattern", () -> new BannerPatternItem(MSFTags.ModBannerPatternTags.AMBUSH_BANNER_PATTERN, new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> EVIL_BANNER_PATTERN = ITEMS.register("evil_banner_pattern", () -> new BannerPatternItem(MSFTags.ModBannerPatternTags.EVIL_BANNER_PATTERN, new Item.Properties().stacksTo(1)));
+    DeferredItem<Item> AMBUSH_SEEDS = registerBlockItem("ambush_seeds", MSFBlocks.AMBUSH_BOTTOM);
+    DeferredItem<Item> GARBUSH_SEEDS = registerBlockItem("garbush_seeds", MSFBlocks.GARBUSH_BOTTOM);
 
-    DeferredItem<Item> AMBER_SHARD = ITEMS.register("amber_shard", () -> new TrimMaterialItem(new Item.Properties()));
-    DeferredItem<Item> GARNET_SHARD = ITEMS.register("garnet_shard", () -> new TrimMaterialItem(new Item.Properties()));
+    DeferredItem<Item> AMBUSH_BANNER_PATTERN = register("ambush_banner_pattern", properties -> new BannerPatternItem(MSFTags.ModBannerPatternTags.AMBUSH_BANNER_PATTERN, properties), (p) -> p.stacksTo(1));
+    DeferredItem<Item> EVIL_BANNER_PATTERN = register("evil_banner_pattern", properties -> new BannerPatternItem(MSFTags.ModBannerPatternTags.EVIL_BANNER_PATTERN, properties), (p) -> p.stacksTo(1));
 
-    DeferredItem<Item> AROMA_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("aroma_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.AROMA));
-    DeferredItem<Item> CARNAGE_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("carnage_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.CARNAGE));
-    DeferredItem<Item> DRAGONFLY = ITEMS.register("dragonfly", () -> new DragonflyItem(new Item.Properties()));
-    DeferredItem<Item> DYESPRIA = ITEMS.register("dyespria", () -> new DyespriaItem(new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> DYESCRAPIA = ITEMS.register("dyescrapia", () -> new DyescrapiaItem(new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> DYESPRIA_SEEDS = ITEMS.register("dyespria_seeds", () -> new ItemNameBlockItem(MSFBlocks.DYESPRIA_PLANT.get(), new Item.Properties()) {
-        @Override
-        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
-            super.appendHoverText(stack, context, components, tooltipFlag);
-            components.add(Component.translatableWithFallback("tooltip.dyespria_seeds", "Shear to hide dye").withStyle(ChatFormatting.GOLD));
-        }
-    });
+    DeferredItem<Item> AMBER_SHARD = register("amber_shard", TrimMaterialItem::new);
+    DeferredItem<Item> GARNET_SHARD = register("garnet_shard", TrimMaterialItem::new);
 
-    DeferredItem<Item> BONMEELIA_SEEDS = ITEMS.register("bonmeelia_seeds", () -> new ItemNameBlockItem(MSFBlocks.BONMEELIA.get(), new Item.Properties()));
-    DeferredItem<Item> JAR_OF_BONMEEL = ITEMS.register("jar_of_bonmeel", () -> new JarOfBonmeelItem(new Item.Properties()));
-    DeferredItem<Item> BONDRIPIA_SEEDS = ITEMS.register("bondripia_seeds", () -> new ItemNameBlockItem(MSFBlocks.BONDRIPIA.get(), new Item.Properties()) {
-        @Override
-        public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
-            super.appendHoverText(stack, context, components, tooltipFlag);
-            components.add(Component.translatableWithFallback("tooltip.bondripia_seeds", "Plantable underneath an area of 5 blocks in a + shape").withStyle(ChatFormatting.GOLD));
-        }
-    });
+    DeferredItem<Item> AROMA_ARMOR_TRIM_SMITHING_TEMPLATE = register("aroma_armor_trim_smithing_template", properties -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.AROMA));
+    DeferredItem<Item> CARNAGE_ARMOR_TRIM_SMITHING_TEMPLATE = register("carnage_armor_trim_smithing_template", properties -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.CARNAGE));
+    DeferredItem<Item> DRAGONFLY = register("dragonfly", DragonflyItem::new);
+    DeferredItem<Item> DYESPRIA = register("dyespria", DyespriaItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> DYESCRAPIA = register("dyescrapia", DyescrapiaItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> DYESPRIA_SEEDS = registerBlockItem("dyespria_seeds", MSFBlocks.DYESPRIA_PLANT, Component.translatableWithFallback("tooltip.dyespria_seeds", "Shear to hide dye").withStyle(ChatFormatting.GOLD));
 
-    DeferredItem<Item> BONWILTIA_SEEDS = ITEMS.register("bonwiltia_seeds", () -> new ItemNameBlockItem(MSFBlocks.BONWILTIA.get(), new Item.Properties()));
-    DeferredItem<Item> JAR_OF_ACID = ITEMS.register("jar_of_acid", () -> new JarOfAcidItem(new Item.Properties()) {
-        @Override
-        public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
-            super.appendHoverText(stack, context, components, tooltipFlag);
-            components.add(Component.translatableWithFallback("tooltip.acid_jar", "Ungrows organic blocks").withStyle(ChatFormatting.GOLD));
-        }
-    });
+    DeferredItem<Item> BONMEELIA_SEEDS = registerBlockItem("bonmeelia_seeds", MSFBlocks.BONMEELIA);
+    DeferredItem<Item> JAR_OF_BONMEEL = register("jar_of_bonmeel", JarOfBonmeelItem::new);
+    DeferredItem<Item> BONDRIPIA_SEEDS = registerBlockItem("bondripia_seeds", MSFBlocks.BONDRIPIA, Component.translatable("tooltip.bondripia_seeds").withStyle(ChatFormatting.GOLD));
 
-    DeferredItem<Item> ACIDRIPIA_SEEDS = ITEMS.register("acidripia_seeds", () -> new ItemNameBlockItem(MSFBlocks.ACIDRIPIA.get(), new Item.Properties()));
+    DeferredItem<Item> BONWILTIA_SEEDS = registerBlockItem("bonwiltia_seeds", MSFBlocks.BONWILTIA);
+    DeferredItem<Item> JAR_OF_ACID = register("jar_of_acid", JarOfAcidItem::new);
+    DeferredItem<Item> ACIDRIPIA_SEEDS = registerBlockItem("acidripia_seeds", MSFBlocks.ACIDRIPIA);
 
-    DeferredItem<Item> CROPRESSOR = ITEMS.register("cropressor", () -> new BlockItem(MSFBlocks.CROPRESSOR_OUT.get(), new Item.Properties()));
-    DeferredItem<Item> TUBE_PIECE = ITEMS.register("tube_piece", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BELT_PIECE = ITEMS.register("belt_piece", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> SCRAP_PIECE = ITEMS.register("scrap_piece", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> ENGINE_PIECE = ITEMS.register("engine_piece", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> PRESS_PIECE = ITEMS.register("press_piece", () -> new Item(new Item.Properties()));
+    DeferredItem<Item> CROPRESSOR = registerBlockItem("cropressor", MSFBlocks.CROPRESSOR_OUT);
+    DeferredItem<Item> TUBE_PIECE = register("tube_piece", Item::new);
+    DeferredItem<Item> BELT_PIECE = register("belt_piece", Item::new);
+    DeferredItem<Item> SCRAP_PIECE = register("scrap_piece", Item::new);
+    DeferredItem<Item> ENGINE_PIECE = register("engine_piece", Item::new);
+    DeferredItem<Item> PRESS_PIECE = register("press_piece", Item::new);
 
-    DeferredItem<Item> REBREWING_STAND = ITEMS.register("rebrewing_stand", () -> new ItemNameBlockItem(MSFBlocks.REBREWING_STAND_BOTTOM.get(), new Item.Properties()));
-    DeferredItem<Item> BROKEN_REBREWING_STAND = ITEMS.register("broken_rebrewing_stand", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> EXTRACTION_BOTTLE = ITEMS.register("extraction_bottle", () -> new BottleOfExtractionItem(new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> EXTRACTED_BOTTLE = ITEMS.register("extracted_bottle", () -> new PotionItem(new Item.Properties().stacksTo(1)) {
-        @Override
-        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
-            super.appendHoverText(stack, context, components, tooltipFlag);
-            components.add(Component.translatableWithFallback("tooltip.extracted_bottle.obtain", "Obtainable using Bottle o' Extraction").withStyle(ChatFormatting.GOLD));
-        }
-    });
-    DeferredItem<Item> REBREWED_POTION = ITEMS.register("rebrewed_potion", () -> new PotionItem(new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> REBREWED_SPLASH_POTION = ITEMS.register("rebrewed_splash_potion", () -> new SplashPotionItem(new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> REBREWED_LINGERING_POTION = ITEMS.register("rebrewed_lingering_potion", () -> new LingeringPotionItem(new Item.Properties().stacksTo(1)));
-    
-    DeferredItem<Item> CROPRESSED_POTATO = ITEMS.register("cropressed_potato", () -> new TrimMaterialItem(new Item.Properties()));
-    DeferredItem<Item> CROPRESSED_CARROT = ITEMS.register("cropressed_carrot", () -> new TrimMaterialItem(new Item.Properties()));
-    DeferredItem<Item> CROPRESSED_BEETROOT = ITEMS.register("cropressed_beetroot", () -> new TrimMaterialItem(new Item.Properties()));
-    DeferredItem<Item> CROPRESSED_NETHERWART = ITEMS.register("cropressed_nether_wart", () -> new TrimMaterialItem(new Item.Properties()));
-    DeferredItem<Item> CROPRESSED_WHEAT = ITEMS.register("cropressed_wheat", () -> new TrimMaterialItem(new Item.Properties()));
+    DeferredItem<Item> REBREWING_STAND = registerBlockItem("rebrewing_stand", MSFBlocks.REBREWING_STAND_BOTTOM);
+    DeferredItem<Item> BROKEN_REBREWING_STAND = register("broken_rebrewing_stand", Item::new);
+    DeferredItem<Item> EXTRACTION_BOTTLE = register("extraction_bottle", BottleOfExtractionItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> EXTRACTED_BOTTLE = register("extracted_bottle", ExtractedBottleItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> REBREWED_POTION = register("rebrewed_potion", PotionItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> REBREWED_SPLASH_POTION = register("rebrewed_splash_potion", SplashPotionItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> REBREWED_LINGERING_POTION = register("rebrewed_lingering_potion", LingeringPotionItem::new, (p) -> p.stacksTo(1));
 
-    DeferredItem<Item> TATER_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("tater_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.TATER));
-    DeferredItem<Item> CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("carotene_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.CAROTENE));
-    DeferredItem<Item> BEAT_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("beat_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.BEAT));
-    DeferredItem<Item> NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("nether_wart_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.NETHER_WART));
-    DeferredItem<Item> GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE = ITEMS.register("grain_armor_trim_smithing_template", () -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.GRAIN));
+    DeferredItem<Item> CROPRESSED_POTATO = register("cropressed_potato", TrimMaterialItem::new);
+    DeferredItem<Item> CROPRESSED_CARROT = register("cropressed_carrot", TrimMaterialItem::new);
+    DeferredItem<Item> CROPRESSED_BEETROOT = register("cropressed_beetroot", TrimMaterialItem::new);
+    DeferredItem<Item> CROPRESSED_NETHERWART = register("cropressed_nether_wart", TrimMaterialItem::new);
+    DeferredItem<Item> CROPRESSED_WHEAT = register("cropressed_wheat", TrimMaterialItem::new);
 
-    DeferredItem<Item> VIVICUS_ANTIDOTE = ITEMS.register("vivicus_antidote", () -> new VivicusAntidoteItem(new Item.Properties()));
-    DeferredItem<Item> CORRUPTED_BOBLING_CORE = ITEMS.register("corrupted_bobling_core", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BOBLING_CORE = ITEMS.register("bobling_core", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> CORRUPTED_SLIME_BALL = ITEMS.register("corrupted_slime_ball", () -> new CorruptedSlimeBallItem(new Item.Properties()));
-    
-    DeferredItem<Item> CORRUPTED_SIGN = ITEMS.register("corrupted_sign", () -> new SignItem(new Item.Properties(), MSFBlocks.CORRUPTED_SIGN.get(), MSFBlocks.CORRUPTED_WALL_SIGN.get()));
-    DeferredItem<Item> CORRUPTED_HANGING_SIGN = ITEMS.register("corrupted_hanging_sign", () -> new HangingSignItem(MSFBlocks.CORRUPTED_HANGING_SIGN.get(), MSFBlocks.CORRUPTED_WALL_HANGING_SIGN.get(), new Item.Properties()));
-    DeferredItem<Item> CORRUPTED_BOAT = ITEMS.register("corrupted_boat", () -> new ModBoatItem(false, ModBoatEntity.Type.CORRUPTED, new Item.Properties()));
-    DeferredItem<Item> CORRUPTED_CHEST_BOAT = ITEMS.register("corrupted_chest_boat", () -> new ModBoatItem(true, ModBoatEntity.Type.CORRUPTED, new Item.Properties()));
+    DeferredItem<Item> TATER_ARMOR_TRIM_SMITHING_TEMPLATE = register("tater_armor_trim_smithing_template", properties -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.TATER));
+    DeferredItem<Item> CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE = register("carotene_armor_trim_smithing_template", properties -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.CAROTENE));
+    DeferredItem<Item> BEAT_ARMOR_TRIM_SMITHING_TEMPLATE = register("beat_armor_trim_smithing_template", properties -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.BEAT));
+    DeferredItem<Item> NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE = register("nether_wart_armor_trim_smithing_template", properties -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.NETHER_WART));
+    DeferredItem<Item> GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE = register("grain_armor_trim_smithing_template", properties -> SmithingTemplateItem.createArmorTrimTemplate(MSFTrims.Patterns.GRAIN));
 
-    DeferredItem<Item> VIVICUS_SIGN = ITEMS.register("vivicus_sign", () -> new SignItem(new Item.Properties(), MSFBlocks.VIVICUS_SIGN.get(), MSFBlocks.VIVICUS_WALL_SIGN.get()));
-    DeferredItem<Item> VIVICUS_HANGING_SIGN = ITEMS.register("vivicus_hanging_sign", () -> new HangingSignItem(MSFBlocks.VIVICUS_HANGING_SIGN.get(), MSFBlocks.VIVICUS_WALL_HANGING_SIGN.get(), new Item.Properties()));
-    DeferredItem<Item> VIVICUS_BOAT = ITEMS.register("vivicus_boat", () -> new ModBoatItem(false, ModBoatEntity.Type.VIVICUS, new Item.Properties()));
-    DeferredItem<Item> VIVICUS_CHEST_BOAT = ITEMS.register("vivicus_chest_boat", () -> new ModBoatItem(true, ModBoatEntity.Type.VIVICUS, new Item.Properties()));
+    DeferredItem<Item> VIVICUS_ANTIDOTE = register("vivicus_antidote", VivicusAntidoteItem::new);
+    DeferredItem<Item> CORRUPTED_BOBLING_CORE = register("corrupted_bobling_core", Item::new);
+    DeferredItem<Item> BOBLING_CORE = register("bobling_core", Item::new);
+    DeferredItem<Item> CORRUPTED_SLIME_BALL = register("corrupted_slime_ball", CorruptedSlimeBallItem::new);
 
-    DeferredItem<Item> BOBLING_SPAWN_EGG = ITEMS.register("bobling_spawn_egg", () -> new DeferredSpawnEggItem(MSFEntityTypes.BOBLING, 0x312f35, 0xa55f85, new Item.Properties()));
+    DeferredItem<Item> CORRUPTED_SIGN = register("corrupted_sign", properties -> new SignItem(properties, MSFBlocks.CORRUPTED_SIGN.get(), MSFBlocks.CORRUPTED_WALL_SIGN.get()));
+    DeferredItem<Item> CORRUPTED_HANGING_SIGN = register("corrupted_hanging_sign", properties -> new HangingSignItem(MSFBlocks.CORRUPTED_HANGING_SIGN.get(), MSFBlocks.CORRUPTED_WALL_HANGING_SIGN.get(), properties));
+    DeferredItem<Item> CORRUPTED_BOAT = register("corrupted_boat", properties -> new ModBoatItem(false, ModBoatEntity.Type.CORRUPTED, properties));
+    DeferredItem<Item> CORRUPTED_CHEST_BOAT = register("corrupted_chest_boat", properties -> new ModBoatItem(true, ModBoatEntity.Type.CORRUPTED, properties));
 
-    DeferredItem<Item> CAULORFLOWER_SEEDS = ITEMS.register("caulorflower_seeds", () -> new ItemNameBlockItem(MSFBlocks.CAULORFLOWER.get(), new Item.Properties()));
-    DeferredItem<Item> PATTERNFLOWER_SEEDS = ITEMS.register("patternflower_seeds", () -> new ItemNameBlockItem(MSFBlocks.PATTERNFLOWER.get(), new Item.Properties()));
-    DeferredItem<Item> PATTERNSPRIA = ITEMS.register("patternspria", () -> new PatternspriaItem(new Item.Properties().stacksTo(1)));
+    DeferredItem<Item> VIVICUS_SIGN = register("vivicus_sign", properties -> new SignItem(properties, MSFBlocks.VIVICUS_SIGN.get(), MSFBlocks.VIVICUS_WALL_SIGN.get()));
+    DeferredItem<Item> VIVICUS_HANGING_SIGN = register("vivicus_hanging_sign", properties -> new HangingSignItem(MSFBlocks.VIVICUS_HANGING_SIGN.get(), MSFBlocks.VIVICUS_WALL_HANGING_SIGN.get(), properties));
+    DeferredItem<Item> VIVICUS_BOAT = register("vivicus_boat", properties -> new ModBoatItem(false, ModBoatEntity.Type.VIVICUS, properties));
+    DeferredItem<Item> VIVICUS_CHEST_BOAT = register("vivicus_chest_boat", properties -> new ModBoatItem(true, ModBoatEntity.Type.VIVICUS, properties));
 
-    DeferredItem<Item> BLOCK_PATTERN_PIPES = ITEMS.register("block_pattern_pipes", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_BRICKS = ITEMS.register("block_pattern_bricks", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_FOCUS = ITEMS.register("block_pattern_focus", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_BUBBLES = ITEMS.register("block_pattern_bubbles", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_CLOUDS = ITEMS.register("block_pattern_clouds", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_DEEPSLATE = ITEMS.register("block_pattern_deepslate", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_DIAMOND = ITEMS.register("block_pattern_diamond", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_EYE = ITEMS.register("block_pattern_eye", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_HEARTS = ITEMS.register("block_pattern_hearts", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_HONEYCOMB = ITEMS.register("block_pattern_honeycomb", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_PAWS = ITEMS.register("block_pattern_paws", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_PRISMARINE = ITEMS.register("block_pattern_prismarine", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_SPROUTS = ITEMS.register("block_pattern_sprouts", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_STARS = ITEMS.register("block_pattern_stars", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_COVER = ITEMS.register("block_pattern_cover", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> BLOCK_PATTERN_FLOWERS = ITEMS.register("block_pattern_flowers", () -> new Item(new Item.Properties()));
+    DeferredItem<Item> BOBLING_SPAWN_EGG = register("bobling_spawn_egg", properties -> new DeferredSpawnEggItem(MSFEntityTypes.BOBLING, 0x312f35, 0xa55f85, properties));
 
-    DeferredItem<Item> BEROOT_CAULDRON = ITEMS.register("beroot_cauldron", () -> new BlockItem(MSFBlocks.BEROOT_CAULDRON.get(), new Item.Properties()));
+    DeferredItem<Item> CAULORFLOWER_SEEDS = register("caulorflower_seeds", properties -> new ItemNameBlockItem(MSFBlocks.CAULORFLOWER.get(), properties));
+    DeferredItem<Item> PATTERNFLOWER_SEEDS = register("patternflower_seeds", properties -> new ItemNameBlockItem(MSFBlocks.PATTERNFLOWER.get(), properties));
+    DeferredItem<Item> PATTERNSPRIA = register("patternspria", PatternspriaItem::new, (p) -> p.stacksTo(1));
 
-    DeferredItem<Item> ROOTED_SOUP = ITEMS.register("rooted_soup", () -> new RootedSoupItem(new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> BEROOT_COOK_BOOK = ITEMS.register("beroot_cook_book", () -> new BerootCookbookItem(new Item.Properties().stacksTo(1)));
-    DeferredItem<Item> FLAVORFUL_ROOTS = ITEMS.register("flavorful_roots", () -> new Item(new Item.Properties()));
+    DeferredItem<Item> BLOCK_PATTERN_PIPES = register("block_pattern_pipes", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_BRICKS = register("block_pattern_bricks", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_FOCUS = register("block_pattern_focus", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_BUBBLES = register("block_pattern_bubbles", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_CLOUDS = register("block_pattern_clouds", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_DEEPSLATE = register("block_pattern_deepslate", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_DIAMOND = register("block_pattern_diamond", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_EYE = register("block_pattern_eye", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_HEARTS = register("block_pattern_hearts", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_HONEYCOMB = register("block_pattern_honeycomb", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_PAWS = register("block_pattern_paws", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_PRISMARINE = register("block_pattern_prismarine", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_SPROUTS = register("block_pattern_sprouts", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_STARS = register("block_pattern_stars", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_COVER = register("block_pattern_cover", Item::new);
+    DeferredItem<Item> BLOCK_PATTERN_FLOWERS = register("block_pattern_flowers", Item::new);
 
-    DeferredItem<Item> SALTEMONE_SEEDS = ITEMS.register("saltemone_seeds", () -> new SaltemoneSeedsItem(MSFBlocks.SALTEMONE.get(), new Item.Properties()));
-    DeferredItem<Item> SOURLEMONE_SEEDS = ITEMS.register("sourlemone_seeds", () -> new SaltemoneSeedsItem(MSFBlocks.SOURLEMONE.get(), new Item.Properties()));
-    DeferredItem<Item> SALTY_SPICE = ITEMS.register("salty_spice", () -> new SaltySpiceItem(MSFBlocks.SALTY_CLUMP.get(), new Item.Properties()));
-    DeferredItem<Item> SOUR_SPICE = ITEMS.register("sour_spice", () -> new SourSpiceItem(MSFBlocks.SOUR_PUDDLE.get(), new Item.Properties()));
-    DeferredItem<Item> FIERY_SPICE = ITEMS.register("fiery_spice", () -> new Item(new Item.Properties()));
-    DeferredItem<Item> SWEET_SPICE = ITEMS.register("sweet_spice", () -> new Item(new Item.Properties()));
+    DeferredItem<Item> ROOTED_SOUP = register("rooted_soup", RootedSoupItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> BEROOT_COOK_BOOK = register("beroot_cook_book", BerootCookbookItem::new, (p) -> p.stacksTo(1));
+    DeferredItem<Item> FLAVORFUL_ROOTS = register("flavorful_roots", Item::new);
 
-    DeferredItem<Item> DRIPSALT = ITEMS.register("dripsalt", () -> new BlockItem(MSFBlocks.DRIPSALT.get(), new Item.Properties()));
-    DeferredItem<Item> BURNED_SLOT = ITEMS.register("burned_slot", () -> new BurnedSlotItem(new Item.Properties().stacksTo(1)));
+    DeferredItem<Item> SALTEMONE_SEEDS = register("saltemone_seeds", properties -> new SaltemoneSeedsItem(MSFBlocks.SALTEMONE.get(), properties));
+    DeferredItem<Item> SOURLEMONE_SEEDS = register("sourlemone_seeds", properties -> new SaltemoneSeedsItem(MSFBlocks.SOURLEMONE.get(), properties));
+    DeferredItem<Item> SALTY_SPICE = register("salty_spice", properties -> new SaltySpiceItem(MSFBlocks.SALTY_CLUMP.get(), properties));
+    DeferredItem<Item> SOUR_SPICE = register("sour_spice", properties -> new SourSpiceItem(MSFBlocks.SOUR_PUDDLE.get(), properties));
+    DeferredItem<Item> FIERY_SPICE = register("fiery_spice", Item::new);
+    DeferredItem<Item> SWEET_SPICE = register("sweet_spice", Item::new);
 
-    DeferredItem<Item> MUSIC_DISC_BOBLING = ITEMS.register("music_disc_bobling", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(MSFSounds.MusicDiscs.BOBLING_BATTLE.getKey())));
-    DeferredItem<Item> DISC_FRAGMENT_BOBLING = ITEMS.register("disc_fragment_bobling", () -> new Item(new Item.Properties()));
+    DeferredItem<Item> BURNED_SLOT = register("burned_slot", BurnedSlotItem::new, (p) -> p.stacksTo(1));
 
-    DeferredItem<Item> CREATIVE_TAB_ICON = ITEMS.register("creative_tab_icon", () -> new CreativeTabItem(new Item.Properties()));
-    DeferredItem<Item> WAND_OF_CUBING = ITEMS.register("wand_of_cubing", () -> new WandOfCubingItem(new Item.Properties()));
-    DeferredItem<Item> DEBUG_FLOWER = ITEMS.register("debug_flower", () -> new DebugFlowerItem(new Item.Properties()));
-    DeferredItem<Item> PLACEHOLDER = ITEMS.registerItem("placeholder", Item::new, new Item.Properties());
+    DeferredItem<Item> MUSIC_DISC_BOBLING = register("music_disc_bobling", Item::new, (p) -> p.stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(MSFSounds.MusicDiscs.BOBLING_BATTLE.getKey()));
+    DeferredItem<Item> DISC_FRAGMENT_BOBLING = register("disc_fragment_bobling", Item::new);
+
+    DeferredItem<Item> CREATIVE_TAB_ICON = register("creative_tab_icon", CreativeTabItem::new);
+    DeferredItem<Item> WAND_OF_CUBING = register("wand_of_cubing", WandOfCubingItem::new);
+    DeferredItem<Item> DEBUG_FLOWER = register("debug_flower", DebugFlowerItem::new);
+    DeferredItem<Item> PLACEHOLDER = register("placeholder", Item::new);
+
+    static DeferredItem<Item> register(String name, Function<Item.Properties, Item> itemFactory, UnaryOperator<Item.Properties> properties) {
+        return ITEMS.registerItem(name, itemFactory, properties.apply(new Item.Properties()));
+    }
+
+    static DeferredItem<Item> register(String name, Function<Item.Properties, Item> itemFactory) {
+        return ITEMS.registerItem(name, itemFactory);
+    }
+
+    static DeferredItem<Item> registerBlockItem(String name, Supplier<Block> blockSupplier, Component... description) {
+        return register(name, properties -> new DescriptionBlockItem(blockSupplier.get(), properties, description));
+    }
 
     interface ModelProperties {
         static void register() {

@@ -2,7 +2,7 @@ package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
-import net.abraxator.moresnifferflowers.client.ModColorHandler;
+import net.abraxator.moresnifferflowers.client.MSFColorHandler;
 import net.abraxator.moresnifferflowers.client.gui.screen.DyespriaTooltip;
 import net.abraxator.moresnifferflowers.components.*;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
@@ -143,8 +143,8 @@ public class DyespriaItem extends BlockItem implements Colorable {
 
        int originalColor = BlockPatternCapability.getPattern(pos, level).color();
        int dyeColor = dye.color().getFireworkColor();
-       int[] originalHSB = ModColorHandler.hexToRGBLarge(originalColor);
-       int[] dyeHSB = ModColorHandler.hexToRGBLarge(dyeColor);
+       int[] originalHSB = MSFColorHandler.hexToRGBLarge(originalColor);
+       int[] dyeHSB = MSFColorHandler.hexToRGBLarge(dyeColor);
 
        int r =  (originalHSB[0]*5 + dyeHSB[0]) / 6;
        int g =  (originalHSB[1]*5 + dyeHSB[1]) / 6;

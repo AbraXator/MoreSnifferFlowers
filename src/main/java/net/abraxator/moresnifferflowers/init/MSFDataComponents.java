@@ -8,10 +8,14 @@ import net.abraxator.moresnifferflowers.components.PatternspriaMode;
 import net.abraxator.moresnifferflowers.components.RootedSoup;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -23,36 +27,19 @@ public interface MSFDataComponents {
     Supplier<DataComponentType<Dye>> DYE = DATA_COMPONENTS.register("dye", () -> DataComponentType.<Dye>builder().persistent(Dye.CODEC).cacheEncoding().build());
 
     Supplier<DataComponentType<DyespriaMode>> DYESPRIA_MODE =
-            DATA_COMPONENTS.register("dyespria_mode", () -> DataComponentType.<DyespriaMode>builder()
-                    .persistent(DyespriaMode.CODEC)
-                    .networkSynchronized(DyespriaMode.STREAM_CODEC)
-                    .cacheEncoding()
-                    .build());
+            register("dyespria_mode", DyespriaMode.CODEC, DyespriaMode.STREAM_CODEC);
 
     Supplier<DataComponentType<PatternspriaMode>> PATTERNSPRIA_MODE =
-            DATA_COMPONENTS.register("patternspria_mode", () -> DataComponentType.<PatternspriaMode>builder()
-                    .persistent(PatternspriaMode.CODEC)
-                    .networkSynchronized(PatternspriaMode.STREAM_CODEC)
-                    .cacheEncoding()
-                    .build());
+            register("patternspria_mode", PatternspriaMode.CODEC, PatternspriaMode.STREAM_CODEC);
 
     Supplier<DataComponentType<RootedSoup>> ROOTED_SOUP =
-            DATA_COMPONENTS.register("rooted_soup", () -> DataComponentType.<RootedSoup>builder()
-                    .persistent(RootedSoup.CODEC)
-                    .networkSynchronized(RootedSoup.STREAM_CODEC)
-                    .build());
+            register("rooted_soup",RootedSoup.CODEC, RootedSoup.STREAM_CODEC);
 
     Supplier<DataComponentType<List<RootedSoup.RootedEffect>>> ROOTED_EFFECTS =
-            DATA_COMPONENTS.register("rooted_effects", () -> DataComponentType.<List<RootedSoup.RootedEffect>>builder()
-                    .persistent(RootedSoup.RootedEffect.LIST_CODEC)
-                    .networkSynchronized(RootedSoup.RootedEffect.LIST_STREAM_CODEC)
-                    .build());
+            register("rooted_effects", RootedSoup.RootedEffect.LIST_CODEC, RootedSoup.RootedEffect.LIST_STREAM_CODEC);
 
     Supplier<DataComponentType<List<ItemStack>>> ROOTED_INGREDIENTS =
-            DATA_COMPONENTS.register("rooted_ingredients", () -> DataComponentType.<List<ItemStack>>builder()
-                    .persistent(ItemStack.CODEC.listOf())
-                    .networkSynchronized(ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()))
-                    .build());
+            register("rooted_ingredients", ItemStack.CODEC.listOf(), ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()));
 
     //Integer Land
     Supplier<DataComponentType<Integer>> USES = DATA_COMPONENTS.register("uses", () -> DataComponentType.<Integer>builder().persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
@@ -62,4 +49,14 @@ public interface MSFDataComponents {
     Supplier<DataComponentType<Integer>> AMOUNT = DATA_COMPONENTS.register("amount", () -> DataComponentType.<Integer>builder().persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
 
 
+
+    static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, @Nullable Codec<T> codec, @Nullable StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        return DATA_COMPONENTS.register(name, () -> {
+            DataComponentType.Builder<T> builder = DataComponentType.builder();
+            if (codec != null) builder.persistent(codec);
+            if (streamCodec != null) builder.networkSynchronized(streamCodec);
+            return builder.build();
+        });
+
+    }
 }

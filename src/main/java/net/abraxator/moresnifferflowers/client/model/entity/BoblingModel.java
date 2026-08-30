@@ -2,14 +2,18 @@ package net.abraxator.moresnifferflowers.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
 public class BoblingModel<T extends BoblingEntity> extends HierarchicalModel<T> {
+	public static final ModelLayerLocation BOBLING = new ModelLayerLocation(MoreSnifferFlowers.loc("boblingmodel"), "main");
+
 	private final ModelPart root;
 	private final ModelPart torso_lower;
 	private final ModelPart torso_upper;
@@ -83,7 +87,7 @@ public class BoblingModel<T extends BoblingEntity> extends HierarchicalModel<T> 
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, int pColor) {
-		root.render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pColor);
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int pColor) {
+		root.render(poseStack, buffer, packedLight, packedOverlay, pColor);
 	}
 }

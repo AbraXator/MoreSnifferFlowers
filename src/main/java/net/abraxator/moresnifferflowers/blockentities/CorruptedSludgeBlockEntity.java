@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
-import net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable;
+import net.abraxator.moresnifferflowers.components.Corruptable;
 import net.abraxator.moresnifferflowers.entities.CorruptedProjectile;
 import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;

@@ -4,10 +4,9 @@ import com.google.common.collect.ImmutableList;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
-import net.abraxator.moresnifferflowers.capability.GluedCapability;
+import net.abraxator.moresnifferflowers.effects.GluedEffect;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.items.JarOfBonmeelItem;
-import net.abraxator.moresnifferflowers.nutrition.NutritionLoader;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -62,17 +61,12 @@ import java.util.Objects;
 public class ForgeEvents {
 
     @SubscribeEvent
-    public static void onAddReloadListener(AddReloadListenerEvent event) {
-        event.addListener(new NutritionLoader());
-    }
-
-    @SubscribeEvent
     public static void onEffectAdded(MobEffectEvent.Added event){
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
         LivingEntity entity = event.getEntity();
 
         if (effect.equals(MSFEffects.GLUED)){
-            GluedCapability.setAndSync(entity, true, true);
+            GluedEffect.setAndSync(entity, true, true);
         }
     }
 
@@ -109,7 +103,7 @@ public class ForgeEvents {
         }
 
         if (effect.equals(MSFEffects.GLUED))
-            GluedCapability.setAndSync(entity, false, true);
+            GluedEffect.setAndSync(entity, false, true);
 
         if (effect.equals(MSFEffects.SLIPPERY))
             entity.getData(MSFDataAttachments.SLIPPERY).onEffectEnd(entity);

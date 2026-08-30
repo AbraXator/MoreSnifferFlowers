@@ -14,8 +14,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import java.util.concurrent.CompletableFuture;
 
 public class ModEffectTagsProvider extends TagsProvider<MobEffect> {
-    public ModEffectTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
-        super(pOutput, Registries.MOB_EFFECT, pLookupProvider, MoreSnifferFlowers.MOD_ID, existingFileHelper);
+    public ModEffectTagsProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+        super(pOutput, Registries.MOB_EFFECT, lookupProvider, MoreSnifferFlowers.MOD_ID, existingFileHelper);
     }
 
     @Override

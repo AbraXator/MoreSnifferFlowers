@@ -1,10 +1,14 @@
 package net.abraxator.moresnifferflowers.client.model.block;
 
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 public class BondripiaModel {
+	public static final ModelLayerLocation BONDRIPIA = new ModelLayerLocation(MoreSnifferFlowers.loc("bondripia"), "main");
+
 	private final ModelPart root;
 
 	public BondripiaModel(ModelPart root) {

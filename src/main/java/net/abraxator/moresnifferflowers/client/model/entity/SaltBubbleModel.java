@@ -2,13 +2,17 @@ package net.abraxator.moresnifferflowers.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 
 public class SaltBubbleModel extends Model {
+    public static final ModelLayerLocation SALT_BUBBLE = new ModelLayerLocation(MoreSnifferFlowers.loc("salt_bubble"), "main");
+
     private final ModelPart root;
 
     public SaltBubbleModel(ModelPart root) {

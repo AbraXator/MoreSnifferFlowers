@@ -2,13 +2,17 @@ package net.abraxator.moresnifferflowers.client.model.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 
 public class SaltemoneModel extends EntityModel {
+    public static final ModelLayerLocation SALTEMONE = new ModelLayerLocation(MoreSnifferFlowers.loc("saltemone"), "main");
+    public static final ModelLayerLocation SALTEMONE_TOP = new ModelLayerLocation(MoreSnifferFlowers.loc("saltemone"), "top");
 
     private final ModelPart root;
     private final ModelPart top;

@@ -1,7 +1,6 @@
 package net.abraxator.moresnifferflowers.networking;
 
 import net.abraxator.moresnifferflowers.networking.toClient.*;
-import net.abraxator.moresnifferflowers.networking.toServer.BerootCauldronCraftPacket;
 import net.abraxator.moresnifferflowers.networking.toServer.DyespriaModePacket;
 import net.abraxator.moresnifferflowers.networking.toServer.PatternspriaModePacket;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -23,17 +22,13 @@ public class ModPacketHandler {
     protected void registerClientToServer(ModPacketRegistrar registrar) {
         registrar.play(DyespriaModePacket.TYPE, DyespriaModePacket.STREAM_CODEC);
         registrar.play(PatternspriaModePacket.TYPE, PatternspriaModePacket.STREAM_CODEC);
-        registrar.play(BerootCauldronCraftPacket.TYPE, BerootCauldronCraftPacket.STREAM_CODEC);
     }
     
     protected void registerServerToClient(ModPacketRegistrar registrar) {
-        registrar.play(BerootCauldronSuckPacket.TYPE, BerootCauldronSuckPacket.STREAM_CODEC);
-        registrar.play(BerootCookbookScreenPacket.TYPE, BerootCookbookScreenPacket.STREAM_CODEC);
         registrar.play(CorruptedSludgePacket.TYPE, CorruptedSludgePacket.STREAM_CODEC);
         registrar.play(CorruptionParticlePacket.TYPE, CorruptionParticlePacket.STREAM_CODEC);
         registrar.play(DyespriaDisplayModeChangePacket.TYPE, DyespriaDisplayModeChangePacket.STREAM_CODEC);
         registrar.play(SaltemoneParticlePacket.TYPE, SaltemoneParticlePacket.STREAM_CODEC);
-        registrar.play(SyncGluedPacket.TYPE, SyncGluedPacket.STREAM_CODEC);
         registrar.play(SyncMouthSlotsPacket.TYPE, SyncMouthSlotsPacket.STREAM_CODEC);
         registrar.play(SyncSlipperyPacket.TYPE, SyncSlipperyPacket.STREAM_CODEC);
         registrar.play(SyncUntouchablePacket.TYPE, SyncUntouchablePacket.STREAM_CODEC);

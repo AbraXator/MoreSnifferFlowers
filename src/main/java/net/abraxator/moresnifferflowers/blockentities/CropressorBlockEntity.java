@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.blockentities;
 
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
-import net.abraxator.moresnifferflowers.client.ModColorHandler;
+import net.abraxator.moresnifferflowers.client.MSFColorHandler;
 import net.abraxator.moresnifferflowers.components.BetterNonNullList;
 import net.abraxator.moresnifferflowers.init.*;
 import net.abraxator.moresnifferflowers.networking.NBTCodecHelper;
@@ -231,7 +231,7 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
         double g = (hash & 0x00FF00) >> 8;
         double b = hash & 0x0000FF;
 
-        return ModColorHandler.RGBtoInt(new Vec3(r,g,b));
+        return MSFColorHandler.RGBtoInt(new Vec3(r,g,b));
     }
 
 

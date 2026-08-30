@@ -21,7 +21,6 @@ public record SyncMouthSlotsPacket(HardenedMouthCapability capability) implement
     );
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void handleClientPacket(Player player, Level level) {
         HardenedMouthCapability cap = player.getData(MSFDataAttachments.HARDENED_MOUTH);
 

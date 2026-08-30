@@ -1,14 +1,18 @@
 package net.abraxator.moresnifferflowers.nutrition;
 
+import com.mojang.serialization.Codec;
 import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.util.ByIdMap;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffect;
+import net.neoforged.neoforge.common.util.NeoForgeExtraCodecs;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import java.util.Map;
 import java.util.function.IntFunction;
 
-public enum NutritionType {
+public enum NutritionType implements StringRepresentable {
     SOUR("sour", 0xe6a005, 0.5f),
     SALTY("salty", 0x8bb8c3, 0.4f),
     SPICY("spicy", 0xbb4330, 0.3f),
@@ -21,6 +25,7 @@ public enum NutritionType {
     public final float priority;
 
     private static final IntFunction<NutritionType> BY_ID = ByIdMap.continuous(NutritionType::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
+    public static final Codec<NutritionType> CODEC = StringRepresentable.fromValues(NutritionType::values);
     
     NutritionType(String name, int color, float priority) {
         this.name = name;
@@ -53,4 +58,9 @@ public enum NutritionType {
             SWEET,  MSFEffects.GLUING_TOUCH,
             NEUTRAL, MSFEffects.WELL_BALANCED
     );
+
+    @Override
+    public String getSerializedName() {
+        return name;
+    }
 }

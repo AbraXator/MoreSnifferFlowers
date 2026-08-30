@@ -17,36 +17,37 @@ import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimPattern;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public interface MSFTrims {
 
     interface Materials {
-        ResourceKey<TrimMaterial> AMBER = key("amber");
-        ResourceKey<TrimMaterial> GARNET = key("garnet");
-        ResourceKey<TrimMaterial> NETHER_WART = key("nether_wart");
-        ResourceKey<TrimMaterial> POTATO = key("potato");
-        ResourceKey<TrimMaterial> WHEAT = key("wheat");
-        ResourceKey<TrimMaterial> BEETROOT = key("beetroot");
-        ResourceKey<TrimMaterial> CARROT = key("carrot");
+        Set<Consumer<BootstrapContext<TrimMaterial>>> MATERIALS = new HashSet<>();
+
+        ResourceKey<TrimMaterial> AMBER = register("amber", MSFItems.AMBER_SHARD, 0xdf910b, ItemModelIndex.GOLD);
+        ResourceKey<TrimMaterial> GARNET = register("garnet",MSFItems.GARNET_SHARD, 0x8d182b, ItemModelIndex.REDSTONE);
+        ResourceKey<TrimMaterial> NETHER_WART = register("nether_wart", MSFItems.CROPRESSED_NETHERWART, 0x831c20, ItemModelIndex.REDSTONE);
+        ResourceKey<TrimMaterial> POTATO = register("potato", MSFItems.CROPRESSED_POTATO, 0xd9aa51, ItemModelIndex.GOLD);
+        ResourceKey<TrimMaterial> WHEAT = register("wheat", MSFItems.CROPRESSED_WHEAT, 0xcdb159, ItemModelIndex.GOLD);
+        ResourceKey<TrimMaterial> BEETROOT = register("beetroot", MSFItems.CROPRESSED_BEETROOT, 0xa4272c, ItemModelIndex.REDSTONE);
+        ResourceKey<TrimMaterial> CARROT = register("carrot", MSFItems.CROPRESSED_CARROT, 0xe67022, ItemModelIndex.COPPER);
 
         static void bootstrap(BootstrapContext<TrimMaterial> context) {
-            register(context, AMBER, MSFItems.AMBER_SHARD, 0xdf910b, ItemModelIndex.GOLD);
-            register(context, GARNET, MSFItems.GARNET_SHARD, 0x8d182b, ItemModelIndex.REDSTONE);
-            register(context, NETHER_WART, MSFItems.CROPRESSED_NETHERWART, 0x831c20, ItemModelIndex.REDSTONE);
-            register(context, POTATO, MSFItems.CROPRESSED_POTATO, 0xd9aa51, ItemModelIndex.GOLD);
-            register(context, WHEAT, MSFItems.CROPRESSED_WHEAT, 0xcdb159, ItemModelIndex.GOLD);
-            register(context, BEETROOT, MSFItems.CROPRESSED_BEETROOT, 0xa4272c, ItemModelIndex.REDSTONE);
-            register(context, CARROT, MSFItems.CROPRESSED_CARROT, 0xe67022, ItemModelIndex.COPPER);
+            MATERIALS.forEach(c -> c.accept(context));
         }
         
-        private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> materialKey, Holder<Item> ingredient, int color, ItemModelIndex itemModelIndex, Map<Holder<ArmorMaterial>, String> overrideArmorMaterials) {
-            TrimMaterial trimmaterial = new TrimMaterial(materialKey.location().getPath(), ingredient, itemModelIndex.index, overrideArmorMaterials, Component.translatable(Util.makeDescriptionId("trim_material", materialKey.location())).withStyle(Style.EMPTY.withColor(color)));
-            context.register(materialKey, trimmaterial);
+        private static ResourceKey<TrimMaterial> register(String name, Holder<Item> ingredient, int color, ItemModelIndex itemModelIndex, Map<Holder<ArmorMaterial>, String> overrideArmorMaterials) {
+            ResourceKey<TrimMaterial> key = key(name);
+            TrimMaterial trimmaterial = new TrimMaterial(name, ingredient, itemModelIndex.index, overrideArmorMaterials, Component.translatable(Util.makeDescriptionId("trim_material", key.location())).withStyle(Style.EMPTY.withColor(color)));
+            MATERIALS.add(c -> c.register(key, trimmaterial));
+            return key;
         }
 
-        private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> materialKey, Holder<Item> ingredient, int color, ItemModelIndex itemModelIndex) {
-             register(context, materialKey, ingredient, color, itemModelIndex, Map.of());
+        private static ResourceKey<TrimMaterial> register(String name, Holder<Item> ingredient, int color, ItemModelIndex itemModelIndex) {
+            return register(name, ingredient, color, itemModelIndex, Map.of());
         }
 
         enum ItemModelIndex{
@@ -65,32 +66,30 @@ public interface MSFTrims {
     }
 
     interface Patterns {
-         ResourceKey<TrimPattern> AROMA = key("aroma");
-         ResourceKey<TrimPattern> CARNAGE = key("carnage");
-         ResourceKey<TrimPattern> NETHER_WART = key("nether_wart");
-         ResourceKey<TrimPattern> TATER = key("tater");
-         ResourceKey<TrimPattern> CAROTENE = key("carotene");
-         ResourceKey<TrimPattern> GRAIN = key("grain");
-         ResourceKey<TrimPattern> BEAT = key("beat");
+        Set<Consumer<BootstrapContext<TrimPattern>>> PATTERNS = new HashSet<>();
+
+         ResourceKey<TrimPattern> AROMA = register("aroma", MSFItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE);
+         ResourceKey<TrimPattern> CARNAGE = register("carnage", MSFItems.CARNAGE_ARMOR_TRIM_SMITHING_TEMPLATE);
+         ResourceKey<TrimPattern> NETHER_WART = register("nether_wart", MSFItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE);
+         ResourceKey<TrimPattern> TATER = register("tater", MSFItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE);
+         ResourceKey<TrimPattern> CAROTENE = register("carotene", MSFItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE);
+         ResourceKey<TrimPattern> GRAIN = register("grain", MSFItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE);
+         ResourceKey<TrimPattern> BEAT = register("beat", MSFItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE);
 
         static void bootstrap(BootstrapContext<TrimPattern> context) {
-            register(context, MSFItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE, AROMA);
-            register(context, MSFItems.CARNAGE_ARMOR_TRIM_SMITHING_TEMPLATE, CARNAGE);
-            register(context, MSFItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE, NETHER_WART);
-            register(context, MSFItems.TATER_ARMOR_TRIM_SMITHING_TEMPLATE, TATER);
-            register(context, MSFItems.CAROTENE_ARMOR_TRIM_SMITHING_TEMPLATE, CAROTENE);
-            register(context, MSFItems.GRAIN_ARMOR_TRIM_SMITHING_TEMPLATE, GRAIN);
-            register(context, MSFItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE, BEAT);
+            PATTERNS.forEach(c -> c.accept(context));
         }
 
-        static void register(BootstrapContext<TrimPattern> context, Holder<Item> templateItem, ResourceKey<TrimPattern> trimPatternKey) {
+        static ResourceKey<TrimPattern> register(String name, Holder<Item> templateItem) {
+            ResourceKey<TrimPattern> trimPatternKey = key(name);
             TrimPattern trimpattern = new TrimPattern(
                     trimPatternKey.location(),
                     templateItem,
                     Component.translatable(Util.makeDescriptionId("trim_pattern", trimPatternKey.location())),
                     false
             );
-            context.register(trimPatternKey, trimpattern);
+            PATTERNS.add(c -> c.register(trimPatternKey, trimpattern));
+            return trimPatternKey;
         }
 
         private static @NotNull ResourceKey<TrimPattern> key(String name) {

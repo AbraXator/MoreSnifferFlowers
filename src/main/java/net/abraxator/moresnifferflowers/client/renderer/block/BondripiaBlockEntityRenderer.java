@@ -5,7 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.BondripiaBlockEntity;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+
+import net.abraxator.moresnifferflowers.client.model.block.BondripiaModel;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.minecraft.client.model.geom.ModelPart;
@@ -26,7 +27,7 @@ public class BondripiaBlockEntityRenderer<T extends BondripiaBlockEntity> implem
     private static final Material ACIDRIPIA_TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/acidripia"));
 
     public BondripiaBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        this.model = context.bakeLayer(ModModelLayerLocations.BONDRIPIA);
+        this.model = context.bakeLayer(BondripiaModel.BONDRIPIA);
     }
 
     @Override

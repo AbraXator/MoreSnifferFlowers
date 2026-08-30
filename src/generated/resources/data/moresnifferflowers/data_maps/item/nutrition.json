@@ -1,0 +1,688 @@
+{
+  "values": {
+    "farmersdelight:apple_cider": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 10,
+      "sour": 40,
+      "sweet": 20
+    },
+    "farmersdelight:apple_pie_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 25,
+      "sour": 25,
+      "sweet": 20
+    },
+    "farmersdelight:bacon": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 30,
+      "salty": 50
+    },
+    "farmersdelight:bacon_sandwich": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 60,
+      "salty": 45
+    },
+    "farmersdelight:barbecue_stick": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 30,
+      "spicy": 50
+    },
+    "farmersdelight:beef_patty": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 64,
+      "salty": 30
+    },
+    "farmersdelight:cabbage": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 50,
+      "salty": 10,
+      "sour": 10
+    },
+    "farmersdelight:cabbage_leaf": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 30,
+      "sour": 5
+    },
+    "farmersdelight:cabbage_rolls": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 30,
+      "salty": 10,
+      "sour": 25,
+      "sweet": 10
+    },
+    "farmersdelight:cake_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 20,
+      "sour": 10,
+      "sweet": 30
+    },
+    "farmersdelight:chicken_cuts": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 80,
+      "salty": 20
+    },
+    "farmersdelight:chicken_sandwich": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 80,
+      "salty": 15
+    },
+    "farmersdelight:chocolate_pie_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 5,
+      "sweet": 90
+    },
+    "farmersdelight:cod_roll": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 25,
+      "salty": 15,
+      "sour": 10
+    },
+    "farmersdelight:cod_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 40,
+      "salty": 20,
+      "sour": 5
+    },
+    "farmersdelight:cooked_bacon": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 25,
+      "salty": 60,
+      "sweet": 15
+    },
+    "farmersdelight:cooked_chicken_cuts": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 85,
+      "salty": 30
+    },
+    "farmersdelight:cooked_cod_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 50,
+      "salty": 25,
+      "sour": 10
+    },
+    "farmersdelight:cooked_mutton_chops": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 60,
+      "salty": 50
+    },
+    "farmersdelight:cooked_salmon_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 50,
+      "salty": 25,
+      "spicy": 40
+    },
+    "farmersdelight:dog_food": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 1,
+      "salty": 3,
+      "sour": 9,
+      "spicy": 6,
+      "sweet": 7
+    },
+    "farmersdelight:dumplings": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 30,
+      "salty": 20,
+      "sweet": 10
+    },
+    "farmersdelight:egg_sandwich": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 70,
+      "salty": 20
+    },
+    "farmersdelight:fried_egg": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 50,
+      "salty": 30,
+      "spicy": 20
+    },
+    "farmersdelight:glow_berry_custard": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 25,
+      "sour": 50,
+      "sweet": 20
+    },
+    "farmersdelight:ham": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 50,
+      "salty": 55
+    },
+    "farmersdelight:hamburger": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 90,
+      "salty": 40,
+      "sour": 15,
+      "sweet": 10
+    },
+    "farmersdelight:honey_cookie": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "sweet": 100
+    },
+    "farmersdelight:kelp_roll": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 45,
+      "salty": 20
+    },
+    "farmersdelight:kelp_roll_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 20,
+      "salty": 10
+    },
+    "farmersdelight:melon_popsicle": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "sour": 20,
+      "sweet": 50
+    },
+    "farmersdelight:minced_beef": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 60,
+      "salty": 60
+    },
+    "farmersdelight:mutton_chops": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 50,
+      "salty": 40
+    },
+    "farmersdelight:mutton_wrap": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 70,
+      "salty": 30,
+      "sour": 20
+    },
+    "farmersdelight:onion": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 10,
+      "sour": 40,
+      "spicy": 40
+    },
+    "farmersdelight:pie_crust": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 30,
+      "salty": 5,
+      "sweet": 20
+    },
+    "farmersdelight:pumpkin_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 40
+    },
+    "farmersdelight:raw_pasta": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 60
+    },
+    "farmersdelight:salmon_roll": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 25,
+      "salty": 10,
+      "spicy": 10
+    },
+    "farmersdelight:salmon_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 40,
+      "salty": 20,
+      "spicy": 20
+    },
+    "farmersdelight:smoked_ham": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 45,
+      "salty": 65
+    },
+    "farmersdelight:stuffed_potato": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 65,
+      "salty": 25
+    },
+    "farmersdelight:sweet_berry_cheesecake_slice": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 10,
+      "sour": 5,
+      "sweet": 70
+    },
+    "farmersdelight:sweet_berry_cookie": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 5,
+      "sour": 10,
+      "sweet": 80
+    },
+    "farmersdelight:tomato": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 30,
+      "sour": 20,
+      "sweet": 40
+    },
+    "farmersdelight:tomato_sauce": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 20,
+      "salty": 15,
+      "sour": 20,
+      "sweet": 25
+    },
+    "farmersdelight:wheat_dough": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "neutral": 70
+    },
+    "minecraft:apple": {
+      "sour": 30,
+      "sweet": 60
+    },
+    "minecraft:baked_potato": {
+      "neutral": 60,
+      "salty": 60
+    },
+    "minecraft:beef": {
+      "neutral": 60,
+      "salty": 40
+    },
+    "minecraft:beetroot": {
+      "neutral": 80,
+      "sweet": 5
+    },
+    "minecraft:beetroot_soup": {
+      "neutral": 80,
+      "salty": 50
+    },
+    "minecraft:bread": {
+      "neutral": 100
+    },
+    "minecraft:carrot": {
+      "neutral": 80
+    },
+    "minecraft:chicken": {
+      "neutral": 50,
+      "salty": 40
+    },
+    "minecraft:chorus_fruit": {
+      "sour": 80,
+      "sweet": 20
+    },
+    "minecraft:cod": {
+      "neutral": 60,
+      "salty": 30
+    },
+    "minecraft:cooked_beef": {
+      "neutral": 70,
+      "salty": 60
+    },
+    "minecraft:cooked_chicken": {
+      "neutral": 35,
+      "salty": 30
+    },
+    "minecraft:cooked_cod": {
+      "neutral": 50,
+      "salty": 50
+    },
+    "minecraft:cooked_mutton": {
+      "neutral": 45,
+      "salty": 70
+    },
+    "minecraft:cooked_porkchop": {
+      "neutral": 48,
+      "salty": 70
+    },
+    "minecraft:cooked_rabbit": {
+      "neutral": 50,
+      "salty": 70
+    },
+    "minecraft:cooked_salmon": {
+      "neutral": 60,
+      "salty": 70
+    },
+    "minecraft:cookie": {
+      "neutral": 15,
+      "salty": 10,
+      "sweet": 80
+    },
+    "minecraft:dried_kelp": {
+      "neutral": 70,
+      "salty": 40
+    },
+    "minecraft:enchanted_golden_apple": {
+      "neutral": 100,
+      "salty": 100,
+      "sour": 100,
+      "spicy": 100,
+      "sweet": 100
+    },
+    "minecraft:glow_berries": {
+      "sour": 70,
+      "sweet": 40
+    },
+    "minecraft:golden_apple": {
+      "sour": 50,
+      "sweet": 70
+    },
+    "minecraft:golden_carrot": {
+      "neutral": 95
+    },
+    "minecraft:honey_bottle": {
+      "sweet": 80
+    },
+    "minecraft:melon_slice": {
+      "neutral": 25,
+      "sour": 40,
+      "sweet": 60
+    },
+    "minecraft:mushroom_stew": {
+      "neutral": 36,
+      "salty": 60
+    },
+    "minecraft:mutton": {
+      "neutral": 60,
+      "salty": 50
+    },
+    "minecraft:poisonous_potato": {
+      "neutral": 70,
+      "spicy": 90
+    },
+    "minecraft:porkchop": {
+      "neutral": 72,
+      "salty": 30
+    },
+    "minecraft:potato": {
+      "neutral": 80
+    },
+    "minecraft:pufferfish": {
+      "neutral": 50,
+      "salty": 80,
+      "spicy": 80
+    },
+    "minecraft:pumpkin_pie": {
+      "neutral": 35,
+      "sweet": 70
+    },
+    "minecraft:rabbit": {
+      "neutral": 60,
+      "salty": 50
+    },
+    "minecraft:rabbit_stew": {
+      "neutral": 75,
+      "salty": 70,
+      "spicy": 30
+    },
+    "minecraft:rotten_flesh": {
+      "neutral": 25,
+      "spicy": 80
+    },
+    "minecraft:salmon": {
+      "neutral": 60,
+      "salty": 50
+    },
+    "minecraft:spider_eye": {
+      "spicy": 80
+    },
+    "minecraft:sugar": {
+      "sweet": 100
+    },
+    "minecraft:suspicious_stew": {
+      "neutral": 1,
+      "salty": 1,
+      "sour": 1,
+      "spicy": 1,
+      "sweet": 1
+    },
+    "minecraft:sweet_berries": {
+      "sour": 40,
+      "sweet": 70
+    },
+    "minecraft:tropical_fish": {
+      "neutral": 60,
+      "salty": 80
+    },
+    "moresnifferflowers:dawnberry": {
+      "neutral": 20,
+      "sour": 60,
+      "sweet": 60
+    },
+    "moresnifferflowers:fiery_spice": {
+      "spicy": 100
+    },
+    "moresnifferflowers:gloomberry": {
+      "neutral": 20,
+      "sour": 60,
+      "spicy": 70
+    },
+    "moresnifferflowers:salty_spice": {
+      "salty": 100
+    },
+    "moresnifferflowers:sour_spice": {
+      "sour": 100
+    },
+    "moresnifferflowers:sweet_spice": {
+      "sweet": 100
+    }
+  }
+}

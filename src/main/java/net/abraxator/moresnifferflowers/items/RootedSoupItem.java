@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.capability.NutritionCapability;
-import net.abraxator.moresnifferflowers.client.ModColorHandler;
+import net.abraxator.moresnifferflowers.client.MSFColorHandler;
 import net.abraxator.moresnifferflowers.components.RootedSoup;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.init.MSFDataComponents;
@@ -48,6 +48,7 @@ public class RootedSoupItem extends Item {
         List<RootedSoup.RootedEffect> rootedEffects = stack.get(MSFDataComponents.ROOTED_EFFECTS);
         List<MobEffectInstance> effects = new ArrayList<>();
 
+        NutritionCapability data = player.getData(MSFDataAttachments.NUTRITION);
         if (rootedEffects != null) {
             for (RootedSoup.RootedEffect effect : rootedEffects) {
 
@@ -56,7 +57,7 @@ public class RootedSoupItem extends Item {
                 int amp = effect.amplifier();
                 boolean positive = effect.isPositive();
 
-                player.getData(MSFDataAttachments.NUTRITION).unlockedEffects.add(NutritionCapability.idFromNutrition(NutritionType.byId(id), positive));
+                data.unlockedEffects().add(NutritionCapability.idFromNutrition(NutritionType.byId(id), positive));
 
                 Holder<MobEffect> mobEffect = NutritionType.getEffect(NutritionType.byId(id), positive);
                 if (mobEffect != null) {
@@ -82,10 +83,11 @@ public class RootedSoupItem extends Item {
         List<ItemStack> ingredients = stack.getOrDefault(MSFDataComponents.ROOTED_INGREDIENTS, new ArrayList<>());
 
         for (ItemStack ingredient : ingredients) {
-            player.getData(MSFDataAttachments.NUTRITION).addItem(ingredient.getItem());
+            data.unlockedItems().add(ingredient.getItem());
         }
 
 
+        player.setData(MSFDataAttachments.NUTRITION, data);
         stack.set(MSFDataComponents.USES, uses);
         return stack;
     }
@@ -114,7 +116,7 @@ public class RootedSoupItem extends Item {
 
         int maxInput= soup.maxUses();
 
-        return ModColorHandler.barColorHelper(input, maxInput);
+        return MSFColorHandler.barColorHelper(input, maxInput);
     }
 
     @Override

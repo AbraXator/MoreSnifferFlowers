@@ -67,7 +67,7 @@ public class ModServerConfig {
 
         builder.push("rebrewing");
 
-        builder.comment("Change items for rebrewing recipe, JEI needs rejoin");
+        builder.comment("Change unlockedItems for rebrewing recipe, JEI needs rejoin");
         builder.translation("moresnifferflowers.configuration.rebrew_jei");
 
         REBREWING_LENGTH = builder
@@ -95,7 +95,7 @@ public class ModServerConfig {
                 .define("Saltemone Griefing", true);
 
         THROWABLES_COOLDOWN = builder
-                .comment("Cooldown for all throwable items, which drop blocks. Input in ticks")
+                .comment("Cooldown for all throwable unlockedItems, which drop blocks. Input in ticks")
                 .translation("moresnifferflowers.configuration.throwables_cooldown")
                 .defineInRange("Throwables Cooldown", 0, 0, 10000);
 

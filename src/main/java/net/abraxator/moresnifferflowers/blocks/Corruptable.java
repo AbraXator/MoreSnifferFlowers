@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface Corruptable {
     default Optional<Block> getCorruptedBlock(Block block, RandomSource random) {
-        return net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable.getCorruptedBlock(block, random);
+        return net.abraxator.moresnifferflowers.components.Corruptable.getCorruptedBlock(block, random);
     }
     
     default void onCorrupt(Level level, BlockPos pos, BlockState oldState, Block corruptedBlock) {
@@ -23,7 +23,7 @@ public interface Corruptable {
     }
 
     default void onCorruptByEntity(Entity entity, BlockPos blockPos, BlockState blockState, Block block, Level level) {
-        if(entity instanceof CorruptedProjectile corruptedProjectile && net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable.canBeCorrupted(block, level)) {
+        if(entity instanceof CorruptedProjectile corruptedProjectile && net.abraxator.moresnifferflowers.components.Corruptable.canBeCorrupted(block, level)) {
             onCorrupt(level, blockPos, blockState, getCorruptedBlock(block, level.random).get());
             corruptedProjectile.remove(Entity.RemovalReason.DISCARDED);
 

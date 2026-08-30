@@ -1,29 +1,28 @@
 package net.abraxator.moresnifferflowers.client.gui.screen.cookbook;
 
+import com.mojang.datafixers.util.Pair;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
+import net.abraxator.moresnifferflowers.init.MSFDataMaps;
 import net.abraxator.moresnifferflowers.nutrition.Nutrition;
-import net.abraxator.moresnifferflowers.nutrition.NutritionEntry;
-import net.abraxator.moresnifferflowers.nutrition.NutritionLoader;
 import net.abraxator.moresnifferflowers.nutrition.NutritionType;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CookbookScreen extends Screen {
     private static final ResourceLocation TEXTURE = MoreSnifferFlowers.loc("textures/gui/cookbook.png");
@@ -37,12 +36,10 @@ public class CookbookScreen extends Screen {
     private final int PAGE_SIZE = ROWS * COLUMNS;
     private final int SCROLLBAR_HEIGHT = 142;
     private final int SCROLLER_HEIGHT = 15;
-    private final List<String> mods;
-    private final Set<Item> unlocked;
     public Page page = Page.CONTENTS;
     public int guide_page = 0;
     public NutritionType type;
-    private List<Nutrition> nutritions = new ArrayList<>();
+    private List<Nutrition.Pair> nutritions = new ArrayList<>();
     private float scrollOffs;
     private int startIndex;
     private boolean isScrolling;
@@ -51,10 +48,8 @@ public class CookbookScreen extends Screen {
     public static int MAX_Y = 140;
 
 
-    public CookbookScreen(Set<Item> unlocked) {
+    public CookbookScreen() {
         super(Component.empty());
-        this.mods = new ArrayList<>(NutritionLoader.modNutritions.keySet());
-        this.unlocked = unlocked;
     }
 
     @Override
@@ -90,18 +85,18 @@ public class CookbookScreen extends Screen {
         guiGraphics.blit(TEXTURE, x, y, 0, 0, 272, 180, 512, 256);
     }
 
-    public void renderNutritionInfo(GuiGraphics guiGraphics, Nutrition nutrition) {
+    public void renderNutritionInfo(GuiGraphics guiGraphics, Nutrition.Pair nutrition) {
         int x = (this.width - 272) / 2;
         int y = (this.height - 180) / 2;
         int xPos = x + 150;
         int yPos = y + 20;
-        ItemStack item = nutrition.getItem().getDefaultInstance();
+        ItemStack item = nutrition.item().getDefaultInstance();
         String string = item.getDisplayName().getString();
         int nameLength = string.length();
 
         guiGraphics.drawWordWrap(font, FormattedText.of(string, Style.EMPTY.withBold(true).withUnderlined(true)), xPos, yPos, 108, ChatFormatting.DARK_GRAY.getColor());
         if (nameLength > 16) yPos += 9;
-        for (NutritionEntry nutritionEntry : nutrition.getNutritionEntries()) {
+        for (Nutrition.NutritionEntry nutritionEntry : nutrition.nutrition().entryList()) {
             yPos += 10;
             MutableComponent nutritionName = Component.translatable("gui.moresnifferflowers.cookbook." + nutritionEntry.nutrition().name).withStyle(ChatFormatting.BOLD);
             guiGraphics.drawString(font, nutritionName.append(" : ").append(String.valueOf(nutritionEntry.weight())), xPos, yPos, nutritionEntry.nutrition().color);
@@ -137,10 +132,10 @@ public class CookbookScreen extends Screen {
         guiGraphics.blit(RENDERABLES, x + 17, y + 15, 25, 0, 111, 144);
 
         for (int i = startIndex * COLUMNS + 1; i < startIndex * COLUMNS  + 1 + PAGE_SIZE && i < this.nutritions.size() + 1; i++) {
-            Nutrition nutrition = nutritions.get(i - 1);
-            boolean unlocked = this.unlocked.contains(nutrition.getItem());
+            Nutrition.Pair nutrition = nutritions.get(i - 1);
+            boolean unlocked = minecraft.player.getData(MSFDataAttachments.NUTRITION).unlockedItems().contains(nutrition.item());
 
-            nutrition = unlocked ? nutrition : Nutrition.EMPTY;
+            nutrition = unlocked ? nutrition : new Nutrition.Pair(nutrition.item(), Nutrition.EMPTY);
             if (yPos >= 16) addRenderableWidget(new ItemWidget(x + xPos, y + yPos, Component.empty(), nutrition, this));
 
             if (i % COLUMNS != 0) {
@@ -181,18 +176,20 @@ public class CookbookScreen extends Screen {
     }
     
     public void pageToItems(NutritionType type) {
-        Set<Nutrition> nutritionTypeSet = NutritionLoader.typeNutritions.get(type);
+        Map<ResourceKey<Item>, Nutrition> nutritionTypeSet = BuiltInRegistries.ITEM.getDataMap(MSFDataMaps.NUTRITION);
 
-        if (nutritionTypeSet == null) {
+        if (nutritionTypeSet.isEmpty()) {
             this.turnPage(Page.ERROR);
             return;
         }
 
-        List<Nutrition> list = new ArrayList<>(nutritionTypeSet.stream().toList());
+        List<Nutrition.Pair> list = new ArrayList<>(nutritionTypeSet.entrySet().stream()
+                .filter(entry -> entry.getValue().hasType(type))
+                .map(e -> new Nutrition.Pair(BuiltInRegistries.ITEM.get(e.getKey()), e.getValue())).toList());
 
-        list.sort(Comparator.comparing( nutrition -> {
+        list.sort(Comparator.comparing( pair -> {
             float weight = 0;
-            for (NutritionEntry entry : nutrition.getNutritionEntries()){
+            for (Nutrition.NutritionEntry entry : pair.nutrition().entryList()){
                     if (entry.nutrition().equals(type)){
                         weight += entry.weight();
                     } else {

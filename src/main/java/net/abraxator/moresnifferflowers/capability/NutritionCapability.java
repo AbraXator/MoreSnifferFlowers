@@ -3,29 +3,21 @@ package net.abraxator.moresnifferflowers.capability;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
-import net.abraxator.moresnifferflowers.networking.toClient.SyncGluedPacket;
 import net.abraxator.moresnifferflowers.nutrition.NutritionType;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class NutritionCapability {
-    public Set<Item> items = new HashSet<>();
-    public Set<Integer> unlockedEffects = new HashSet<>();
-
+public record NutritionCapability(Set<Item> unlockedItems, Set<Integer> unlockedEffects) {
     public static final Codec<Set<Item>> ITEM_SET_CODEC =
             BuiltInRegistries.ITEM.byNameCodec()
                     .listOf()
@@ -34,31 +26,16 @@ public class NutritionCapability {
     public static final Codec<Set<Integer>> INT_SET_CODEC = Codec.INT.listOf().xmap(HashSet::new, ArrayList::new);
 
     public static final Codec<NutritionCapability> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    ITEM_SET_CODEC.fieldOf("items").forGetter(cap -> cap.items),
-                    INT_SET_CODEC.fieldOf("effects").forGetter(cap -> cap.unlockedEffects))
-            .apply(instance, (items, effects) -> {
-                NutritionCapability capability  = new NutritionCapability();
-                capability.items = items;
-                capability.unlockedEffects = effects;
-                return capability;
-            }));
+                    ITEM_SET_CODEC.fieldOf("items").forGetter(NutritionCapability::unlockedItems),
+                    INT_SET_CODEC.fieldOf("effects").forGetter(NutritionCapability::unlockedEffects))
+            .apply(instance, NutritionCapability::new));
 
+    public static final StreamCodec<RegistryFriendlyByteBuf, NutritionCapability> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.registry(Registries.ITEM).apply(ByteBufCodecs.collection(HashSet::new)), NutritionCapability::unlockedItems,
+            ByteBufCodecs.INT.apply(ByteBufCodecs.collection(HashSet::new)), NutritionCapability::unlockedEffects,
+            NutritionCapability::new
+    );
 
-    public Set<Item> getItems() {
-        return this.items;
-    }
-
-    public void setItems(Set<Item> items) {
-        this.items = items;
-    }
-
-    public void addItem(Item item) {
-        var set = getItems();
-        set.add(item);
-        setItems(set);
-    }
-
-    public void sync(Player player) {}
 
     public static Holder<MobEffect> effectFromId(int id){
         if (id % 2 == 0){

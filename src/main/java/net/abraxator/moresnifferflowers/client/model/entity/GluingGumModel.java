@@ -5,13 +5,17 @@ package net.abraxator.moresnifferflowers.client.model.entity;// Made with Blockb
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 
 public class GluingGumModel extends Model {
+	public static final ModelLayerLocation GLUING_GUM = new ModelLayerLocation(MoreSnifferFlowers.loc("gluing_gum"), "main");
+
 	private final ModelPart root;
 
 	public GluingGumModel(ModelPart root) {

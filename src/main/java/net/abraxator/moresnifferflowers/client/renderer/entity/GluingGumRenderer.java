@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+
 import net.abraxator.moresnifferflowers.client.model.entity.GluingGumModel;
 import net.abraxator.moresnifferflowers.entities.GluingGumEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,7 +19,7 @@ public class GluingGumRenderer extends EntityRenderer<GluingGumEntity> {
 
     public GluingGumRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new GluingGumModel(context.bakeLayer(ModModelLayerLocations.GLUING_GUM));
+        this.model = new GluingGumModel(context.bakeLayer(GluingGumModel.GLUING_GUM));
     }
 
     @Override

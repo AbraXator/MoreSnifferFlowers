@@ -1,53 +1,61 @@
 package net.abraxator.moresnifferflowers.nutrition;
 
-import net.minecraft.core.registries.BuiltInRegistries;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.abraxator.moresnifferflowers.init.MSFDataMaps;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 
 import java.util.*;
 
-public class Nutrition {
-    private final Item item;
-    private final List<NutritionEntry> nutritionEntries;
-    public static final Nutrition EMPTY = new Nutrition(Items.AIR, List.of());
-    
-    public Nutrition(Item item, List<NutritionEntry> nutritionEntries) {
-        this.item = item;
-        this.nutritionEntries = nutritionEntries;
+public record Nutrition(Map<NutritionType, Integer> nutritionEntries) {
+    public static final Codec<Nutrition> CODEC = Codec.unboundedMap(NutritionType.CODEC, Codec.INT).xmap(Nutrition::new, Nutrition::nutritionEntries);
+    public static final Nutrition EMPTY = new Nutrition(Map.of());
 
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public List<NutritionEntry> getNutritionEntries() {
-        return nutritionEntries;
-    }
-    
+    @SuppressWarnings("deprecation")
     public static Nutrition getNutritionForItem(Item item) {
-        Set<Nutrition> nutritions = NutritionLoader.modNutritions.get(BuiltInRegistries.ITEM.getKey(item).getNamespace());
-        if (nutritions != null) {
-            for (Nutrition nutrition : nutritions) {
-                if (nutrition.getItem() == item) {
-                    return nutrition;
-                }
-            }
-        }
-        return EMPTY;
+        Nutrition data = item.builtInRegistryHolder().getData(MSFDataMaps.NUTRITION);
+        return data != null ? data : EMPTY;
     }
 
-    public static NutritionType getLargestNutrition(Item item){
+    public List<NutritionEntry> entryList(){
+        return nutritionEntries.entrySet().stream().map(entry -> new NutritionEntry(entry.getKey(), entry.getValue())).toList();
+    }
+
+    public boolean hasType(NutritionType type) {
+        if (!nutritionEntries.containsKey(type)) return false;
+        return nutritionEntries.get(type) > 0;
+    }
+
+    public static NutritionType getLargestNutrition(Item item) {
         Nutrition nutrition = Nutrition.getNutritionForItem(item);
 
-        List<NutritionEntry> list =  new ArrayList<>(nutrition.nutritionEntries);
+        List<NutritionEntry> list = new ArrayList<>(nutrition.entryList());
         if (list.isEmpty()) return NutritionType.NEUTRAL;
         list.sort(Comparator.comparing(nutritionEntry -> -(nutritionEntry.weight() + nutritionEntry.nutrition().priority)));
 
         return list.getFirst().nutrition();
     }
-    
+
     public boolean isEmpty() {
         return this.equals(EMPTY);
     }
+
+    public static Nutrition of(int neutral, int salty, int sweet, int sour, int spicy) {
+        Map<NutritionType, Integer> map = new HashMap<>();
+        if (neutral > 0) map.put(NutritionType.NEUTRAL, neutral);
+        if (salty > 0) map.put(NutritionType.SALTY, salty);
+        if (sweet > 0) map.put(NutritionType.SWEET, sweet);
+        if (sour > 0) map.put(NutritionType.SOUR, sour);
+        if (spicy > 0) map.put(NutritionType.SPICY, spicy);
+        return new Nutrition(map);
+    }
+
+    public record NutritionEntry(NutritionType nutrition, int weight) {
+        public static final Codec<NutritionEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                NutritionType.CODEC.fieldOf("nutrition").forGetter(NutritionEntry::nutrition),
+                Codec.INT.fieldOf("weight").forGetter(NutritionEntry::weight)
+        ).apply(instance, NutritionEntry::new));
+    }
+
+    public record Pair(Item item, Nutrition nutrition){}
 }

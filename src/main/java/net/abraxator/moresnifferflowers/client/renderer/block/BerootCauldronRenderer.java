@@ -5,7 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.BerootCauldronBlockEntity;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+
+import net.abraxator.moresnifferflowers.client.model.block.BerootCauldronModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -36,8 +37,8 @@ public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> impleme
     private final ModelPart spoon;
 
     public BerootCauldronRenderer(BlockEntityRendererProvider.Context context) {
-        this.cauldron = context.bakeLayer(ModModelLayerLocations.BEROOT_CAULDRON);
-        this.spoon = context.bakeLayer(ModModelLayerLocations.BEROOT_SPOON);
+        this.cauldron = context.bakeLayer(BerootCauldronModel.BEROOT_CAULDRON);
+        this.spoon = context.bakeLayer(BerootCauldronModel.BEROOT_SPOON);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.compat.jei.corruption;
 
 import com.mojang.datafixers.util.Pair;
-import net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable;
+import net.abraxator.moresnifferflowers.components.Corruptable;
 import net.abraxator.moresnifferflowers.init.MSFDataMaps;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFItems;

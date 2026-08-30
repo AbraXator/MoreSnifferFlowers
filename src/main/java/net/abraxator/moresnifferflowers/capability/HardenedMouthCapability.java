@@ -26,13 +26,8 @@ public class HardenedMouthCapability {
     public NonNullList<ItemStack> mouthSlots;
     public int cooldown;
 
-    public static final Codec<ItemStack> SAFE_ITEMSTACK_CODEC = ItemStack.OPTIONAL_CODEC.xmap(
-            stack -> stack.is(MSFItems.PLACEHOLDER) ? ItemStack.EMPTY : stack,
-            stack -> stack.isEmpty() ? MSFItems.PLACEHOLDER.toStack() : stack
-    );
-
     public static final Codec<HardenedMouthCapability> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    NonNullList.codecOf(SAFE_ITEMSTACK_CODEC).fieldOf("slots").forGetter(cap -> cap.mouthSlots),
+                    NonNullList.codecOf(ItemStack.OPTIONAL_CODEC).fieldOf("slots").forGetter(cap -> cap.mouthSlots),
                     Codec.INT.fieldOf("cooldown").forGetter(cap -> cap.cooldown))
             .apply(instance, HardenedMouthCapability::new));
 

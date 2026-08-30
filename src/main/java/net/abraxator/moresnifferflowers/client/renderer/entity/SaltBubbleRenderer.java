@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+
 import net.abraxator.moresnifferflowers.client.model.entity.SaltBubbleModel;
 import net.abraxator.moresnifferflowers.entities.SaltBubbleProjectile;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,7 +21,7 @@ public class SaltBubbleRenderer extends EntityRenderer<SaltBubbleProjectile> {
 
     public SaltBubbleRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new SaltBubbleModel(context.bakeLayer(ModModelLayerLocations.SALT_BUBBLE));
+        this.model = new SaltBubbleModel(context.bakeLayer(SaltBubbleModel.SALT_BUBBLE));
     }
 
     @Override

@@ -1,9 +1,21 @@
 package net.abraxator.moresnifferflowers.client.model.block;
 
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 public class GiantCropModels {
+    public static final ModelLayerLocation GIANT_CARROT = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_carrot"), "main");
+    public static final ModelLayerLocation GIANT_POTATO = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_potato"), "main");
+    public static final ModelLayerLocation GIANT_NETHERWART = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_netherwart"), "main");
+    public static final ModelLayerLocation GIANT_BEETROOT = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_beetroot"), "main");
+    public static final ModelLayerLocation GIANT_WHEAT = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_wheat"), "main");
+    public static final ModelLayerLocation GIANT_ONION = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_onion"), "main");
+    public static final ModelLayerLocation GIANT_TOMATO = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_tomato"), "main");
+    public static final ModelLayerLocation GIANT_CABBAGE = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_cabbage"), "main");
+    public static final ModelLayerLocation GIANT_RICE = new ModelLayerLocation(MoreSnifferFlowers.loc("giant_rice"), "main");
+
     public static LayerDefinition createGiantCarrotLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();

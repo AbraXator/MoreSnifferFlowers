@@ -6,10 +6,9 @@ import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.CropressorBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.cropressor.CropressorBlockBase;
-import net.abraxator.moresnifferflowers.client.ModColorHandler;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+import net.abraxator.moresnifferflowers.client.MSFColorHandler;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -18,7 +17,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -27,11 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 public class CropressorBlockEntityRenderer implements BlockEntityRenderer<CropressorBlockEntity> {
-    private static final Material TEXTURE = new Material(TextureAtlas.LOCATION_BLOCKS, MoreSnifferFlowers.loc("block/cropressor"));
-
-    public CropressorBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        ModelPart modelPart = context.bakeLayer(ModModelLayerLocations.CROPRESSOR);
-    }
+    public CropressorBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
     public void render(CropressorBlockEntity blockEntity, float partialTick, PoseStack pose, MultiBufferSource buffer, int light, int overlay) {
@@ -87,7 +81,7 @@ public class CropressorBlockEntityRenderer implements BlockEntityRenderer<Cropre
             }
         }
 
-        float[] rgb = ModColorHandler.hexToRGB(blockEntity.getColor());
+        float[] rgb = MSFColorHandler.hexToRGB(blockEntity.getColor());
         renderFace(pose.last().pose(), pose.last(), buffer.getBuffer(RenderType.cutoutMipped()), rgb[0], rgb[1], rgb[2], light, blockEntity.barLength);
         pose.popPose();
 

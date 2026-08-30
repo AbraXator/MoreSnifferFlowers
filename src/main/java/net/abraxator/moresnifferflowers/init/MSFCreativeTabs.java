@@ -69,7 +69,7 @@ public interface MSFCreativeTabs {
 
                 output.accept(MSFItems.SALTEMONE_SEEDS.get());
                 output.accept(MSFItems.SALTY_SPICE.get());
-                output.accept(MSFItems.DRIPSALT.get());
+                output.accept(MSFBlocks.DRIPSALT.get());
                 output.accept(MSFItems.SOURLEMONE_SEEDS.get());
                 output.accept(MSFBlocks.SOUR_PUDDLE.get());
 
@@ -103,7 +103,7 @@ public interface MSFCreativeTabs {
                 output.accept(MSFItems.BEAT_ARMOR_TRIM_SMITHING_TEMPLATE.get());
                 output.accept(MSFBlocks.GIANT_BEETROOT.get());
                 output.accept(MSFItems.FLAVORFUL_ROOTS.get());
-                output.accept(MSFItems.BEROOT_CAULDRON.get());
+                output.accept(MSFBlocks.BEROOT_CAULDRON.get());
                 output.accept(MSFItems.BEROOT_COOK_BOOK.get());
 
                 output.accept(MSFItems.CROPRESSED_NETHERWART.get());

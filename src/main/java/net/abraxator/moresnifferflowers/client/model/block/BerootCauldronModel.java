@@ -1,12 +1,17 @@
 package net.abraxator.moresnifferflowers.client.model.block;
 
 
+import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.minecraft.client.model.SalmonModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
 public class BerootCauldronModel {
+	public static final ModelLayerLocation BEROOT_CAULDRON = new ModelLayerLocation(MoreSnifferFlowers.loc("beroot_cauldron"), "main");
+	public static final ModelLayerLocation BEROOT_SPOON = new ModelLayerLocation(MoreSnifferFlowers.loc("beroot_spoon"), "main");
+
 	private final ModelPart root;
 	private final ModelPart bottom;
 	private final ModelPart roots;

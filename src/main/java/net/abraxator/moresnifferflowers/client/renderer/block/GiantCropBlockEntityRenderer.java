@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blockentities.GiantCropBlockEntity;
-import net.abraxator.moresnifferflowers.client.model.ModModelLayerLocations;
+import net.abraxator.moresnifferflowers.client.model.block.GiantCropModels;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.minecraft.client.model.geom.ModelPart;
@@ -34,24 +34,24 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 
 
     public GiantCropBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        ModelPart carrot = context.bakeLayer(ModModelLayerLocations.GIANT_CARROT).getChild("root");
+        ModelPart carrot = context.bakeLayer(GiantCropModels.GIANT_CARROT).getChild("root");
 		this.modelPartMap.put(MSFBlocks.GIANT_CARROT.get(), carrot);
-        ModelPart potato = context.bakeLayer(ModModelLayerLocations.GIANT_POTATO).getChild("root");
+        ModelPart potato = context.bakeLayer(GiantCropModels.GIANT_POTATO).getChild("root");
 		this.modelPartMap.put(MSFBlocks.GIANT_POTATO.get(), potato);
-        ModelPart netherwart = context.bakeLayer(ModModelLayerLocations.GIANT_NETHERWART).getChild("root");
+        ModelPart netherwart = context.bakeLayer(GiantCropModels.GIANT_NETHERWART).getChild("root");
 		this.modelPartMap.put(MSFBlocks.GIANT_NETHERWART.get(), netherwart);
-        ModelPart beetroot = context.bakeLayer(ModModelLayerLocations.GIANT_BEETROOT).getChild("root");
+        ModelPart beetroot = context.bakeLayer(GiantCropModels.GIANT_BEETROOT).getChild("root");
 		this.modelPartMap.put(MSFBlocks.GIANT_BEETROOT.get(), beetroot);
-        ModelPart wheat = context.bakeLayer(ModModelLayerLocations.GIANT_WHEAT).getChild("root");
+        ModelPart wheat = context.bakeLayer(GiantCropModels.GIANT_WHEAT).getChild("root");
 		this.modelPartMap.put(MSFBlocks.GIANT_WHEAT.get(), wheat);
 
-        ModelPart onion = context.bakeLayer(ModModelLayerLocations.GIANT_ONION).getChild("root");
+        ModelPart onion = context.bakeLayer(GiantCropModels.GIANT_ONION).getChild("root");
         this.modelPartMap.put(MSFBlocks.GIANT_ONION.get(), onion);
-        ModelPart tomato = context.bakeLayer(ModModelLayerLocations.GIANT_TOMATO).getChild("root");
+        ModelPart tomato = context.bakeLayer(GiantCropModels.GIANT_TOMATO).getChild("root");
         this.modelPartMap.put(MSFBlocks.GIANT_TOMATO.get(), tomato);
-        ModelPart cabbage = context.bakeLayer(ModModelLayerLocations.GIANT_CABBAGE).getChild("root");
+        ModelPart cabbage = context.bakeLayer(GiantCropModels.GIANT_CABBAGE).getChild("root");
         this.modelPartMap.put(MSFBlocks.GIANT_CABBAGE.get(), cabbage);
-        ModelPart rice = context.bakeLayer(ModModelLayerLocations.GIANT_RICE).getChild("root");
+        ModelPart rice = context.bakeLayer(GiantCropModels.GIANT_RICE).getChild("root");
         this.modelPartMap.put(MSFBlocks.GIANT_RICE.get(), rice);
 
     }

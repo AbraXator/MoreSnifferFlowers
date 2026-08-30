@@ -20,8 +20,8 @@ import java.util.concurrent.CompletableFuture;
 import static net.abraxator.moresnifferflowers.init.MSFTags.ModBlockTags.*;
 
 public class ModBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
-    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> pLookupProvider, ExistingFileHelper existingFileHelper) {
-        super(output, Registries.BLOCK, pLookupProvider, block -> block.builtInRegistryHolder().key(), MoreSnifferFlowers.MOD_ID, existingFileHelper);
+    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+        super(output, Registries.BLOCK, lookupProvider, block -> block.builtInRegistryHolder().key(), MoreSnifferFlowers.MOD_ID, existingFileHelper);
     }
 
     @Override

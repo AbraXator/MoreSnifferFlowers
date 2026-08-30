@@ -3,7 +3,6 @@ package net.abraxator.moresnifferflowers.events;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
-import net.abraxator.moresnifferflowers.capability.GluedCapability;
 import net.abraxator.moresnifferflowers.capability.SlipperyCapability;
 import net.abraxator.moresnifferflowers.client.renderer.custom.BlockPatternRenderer;
 import net.abraxator.moresnifferflowers.entities.GluingGumEntity;
@@ -29,6 +28,8 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onInputMouseScrolling(InputEvent.MouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+
         if(player.isCrouching() && player.getMainHandItem().is(MSFItems.DYESPRIA.get())) {
             event.setCanceled(true);
             PacketDistributor.sendToServer(new DyespriaModePacket((int) event.getScrollDeltaY()));
@@ -52,8 +53,7 @@ public class ClientEvents {
     public static void renderLiving(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity entity = event.getEntity();
 
-        GluedCapability cap = entity.getData(MSFDataAttachments.GLUED);
-        if (cap.isGlued) {
+        if (entity.getData(MSFDataAttachments.IS_GLUED)) {
             Vec3 pos = entity.position();
             Minecraft minecraft = Minecraft.getInstance();
             PoseStack poseStack = event.getPoseStack();

@@ -27,7 +27,7 @@ public class TypeWidget extends AbstractWidget {
     }
 
     @Override
-    public void onClick(double mouseX, double mouseY) {
+    public void onClick(double mouseX, double mouseY, int button) {
         if (this.type == null){
             this.screen.turnPage(CookbookScreen.Page.GUIDE);
             return;

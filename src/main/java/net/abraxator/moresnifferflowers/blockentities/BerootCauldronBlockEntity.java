@@ -7,7 +7,6 @@ import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
 import net.abraxator.moresnifferflowers.init.MSFDataComponents;
 import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.nutrition.Nutrition;
-import net.abraxator.moresnifferflowers.nutrition.NutritionEntry;
 import net.abraxator.moresnifferflowers.nutrition.NutritionType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -87,15 +86,15 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         int neutral = 0;
         this.ingredients.validStream().forEach(stack -> {
                     Nutrition nutrition = Nutrition.getNutritionForItem(stack.getItem());
-                    nutrition.getNutritionEntries().forEach(entry -> 
+                    nutrition.entryList().forEach(entry ->
                             map.merge(entry.nutrition(), entry.weight(), Integer::sum));
                 }
         );
         
-        List<NutritionEntry> entryList = new ArrayList<>(map.entrySet()
+        List<Nutrition.NutritionEntry> entryList = new ArrayList<>(map.entrySet()
                 .stream()
-                .map((Map.Entry<NutritionType, Integer> entry) -> new NutritionEntry(entry.getKey(), entry.getValue()))
-                .sorted(Comparator.comparing(NutritionEntry::weight))
+                .map((Map.Entry<NutritionType, Integer> entry) -> new Nutrition.NutritionEntry(entry.getKey(), entry.getValue()))
+                .sorted(Comparator.comparing(Nutrition.NutritionEntry::weight))
                 .toList());
         int sat = ingredients.validStream()
                 .filter(itemStack -> itemStack.getFoodProperties(null) != null)
@@ -110,7 +109,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         soupSat = (soupSat / soupFood) / 2f; // because mojang made it relative
         
         //calculate neutral factor
-        for(NutritionEntry nutritionEntry : entryList) {
+        for(Nutrition.NutritionEntry nutritionEntry : entryList) {
             if(nutritionEntry.nutrition().equals(NutritionType.NEUTRAL)) {
                 neutral += nutritionEntry.weight();
             }
@@ -140,7 +139,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         //effect init
         List<RootedSoup.RootedEffect> effects = new ArrayList<>();
 
-        for (NutritionEntry nutritionEntry : entryList) {
+        for (Nutrition.NutritionEntry nutritionEntry : entryList) {
             if (!nutritionEntry.nutrition().equals(NutritionType.NEUTRAL)) {
                 totalFlavour += nutritionEntry.weight();
                 float ratio = nutritionEntry.weight() / (neutral + 1f);
@@ -237,8 +236,8 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         tick(level);
     }
 
-    private boolean valuesClose(List<NutritionEntry> entryList, int tolerance) {
-        List<Integer> weights = entryList.stream().map(NutritionEntry::weight).toList();
+    private boolean valuesClose(List<Nutrition.NutritionEntry> entryList, int tolerance) {
+        List<Integer> weights = entryList.stream().map(Nutrition.NutritionEntry::weight).toList();
         int min = Collections.min(weights);
         int max = Collections.max(weights);
         

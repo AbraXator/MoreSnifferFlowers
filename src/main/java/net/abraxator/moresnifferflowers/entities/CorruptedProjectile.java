@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.entities;
 
 import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
-import net.abraxator.moresnifferflowers.datagen.datamaps.Corruptable;
+import net.abraxator.moresnifferflowers.components.Corruptable;
 import net.abraxator.moresnifferflowers.init.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

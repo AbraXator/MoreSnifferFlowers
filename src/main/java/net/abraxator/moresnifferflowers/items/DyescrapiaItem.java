@@ -2,7 +2,7 @@ package net.abraxator.moresnifferflowers.items;
 
 import net.abraxator.moresnifferflowers.blockentities.DyespriaPlantBlockEntity;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
-import net.abraxator.moresnifferflowers.client.ModColorHandler;
+import net.abraxator.moresnifferflowers.client.MSFColorHandler;
 import net.abraxator.moresnifferflowers.components.BlockPattern;
 import net.abraxator.moresnifferflowers.components.Colorable;
 import net.abraxator.moresnifferflowers.components.Dye;
@@ -168,7 +168,7 @@ public class DyescrapiaItem extends BlockItem {
         int input = getDyescrapiaUses(stack)-1;
         int maxInput= 4;
 
-        return ModColorHandler.barColorHelper(input, maxInput);
+        return MSFColorHandler.barColorHelper(input, maxInput);
     }
 
     @Override

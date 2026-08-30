@@ -28,7 +28,6 @@ public record CorruptedSludgePacket(Vector3f start, Vector3f target, Vector3f di
     );
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void handleClientPacket(Player player, Level level) {
         float distance = start.distance(target);
 

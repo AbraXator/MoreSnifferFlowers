@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.init;
 
+import com.mojang.serialization.Codec;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.*;
 import net.minecraft.core.NonNullList;
@@ -10,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.function.Supplier;
 
 public interface MSFDataAttachments {
@@ -31,9 +33,9 @@ public interface MSFDataAttachments {
                     .serialize(CorruptionCapability.CODEC)
                     .build());
 
-    Supplier<AttachmentType<GluedCapability>> GLUED = ATTACHMENT_TYPES.register("glued",
-            () -> AttachmentType.builder(GluedCapability::new)
-                    .serialize(GluedCapability.CODEC)
+    Supplier<AttachmentType<Boolean>> IS_GLUED = ATTACHMENT_TYPES.register("glued",
+            () -> AttachmentType.builder(() -> false)
+                    .serialize(Codec.BOOL)
                     .build());
 
     Supplier<AttachmentType<HardenedMouthCapability>> HARDENED_MOUTH = ATTACHMENT_TYPES.register("hardened_mouth",
@@ -52,9 +54,9 @@ public interface MSFDataAttachments {
                     .build());
 
     Supplier<AttachmentType<NutritionCapability>> NUTRITION = ATTACHMENT_TYPES.register("nutrition",
-            () -> AttachmentType.builder(NutritionCapability::new)
+            () -> AttachmentType.builder(() -> new NutritionCapability(new HashSet<>(), new HashSet<>()))
                     .serialize(NutritionCapability.CODEC)
-                    .sync(ByteBufCodecs.fromCodec(NutritionCapability.CODEC))
+                    .sync(NutritionCapability.STREAM_CODEC)
                     .copyOnDeath()
                     .build());
 

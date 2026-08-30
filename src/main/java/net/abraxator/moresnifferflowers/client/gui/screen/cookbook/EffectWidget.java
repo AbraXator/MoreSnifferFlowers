@@ -32,7 +32,7 @@ public class EffectWidget extends AbstractWidget {
         int id = NutritionCapability.idFromNutrition(nutrition, isPositive);
 
         NutritionCapability capability = Minecraft.getInstance().player.getData(MSFDataAttachments.NUTRITION);
-        boolean isUnlocked = capability.unlockedEffects.contains(id);
+        boolean isUnlocked = capability.unlockedEffects().contains(id);
         int size = isUnlocked ? 18 : 21;
 
         Holder<MobEffect> effect = NutritionCapability.effectFromId(id);

@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.mixins;
 
-import net.abraxator.moresnifferflowers.capability.GluedCapability;
+import net.abraxator.moresnifferflowers.effects.GluedEffect;
 import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +22,7 @@ public class EntityMixin {
 
         if(entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(MSFEffects.GLUED) && !level.isClientSide){
             livingEntity.removeEffect(MSFEffects.GLUED);
-            GluedCapability.setAndSync(livingEntity,false, true);
+            GluedEffect.setAndSync(livingEntity, false, true);
         }
     }
 }
