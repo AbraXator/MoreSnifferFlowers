@@ -15,6 +15,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -41,7 +43,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-public class CropressorBlockEntity extends ModBlockEntity implements Container {
+public class CropressorBlockEntity extends BlockEntity implements Container, IMSFBlockEntity {
     public static int SLOT_SIZE = 9;
     public BetterNonNullList<ItemStack> container = BetterNonNullList.withSize(SLOT_SIZE, ItemStack.EMPTY);
     public Item currentCrop = Items.AIR;
@@ -57,7 +59,7 @@ public class CropressorBlockEntity extends ModBlockEntity implements Container {
     }
 
     @Override
-    public void tick(Level level) {
+    public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
         long gameTime = level.getGameTime();
 
         if (progress > 0 && gameTime % 3 == 0) {

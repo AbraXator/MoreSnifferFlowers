@@ -8,7 +8,6 @@ import net.abraxator.moresnifferflowers.init.MSFDataComponents;
 import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.components.nutrition.Nutrition;
 import net.abraxator.moresnifferflowers.components.nutrition.NutritionType;
-import net.abraxator.moresnifferflowers.networking.MSFStreamCodecs;
 import net.abraxator.moresnifferflowers.networking.toClient.SyncBerootCauldronPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -47,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implements IModBlockEntity {
+public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implements IMSFBlockEntity {
     static final int FOOD_LIMIT = 8;
     static final int BEETROOT_LIMIT = 4;
     public static final StreamCodec<RegistryFriendlyByteBuf, Data> DATA_STREAM_CODEC = NeoForgeStreamCodecs.composite(
@@ -221,7 +220,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
     }
 
     @Override
-    public void tick(Level level){
+    public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
         if (!isCenter()) return;
 
         suckInItems(level, this.getCenter());
@@ -263,7 +262,7 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
     }
 
     @Override
-    public void clientTick(Level level) {
+    public void clientTick(Level level, BlockPos pos, BlockState state) {
         if (!isCenter()) return;
 
         if (craftingTicks > 0){
@@ -271,8 +270,6 @@ public class BerootCauldronBlockEntity extends AbstractMultiBlockEntity implemen
         } else {
             itemRot++;
         }
-
-        tick(level);
     }
 
     private boolean valuesClose(List<Nutrition.NutritionEntry> entryList, int tolerance) {

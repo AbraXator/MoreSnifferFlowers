@@ -30,6 +30,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import oshi.util.tuples.Pair;
 
 import java.util.*;
@@ -79,6 +80,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
 
     public RebrewingStandBlockEntity(BlockPos pos, BlockState state) {
         super(MSFBlockEntities.REBREWING_STAND.get(), pos, state);
+        lastPotionCount = new boolean[0];
     }
 
     @Override
@@ -198,7 +200,7 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         return ret;
     }
 
-    private Pair<PotionContents, List<MobEffectInstance>> getPotionContents(ItemStack inputPotion, ItemStack ingredient) {
+    private @Nullable Pair<PotionContents, List<MobEffectInstance>> getPotionContents(ItemStack inputPotion, ItemStack ingredient) {
         List<MobEffectInstance> ret = new ArrayList<>();
         List<Integer> durList = new ArrayList<>();
         var potionContents = inputPotion.get(DataComponents.POTION_CONTENTS);

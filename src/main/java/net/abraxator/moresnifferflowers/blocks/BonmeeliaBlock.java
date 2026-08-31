@@ -28,7 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.ScheduledTick;
 
-public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
+public class BonmeeliaBlock extends BushBlock implements MSFCropBlock {
     public static final MapCodec<BonmeeliaBlock> CODEC = simpleCodec(properties -> new BonmeeliaBlock(properties, false));
     public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);
@@ -71,7 +71,7 @@ public class BonmeeliaBlock extends BushBlock implements ModCropBlock {
 
     @Override
     public boolean mayPlaceOn(BlockState state) {
-        return ModCropBlock.super.mayPlaceOn(state);
+        return MSFCropBlock.super.mayPlaceOn(state);
     }
 
     @Override

@@ -35,7 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, ModCropBlock {
+public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBlock, MSFCropBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
     public static final BooleanProperty SHEARED = MSFStateProperties.SHEARED;
     public static final MapCodec<DawnberryVineBlock> CODEC = RecordCodecBuilder.mapCodec(p_304392_ ->

@@ -20,8 +20,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -38,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock, Corruptable, ModCropBlock, IPreviewableMultiblock, ICorruptableMultiblock {
+public class SaltemoneBlock extends AbstractMultiBlock implements TickableEntityBlock, Corruptable, MSFCropBlock, IPreviewableMultiblock, ICorruptableMultiblock {
     public SaltemoneBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(defaultBlockState()
@@ -86,11 +84,6 @@ public class SaltemoneBlock extends AbstractMultiBlock implements ModEntityBlock
     public List<BlockPos> makeFullBlockShape(Level level, BlockPos center, BlockState blockState, @Nullable BlockEntity blockEntity, @Nullable Direction direction) {
         BlockPos relative = center.relative(direction).relative(direction.getClockWise());
         return IMultiBlock.posStreamToList(BlockPos.betweenClosedStream(center, relative));
-    }
-
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return tickerHelper(level);
     }
 
     @Override

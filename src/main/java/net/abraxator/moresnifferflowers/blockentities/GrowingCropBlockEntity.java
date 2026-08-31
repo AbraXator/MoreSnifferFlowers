@@ -6,13 +6,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class GrowingCropBlockEntity extends ModBlockEntity {
+public abstract class GrowingCropBlockEntity extends BlockEntity implements IMSFBlockEntity {
     public float growProgress;
     public boolean hasGrown;
     public final float growRate;
@@ -28,12 +30,12 @@ public abstract class GrowingCropBlockEntity extends ModBlockEntity {
     }
 
     @Override
-    public void tick(Level level) {
+    public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
         if(canGrow(this.growProgress, this.hasGrown)) {
             this.growProgress += growRate;
-            this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
             if(this.growProgress >= 1) {
-                this.onGrow(getBlockPos(), getBlockState(), getLevel());
+                this.onGrow(getBlockPos(), getBlockState(), level);
             }
         }
     }

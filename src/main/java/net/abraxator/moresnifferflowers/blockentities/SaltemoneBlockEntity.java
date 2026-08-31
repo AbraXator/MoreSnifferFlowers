@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 
-public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IModBlockEntity {
+public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IMSFBlockEntity {
     public SaltemoneBlockEntity(BlockPos pos, BlockState state) {
         super(MSFBlockEntities.SALTEMONE.get(), pos, state);
     }
@@ -30,12 +30,9 @@ public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IM
 
 
     @Override
-    public void tick(Level level) {
-        if (getLevel() == null) return;
-
-        BlockState state = getBlockState();
+    public void tick(Level level, BlockPos pos, BlockState state) {
         SaltemoneBlock saltemoneBlock = (SaltemoneBlock) state.getBlock();
-        RandomSource random = getLevel().getRandom();
+        RandomSource random = level.getRandom();
 
         if (bubbleCount >= MAX_BUBBLE_COUNT){
             fullBubbleTicks++;
@@ -59,7 +56,7 @@ public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IM
         projectile.setState(0);
         projectile.setDeltaMovement((random.nextFloat() - 0.5)*speed,1*speed, (random.nextFloat() - 0.5)*speed);
 
-        getLevel().addFreshEntity(projectile);
+        level.addFreshEntity(projectile);
         PacketDistributor.sendToAllPlayers(new SaltemoneParticlePacket(vec3.toVector3f()));
 
         bubbleCount++;

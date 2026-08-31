@@ -2,7 +2,7 @@ package net.abraxator.moresnifferflowers.blocks.xbush;
 
 import net.abraxator.moresnifferflowers.blockentities.XbushBlockEntity;
 import net.abraxator.moresnifferflowers.blocks.Corruptable;
-import net.abraxator.moresnifferflowers.blocks.ModCropBlock;
+import net.abraxator.moresnifferflowers.blocks.MSFCropBlock;
 import net.abraxator.moresnifferflowers.blocks.ModEntityDoubleTallBlock;
 import net.abraxator.moresnifferflowers.init.MSFParticles;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock implements ModCropBlock, Corruptable {
+public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock implements MSFCropBlock, Corruptable {
     public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
     public static final int AGE_TO_GROW_UP = 4;
 
@@ -75,7 +75,7 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
     
     @Override
     public boolean mayPlaceOn(BlockState state) {
-        return ModCropBlock.super.mayPlaceOn(state);
+        return MSFCropBlock.super.mayPlaceOn(state);
     }
 
     @Override
@@ -117,7 +117,7 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(MSFStateProperties.SHEARED)) return;
-        float f = ModCropBlock.getGrowthSpeed(state, level, pos);
+        float f = MSFCropBlock.getGrowthSpeed(state, level, pos);
         if(random.nextInt((int) ((25.0F / f) + 1)) == 0) {
             this.grow(level, state, pos, 1);
         }
@@ -187,7 +187,7 @@ public abstract class AbstractXBushBlockBase extends ModEntityDoubleTallBlock im
 
     @Override
     public int getMaxAge() {
-        return ModCropBlock.super.getMaxAge() - 1;
+        return MSFCropBlock.super.getMaxAge() - 1;
     }
 
     private boolean canGrow(LevelReader level, BlockPos pos, BlockState state, int k) {

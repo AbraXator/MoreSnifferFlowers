@@ -7,13 +7,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.nikdo53.tinymultiblocklib.blockentities.AbstractMultiBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class GiantCropBlockEntity extends AbstractMultiBlockEntity implements IModBlockEntity {
+public class GiantCropBlockEntity extends AbstractMultiBlockEntity implements IMSFBlockEntity {
     public boolean canGrow = false;
     public double growProgress = 0;
     public int state = 0; //0 NONE; 1 ANIMATION; 2 SACK;
@@ -24,7 +25,7 @@ public class GiantCropBlockEntity extends AbstractMultiBlockEntity implements IM
     }
 
     @Override
-    public void tick(Level level) {
+    public void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
         if(canGrow) {
             if(staticGameTime==0){
                 staticGameTime = level.getGameTime();

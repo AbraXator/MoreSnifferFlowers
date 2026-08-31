@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, ModCropBlock, Corruptable, IPreviewableMultiblock, ICorruptableMultiblock {
+public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, MSFCropBlock, Corruptable, IPreviewableMultiblock, ICorruptableMultiblock {
     public BondripiaBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(defaultBlockState()

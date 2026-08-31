@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import static net.abraxator.moresnifferflowers.init.MSFStateProperties.*;
 
-public class PatternflowerBlock extends CaulorflowerBlock implements BonemealableBlock, ModCropBlock {
+public class PatternflowerBlock extends CaulorflowerBlock implements BonemealableBlock, MSFCropBlock {
 
     public PatternflowerBlock(Properties properties) {
         super(properties);

@@ -42,7 +42,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, ModCropBlock {
+public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, MSFCropBlock {
     public static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 10.0D, 11.0D);
     public static final MapCodec<TorchflowerAflameBlock> CODEC = simpleCodec(TorchflowerAflameBlock::new);
 

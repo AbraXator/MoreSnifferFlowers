@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BerootCauldronBlock extends AbstractMultiBlock implements ModEntityBlock, IPreviewableMultiblock {
+public class BerootCauldronBlock extends AbstractMultiBlock implements TickableEntityBlock, IPreviewableMultiblock {
     public static final VoxelShape SHAPE_UPPER = makeShapeUpper();
     public static final VoxelShape SHAPE_LOWER = makeShapeLower();
     public static final VoxelShape SHAPE_LOWER_ROTATED = makeShapeLowerRotated();
@@ -91,10 +91,7 @@ public class BerootCauldronBlock extends AbstractMultiBlock implements ModEntity
         return new BerootCauldronBlockEntity(blockPos, blockState);
     }
 
-    @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return tickerHelper(level);
-    }
+
 
     @Override
     public boolean hasCustomBE() {

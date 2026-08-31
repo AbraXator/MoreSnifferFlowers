@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.blocks.vivicus;
 
 import net.abraxator.moresnifferflowers.blocks.ColorableVivicusBlock;
-import net.abraxator.moresnifferflowers.blocks.ModCropBlock;
+import net.abraxator.moresnifferflowers.blocks.MSFCropBlock;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class VivicusSproutingBlock extends Block implements ModCropBlock, ColorableVivicusBlock {
+public class VivicusSproutingBlock extends Block implements MSFCropBlock, ColorableVivicusBlock {
     public VivicusSproutingBlock(Properties p_54422_) {
         super(p_54422_);
         this.registerDefaultState(defaultBlockState().setValue(MSFStateProperties.VIVICUS_CURED, false).setValue(MSFStateProperties.COLOR, DyeColor.WHITE));

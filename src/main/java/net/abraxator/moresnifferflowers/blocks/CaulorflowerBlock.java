@@ -42,7 +42,7 @@ import java.util.Optional;
 
 import static net.abraxator.moresnifferflowers.init.MSFStateProperties.*;
 
-public class CaulorflowerBlock extends Block implements BonemealableBlock, ModCropBlock, Colorable, Corruptable {
+public class CaulorflowerBlock extends Block implements BonemealableBlock, MSFCropBlock, Colorable, Corruptable {
     public CaulorflowerBlock(Properties properties) {
         super(properties);
 

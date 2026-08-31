@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public class MoreSnifferFlowerBlock extends Block implements ModCropBlock {
+public class MoreSnifferFlowerBlock extends Block implements MSFCropBlock {
     public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
     public static final IntegerProperty STALK_TYPE = IntegerProperty.create("stalk_type", 1, 3);
     public static final IntegerProperty LEAVES_TYPE = IntegerProperty.create("leaves_type", 1, 3);

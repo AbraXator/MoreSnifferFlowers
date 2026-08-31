@@ -12,13 +12,14 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class ColoredBlockEntity extends ModBlockEntity implements Colorable {
+public class ColoredBlockEntity extends BlockEntity implements Colorable {
     public Dye dye = Dye.EMPTY;
 
     public ColoredBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

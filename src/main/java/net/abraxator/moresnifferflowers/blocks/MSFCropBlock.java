@@ -25,7 +25,7 @@ import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.Tags;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 
-public interface ModCropBlock extends BonemealableBlock {
+public interface MSFCropBlock extends BonemealableBlock {
     IntegerProperty getAgeProperty();
 
     default boolean isMaxAge (BlockState blockState) {

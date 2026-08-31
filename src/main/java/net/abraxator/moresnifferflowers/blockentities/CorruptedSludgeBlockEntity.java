@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -32,7 +33,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEventListener.Provider<CorruptedSludgeBlockEntity.CorruptedSludgeListener> {
+public class CorruptedSludgeBlockEntity extends BlockEntity implements IMSFBlockEntity, GameEventListener.Provider<CorruptedSludgeBlockEntity.CorruptedSludgeListener> {
     public CorruptedSludgeListener corruptedSludgeListener;
     public int usesLeft = -1;
     public int stateChange = 1;
@@ -99,6 +100,7 @@ public class CorruptedSludgeBlockEntity extends ModBlockEntity implements GameEv
 
 
         @Override
+        @SuppressWarnings("deprecation")
         public boolean handleGameEvent(ServerLevel level, Holder<GameEvent> gameEvent, GameEvent.Context context, Vec3 pos) {
             CorruptedSludgeBlockEntity entity;
 

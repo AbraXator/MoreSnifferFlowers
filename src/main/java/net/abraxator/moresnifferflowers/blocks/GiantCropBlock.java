@@ -59,7 +59,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock, Bonmeelable, IPreviewableMultiblock, SimpleWaterloggedBlock {
+public class GiantCropBlock extends AbstractMultiBlock implements TickableEntityBlock, Bonmeelable, IPreviewableMultiblock, SimpleWaterloggedBlock {
     public static final VoxelShape SHAPE_POTATO = makeShapePotato();
     public static final VoxelShape SHAPE_CARROT = makeShapeCarrot();
     public static final VoxelShape SHAPE_BEET = makeShapeBeet();
@@ -197,19 +197,6 @@ public class GiantCropBlock extends AbstractMultiBlock implements ModEntityBlock
     @Override
     public boolean hasCustomBE() {
         return true;
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return (pLevel1, pos, pState1, blockEntity) -> {
-            GiantCropBlockEntity blockEntity1 = (GiantCropBlockEntity) blockEntity;
-            if (!blockEntity1.canGrow) return;
-
-            if(!level.isClientSide) {
-                blockEntity1.tick(level);
-            }
-        };
     }
 
     @Override

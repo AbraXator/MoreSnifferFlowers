@@ -25,7 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TorchewflowerBlock extends BushBlock implements ModCropBlock {
+public class TorchewflowerBlock extends BushBlock implements MSFCropBlock {
     public static final MapCodec<TorchewflowerBlock> CODEC = simpleCodec(TorchewflowerBlock::new);
     public TorchewflowerBlock(Properties properties) {
         super(properties);

@@ -40,7 +40,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class DyespriaPlantBlock extends BushBlock implements ModCropBlock, ModEntityBlock, Corruptable {
+public class DyespriaPlantBlock extends BushBlock implements MSFCropBlock, TickableEntityBlock, Corruptable {
     public static final MapCodec<DyespriaPlantBlock> CODEC = simpleCodec(DyespriaPlantBlock::new);
     public static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
 
