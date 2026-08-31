@@ -24,7 +24,7 @@ public class ExtractedEffect extends MobEffect {
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         List<MobEffectInstance> activeEffects = new ArrayList<>(livingEntity.getActiveEffects());
-        activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(MSFTags.ModEffectTags.EXTRACTION_BLACKLIST)).toList();
+        activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(MSFTags.EffectTags.EXTRACTION_BLACKLIST)).toList();
 
         if (activeEffects.size() <= 1){
             livingEntity.removeEffect(MSFEffects.EXTRACTED);

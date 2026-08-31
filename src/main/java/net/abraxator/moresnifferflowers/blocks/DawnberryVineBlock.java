@@ -115,7 +115,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         BlockState state = blockState.setValue(AGE, 2);
         level.setBlock(pos, state, 2);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     protected InteractionResult dropAgeThreeLoot(BlockState blockState, Level level, BlockPos pos, Player player) {
@@ -127,7 +127,7 @@ public class DawnberryVineBlock extends MultifaceBlock implements BonemealableBl
         BlockState state = blockState.setValue(AGE, 2);
         level.setBlock(pos, state, 2);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +20,8 @@ public class ModBiomeTagProvider extends TagsProvider<Biome> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(MSFTags.ModBiomeTags.HAS_SWAMP_SNIFFER_TEMPLE).add(Biomes.SWAMP, Biomes.MANGROVE_SWAMP);
+        this.tag(MSFTags.BiomeTags.HAS_DESSERT_SNIFFER_TEMPLE).addTag(Tags.Biomes.IS_DESERT);
+        this.tag(MSFTags.BiomeTags.HAS_SNOW_SNIFFER_TEMPLE).addTag(Tags.Biomes.IS_SNOWY_PLAINS).addTag(Tags.Biomes.IS_SNOWY);
+
     }
 }

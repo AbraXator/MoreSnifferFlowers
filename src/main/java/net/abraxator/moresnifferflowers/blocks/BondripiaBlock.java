@@ -164,7 +164,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
 
                 }
 
-                if (blockState.is(MSFTags.ModBlockTags.BONMEELABLE)) {
+                if (blockState.is(MSFTags.BlockTags.BONMEELABLE)) {
 
                     Bonmeelable bonmeelable = (Bonmeelable) GiantCropBlock.getCropMap().get(blockState.getBlock()).getA();
                     if (bonmeelable.canBonmeel(currentPos, blockState, level, null)) {
@@ -212,7 +212,7 @@ public class BondripiaBlock extends AbstractMultiBlock implements EntityBlock, M
     }
     
     private boolean isBondripable(Level level, BlockPos blockPos) {
-        return level.getBlockState(blockPos).getBlock() instanceof BonemealableBlock || level.getBlockState(blockPos).is(MSFTags.ModBlockTags.BONMEELABLE);
+        return level.getBlockState(blockPos).getBlock() instanceof BonemealableBlock || level.getBlockState(blockPos).is(MSFTags.BlockTags.BONMEELABLE);
     }
 
     @Override

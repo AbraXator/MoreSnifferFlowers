@@ -192,7 +192,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
 
         if (canSpread) {
 
-            if (level.isClientSide) return false;
+            if (level.isClientSide()) return false;
 
             if (checkChunks(level, pos, random, blockstate, pos1)) return false;
 

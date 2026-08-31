@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.pipeline.VertexConsumerWrapper;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
-import net.nikdo53.tinymultiblocklib.client.IMultiblockRenderHelper;
 import net.nikdo53.tinymultiblocklib.components.PreviewMode;
 import org.joml.Quaternionf;
 
@@ -67,10 +66,10 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 		VertexConsumer vertexConsumer = TEXTURE.buffer(buffer, renderType);
 
 		double growProgress = previewMode == PreviewMode.PLACED ? blockEntity.growProgress : 1;
-		float coolPartialTick = (growProgress < 1 && blockState.is(MSFTags.ModBlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) ? partialTick : 0;
+		float coolPartialTick = (growProgress < 1 && blockState.is(MSFTags.BlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) ? partialTick : 0;
 		float coolGrowProgress = blockEntity.getLevel().getGameTime() - blockEntity.staticGameTime;
 
-		if(growProgress > 0 && blockState.is(MSFTags.ModBlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) {
+		if(growProgress > 0 && blockState.is(MSFTags.BlockTags.GIANT_CROPS) && IMultiBlock.isCenter(blockState)) {
 			float yCord = 0.5F;
 			float yScale = 1;
 
@@ -86,7 +85,7 @@ public class GiantCropBlockEntityRenderer<T extends GiantCropBlockEntity> implem
 			poseStack.scale(1, yScale, 1);
 			poseStack.mulPose(new Quaternionf().rotateX((float) (Math.PI)));
 
-            if (blockState.is(MSFTags.ModBlockTags.NO_SHADING)) {
+            if (blockState.is(MSFTags.BlockTags.NO_SHADING)) {
                 vertexConsumer = new VertexConsumerWrapper(vertexConsumer) {
                     @Override
                     public VertexConsumer setNormal(float x, float y, float z) {

@@ -11,7 +11,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
@@ -45,9 +44,9 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .pattern(" A ")
                 .pattern("BAB")
                 .pattern(" B ")
-                .define('A', Items.AMETHYST_SHARD)
-                .define('B', Items.GLASS)
-                .unlockedBy("has_amethyst", has(Items.AMETHYST_SHARD))
+                .define('A', net.minecraft.world.item.Items.AMETHYST_SHARD)
+                .define('B', net.minecraft.world.item.Items.GLASS)
+                .unlockedBy("has_amethyst", has(net.minecraft.world.item.Items.AMETHYST_SHARD))
                 .save(recipeOutput);
 
         //threeByThreePacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMBER_BLOCK.get(), ModItems.AMBER_SHARD.get());
@@ -83,7 +82,7 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .requires(MSFItems.ENGINE_PIECE.get())
                 .requires(MSFItems.PRESS_PIECE.get())
                 .requires(MSFItems.BELT_PIECE.get())
-                .unlockedBy("has_cropressor_piece", has(MSFTags.ModItemTags.CROPRESSOR_PIECES))
+                .unlockedBy("has_cropressor_piece", has(MSFTags.ItemTags.CROPRESSOR_PIECES))
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MSFItems.REBREWING_STAND.get())
@@ -96,22 +95,22 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_broken_rebrewing_stand", has(MSFItems.BROKEN_REBREWING_STAND.get()))
                 .save(recipeOutput);
 
-        partsRecycling(recipeOutput, MSFItems.BELT_PIECE.get(), Items.LEATHER, 8);
-        partsRecycling(recipeOutput, MSFItems.SCRAP_PIECE.get(), Items.COPPER_INGOT, 8);
-        partsRecycling(recipeOutput, MSFItems.ENGINE_PIECE.get(), Items.GOLD_INGOT, 8);
-        partsRecycling(recipeOutput, MSFItems.TUBE_PIECE.get(), Items.IRON_INGOT, 8);
-        partsRecycling(recipeOutput, MSFItems.PRESS_PIECE.get(), Items.NETHERITE_SCRAP, 1);
+        partsRecycling(recipeOutput, MSFItems.BELT_PIECE.get(), net.minecraft.world.item.Items.LEATHER, 8);
+        partsRecycling(recipeOutput, MSFItems.SCRAP_PIECE.get(), net.minecraft.world.item.Items.COPPER_INGOT, 8);
+        partsRecycling(recipeOutput, MSFItems.ENGINE_PIECE.get(), net.minecraft.world.item.Items.GOLD_INGOT, 8);
+        partsRecycling(recipeOutput, MSFItems.TUBE_PIECE.get(), net.minecraft.world.item.Items.IRON_INGOT, 8);
+        partsRecycling(recipeOutput, MSFItems.PRESS_PIECE.get(), net.minecraft.world.item.Items.NETHERITE_SCRAP, 1);
         partsRecycling(recipeOutput, MSFItems.BROKEN_REBREWING_STAND.get(), MSFItems.CROPRESSED_NETHERWART.get(), 4);
 
-        partsRecycling(recipeOutput, MSFItems.CROPRESSED_BEETROOT.get(), Items.BEETROOT, 16);
-        partsRecycling(recipeOutput, MSFItems.CROPRESSED_CARROT.get(), Items.CARROT, 16);
-        partsRecycling(recipeOutput, MSFItems.CROPRESSED_POTATO.get(), Items.POTATO, 16);
-        partsRecycling(recipeOutput, MSFItems.CROPRESSED_WHEAT.get(), Items.WHEAT, 16);
-        partsRecycling(recipeOutput, MSFItems.CROPRESSED_NETHERWART.get(), Items.NETHER_WART, 16);
+        partsRecycling(recipeOutput, MSFItems.CROPRESSED_BEETROOT.get(), net.minecraft.world.item.Items.BEETROOT, 16);
+        partsRecycling(recipeOutput, MSFItems.CROPRESSED_CARROT.get(), net.minecraft.world.item.Items.CARROT, 16);
+        partsRecycling(recipeOutput, MSFItems.CROPRESSED_POTATO.get(), net.minecraft.world.item.Items.POTATO, 16);
+        partsRecycling(recipeOutput, MSFItems.CROPRESSED_WHEAT.get(), net.minecraft.world.item.Items.WHEAT, 16);
+        partsRecycling(recipeOutput, MSFItems.CROPRESSED_NETHERWART.get(), net.minecraft.world.item.Items.NETHER_WART, 16);
 
 
 
-        planksFromLogs(recipeOutput, MSFBlocks.CORRUPTED_PLANKS, MSFTags.ModItemTags.CORRUPTED_LOGS, 4);
+        planksFromLogs(recipeOutput, MSFBlocks.CORRUPTED_PLANKS, MSFTags.ItemTags.CORRUPTED_LOGS, 4);
         woodFromLogs(recipeOutput, MSFBlocks.CORRUPTED_WOOD, MSFBlocks.CORRUPTED_LOG);
         woodFromLogs(recipeOutput, MSFBlocks.STRIPPED_CORRUPTED_WOOD, MSFBlocks.STRIPPED_CORRUPTED_LOG);
         stairBuilder(MSFBlocks.CORRUPTED_STAIRS, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
@@ -141,7 +140,7 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .save(recipeOutput);
         hangingSign(recipeOutput, MSFItems.CORRUPTED_HANGING_SIGN.get(), MSFBlocks.CORRUPTED_PLANKS.get());
 
-        planksFromLogs(recipeOutput, MSFBlocks.VIVICUS_PLANKS, MSFTags.ModItemTags.VIVICUS_LOGS, 4);
+        planksFromLogs(recipeOutput, MSFBlocks.VIVICUS_PLANKS, MSFTags.ItemTags.VIVICUS_LOGS, 4);
         woodFromLogs(recipeOutput, MSFBlocks.VIVICUS_WOOD, MSFBlocks.VIVICUS_LOG);
         woodFromLogs(recipeOutput, MSFBlocks.STRIPPED_VIVICUS_WOOD, MSFBlocks.STRIPPED_VIVICUS_LOG);
         stairBuilder(MSFBlocks.VIVICUS_STAIRS, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
@@ -191,9 +190,9 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MSFItems.PATTERNSPRIA.get())
-                .requires(Ingredient.of(MSFTags.ModItemTags.BLOCK_PATTERNS), 1)
+                .requires(Ingredient.of(MSFTags.ItemTags.BLOCK_PATTERNS), 1)
                 .requires(Ingredient.of(MSFItems.DYESPRIA.get()), 1)
-                .unlockedBy("has_block_pattern", has(MSFTags.ModItemTags.BLOCK_PATTERNS))
+                .unlockedBy("has_block_pattern", has(MSFTags.ItemTags.BLOCK_PATTERNS))
                 .save(recipeOutput);
 
         partsRecycling(recipeOutput, MSFBlocks.DRIPSALT.get().asItem(), MSFItems.SALTY_SPICE.get(), 5);
@@ -216,14 +215,14 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MSFItems.BEROOT_COOK_BOOK.get())
-                .requires(Ingredient.of(Items.BOOK), 1)
+                .requires(Ingredient.of(net.minecraft.world.item.Items.BOOK), 1)
                 .requires(Ingredient.of(MSFItems.CROPRESSED_BEETROOT.get()), 1)
                 .unlockedBy("cropressed_beetroot", has(MSFItems.CROPRESSED_BEETROOT.get()))
                 .save(recipeOutput);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.TORCHFLOWER)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, net.minecraft.world.item.Items.TORCHFLOWER)
                 .requires(Ingredient.of(MSFBlocks.TORCHFLOWER_AFLAME.asItem()), 1)
-                .requires(Ingredient.of(Items.BONE_MEAL), 3)
+                .requires(Ingredient.of(net.minecraft.world.item.Items.BONE_MEAL), 3)
                 .unlockedBy("has_torchflower_aflame", has(MSFBlocks.TORCHFLOWER_AFLAME.asItem()))
                 .save(recipeOutput);
 
@@ -239,11 +238,11 @@ public class MSFRecipesProvider extends RecipeProvider {
 
 
 
-        createCropressing(recipeOutput, MSFItems.CROPRESSED_CARROT.get(), Items.CARROT);
-        createCropressing(recipeOutput, MSFItems.CROPRESSED_POTATO.get(), Items.POTATO);
-        createCropressing(recipeOutput, MSFItems.CROPRESSED_NETHERWART.get(), Items.NETHER_WART);
-        createCropressing(recipeOutput, MSFItems.CROPRESSED_BEETROOT.get(), Items.BEETROOT);
-        createCropressing(recipeOutput, MSFItems.CROPRESSED_WHEAT.get(), Items.WHEAT);
+        createCropressing(recipeOutput, MSFItems.CROPRESSED_CARROT.get(), net.minecraft.world.item.Items.CARROT);
+        createCropressing(recipeOutput, MSFItems.CROPRESSED_POTATO.get(), net.minecraft.world.item.Items.POTATO);
+        createCropressing(recipeOutput, MSFItems.CROPRESSED_NETHERWART.get(), net.minecraft.world.item.Items.NETHER_WART);
+        createCropressing(recipeOutput, MSFItems.CROPRESSED_BEETROOT.get(), net.minecraft.world.item.Items.BEETROOT);
+        createCropressing(recipeOutput, MSFItems.CROPRESSED_WHEAT.get(), net.minecraft.world.item.Items.WHEAT);
     }
 
     private void trimCrafting(RecipeOutput recipeOutput, ItemLike trim, TagKey<Item> ingredient) {
@@ -259,7 +258,7 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .pattern("ABA")
                 .pattern("ACA")
                 .pattern("AAA")
-                .define('A', Items.DIAMOND)
+                .define('A', net.minecraft.world.item.Items.DIAMOND)
                 .define('B', trim)
                 .define('C', ingredient)
                 .unlockedBy("has_" + getItemName(trim) + "_trim_template", has(MSFItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get()))

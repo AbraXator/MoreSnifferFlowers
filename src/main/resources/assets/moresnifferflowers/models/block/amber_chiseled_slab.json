@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "moresnifferflowers:block/amber_chiseled",
-    "side": "moresnifferflowers:block/amber_chiseled",
-    "top": "moresnifferflowers:block/amber_chiseled"
-  }
-}

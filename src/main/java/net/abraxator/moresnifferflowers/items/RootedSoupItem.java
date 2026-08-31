@@ -67,7 +67,7 @@ public class RootedSoupItem extends Item {
         }
 
         foodData.eat(food, sat);
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             for (MobEffectInstance effect : effects) {
                 player.addEffect(effect);
             }

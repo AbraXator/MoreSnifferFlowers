@@ -93,6 +93,6 @@ public class VivicusTrunkPlacer extends TrunkPlacer {
     
     @Override
     protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
-        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(MSFTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
+        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(MSFTags.BlockTags.VIVICUS_TREE_REPLACABLE));
     }
 }

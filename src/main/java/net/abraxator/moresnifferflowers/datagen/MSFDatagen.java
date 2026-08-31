@@ -4,6 +4,7 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.datagen.advancement.MSFAdvancementGenerator;
 import net.abraxator.moresnifferflowers.datagen.datamaps.MSFDataMapsProvider;
 import net.abraxator.moresnifferflowers.datagen.loot.MSFLootGenerator;
+import net.abraxator.moresnifferflowers.datagen.model.MSFBlockModelProvider;
 import net.abraxator.moresnifferflowers.datagen.model.MSFBlockStateGenerator;
 import net.abraxator.moresnifferflowers.datagen.model.MSFItemModelProvider;
 import net.abraxator.moresnifferflowers.datagen.recipe.MSFRecipesProvider;
@@ -27,9 +28,10 @@ public class MSFDatagen {
         var registryProvider = datapackProvider.getRegistryProvider();
         
         //BLOCKMODELS
+        generator.addProvider(event.includeClient(), new MSFBlockModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new MSFBlockStateGenerator(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new MSFItemModelProvider(packOutput, existingFileHelper));
-        
+
         //SOUNDS
         generator.addProvider(event.includeClient(), new MSFSoundProvider(packOutput, existingFileHelper));
         

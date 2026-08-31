@@ -23,7 +23,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,7 +71,7 @@ public class DyescrapiaItem extends BlockItem {
                 stack.set(MSFDataComponents.USES, uses);
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }            
-        } else if (state.is(MSFTags.ModBlockTags.DYED)){
+        } else if (state.is(MSFTags.BlockTags.DYED)){
 
             ResourceLocation location = BuiltInRegistries.BLOCK.getKey(state.getBlock());
             String modId = location.getNamespace();
@@ -94,22 +93,22 @@ public class DyescrapiaItem extends BlockItem {
 
             if ((!blockId.contains("white_") || colorless) && !finalBlockId.equals(blockId)){
 
-                Block finalBlock = Blocks.AIR;
+                Block finalBlock = net.minecraft.world.level.block.Blocks.AIR;
                 for (int i = 0; i < 3; i++) {
 
                     finalBlock = switch (i) {
                         case 0 -> BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId, finalBlockId));
                         case 1 -> BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId,"white" + finalBlockId));
                         case 2 -> BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId,finalBlockId + "white"));
-                        default -> Blocks.AIR;
+                        default -> net.minecraft.world.level.block.Blocks.AIR;
                     };
 
-                    if (finalBlock != Blocks.AIR) {
+                    if (finalBlock != net.minecraft.world.level.block.Blocks.AIR) {
                         break;
                     }
                 }
 
-                if (finalBlock == Blocks.AIR) {
+                if (finalBlock == net.minecraft.world.level.block.Blocks.AIR) {
                     return InteractionResult.FAIL;
                 }
 
@@ -122,7 +121,7 @@ public class DyescrapiaItem extends BlockItem {
                     shulkerData = entity.saveWithoutMetadata(level.registryAccess());
                 }
 
-                if (finalBlock != Blocks.AIR) level.setBlockAndUpdate(pos, copyAllBlockStateProperties(state, finalBlockState));
+                if (finalBlock != net.minecraft.world.level.block.Blocks.AIR) level.setBlockAndUpdate(pos, copyAllBlockStateProperties(state, finalBlockState));
 
                 if (shulkerData != null && level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity newShulkerBox) {
                     newShulkerBox.loadFromTag(shulkerData, level.registryAccess());
@@ -135,7 +134,7 @@ public class DyescrapiaItem extends BlockItem {
                 }
 
                 stack.set(MSFDataComponents.USES, uses);
-                return InteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.sidedSuccess(level.isClientSide());
 
             } else return InteractionResult.FAIL;
 

@@ -20,14 +20,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
@@ -46,7 +44,7 @@ import java.util.stream.IntStream;
 public class CropressorBlockEntity extends BlockEntity implements Container, IMSFBlockEntity {
     public static int SLOT_SIZE = 9;
     public BetterNonNullList<ItemStack> container = BetterNonNullList.withSize(SLOT_SIZE, ItemStack.EMPTY);
-    public Item currentCrop = Items.AIR;
+    public Item currentCrop = net.minecraft.world.item.Items.AIR;
     public ItemStack result = ItemStack.EMPTY;
     public int progress = 0;
     public final int MAX_PROGRESS = 100;
@@ -128,7 +126,7 @@ public class CropressorBlockEntity extends BlockEntity implements Container, IMS
         boolean success = false;
         ItemStack copy = stack.copy();
 
-        if (stack.is(MSFTags.ModItemTags.CROPRESSABLE)) {
+        if (stack.is(MSFTags.ItemTags.CROPRESSABLE)) {
 
             if (this.hasAnyOf(Set.of(stack.getItem()))) {
                 for (int slot = 0; slot < SLOT_SIZE && !stack.isEmpty(); slot++) {
@@ -220,13 +218,13 @@ public class CropressorBlockEntity extends BlockEntity implements Container, IMS
 
     public int getColor() {
         Item item = currentCrop;
-        if (item.equals(Items.AIR)) return 0x000000;
+        if (item.equals(net.minecraft.world.item.Items.AIR)) return 0x000000;
 
-        if (item.equals(Items.POTATO)) return 0xb88c4c;
-        if (item.equals(Items.CARROT)) return 0xffa135;
-        if (item.equals(Items.NETHER_WART)) return 0x9e392b;
-        if (item.equals(Items.BEETROOT)) return 0xc36866;
-        if (item.equals(Items.WHEAT)) return 0xfff35e;
+        if (item.equals(net.minecraft.world.item.Items.POTATO)) return 0xb88c4c;
+        if (item.equals(net.minecraft.world.item.Items.CARROT)) return 0xffa135;
+        if (item.equals(net.minecraft.world.item.Items.NETHER_WART)) return 0x9e392b;
+        if (item.equals(net.minecraft.world.item.Items.BEETROOT)) return 0xc36866;
+        if (item.equals(net.minecraft.world.item.Items.WHEAT)) return 0xfff35e;
 
         int hash = item.toString().hashCode();
 

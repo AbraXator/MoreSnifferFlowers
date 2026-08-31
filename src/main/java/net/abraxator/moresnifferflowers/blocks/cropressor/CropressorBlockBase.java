@@ -119,7 +119,7 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity pPlacer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, pPlacer, stack);
-        if(!level.isClientSide) {
+        if(!level.isClientSide()) {
             BlockPos blockPos = pos.relative(state.getValue(FACING));
             level.setBlock(blockPos, MSFBlocks.CROPRESSOR_CENTER.get().defaultBlockState().setValue(FACING, state.getValue(FACING)), 3);
             level.blockUpdated(pos, Blocks.AIR);
@@ -129,7 +129,7 @@ public class CropressorBlockBase extends HorizontalDirectionalBlock {
 
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide && level.getBlockEntity(getEntityPos(level, pos, PART)) instanceof CropressorBlockEntity entity && entity.canInteract() && player.getMainHandItem().is(MSFTags.ModItemTags.CROPRESSABLE)) {
+        if (!level.isClientSide && level.getBlockEntity(getEntityPos(level, pos, PART)) instanceof CropressorBlockEntity entity && entity.canInteract() && player.getMainHandItem().is(MSFTags.ItemTags.CROPRESSABLE)) {
 
             return entity.addItem(player.getItemInHand(hand));
         }

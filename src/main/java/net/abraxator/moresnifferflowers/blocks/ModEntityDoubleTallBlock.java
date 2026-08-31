@@ -33,7 +33,7 @@ public abstract class ModEntityDoubleTallBlock extends Block implements IModEnti
     
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if(!level.isClientSide) {
+        if(!level.isClientSide()) {
             if(player.isCreative()) {
                 preventCreativeDropFromBottomPart(level, pos, state, player);
             } else {

@@ -9,7 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.LevelSimulatedReader;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
@@ -29,22 +28,22 @@ public class BoblingTreeTrunkPlacer extends TrunkPlacer {
     
     public static final BlockStateProvider BLACK_STONE = new WeightedStateProvider(
             SimpleWeightedRandomList.<BlockState>builder()
-                    .add(Blocks.BLACKSTONE.defaultBlockState(), 100)
-                    .add(Blocks.GILDED_BLACKSTONE.defaultBlockState(), 60)
+                    .add(net.minecraft.world.level.block.Blocks.BLACKSTONE.defaultBlockState(), 100)
+                    .add(net.minecraft.world.level.block.Blocks.GILDED_BLACKSTONE.defaultBlockState(), 60)
     );
     public static final BlockStateProvider DEEPSLATE = new WeightedStateProvider(
             SimpleWeightedRandomList.<BlockState>builder()
-                    .add(Blocks.DEEPSLATE.defaultBlockState(), 100)
-                    .add(Blocks.DEEPSLATE_IRON_ORE.defaultBlockState(), 80)
-                    .add(Blocks.DEEPSLATE_DIAMOND_ORE.defaultBlockState(), 50)
-                    .add(Blocks.EMERALD_ORE.defaultBlockState(), 50)
+                    .add(net.minecraft.world.level.block.Blocks.DEEPSLATE.defaultBlockState(), 100)
+                    .add(net.minecraft.world.level.block.Blocks.DEEPSLATE_IRON_ORE.defaultBlockState(), 80)
+                    .add(net.minecraft.world.level.block.Blocks.DEEPSLATE_DIAMOND_ORE.defaultBlockState(), 50)
+                    .add(net.minecraft.world.level.block.Blocks.EMERALD_ORE.defaultBlockState(), 50)
     );
     public static final BlockStateProvider STONE = new WeightedStateProvider(
             SimpleWeightedRandomList.<BlockState>builder()
-                    .add(Blocks.STONE.defaultBlockState(), 100)
-                    .add(Blocks.COAL_ORE.defaultBlockState(), 80)
-                    .add(Blocks.GOLD_ORE.defaultBlockState(), 50)
-                    .add(Blocks.COPPER_ORE.defaultBlockState(), 50)
+                    .add(net.minecraft.world.level.block.Blocks.STONE.defaultBlockState(), 100)
+                    .add(net.minecraft.world.level.block.Blocks.COAL_ORE.defaultBlockState(), 80)
+                    .add(net.minecraft.world.level.block.Blocks.GOLD_ORE.defaultBlockState(), 50)
+                    .add(net.minecraft.world.level.block.Blocks.COPPER_ORE.defaultBlockState(), 50)
     );
     
     public BoblingTreeTrunkPlacer(int pBaseHeight, int pHeightRandA, int pHeightRandB) {
@@ -118,7 +117,7 @@ public class BoblingTreeTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
-        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(MSFTags.ModBlockTags.VIVICUS_TREE_REPLACABLE));
+        return super.validTreePos(level, pos) || level.isStateAtPosition(pos, blockState -> blockState.is(MSFTags.BlockTags.VIVICUS_TREE_REPLACABLE));
     }
 
     public static record Branch(BlockPos blockPos, Direction direction, int height, int maxHeight) {

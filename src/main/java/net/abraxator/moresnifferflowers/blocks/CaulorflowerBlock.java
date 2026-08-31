@@ -162,7 +162,7 @@ public class CaulorflowerBlock extends Block implements BonemealableBlock, MSFCr
             BlockState blockstate = state.setValue(getAgeProperty(), 1);
             level.setBlock(pos, blockstate, 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.sidedSuccess(level.isClientSide());
         } else {
             return super.useWithoutItem(state, level, pos, player, hitResult);
         }

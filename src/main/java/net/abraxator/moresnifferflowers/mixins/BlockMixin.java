@@ -30,7 +30,7 @@ public class BlockMixin  {
             int color = colorable.colorValues().get(DyeColor.byId(colorId));
 
             for (ItemStack stack : list) {
-                if (stack.is(MSFTags.ModItemTags.COLORABLE)) {
+                if (stack.is(MSFTags.ItemTags.COLORABLE)) {
                     stack.set(MSFDataComponents.COLOR, color);
                     stack.set(MSFDataComponents.COLOR_ID, colorId);
                 }

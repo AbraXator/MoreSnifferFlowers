@@ -1,2 +1,3 @@
-// 1.21.1	2025-08-14T17:18:35.2449952	Tags for minecraft:worldgen/biome mod id moresnifferflowers
-6525dda69924a36f16797ed873bffc083e1f4de5 data/moresnifferflowers/tags/worldgen/biome/has_swamp_sniffer_temple.json
+// 1.21.1	2026-08-31T12:38:38.4130876	Tags for minecraft:worldgen/biome mod id moresnifferflowers
+98c40a2126e570e3f8487652d336ef244659db8a data/moresnifferflowers/tags/worldgen/biome/has_structure/dessert_sniffer_temple_biomes.json
+12c58479df85974e50dab65b10b498a99c62cb59 data/moresnifferflowers/tags/worldgen/biome/has_structure/snow_sniffer_temple_biomes.json

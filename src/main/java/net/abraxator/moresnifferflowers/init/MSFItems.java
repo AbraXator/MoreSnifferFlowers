@@ -18,7 +18,6 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -34,8 +33,8 @@ public interface MSFItems {
     DeferredItem<Item> AMBUSH_SEEDS = registerBlockItem("ambush_seeds", MSFBlocks.AMBUSH_BOTTOM);
     DeferredItem<Item> GARBUSH_SEEDS = registerBlockItem("garbush_seeds", MSFBlocks.GARBUSH_BOTTOM);
 
-    DeferredItem<Item> AMBUSH_BANNER_PATTERN = register("ambush_banner_pattern", properties -> new BannerPatternItem(MSFTags.ModBannerPatternTags.AMBUSH_BANNER_PATTERN, properties), (p) -> p.stacksTo(1));
-    DeferredItem<Item> EVIL_BANNER_PATTERN = register("evil_banner_pattern", properties -> new BannerPatternItem(MSFTags.ModBannerPatternTags.EVIL_BANNER_PATTERN, properties), (p) -> p.stacksTo(1));
+    DeferredItem<Item> AMBUSH_BANNER_PATTERN = register("ambush_banner_pattern", properties -> new BannerPatternItem(MSFTags.BannerTags.AMBUSH_BANNER_PATTERN, properties), (p) -> p.stacksTo(1));
+    DeferredItem<Item> EVIL_BANNER_PATTERN = register("evil_banner_pattern", properties -> new BannerPatternItem(MSFTags.BannerTags.EVIL_BANNER_PATTERN, properties), (p) -> p.stacksTo(1));
 
     DeferredItem<Item> AMBER_SHARD = register("amber_shard", TrimMaterialItem::new);
     DeferredItem<Item> GARNET_SHARD = register("garnet_shard", TrimMaterialItem::new);
@@ -139,7 +138,6 @@ public interface MSFItems {
     DeferredItem<Item> CREATIVE_TAB_ICON = register("creative_tab_icon", CreativeTabItem::new);
     DeferredItem<Item> WAND_OF_CUBING = register("wand_of_cubing", WandOfCubingItem::new);
     DeferredItem<Item> DEBUG_FLOWER = register("debug_flower", DebugFlowerItem::new);
-    DeferredItem<Item> PLACEHOLDER = register("placeholder", Item::new);
 
     static DeferredItem<Item> register(String name, Function<Item.Properties, Item> itemFactory, UnaryOperator<Item.Properties> properties) {
         return ITEMS.registerItem(name, itemFactory, properties.apply(new Item.Properties()));

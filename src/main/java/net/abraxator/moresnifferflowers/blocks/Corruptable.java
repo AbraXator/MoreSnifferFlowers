@@ -27,7 +27,7 @@ public interface Corruptable {
             onCorrupt(level, blockPos, blockState, getCorruptedBlock(block, level.random).get());
             corruptedProjectile.remove(Entity.RemovalReason.DISCARDED);
 
-            if(level.isClientSide) {
+            if(level.isClientSide()) {
                 level.addParticle(new DustParticleOptions(Vec3.fromRGB24(0x36283D).toVector3f(), 1.0F), entity.getX(), entity.getY(), entity.getZ(), 0.0, 0.0, 0.0);
             }
         }

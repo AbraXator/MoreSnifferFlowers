@@ -34,7 +34,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -78,7 +77,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
                 } else canContinueDyeing.set(false);
             });
 
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
 
         return handlePlacement(blockPos, level, player, context.getHand(), stack);
@@ -189,7 +188,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
         
         ItemStack itemStack = Dye.stackFromDye(new Dye(dye.color(), dyeCount));
         Dye.setDyeToDyeHolderStack(dyespria, itemStack, itemStack.getCount(), getDyespriaUses(dyespria));
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             particles(level.getRandom(), level, dye, blockPos, face);
         }
     }
@@ -207,7 +206,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
     }
 
     public static boolean checkDyedBlock(BlockState blockState) {
-        return blockState.is(MSFTags.ModBlockTags.DYED);
+        return blockState.is(MSFTags.BlockTags.DYED);
     }
 
     private void dyeNonColorableBlock(BlockState blockState, BlockPos blockPos, DyeColor newColor, Level level) {
@@ -242,7 +241,7 @@ public class DyespriaItem extends BlockItem implements Colorable {
             shulkerData = entity.saveWithoutMetadata(level.registryAccess());
         }
 
-        if (finalBlock != Blocks.AIR) level.setBlockAndUpdate(blockPos, copyAllBlockStateProperties(blockState, finalBlockState));
+        if (finalBlock != net.minecraft.world.level.block.Blocks.AIR) level.setBlockAndUpdate(blockPos, copyAllBlockStateProperties(blockState, finalBlockState));
 
         if (shulkerData != null && level.getBlockEntity(blockPos) instanceof ShulkerBoxBlockEntity newShulkerBox) {
             newShulkerBox.loadFromTag(shulkerData, level.registryAccess());

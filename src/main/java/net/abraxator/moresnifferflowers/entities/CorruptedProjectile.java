@@ -11,7 +11,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -93,7 +91,7 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
         var stateRelative = this.level().getBlockState(posRelative);
         var stateRelativeBelow = this.level().getBlockState(result.getBlockPos().relative(result.getDirection()).below());
 
-        if (this.level().getBlockState(pos).is(MSFTags.ModBlockTags.NO_CORRUPTED_SLIME_COLLISION)) return;
+        if (this.level().getBlockState(pos).is(MSFTags.BlockTags.NO_CORRUPTED_SLIME_COLLISION)) return;
 
         if(checkState(this.level().getBlockState(result.getBlockPos()))) {
             var layer = state.getValue(MSFStateProperties.LAYER);
@@ -111,9 +109,9 @@ public class CorruptedProjectile extends ThrowableItemProjectile {
                         MSFBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(MSFStateProperties.LAYER, layerRelative + 1));
             }
 
-            if (stateRelative.is(Blocks.AIR) || stateRelative.is(BlockTags.FIRE) || (stateRelative.canBeReplaced() && !stateRelative.liquid())) {
+            if (stateRelative.is(net.minecraft.world.level.block.Blocks.AIR) || stateRelative.is(net.minecraft.tags.BlockTags.FIRE) || (stateRelative.canBeReplaced() && !stateRelative.liquid())) {
 
-                    if(result.getDirection() == Direction.UP && !state.is(Blocks.AIR)) {
+                    if(result.getDirection() == Direction.UP && !state.is(net.minecraft.world.level.block.Blocks.AIR)) {
                         this.level().setBlockAndUpdate(
                                 result.getBlockPos().relative(result.getDirection()),
                                 MSFBlocks.CORRUPTED_SLIME_LAYER.get().defaultBlockState().setValue(MSFStateProperties.LAYER, 1));

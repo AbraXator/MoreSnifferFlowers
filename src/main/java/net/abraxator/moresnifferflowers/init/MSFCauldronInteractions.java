@@ -37,7 +37,7 @@ public interface MSFCauldronInteractions {
 
     static ItemInteractionResult emptyBottle(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack filledStack, BlockState state) {
         if (level.getBlockState(pos).getValue(LayeredCauldronBlock.LEVEL) < 3) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 Item item = filledStack.getItem();
                 if (!player.isCreative()) player.setItemInHand(hand, ItemUtils.createFilledResult(filledStack, player, new ItemStack(Items.GLASS_BOTTLE)));
                 player.awardStat(Stats.FILL_CAULDRON);
@@ -47,7 +47,7 @@ public interface MSFCauldronInteractions {
                 level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
             }
 
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
         return ItemInteractionResult.FAIL;
     }
@@ -67,7 +67,7 @@ public interface MSFCauldronInteractions {
                 level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
             }
 
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
     }
 

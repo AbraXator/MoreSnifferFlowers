@@ -26,8 +26,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -163,7 +161,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements TickableEntity
 
     @Override
     public boolean canPlaceLiquid(@javax.annotation.Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-        if (!this.defaultBlockState().is(MSFTags.ModBlockTags.WATERLOGGABLE)) return false;
+        if (!this.defaultBlockState().is(MSFTags.BlockTags.WATERLOGGABLE)) return false;
         return SimpleWaterloggedBlock.super.canPlaceLiquid(player, level, pos, state, fluid);
     }
 
@@ -238,7 +236,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements TickableEntity
 
             if (pos.getY() == cropY) {
                 // Check crops
-                boolean isCorrectCrop = state.is(crop) && state.is(MSFTags.ModBlockTags.BONMEELABLE);
+                boolean isCorrectCrop = state.is(crop) && state.is(MSFTags.BlockTags.BONMEELABLE);
                 if (!isCorrectCrop) {
                     hasMixedCrops.set(true);
                     return false;
@@ -259,7 +257,7 @@ public class GiantCropBlock extends AbstractMultiBlock implements TickableEntity
 
             } else {
                 // Checks free space
-                boolean hasFreeSpace = state.canBeReplaced() || state.is(MSFTags.ModBlockTags.GIANT_CROP_REPLACEABLE) || state.is(crop);
+                boolean hasFreeSpace = state.canBeReplaced() || state.is(MSFTags.BlockTags.GIANT_CROP_REPLACEABLE) || state.is(crop);
                 if (!hasFreeSpace) {
                     noSpace.set(true);
                     if (canRenderGhosts)
@@ -294,11 +292,11 @@ public class GiantCropBlock extends AbstractMultiBlock implements TickableEntity
 
     private static Map<Block, Pair<Block, Pair<IntegerProperty, Integer>>> cropMapCompat() {
         return Map.of(
-                Blocks.CARROTS, new Pair<>(MSFBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.POTATOES, new Pair<>(MSFBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.NETHER_WART, new Pair<>(MSFBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
-                Blocks.BEETROOTS, new Pair<>(MSFBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
-                Blocks.WHEAT, new Pair<>(MSFBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.CARROTS, new Pair<>(MSFBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.POTATOES, new Pair<>(MSFBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.NETHER_WART, new Pair<>(MSFBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.BEETROOTS, new Pair<>(MSFBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.WHEAT, new Pair<>(MSFBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
 
                 BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("onions")), new Pair<>(MSFBlocks.GIANT_ONION.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
                 BuiltInRegistries.BLOCK.get(MoreSnifferFlowers.farmersDelightLoc("tomatoes")), new Pair<>(MSFBlocks.GIANT_TOMATO.get(), new Pair<>(TomatoBlock.VINE_AGE, 3)),
@@ -310,11 +308,11 @@ public class GiantCropBlock extends AbstractMultiBlock implements TickableEntity
 
     private static Map<Block, Pair<Block, Pair<IntegerProperty, Integer>>> cropMapVanilla() {
         return Map.of(
-                Blocks.CARROTS, new Pair<>(MSFBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.POTATOES, new Pair<>(MSFBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
-                Blocks.NETHER_WART, new Pair<>(MSFBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
-                Blocks.BEETROOTS, new Pair<>(MSFBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
-                Blocks.WHEAT, new Pair<>(MSFBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
+                net.minecraft.world.level.block.Blocks.CARROTS, new Pair<>(MSFBlocks.GIANT_CARROT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.POTATOES, new Pair<>(MSFBlocks.GIANT_POTATO.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.NETHER_WART, new Pair<>(MSFBlocks.GIANT_NETHERWART.get(), new Pair<>(NetherWartBlock.AGE, NetherWartBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.BEETROOTS, new Pair<>(MSFBlocks.GIANT_BEETROOT.get(), new Pair<>(BeetrootBlock.AGE, BeetrootBlock.MAX_AGE)),
+                net.minecraft.world.level.block.Blocks.WHEAT, new Pair<>(MSFBlocks.GIANT_WHEAT.get(), new Pair<>(CropBlock.AGE, CropBlock.MAX_AGE))
         );
     }
 

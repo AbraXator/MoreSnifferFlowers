@@ -18,7 +18,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
@@ -58,7 +57,7 @@ public class CorruptedSludgeBlockEntity extends BlockEntity implements IMSFBlock
         if(this.usesLeft <= 0) {
             if (ModServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) CorruptedSludgeListener.shootProjectiles(this.getBlockPos().getCenter(), this.level.random.nextIntBetweenInclusive(8, 16), this.level);
             super.setRemoved();
-            this.level.setBlockAndUpdate(this.getBlockPos(), Blocks.AIR.defaultBlockState());
+            this.level.setBlockAndUpdate(this.getBlockPos(), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
         }
 
     }
@@ -146,7 +145,7 @@ public class CorruptedSludgeBlockEntity extends BlockEntity implements IMSFBlock
             }
 
             if (ModServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) {
-                if (gameEvent.is(GameEvent.BLOCK_DESTROY) && context.affectedState().is(MSFTags.ModBlockTags.CORRUPTED_SLUDGE) && !pos.equals(this.positionSource.getPosition(level).get()) && context.sourceEntity() instanceof Player player) {
+                if (gameEvent.is(GameEvent.BLOCK_DESTROY) && context.affectedState().is(MSFTags.BlockTags.CORRUPTED_SLUDGE) && !pos.equals(this.positionSource.getPosition(level).get()) && context.sourceEntity() instanceof Player player) {
                     var projectileNumber = context.affectedState().is(MSFBlocks.CORRUPTED_LEAVES) || context.affectedState().is(MSFBlocks.CORRUPTED_LEAVES_BUSH) ? level.random.nextInt(1) + 1 : level.random.nextInt(5) + 1;
                     shootProjectiles(this.positionSource.getPosition(level).get(), projectileNumber, level);
                     entity.updateUses();

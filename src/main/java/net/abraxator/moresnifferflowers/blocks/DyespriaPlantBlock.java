@@ -106,7 +106,7 @@ public class DyespriaPlantBlock extends BushBlock implements MSFCropBlock, Ticka
     }
 
     private ItemInteractionResult addDye(ItemStack dye, Player player, Level level, DyespriaPlantBlockEntity entity) {
-        if(!level.isClientSide) {
+        if(!level.isClientSide()) {
             var stack = dye.copy();
             dye.setCount(-1);
             player.addItem(entity.add(null, entity.dye, stack));

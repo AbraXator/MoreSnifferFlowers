@@ -102,12 +102,12 @@ public class BonmeeliaBlock extends BushBlock implements MSFCropBlock {
     }
     
     private ItemInteractionResult addBottle(Level level, BlockPos blockPos, BlockState blockState, ItemStack stack, Player player) {
-        if(!level.isClientSide) {
+        if(!level.isClientSide()) {
             level.setBlock(blockPos, blockState.setValue(HAS_BOTTLE, true), 3);
             if (!player.isCreative()) stack.shrink(1);
         }
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     private InteractionResult takeJarOfBonmeel(Level level, BlockPos blockPos, BlockState blockState) {

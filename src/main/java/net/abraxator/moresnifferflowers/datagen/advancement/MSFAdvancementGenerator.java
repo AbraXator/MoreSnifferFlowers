@@ -10,7 +10,6 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -24,7 +23,7 @@ public class MSFAdvancementGenerator implements AdvancementProvider.AdvancementG
     public void generate(HolderLookup.@NotNull Provider registries, @NotNull Consumer<AdvancementHolder> consumer, @NotNull ExistingFileHelper existingFileHelper) {
         var root = Advancement.Builder.advancement()
                 .display(
-                        Items.SNIFFER_EGG.getDefaultInstance(),
+                        net.minecraft.world.item.Items.SNIFFER_EGG.getDefaultInstance(),
                         Component.translatable("advancements.more_sniffer_flowers.any_seed"),
                         Component.translatable("advancements.more_sniffer_flowers.any_seed.desc"),
                         MoreSnifferFlowers.loc("textures/gui/grass_block_bg.png"),
@@ -90,7 +89,7 @@ public class MSFAdvancementGenerator implements AdvancementProvider.AdvancementG
                         true,
                         false
                 )
-                .addCriterion("has_cropressed_crop", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MSFTags.ModItemTags.CROPRESSED_CROPS).build()))
+                .addCriterion("has_cropressed_crop", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MSFTags.ItemTags.CROPRESSED_CROPS).build()))
                 .save(consumer, MoreSnifferFlowers.loc("cropressor").toString());
 
        var cauldron = Advancement.Builder.advancement()
@@ -130,7 +129,7 @@ public class MSFAdvancementGenerator implements AdvancementProvider.AdvancementG
         Advancement.Builder.advancement()
                 .parent(cauldron)
                 .display(
-                        Items.POISONOUS_POTATO,
+                        net.minecraft.world.item.Items.POISONOUS_POTATO,
                         Component.translatableWithFallback("advancements.more_sniffer_flowers.negative_soup", "Pasta Burner"),
                         Component.translatableWithFallback("advancements.more_sniffer_flowers.negative_soup.desc", "Have 4 negative soup effects at the same time"),
                         null,
@@ -158,7 +157,7 @@ public class MSFAdvancementGenerator implements AdvancementProvider.AdvancementG
                         true,
                         false
                 )
-                .addCriterion("has_rebrewed_potion", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MSFTags.ModItemTags.REBREWED_POTIONS).build()))
+                .addCriterion("has_rebrewed_potion", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(MSFTags.ItemTags.REBREWED_POTIONS).build()))
                 .save(consumer, MoreSnifferFlowers.loc("rebrew").toString());
 
         var bobling = Advancement.Builder.advancement()

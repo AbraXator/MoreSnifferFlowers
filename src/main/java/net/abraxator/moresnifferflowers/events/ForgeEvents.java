@@ -14,8 +14,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -31,7 +29,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -46,7 +43,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.util.TriState;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -155,7 +151,7 @@ public class ForgeEvents {
             player.getData(MSFDataAttachments.COMBO_MEAL).onAttack(player, isCharged);
 
 
-        if(player.hasEffect(MSFEffects.GLUING_TOUCH) && isCharged && entity instanceof LivingEntity livingEntity && !level.isClientSide) {
+        if(player.hasEffect(MSFEffects.GLUING_TOUCH) && isCharged && entity instanceof LivingEntity livingEntity && !level.isClientSide()) {
             int amplifier = Objects.requireNonNull(player.getEffect(MSFEffects.GLUING_TOUCH)).getAmplifier();
 
             if (level.random.nextFloat() < ((amplifier + 2) / 12f)) {
@@ -211,7 +207,7 @@ public class ForgeEvents {
        BlockState state = event.getPlacedBlock();
        LevelAccessor badLevel = event.getLevel();
 
-       if (state.is(MSFTags.ModBlockTags.CORRUPTION_SHIELDING) && badLevel instanceof Level level){
+       if (state.is(MSFTags.BlockTags.CORRUPTION_SHIELDING) && badLevel instanceof Level level){
            LevelChunk chunk = level.getChunkAt(event.getPos());
            CorruptionCapability cap = chunk.getData(MSFDataAttachments.CHUNK_CORRUPTION);
 
@@ -226,7 +222,7 @@ public class ForgeEvents {
         ItemStack output = event.getCrafting();
         Container input = event.getInventory();
 
-        if (output.is(MSFTags.ModItemTags.COLORABLE)){
+        if (output.is(MSFTags.ItemTags.COLORABLE)){
             for (int i = 0; i < input.getContainerSize(); i++) {
                 ItemStack stack = input.getItem(i);
 
@@ -246,7 +242,7 @@ public class ForgeEvents {
     public static void highPriorityClickBlock(PlayerInteractEvent.RightClickBlock event) {
         if (event.getItemStack().getItem() instanceof JarOfBonmeelItem jarOfBonmeelItem) {
 
-            if (event.getLevel().getBlockState(event.getPos()).is(BlockTags.CAULDRONS)) return;
+            if (event.getLevel().getBlockState(event.getPos()).is(net.minecraft.tags.BlockTags.CAULDRONS)) return;
 
             InteractionResult interactionResult = jarOfBonmeelItem.highPriorityUseOn(new UseOnContext(event.getEntity(), event.getHand(), event.getHitVec()));
 
@@ -268,13 +264,13 @@ public class ForgeEvents {
 
         if (event.isCanceled()) return;
 
-        if((item.is(MSFItems.REBREWED_POTION.get()) || item.is(MSFItems.EXTRACTED_BOTTLE.get())) && state.is(Blocks.DIRT)) {
+        if((item.is(MSFItems.REBREWED_POTION.get()) || item.is(MSFItems.EXTRACTED_BOTTLE.get())) && state.is(net.minecraft.world.level.block.Blocks.DIRT)) {
             event.setCancellationResult(ItemInteractionResult.FAIL);
             event.setCanceled(true);
 
         }
 
-        if(item.is(ItemTags.AXES) && (state.is(MSFBlocks.VIVICUS_LOG.get()) || state.is(MSFBlocks.VIVICUS_WOOD.get()))) {
+        if(item.is(net.minecraft.tags.ItemTags.AXES) && (state.is(MSFBlocks.VIVICUS_LOG.get()) || state.is(MSFBlocks.VIVICUS_WOOD.get()))) {
             var strippedState = AxeItem.getAxeStrippingState(state);
             if (strippedState == null) return;
 
@@ -302,14 +298,14 @@ public class ForgeEvents {
             level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 
-            if (!player.isCreative()) player.setItemInHand(hand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(Items.GLASS_BOTTLE)));
+            if (!player.isCreative()) player.setItemInHand(hand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(net.minecraft.world.item.Items.GLASS_BOTTLE)));
 
             event.setCancellationResult(ItemInteractionResult.SUCCESS);
             event.setCanceled(true);
 
         }
 
-        if (BlockPatternCapability.hasPattern(pos, level) && itemStack.is(Items.GLOW_INK_SAC)){
+        if (BlockPatternCapability.hasPattern(pos, level) && itemStack.is(net.minecraft.world.item.Items.GLOW_INK_SAC)){
             BlockPatternCapability.PatternData data = BlockPatternCapability.getPattern(pos, level);
             if (!data.isGlowing()){
                 BlockPatternCapability.enableGlowing(level, pos);
@@ -320,7 +316,7 @@ public class ForgeEvents {
 
         }
 
-        if (itemStack.is(Items.FLINT_AND_STEEL) && state.is(Blocks.TORCHFLOWER)){
+        if (itemStack.is(net.minecraft.world.item.Items.FLINT_AND_STEEL) && state.is(net.minecraft.world.level.block.Blocks.TORCHFLOWER)){
             itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
             player.setItemInHand(hand, itemStack);
             level.setBlock(pos, MSFBlocks.TORCHFLOWER_AFLAME.get().defaultBlockState().setValue(MSFStateProperties.AGE_2, 1), 3);

@@ -19,7 +19,7 @@ public class ModBannerPatternTagsProvider extends TagsProvider<BannerPattern> {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(MSFTags.ModBannerPatternTags.AMBUSH_BANNER_PATTERN).add(MSFBannerPatterns.AMBUSH);
-        tag(MSFTags.ModBannerPatternTags.EVIL_BANNER_PATTERN).add(MSFBannerPatterns.EVIL);
+        tag(MSFTags.BannerTags.AMBUSH_BANNER_PATTERN).add(MSFBannerPatterns.AMBUSH);
+        tag(MSFTags.BannerTags.EVIL_BANNER_PATTERN).add(MSFBannerPatterns.EVIL);
     }
 }

@@ -27,7 +27,7 @@ public class PantsOnFireEffect extends MobEffect {
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         Level level = livingEntity.level();
 
-        if (livingEntity instanceof Player player && player.hasEffect(MSFEffects.PANTS_ON_FIRE) && !level.isClientSide){
+        if (livingEntity instanceof Player player && player.hasEffect(MSFEffects.PANTS_ON_FIRE) && !level.isClientSide()){
             int burnedSlots = 0;
             final int maxBurnedSlots = (1 + 2*amplifier);
 

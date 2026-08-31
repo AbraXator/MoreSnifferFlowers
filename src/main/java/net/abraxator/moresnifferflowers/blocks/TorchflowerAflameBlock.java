@@ -71,7 +71,7 @@ public class TorchflowerAflameBlock extends BushBlock implements EntityBlock, MS
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (!level.isClientSide) return;
+        if (!level.isClientSide()) return;
         super.animateTick(state, level, pos, random);
         Vec3 vec3 = state.getOffset(level, pos);
         Vec3 offset = new Vec3(pos.getX() + vec3.x, pos.getY() + vec3.y, pos.getZ() + vec3.z);
