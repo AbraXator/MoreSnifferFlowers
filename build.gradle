@@ -6,56 +6,61 @@ plugins {
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 version = mod_version
-
 group = 'net.abraxator'
 
 base {
     archivesName.set("MoreSnifferFlowers-${minecraft_version}-neo")
 }
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-    maven {
-        url = "https://cursemaven.com"
+sourceSets.main.resources {
+    srcDir('src/generated/resources')
+
+    exclude("**/*.bbmodel")
+    exclude("src/generated/**/.cache")
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url = "https://cursemaven.com"
+        }
+        maven { url = "https://api.modrinth.com/maven" }
+        maven { url = "https://maven.blamejared.com/" }
+        maven { url = "https://modmaven.dev" }
+        maven {
+            name = 'Shedaniel\'s Maven' //REI
+            url = "https://maven.shedaniel.me"
+        }
+        maven {
+            name = "TerraformersMC" //EMI
+            url = "https://maven.terraformersmc.com/"
+        }
+        flatDir { dir 'libs' }
+
+
+        maven {
+            url = 'https://nikdo53.github.io'
+        }
     }
-    maven { url = "https://api.modrinth.com/maven" }
-    maven { url = "https://maven.blamejared.com/" }
-    maven { url = "https://modmaven.dev" }
-    maven {
-        name = 'Shedaniel\'s Maven' //REI
-        url = "https://maven.shedaniel.me"
+
+
+    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+    tasks.withType(JavaCompile).configureEach {
+        options.release = 21
     }
-    maven {
-        name = "TerraformersMC" //EMI
-        url = "https://maven.terraformersmc.com/"
-    }
-    flatDir { dir 'libs' }
 
+    println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
-    maven {
-        url = 'https://nikdo53.github.io'
-    }
-}
+    neoForge {
+        version = project.neoforge_version
+        validateAccessTransformers = true
 
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-tasks.withType(JavaCompile).configureEach {
-    options.release = 21
-}
-
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
-
-neoForge {
-    version = project.neoforge_version
-    validateAccessTransformers = true
-
-    runs {
-        configureEach {
-            gameDirectory = layout.projectDir.dir("runs/$name")
-            systemProperty 'forge.logging.console.level', 'debug'
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
+        runs {
+            configureEach {
+                gameDirectory = layout.projectDir.dir("runs/$name")
+                systemProperty 'forge.logging.console.level', 'debug'
+                systemProperty 'forge.logging.markers', 'REGISTRIES'
 
             }
             client {
@@ -82,83 +87,76 @@ neoForge {
         }
     }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+    dependencies {
 
-dependencies {
+        compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+        compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+        runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
-    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
-    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+        runtimeOnly "curse.maven:farmers-delight-398521:8672744"
+        compileOnly "curse.maven:farmers-delight-398521:8672744"
 
-    runtimeOnly "curse.maven:farmers-delight-398521:8672744"
-    compileOnly "curse.maven:farmers-delight-398521:8672744"
-
-    jarJar(implementation("net.nikdo53:tiny-multiblock-lib-neoforge-1.21.1:${tiny_multiblock_lib_version}"))
-    implementation("net.nikdo53:nikdo-color:1.0.0")
+        jarJar(implementation("net.nikdo53:tiny-multiblock-lib-neoforge-1.21.1:${tiny_multiblock_lib_version}"))
+        implementation("net.nikdo53:nikdo-color:1.0.0")
 
 
-   // implementation("maven.modrinth:DistantHorizons:2.4.5-b-1.21.1")
-}
-
-jar {
-    manifest.attributes([
-            "MixinConfigs": "${mod_id}.mixins.json"
-    ])
-}
-
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-            minecraft_version      : minecraft_version,
-            neo_version            : neoforge_version,
-            mod_id                 : mod_id,
-            mod_name               : mod_name,
-            mod_license            : "MIT",
-            mod_version            : mod_version,
-    ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
-}
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
-
-publishMods {
-    file = jar.archiveFile
-    modLoaders.add("neoforge")
-    displayName = "$mod_name $mod_version - $minecraft_version Neoforge"
-
-    type = STABLE
-    changelog = rootProject.file("CHANGELOG.md").text
-
-    curseforge {
-        accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
-        projectId = "884119"
-        minecraftVersions.add(minecraft_version)
-        clientRequired = true
-        serverRequired = true
+        // implementation("maven.modrinth:DistantHorizons:2.4.5-b-1.21.1")
     }
 
-    modrinth {
-        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        projectId = "DbriYWc8"
-        minecraftVersions.add(minecraft_version)
+    var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+        var replaceProperties = [
+                minecraft_version: minecraft_version,
+                neo_version      : neoforge_version,
+                mod_id           : mod_id,
+                mod_name         : mod_name,
+                mod_license      : "MIT",
+                mod_version      : mod_version,
+        ]
+        inputs.properties replaceProperties
+        expand replaceProperties
+        from "src/main/templates"
+        into "build/generated/sources/modMetadata"
     }
-}
+    sourceSets.main.resources.srcDir generateModMetadata
+    neoForge.ideSyncTask generateModMetadata
 
-publishing {
-    repositories {
-        maven {
-            url = "$rootDir/build/maven"
+    publishMods {
+        file = jar.archiveFile
+        modLoaders.add("neoforge")
+        displayName = "$mod_name $mod_version - $minecraft_version Neoforge"
+
+        type = STABLE
+        changelog = rootProject.file("CHANGELOG.md").text
+
+        curseforge {
+            accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
+            projectId = "884119"
+            minecraftVersions.add(minecraft_version)
+            clientRequired = true
+            serverRequired = true
+        }
+
+        modrinth {
+            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+            projectId = "DbriYWc8"
+            minecraftVersions.add(minecraft_version)
         }
     }
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
+
+    publishing {
+        repositories {
+            maven {
+                url = "$rootDir/build/maven"
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                from(components.java)
+            }
         }
     }
-}
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
 }

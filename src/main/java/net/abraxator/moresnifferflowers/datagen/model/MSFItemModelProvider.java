@@ -54,10 +54,10 @@ public class MSFItemModelProvider extends ItemModelProvider {
         basicItems(CORRUPTED_BOAT, CORRUPTED_CHEST_BOAT, VIVICUS_BOAT, VIVICUS_CHEST_BOAT);
 
         basicItems(CORRUPTED_SLIME_BALL, VIVICUS_ANTIDOTE);
-        blockItems(MSFBlocks.CORRUPTED_SLIME_LAYER, MSFBlocks.CORRUPTED_SLUDGE, MSFBlocks.DECAYED_LOG,
-                MSFBlocks.CURED_GRASS_BLOCK, MSFBlocks.CORRUPTED_GRASS_BLOCK, MSFBlocks.CORRUPTED_WART);
+        blockItems(MSFBlocks.CORRUPTED_SLIME_LAYER, MSFBlocks.DECAYED_LOG, MSFBlocks.CURED_GRASS_BLOCK, MSFBlocks.CORRUPTED_GRASS_BLOCK, MSFBlocks.CORRUPTED_WART);
         flatBlockItem(MSFBlocks.CORRUPTED_GRASS);
         flatBlockItem(MSFBlocks.CORRUPTED_TALL_GRASS, "corrupted_grass_block_top");
+        suffixBlockItem(MSFBlocks.CORRUPTED_SLUDGE, "stage_1");
 
         basicItems(PATTERNFLOWER_SEEDS, ACIDRIPIA_SEEDS, AMBUSH_SEEDS, BONDRIPIA_SEEDS, BONWILTIA_SEEDS, CAULORFLOWER_SEEDS, DAWNBERRY_VINE_SEEDS, DYESPRIA_SEEDS, GARBUSH_SEEDS, GLOOMBERRY_VINE_SEEDS);
         basicItems(DAWNBERRY, GLOOMBERRY, JAR_OF_ACID, JAR_OF_BONMEEL);
@@ -157,6 +157,11 @@ public class MSFItemModelProvider extends ItemModelProvider {
     public ItemModelBuilder suffixBlockItem(ResourceLocation block, String suffix) {
         return withExistingParent(block.toString(), ResourceLocation.fromNamespaceAndPath(block.getNamespace(), "block/" + block.getPath() + "_" + suffix));
     }
+
+    public ItemModelBuilder suffixBlockItem(Supplier<Block> blockSupplier, String suffix) {
+        return suffixBlockItem(Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(blockSupplier.get())), suffix);
+    }
+
 
 
     final Map<BlockFamily.Variant, Function<ResourceLocation, ItemModelBuilder>> FAMILLY_MAP = ImmutableMap.<BlockFamily.Variant, Function<ResourceLocation, ItemModelBuilder>>builder()

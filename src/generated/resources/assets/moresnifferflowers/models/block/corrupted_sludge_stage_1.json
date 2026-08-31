@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "moresnifferflowers:block/amber_mosaic"
+    "all": "moresnifferflowers:block/corrupted_sludge_stage_1"
   }
 }
