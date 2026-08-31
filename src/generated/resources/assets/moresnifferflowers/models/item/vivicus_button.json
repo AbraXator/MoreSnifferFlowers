@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/button_inventory",
   "textures": {
-    "texture": "moresnifferflowers:block/corrupted_planks"
+    "texture": "moresnifferflowers:block/vivicus_planks"
   }
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "moresnifferflowers:block/farmland_cross",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "cross": "moresnifferflowers:block/ambush_bottom_stage_3"
+  }
+}

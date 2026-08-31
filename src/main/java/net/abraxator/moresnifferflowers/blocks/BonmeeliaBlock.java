@@ -34,7 +34,6 @@ public class BonmeeliaBlock extends BushBlock implements MSFCropBlock {
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);
     public static final BooleanProperty HAS_BOTTLE = BooleanProperty.create("bottle");
     public static final BooleanProperty SHOW_HINT = BooleanProperty.create("hint");
-    public static final BooleanProperty HAS_JAR = BooleanProperty.create("jar");
     public static final int MAX_AGE = AGE
             .getAllValues()
             .map(Property.Value::value)
@@ -45,7 +44,7 @@ public class BonmeeliaBlock extends BushBlock implements MSFCropBlock {
 
     public BonmeeliaBlock(Properties properties, boolean wilted) {
         super(properties);
-        registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0).setValue(HAS_JAR, false));
+        registerDefaultState(this.defaultBlockState().setValue(HAS_BOTTLE, false).setValue(SHOW_HINT, false).setValue(AGE, 0));
         this.wilted = wilted;
     }
 
@@ -61,7 +60,7 @@ public class BonmeeliaBlock extends BushBlock implements MSFCropBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AGE, HAS_BOTTLE, SHOW_HINT, HAS_JAR);
+        builder.add(AGE, HAS_BOTTLE, SHOW_HINT);
     }
 
     @Override
@@ -136,7 +135,7 @@ public class BonmeeliaBlock extends BushBlock implements MSFCropBlock {
         if (!isMaxAge(state)) {
             level.setBlockAndUpdate(pos, state
                     .setValue(AGE, getAge(state) + 1)
-                    .setValue(HAS_JAR, (getAge(state) + 1) == MAX_AGE && state.getValue(HAS_BOTTLE)));
+                    .setValue(SHOW_HINT, false));
             var particle = new DustParticleOptions(wilted ? Vec3.fromRGB24(0xaeff5c).toVector3f() : Vec3.fromRGB24(11162034).toVector3f(), 1F);
             if (getAge(state) >= 3) {
                 for (int i = 0; i <= random.nextIntBetweenInclusive(5, 10); i++) {

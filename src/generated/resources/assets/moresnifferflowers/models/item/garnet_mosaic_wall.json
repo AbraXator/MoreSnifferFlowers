@@ -1,3 +1,6 @@
 {
-  "parent": "moresnifferflowers:block/garnet_mosaic_wall_inventory"
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "moresnifferflowers:block/garnet_mosaic"
+  }
 }

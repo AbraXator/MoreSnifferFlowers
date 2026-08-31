@@ -1,237 +1,195 @@
 package net.abraxator.moresnifferflowers.datagen.model;
 
+import com.google.common.collect.ImmutableMap;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
+import net.abraxator.moresnifferflowers.blocks.ModEntityDoubleTallBlock;
+import net.abraxator.moresnifferflowers.blocks.ModLayeredCauldronBlock;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
+import net.abraxator.moresnifferflowers.init.MSFStateProperties;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
+import org.apache.logging.log4j.util.TriConsumer;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static net.abraxator.moresnifferflowers.init.MSFBlocks.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 public class MSFBlockStateGenerator extends BlockStateProvider {
+    final ExistingFileHelper existingFileHelper;
     public MSFBlockStateGenerator(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, MoreSnifferFlowers.MOD_ID, exFileHelper);
+        this.existingFileHelper = exFileHelper;
     }
 
     @Override
     protected void registerStatesAndModels() {
-        VariantBlockStateBuilder rebrewingStandVariantBuilder = getVariantBuilder(MSFBlocks.REBREWING_STAND_BOTTOM.get());
-        boolean[] bottleConditions = {false, true};
-        for (boolean hasBottle0 : bottleConditions) {
-            for (boolean hasBottle1 : bottleConditions) {
-                for (boolean hasBottle2 : bottleConditions) {
-                    String modelCode = (hasBottle0 ? "1" : "0") + (hasBottle1 ? "1" : "0") + (hasBottle2 ? "1" : "0");
-                    ModelFile modelFile = rebrewingStandModel(modelCode);
-                    rebrewingStandVariantBuilder.partialState()
-                            .with(HAS_BOTTLE_0, hasBottle0)
-                            .with(HAS_BOTTLE_1, hasBottle1)
-                            .with(HAS_BOTTLE_2, hasBottle2)
-                            .addModels(new ConfiguredModel(modelFile));
-                }
+        //prevents duplicates
+        Set<Block> processedParentBlocks = new HashSet<>();
+
+        MSFBlockFamilies.getAllFamilies().forEach(family -> {
+            if (family == MSFBlockFamilies.VIVICUS) return;
+            ResourceLocation baseId = MoreSnifferFlowers.loc("block/" + BuiltInRegistries.BLOCK.getKey(family.getBaseBlock()).getPath());
+            if (!processedParentBlocks.contains(family.getBaseBlock())) {
+                this.simpleBlock(family.getBaseBlock());
+                processedParentBlocks.add(family.getBaseBlock());
             }
-        }
-        
+
+            family.getVariants().forEach((variant, block) -> {
+                if (variant == BlockFamily.Variant.WALL_SIGN || processedParentBlocks.contains(block)) return;
+                ResourceLocation blockId = MoreSnifferFlowers.loc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
+                TriConsumer<BlockFamily, Block, ResourceLocation> consumer = FAMILLY_MAP.get(variant);
+                if (consumer == null) {
+                    this.simpleBlock(block);
+                } else {
+                    consumer.accept(family, block, CUSTOM_TEXTURE_VARIANTS.contains(variant) ? blockId : baseId);
+                }
+                processedParentBlocks.add(block);
+            });
+        });
+
         simpleBlock(MSFBlocks.POTTED_DYESPRIA.get(), models().withExistingParent(MSFBlocks.POTTED_DYESPRIA.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(MSFBlocks.DYESPRIA_PLANT.get())));
         simpleBlock(MSFBlocks.POTTED_CORRUPTED_SAPLING.get(), models().withExistingParent(MSFBlocks.POTTED_CORRUPTED_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(MSFBlocks.CORRUPTED_SAPLING.get())));
         simpleBlock(MSFBlocks.POTTED_VIVICUS_SAPLING.get(), models().withExistingParent(MSFBlocks.POTTED_VIVICUS_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(MSFBlocks.VIVICUS_SAPLING.get())));
-        signBlock((StandingSignBlock) MSFBlocks.CORRUPTED_SIGN.get(), (WallSignBlock) MSFBlocks.CORRUPTED_WALL_SIGN.get(), blockTexture(MSFBlocks.CORRUPTED_PLANKS.get()));
-        signBlock((StandingSignBlock) MSFBlocks.VIVICUS_SIGN.get(), (WallSignBlock) MSFBlocks.VIVICUS_WALL_SIGN.get(), blockTexture(MSFBlocks.VIVICUS_PLANKS.get()));
-        hangingSignBlock(MSFBlocks.CORRUPTED_HANGING_SIGN.get(), MSFBlocks.CORRUPTED_WALL_HANGING_SIGN.get(), blockTexture(MSFBlocks.CORRUPTED_PLANKS.get()));
-        hangingSignBlock(MSFBlocks.VIVICUS_HANGING_SIGN.get(), MSFBlocks.VIVICUS_WALL_HANGING_SIGN.get(), blockTexture(MSFBlocks.VIVICUS_PLANKS.get()));
-        //logWoodSapling((RotatedPillarBlock) ModBlocks.CORRUPTED_LOG.get(), (RotatedPillarBlock) ModBlocks.STRIPPED_CORRUPTED_LOG.get(), (RotatedPillarBlock) ModBlocks.CORRUPTED_WOOD.get(), (RotatedPillarBlock) ModBlocks.STRIPPED_CORRUPTED_WOOD.get(), ModBlocks.CORRUPTED_SAPLING.get());
-        //plankBlocks("corrupted", ModBlocks.CORRUPTED_PLANKS.get(), ModBlocks.CORRUPTED_SLAB.get(), ((StairBlock) ModBlocks.CORRUPTED_STAIRS.get()), ModBlocks.CORRUPTED_BUTTON.get(), ModBlocks.CORRUPTED_FENCE.get(), ModBlocks.CORRUPTED_FENCE_GATE.get(), ModBlocks.CORRUPTED_PRESSURE_PLATE.get(), ((DoorBlock) ModBlocks.CORRUPTED_DOOR.get()), ((TrapDoorBlock) ModBlocks.CORRUPTED_TRAPDOOR.get()), true);
-    }
 
-    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ResourceLocation texture) {
-        ModelFile sign = models().sign(name(signBlock), texture);
-        hangingSignBlock(signBlock, wallSignBlock, sign);
-    }
+        multipleVariantsForStates((state, block) -> {
+            int age = state.getValue(BonmeeliaBlock.AGE);
+            if (age < 3) return modelFile(block, "_stage" + age);
+            if (state.getValue(BonmeeliaBlock.HAS_BOTTLE)) return modelFile(block, "_bottle_" + (age - 3));
+            if (state.getValue(BonmeeliaBlock.SHOW_HINT)) return modelFile(block, "_outline");
+            return modelFile(block, "_empty");
+        }, MSFBlocks.BONMEELIA, MSFBlocks.BONWILTIA);
 
-    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ModelFile sign) {
-        simpleBlock(signBlock, sign);
-        simpleBlock(wallSignBlock, sign);
-    }
+        multipleVariantsForStates((state, block) -> {
+            int age = state.getValue(MSFStateProperties.AGE_2);
+            if (!IMultiBlock.isCenter(state)) return modelFile(block, "_stage2");
+            return modelFile(block, "_stage" + age);
+        }, MSFBlocks.BONDRIPIA, MSFBlocks.ACIDRIPIA);
 
-    protected void logWoodSapling(RotatedPillarBlock log, RotatedPillarBlock slog, RotatedPillarBlock wood, RotatedPillarBlock swood, Block sapling) {
-        logBlock(log);
-        logBlock(slog);
-        ResourceLocation sideTex = blockTexture(log);
-        axisBlock(wood, sideTex, sideTex);
-        ResourceLocation sSideTex = blockTexture(slog);
-        axisBlock(swood, sSideTex, sSideTex);
 
-        ResourceLocation saplingTex = prefix("block/" + name(sapling));
-        simpleBlock(sapling, models().cross(name(sapling), saplingTex).renderType("cutout"));
-    }
-
-    protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor) {
-        this.plankBlocks(variant, plank, slab, stair, button, fence, gate, plate, door, trapdoor, false);
-    }
-
-    protected void plankBlocks(String variant, Block plank, Block slab, StairBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor, boolean cutoutDoors) {
-        String plankTexName = "block/" + variant + "_planks";
-        String plankDir = "block/" + variant + "/";
-        ConfiguredModel[] plankModels = ConfiguredModel.builder()
-                .modelFile(models().cubeAll(plankDir + name(plank), prefix(plankTexName))).nextModel().build();
-        simpleBlock(plank, plankModels);
-
-        String slabDir = variant + "/";
-        ConfiguredModel[] bottomSlabModels = ConfiguredModel.builder()
-                .weight(10).modelFile(models().slab(slabDir + name(slab), prefix(plankTexName), prefix(plankTexName), prefix(plankTexName))).build();
-        ConfiguredModel[] topSlabModels = ConfiguredModel.builder()
-                .weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[0].model).nextModel()
-                .weight(10).uvLock(true).rotationX(180).modelFile(bottomSlabModels[1].model).nextModel()
-                .weight(1).uvLock(true).rotationX(180).modelFile(bottomSlabModels[2].model).nextModel()
-                .weight(1).uvLock(true).rotationX(180).modelFile(bottomSlabModels[3].model).build();
-        getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).setModels(bottomSlabModels);
-        getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.TOP).setModels(topSlabModels);
-        getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).setModels(plankModels);
-
-        woodStairs(stair, plankTexName, variant);
-        woodButton(button, plankTexName, variant);
-        woodFence(fence, plankTexName, variant);
-        woodGate(gate, plankTexName, variant);
-        woodPlate(plate, plankTexName, variant);
-        String doorDir = variant + "/";
-        String trapdoorDir = variant + "/";
-
-        doorBlockWithRenderType(door, doorDir + variant, prefix(variant + "_lower"), prefix(variant + "_upper"), cutoutDoors ? "cutout" : "solid");
-        trapdoorBlockWithRenderType(trapdoor, trapdoorDir + variant, prefix(variant + "_trapdoor"), true, cutoutDoors ? "cutout" : "solid");
-    }
-
-    private BlockModelBuilder door(String name, String model, ResourceLocation bottom, ResourceLocation top, ResourceLocation side) {
-        return models().withExistingParent(name, prefix("block/util/" + model))
-                .texture("bottom", bottom)
-                .texture("top", top)
-                .texture("side", side);
-    }
-
-    protected void woodGate(Block gate, String texName, String variant) {
-        String gateDir = variant + "/";
-
-        ModelFile gate0 = models().fenceGate(gateDir + name(gate), prefix(texName));
-        ModelFile open0 = models().fenceGateOpen(gateDir + name(gate) + "_open", prefix(texName));
-        ModelFile wall0 = models().fenceGateWall(gateDir + name(gate) + "_wall", prefix(texName));
-        ModelFile wallOpen0 = models().fenceGateWallOpen(gateDir + name(gate) + "_wall_open", prefix(texName));
-
-        // [VanillaCopy] super.fenceGateBlock except with more models
-        getVariantBuilder(gate).forAllStatesExcept(state -> {
-            ModelFile model0 = gate0;
-            if (state.getValue(FenceGateBlock.IN_WALL)) {
-                model0 = wall0;
+        multipleVariantsForStates((state, block) -> {
+            int age = state.getValue(MSFStateProperties.AGE_8);
+            if (age < 4){
+                return farmlandCrossModel(block, "_stage_" + 0);
             }
-            if (state.getValue(FenceGateBlock.OPEN)) {
-                model0 = model0 == wall0 ? wallOpen0 : open0;
-            }
-            return ConfiguredModel.builder()
-                    .weight(10).modelFile(model0)
-                    .rotationY((int) state.getValue(HorizontalDirectionalBlock.FACING).toYRot())
-                    .uvLock(true).nextModel()
-                    .build();
-        }, FenceGateBlock.POWERED);
-    }
+            return farmlandCrossModel(block, "_stage_" + age);
+            }, MSFBlocks.AMBUSH_TOP, MSFBlocks.GARBUSH_TOP);
 
-    protected void woodFence(Block fence, String texName, String variant) {
-        String fenceDir = variant + "/";
-        
-        ModelFile post0 = models().fencePost(fenceDir + name(fence) + "_post", prefix((texName)));
-        ModelFile side0 = models().fenceSide(fenceDir + name(fence) + "_side", prefix((texName)));
-
-        // [VanillaCopy] super.fourWayBlock, but with more models
-        MultiPartBlockStateBuilder builder = getMultipartBuilder(fence).part()
-                .weight(10).modelFile(post0).nextModel().addModel().end();
-        PipeBlock.PROPERTY_BY_DIRECTION.forEach((dir, value) -> {
-            if (dir.getAxis().isHorizontal()) {
-                builder.part()
-                        .weight(10).modelFile(side0).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true)
-                        .addModel()
-                        .condition(value, true);
+        multipleVariantsForStates((state, block) -> {
+            int age = state.getValue(MSFStateProperties.AGE_8);
+            if (age > 3 && age != 7){
+                return farmlandCrossModel(block, "_stage_" + 3);
             }
+            return farmlandCrossModel(block, "_stage_" + age);
+        }, MSFBlocks.AMBUSH_BOTTOM, MSFBlocks.GARBUSH_BOTTOM);
+
+        variantForStates(MSFBlocks.CORRUPTED_SLUDGE, state -> modelFile(state::getBlock, "_stage_" + (1 + 3 - state.getValue(MSFStateProperties.USES_4))));
+
+        variantForStates(REBREWING_STAND_BOTTOM, state -> {
+            String modelCode = (state.getValue(HAS_BOTTLE_0) ? "1" : "0") + (state.getValue(HAS_BOTTLE_1) ? "1" : "0") + (state.getValue(HAS_BOTTLE_2) ? "1" : "0");
+            return rebrewingStandModel(modelCode);
         });
+
+        multipleVariantsForStates((state, block) -> modelFile(block, "_level" + state.getValue(ModLayeredCauldronBlock.LEVEL)),
+                MSFBlocks.ACID_FILLED_CAULDRON, MSFBlocks.BONMEEL_FILLED_CAULDRON);
+
+
+        particleOnly(MSFBlocks.BEROOT_CAULDRON);
+        empty(MSFBlocks.GIANT_BEETROOT, MSFBlocks.GIANT_CABBAGE, MSFBlocks.GIANT_CARROT,
+                MSFBlocks.GIANT_POTATO, MSFBlocks.GIANT_RICE, MSFBlocks.GIANT_TOMATO,
+                MSFBlocks.GIANT_ONION, MSFBlocks.GIANT_NETHERWART, MSFBlocks.GIANT_WHEAT
+        );
+
+        simpleBlock(CORRUPTED_LEAVES.get());
+        simpleState(CORRUPTED_WART, CORRUPTED_LEAVES_BUSH, TORCHFLAME, REBREWING_STAND_TOP);
+        simpleBlock(CORRUPTED_GRASS.get(), models().cross(name(CORRUPTED_GRASS), blockTexture(CORRUPTED_GRASS.get())).renderType("cutout"));
+
+        hangingSignBlock((CeilingHangingSignBlock) CORRUPTED_HANGING_SIGN.get(), (WallHangingSignBlock) CORRUPTED_WALL_HANGING_SIGN.get(), key(CORRUPTED_PLANKS.get()).withPrefix("block/"));
+        hangingSignBlock((CeilingHangingSignBlock) VIVICUS_HANGING_SIGN.get(), (WallHangingSignBlock) VIVICUS_WALL_HANGING_SIGN.get(), key(VIVICUS_PLANKS.get()).withPrefix("block/"));
+        signBlock((StandingSignBlock) VIVICUS_SIGN.get(), (WallSignBlock) VIVICUS_WALL_SIGN.get(), key(VIVICUS_PLANKS.get()).withPrefix("block/") );
+
     }
 
-    protected void woodPlate(Block plate, String texName, String variant) {
-        String plateDir = variant + "/";
-
-        ConfiguredModel[] unpressed = ConfiguredModel.builder()
-                .weight(10).modelFile(models().withExistingParent(plateDir + name(plate), "pressure_plate_up").texture("texture", prefix(texName))).nextModel().build();
-        ConfiguredModel[] pressed = ConfiguredModel.builder()
-                .weight(10).modelFile(models().withExistingParent(plateDir + name(plate) + "_down", "pressure_plate_down").texture("texture", prefix((texName)))).build();
-
-        getVariantBuilder(plate).partialState().with(PressurePlateBlock.POWERED, false).setModels(unpressed);
-        getVariantBuilder(plate).partialState().with(PressurePlateBlock.POWERED, true).setModels(pressed);
+    public BlockModelBuilder particleOnlyModel(String name, ResourceLocation texture) {
+        return models().getBuilder(name).texture("particle", texture);
     }
 
-    protected void woodButton(Block button, String texName, String variant) {
-        String buttonDir = variant + "/";
-        
-        ModelFile unpressed0 = models().withExistingParent(buttonDir + name(button), "button").texture("texture", prefix(texName));
-        ModelFile pressed0 = models().withExistingParent(buttonDir + name(button) + "_pressed", "button_pressed").texture("texture", prefix((texName)));
-
-        getVariantBuilder(button).forAllStates(state -> {
-            ModelFile model0 = state.getValue(ButtonBlock.POWERED) ? pressed0 : unpressed0;
-            int rotX = switch (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE)) {
-                case WALL -> 90;
-                case FLOOR -> 0;
-                case CEILING -> 180;
-            };
-            int rotY = 0;
-            if (state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.CEILING) {
-                switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
-                    case NORTH -> rotY = 180;
-                    case WEST -> rotY = 90;
-                    case EAST -> rotY = 270;
-                }
-            } else {
-                switch (state.getValue(HorizontalDirectionalBlock.FACING)) {
-                    case SOUTH -> rotY = 180;
-                    case WEST -> rotY = 270;
-                    case EAST -> rotY = 90;
-                }
-            }
-            boolean uvlock = state.getValue(FaceAttachedHorizontalDirectionalBlock.FACE) == AttachFace.WALL;
-
-            return ConfiguredModel.builder()
-                    .weight(10).uvLock(uvlock).rotationX(rotX).rotationY(rotY).modelFile(model0).nextModel().build();
-        });
+    public void particleOnly(Supplier<Block> block) {
+        simpleBlock(block.get(), particleOnlyModel(name(block.get()), blockTexture(block.get())));
     }
 
-    protected void woodStairs(StairBlock block, String texName, String variant) {
-        String stairsDir = variant + "/";
-        ModelFile main0 = models().stairs(stairsDir + name(block), prefix(texName), prefix(texName), prefix(texName));
-        ModelFile inner0 = models().stairsInner(stairsDir + name(block) + "_inner", prefix(texName), prefix(texName), prefix(texName));
-        ModelFile outer0 = models().stairsOuter(stairsDir + name(block) + "_outer", prefix(texName), prefix(texName), prefix(texName));
-        // [VanillaCopy] super.stairsBlock, but multiple files returned each time
-        getVariantBuilder(block)
-                .forAllStatesExcept(state -> {
-                    Direction facing = state.getValue(StairBlock.FACING);
-                    Half half = state.getValue(StairBlock.HALF);
-                    StairsShape shape = state.getValue(StairBlock.SHAPE);
-                    int yRot = (int) facing.getClockWise().toYRot(); // Stairs model is rotated 90 degrees clockwise for some reason
-                    if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT) {
-                        yRot += 270; // Left facing stairs are rotated 90 degrees clockwise
-                    }
-                    if (shape != StairsShape.STRAIGHT && half == Half.TOP) {
-                        yRot += 90; // Top stairs are rotated 90 degrees clockwise
-                    }
-                    yRot %= 360;
-                    boolean uvlock = yRot != 0 || half == Half.TOP; // Don't set uvlock for states that have no rotation
-                    return ConfiguredModel.builder()
-                            .weight(10)
-                            .modelFile(shape == StairsShape.STRAIGHT ? main0 : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? inner0 : outer0)
-                            .rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
-                            .nextModel()
-                            .build();
-                }, StairBlock.WATERLOGGED);
-    }    
+    public void particleOnly(Supplier<Block> block, ResourceLocation texture) {
+        simpleBlock(block.get(), particleOnlyModel(name(block.get()), texture));
+    }
+
+    @SafeVarargs
+    public final void empty(Supplier<Block>... blocks) {
+        for (Supplier<Block> block : blocks) {
+            simpleBlock(block.get(), models().getBuilder(name(block.get())));
+        }
+    }
+
+    public ModelFile farmlandCrossModel(Supplier<Block> block, String... suffix){
+        ResourceLocation texture = blockTexture(block.get());
+        for (String s : suffix) {
+            texture = texture.withSuffix(s);
+        }
+        return models().getBuilder(name(block)).parent(models().getExistingFile(MoreSnifferFlowers.loc("farmland_cross"))).texture("cross", texture).renderType("cutout");
+    }
+
+    @SafeVarargs
+    public final void multipleVariantsForStates(BiFunction<BlockState, Supplier<Block>, ModelFile> modelFunction, Supplier<Block> block, Supplier<Block>... blocks) {
+        getVariantBuilder(block.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(modelFunction.apply(state, block)).build());
+        for (Supplier<Block> blockSupplier : blocks) {
+            getVariantBuilder(blockSupplier.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(modelFunction.apply(state, blockSupplier)).build());
+        }
+    }
+
+    public void variantForStates(Supplier<Block> block, Function<BlockState, ModelFile> modelFunction) {
+        getVariantBuilder(block.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(modelFunction.apply(state)).build());
+    }
+
+    public void variantForConfiguredStates(Supplier<Block> block, Function<BlockState, ConfiguredModel[]> modelFunction) {
+        getVariantBuilder(block.get()).forAllStates(modelFunction);
+    }
+
+    @SafeVarargs
+    public final void simpleState(Supplier<Block>... blocks){
+        for (Supplier<Block> block : blocks) {
+            simpleBlock(block.get(), modelFile(block));
+        }
+    }
+
+    private ModelFile.@NotNull ExistingModelFile modelFile(Supplier<Block> block) {
+        return models().getExistingFile(Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block.get())));
+    }
+
+    private ModelFile.@NotNull ExistingModelFile modelFile(Supplier<Block> block, String suffix) {
+        return models().getExistingFile(BuiltInRegistries.BLOCK.getKey(block.get()).withSuffix(suffix));
+    }
     
     private ModelFile rebrewingStandModel(String index) {
         return models().getExistingFile(MoreSnifferFlowers.loc("block/rebrewing_stand_" + index));
@@ -248,4 +206,27 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
     protected String name(Block block) {
         return key(block).getPath();
     }
+
+    protected String name(Supplier<Block> block) {
+        return key(block.get()).getPath();
+    }
+
+
+    final Set<BlockFamily.Variant> CUSTOM_TEXTURE_VARIANTS = Set.of(BlockFamily.Variant.DOOR, BlockFamily.Variant.CHISELED,BlockFamily.Variant.CRACKED, BlockFamily.Variant.TRAPDOOR);
+
+    final Map<BlockFamily.Variant, TriConsumer<BlockFamily, Block, ResourceLocation>> FAMILLY_MAP = ImmutableMap.<BlockFamily.Variant, TriConsumer<BlockFamily, Block, ResourceLocation>>builder()
+            .put(BlockFamily.Variant.BUTTON, (f,b, r) -> buttonBlock((ButtonBlock) b, r))
+            .put(BlockFamily.Variant.DOOR, (f,b, r) -> doorBlock((DoorBlock) b, r.withSuffix("_bottom"), r.withSuffix("_top")))
+            .put(BlockFamily.Variant.CHISELED, (f,b, r) -> cubeAll(b))
+            .put(BlockFamily.Variant.CRACKED, (f,b, r) -> cubeAll(b))
+            .put(BlockFamily.Variant.FENCE,  (f,b, r) -> fenceBlock((FenceBlock) b, r))
+            .put(BlockFamily.Variant.FENCE_GATE, (f,b, r) -> fenceGateBlock((FenceGateBlock) b, r))
+            .put(BlockFamily.Variant.SIGN, (f,b, r) -> signBlock((StandingSignBlock) f.get(BlockFamily.Variant.SIGN), (WallSignBlock) f.get(BlockFamily.Variant.WALL_SIGN), r))
+            .put(BlockFamily.Variant.SLAB, (f,b, r) -> slabBlock((SlabBlock) b, r, r))
+            .put(BlockFamily.Variant.STAIRS, (f,b, r) -> stairsBlock((StairBlock) b, r))
+            .put(BlockFamily.Variant.PRESSURE_PLATE, (f,b, r) -> pressurePlateBlock((PressurePlateBlock) b, r))
+            .put(BlockFamily.Variant.TRAPDOOR,  (f,b, r) -> trapdoorBlock((TrapDoorBlock) b, r, true))
+            .put(BlockFamily.Variant.WALL, (f,b, r) -> wallBlock((WallBlock) b, r))
+            .build();
+
 }

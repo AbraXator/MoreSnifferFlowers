@@ -21,26 +21,12 @@ public class MSFBlockModelProvider extends BlockModelProvider {
 
     @Override
     protected void registerModels() {
-        MSFBlockFamilies.getAllFamilies().forEach(family -> {
-            ResourceLocation baseId = MoreSnifferFlowers.loc("block/" + BuiltInRegistries.BLOCK.getKey(family.getBaseBlock()).getPath());
-            this.cubeAll(baseId.getPath(), baseId);
-
-            family.getVariants().forEach((variant, block) -> {
-                ResourceLocation blockId = MoreSnifferFlowers.loc("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
-                BiConsumer<String, ResourceLocation> consumer = FAMILLY_MAP.get(variant);
-                if (consumer == null) {
-                    this.cubeAll(blockId.getPath(), baseId);
-                } else {
-                    consumer.accept(blockId.getPath(), CUSTOM_TEXTURE_VARIANTS.contains(variant) ? blockId : baseId);
-                }
-            });
-        });
-
         for (int i = 1; i <= 4; i++) {
             this.cubeAll(MSFBlocks.CORRUPTED_SLUDGE.getRegisteredName() + "_stage_" + i, MoreSnifferFlowers.loc("block/corrupted_sludge_stage_" + i));
         }
     }
 
+/*
     final Set<BlockFamily.Variant> CUSTOM_TEXTURE_VARIANTS = Set.of(BlockFamily.Variant.DOOR, BlockFamily.Variant.CHISELED,BlockFamily.Variant.CRACKED, BlockFamily.Variant.TRAPDOOR);
 
     final Map<BlockFamily.Variant, BiConsumer<String, ResourceLocation>> FAMILLY_MAP = ImmutableMap.<BlockFamily.Variant, BiConsumer<String, ResourceLocation>>builder()
@@ -97,5 +83,6 @@ public class MSFBlockModelProvider extends BlockModelProvider {
                 this.wallSideTall(s + "_side_tall", r);
             })
             .build();
+*/
 
 }

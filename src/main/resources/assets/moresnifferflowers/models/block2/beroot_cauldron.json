@@ -1,8 +1,0 @@
-{
-	"render_type": "cutout_mipped",
-	"ambientocclusion": false,
-	"textures": {
-		"all": "moresnifferflowers:block/beroot_cauldron",
-		"particle": "moresnifferflowers:block/beroot_cauldron"
-	}
-}

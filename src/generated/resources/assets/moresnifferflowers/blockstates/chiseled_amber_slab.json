@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "moresnifferflowers:block/chiseled_amber_slab"
+    },
+    "type=double": {
+      "model": "moresnifferflowers:block/chiseled_amber"
+    },
+    "type=top": {
+      "model": "moresnifferflowers:block/chiseled_amber_slab_top"
+    }
+  }
+}

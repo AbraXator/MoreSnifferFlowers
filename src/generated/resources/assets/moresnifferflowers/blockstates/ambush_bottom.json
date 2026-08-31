@@ -1,0 +1,58 @@
+{
+  "variants": {
+    "age=0,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=0,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=1,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=1,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=2,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=2,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=3,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=3,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=4,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=4,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=5,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=5,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=6,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=6,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=7,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=7,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=8,sheared=false": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    },
+    "age=8,sheared=true": {
+      "model": "moresnifferflowers:block/ambush_bottom"
+    }
+  }
+}
