@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "moresnifferflowers:item/carotene_armor_trim_smithing_template"
-  }
-}

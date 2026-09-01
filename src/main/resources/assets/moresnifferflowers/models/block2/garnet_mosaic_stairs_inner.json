@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "moresnifferflowers:block/garnet_mosaic",
-    "side": "moresnifferflowers:block/garnet_mosaic",
-    "top": "moresnifferflowers:block/garnet_mosaic"
-  }
-}

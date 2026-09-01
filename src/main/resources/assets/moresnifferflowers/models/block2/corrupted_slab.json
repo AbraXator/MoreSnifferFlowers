@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "moresnifferflowers:block/corrupted_planks",
-    "side": "moresnifferflowers:block/corrupted_planks",
-    "top": "moresnifferflowers:block/corrupted_planks"
-  }
-}

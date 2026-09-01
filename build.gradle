@@ -100,7 +100,9 @@ sourceSets.main.resources {
         implementation("net.nikdo53:nikdo-color:1.0.0")
 
 
-        // implementation("maven.modrinth:DistantHorizons:2.4.5-b-1.21.1")
+        runtimeOnly "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
+        runtimeOnly "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
+
     }
 
     var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
