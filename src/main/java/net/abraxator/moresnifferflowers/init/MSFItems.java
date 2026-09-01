@@ -161,15 +161,6 @@ public interface MSFItems {
                 }
             });
 
-            ItemProperties.register(DRAGONFLY.get(), MoreSnifferFlowers.loc("og"), (stack, level, entity, pSeed) -> {
-                Component component = stack.get(DataComponents.CUSTOM_NAME);
-                if(component != null && component.getString().equals("og")) {
-                    return 1.0F;
-                } else {
-                    return 0.0F;
-                }
-            });
-
             ItemProperties.register(PATTERNSPRIA.get(), MoreSnifferFlowers.loc("patternspria"), (stack, level, entity, pSeed) -> {
                 if(!BlockPattern.fromPatternspria(stack).equals(BlockPattern.EMPTY)) {
                     return 1.0F;

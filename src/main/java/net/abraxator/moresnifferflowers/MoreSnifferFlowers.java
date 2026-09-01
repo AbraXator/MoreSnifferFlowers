@@ -2,17 +2,15 @@ package net.abraxator.moresnifferflowers;
 
 import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
-import net.abraxator.moresnifferflowers.events.ClientRegistration;
 import net.abraxator.moresnifferflowers.init.*;
-import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFClientConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.abraxator.moresnifferflowers.networking.ModPacketHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
@@ -28,33 +26,27 @@ public class MoreSnifferFlowers {
     public static final String MOD_ID = "moresnifferflowers";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public MoreSnifferFlowers(IEventBus modEventBus, Dist dist, ModContainer container) {
-        if(dist.isClient()) {
-            modEventBus.addListener(ClientRegistration::clientSetup);
-            clientConfig(container);
-        }
+    public MoreSnifferFlowers(IEventBus modEventBus, ModContainer container) {
         modEventBus.addListener(this::commonSetup);
-        container.registerConfig(ModConfig.Type.SERVER, ModServerConfig.SERVER_CONFIG);
-        container.registerConfig(ModConfig.Type.CLIENT, ModClientConfig.CLIENT_CONFIG);
-
+        container.registerConfig(ModConfig.Type.SERVER, MSFServerConfig.SERVER_CONFIG);
 
         MSFItems.ITEMS.register(modEventBus);
         MSFBlocks.BLOCKS.register(modEventBus);
-        MSFWorldGen.Features.FEATURES.register(modEventBus);
-        MSFCreativeTabs.TABS.register(modEventBus);
-        MSFEffects.EFFECTS.register(modEventBus);
         MSFSounds.SOUNDS.register(modEventBus);
+        MSFEffects.EFFECTS.register(modEventBus);
+        MSFCreativeTabs.TABS.register(modEventBus);
         MSFParticles.PARTICLES.register(modEventBus);
         MSFMenuTypes.MENU_TYPES.register(modEventBus);
         MSFEntityTypes.ENTITIES.register(modEventBus);
-        MSFWood.TrunkPlacerTypes.TRUNKS.register(modEventBus);
+        MSFWorldGen.Features.FEATURES.register(modEventBus);
         MSFRecipes.Types.RECIPE_TYPES.register(modEventBus);
+        MSFWood.TrunkPlacerTypes.TRUNKS.register(modEventBus);
         MSFAdvancementCritters.TRIGGERS.register(modEventBus);
         MSFBlockEntities.BLOCK_ENTITIES.register(modEventBus);
-        MSFWood.TreeDecoratorTypes.DECORATORS.register(modEventBus);
         MSFDataComponents.DATA_COMPONENTS.register(modEventBus);
         MSFLoot.LootConditions.CONDITIONS.register(modEventBus);
         MSFDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
+        MSFWood.TreeDecoratorTypes.DECORATORS.register(modEventBus);
         MSFRecipes.Serializer.RECIPE_SERIALIZERS.register(modEventBus);
 
         ModPacketHandler.register(modEventBus, 1);
@@ -117,7 +109,6 @@ public class MoreSnifferFlowers {
         return ResourceLocation.fromNamespaceAndPath("farmersdelight", path);
     }
 
-
     public static ResourceLocation loc(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
@@ -130,7 +121,7 @@ public class MoreSnifferFlowers {
         return ResourceLocation.withDefaultNamespace(path);
     }
 
-    public static ResourceLocation ofLoc(String path) {
+    public static ResourceLocation separatorLoc(String path) {
         return ResourceLocation.bySeparator(path, ':');
     }
 

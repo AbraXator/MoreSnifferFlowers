@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.mixins.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.abraxator.moresnifferflowers.events.ClientRegistration;
+import net.abraxator.moresnifferflowers.MoreSnifferFlowersClient;
 import net.abraxator.moresnifferflowers.init.MSFCreativeTabs;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -32,7 +32,7 @@ public abstract class CreativeInventoryScreenMixin extends EffectRenderingInvent
     @ModifyVariable(method = "renderTabButton", at = @At(value = "LOAD", ordinal = 0))
     protected ResourceLocation[] renderTabButton(ResourceLocation[] vanillaLoc, @Local(argsOnly = true) CreativeModeTab creativeModeTab,
                                    @Local(ordinal = 0) boolean isSelected, @Local(ordinal = 1) boolean isTop) {
-        if (ClientRegistration.isBoringLoaded()) return vanillaLoc;
+        if (MoreSnifferFlowersClient.isBoringLoaded()) return vanillaLoc;
         if (creativeModeTab != MSFCreativeTabs.MORESNIFFERFLOWERS_TAB.get()) return vanillaLoc;
 
         ResourceLocation[] aresourcelocation;

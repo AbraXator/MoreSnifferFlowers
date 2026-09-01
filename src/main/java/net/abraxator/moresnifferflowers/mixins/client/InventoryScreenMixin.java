@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.mixins.client;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.effects.HardenedMouthEffect;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
-import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFClientConfig;
 import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -38,8 +38,8 @@ public abstract class InventoryScreenMixin extends EffectRenderingInventoryScree
         if (player == null) return;
         if (player.hasEffect(MSFEffects.HARDENED_MOUTH)){
 
-            int x = this.leftPos + ModClientConfig.HARDENED_MOUTH_X.get();
-            int y = this.topPos + ModClientConfig.HARDENED_MOUTH_Y.get();
+            int x = this.leftPos + MSFClientConfig.HARDENED_MOUTH_X.get();
+            int y = this.topPos + MSFClientConfig.HARDENED_MOUTH_Y.get();
             guiGraphics.blit(TEXTURE_LOCATION, x, y, 0, 0, 24, 60);
 
 

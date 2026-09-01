@@ -57,10 +57,12 @@ public class MSFItemModelProvider extends ItemModelProvider {
         basicItems(CORRUPTED_BOAT, CORRUPTED_CHEST_BOAT, VIVICUS_BOAT, VIVICUS_CHEST_BOAT, MSFBlocks.CORRUPTED_HANGING_SIGN, MSFBlocks.VIVICUS_HANGING_SIGN);
 
         basicItems(CORRUPTED_SLIME_BALL, VIVICUS_ANTIDOTE);
-        blockItems(MSFBlocks.CORRUPTED_SLIME_LAYER, MSFBlocks.DECAYED_LOG, MSFBlocks.CURED_GRASS_BLOCK, MSFBlocks.CORRUPTED_GRASS_BLOCK, MSFBlocks.CORRUPTED_WART);
+        blockItems(MSFBlocks.DECAYED_LOG, MSFBlocks.CURED_GRASS_BLOCK, MSFBlocks.CORRUPTED_GRASS_BLOCK, MSFBlocks.CORRUPTED_WART);
         flatBlockItem(MSFBlocks.CORRUPTED_GRASS);
-        flatBlockItem(MSFBlocks.CORRUPTED_TALL_GRASS, "corrupted_grass_block_top");
+        flatBlockItem(MSFBlocks.CORRUPTED_TALL_GRASS, "corrupted_tall_grass_top");
         suffixBlockItem(MSFBlocks.CORRUPTED_SLUDGE, "stage_1");
+
+        withExistingParent(MSFBlocks.CORRUPTED_SLIME_LAYER.getRegisteredName(), modLoc("block/corrupted_slime_height2"));
 
         basicItems(SALTEMONE_SEEDS, PATTERNFLOWER_SEEDS, SOURLEMONE_SEEDS, BONMEELIA_SEEDS, ACIDRIPIA_SEEDS, AMBUSH_SEEDS, BONDRIPIA_SEEDS, BONWILTIA_SEEDS, CAULORFLOWER_SEEDS, DAWNBERRY_VINE_SEEDS, DYESPRIA_SEEDS, GARBUSH_SEEDS, GLOOMBERRY_VINE_SEEDS);
         basicItems(DAWNBERRY, GLOOMBERRY, JAR_OF_ACID, JAR_OF_BONMEEL, DYESCRAPIA);
@@ -77,9 +79,11 @@ public class MSFItemModelProvider extends ItemModelProvider {
 
         blockItems(MSFBlocks.CORRUPTED_WOOD, MSFBlocks.CORRUPTED_LOG, MSFBlocks.STRIPPED_CORRUPTED_LOG, MSFBlocks.STRIPPED_CORRUPTED_WOOD,
                 MSFBlocks.VIVICUS_WOOD, MSFBlocks.VIVICUS_LOG, MSFBlocks.STRIPPED_VIVICUS_LOG, MSFBlocks.STRIPPED_VIVICUS_WOOD,
-                MSFBlocks.CORRUPTED_LEAVES, MSFBlocks.CORRUPTED_LEAVES_BUSH, MSFBlocks.VIVICUS_LEAVES);
+                MSFBlocks.CORRUPTED_LEAVES, MSFBlocks.VIVICUS_LEAVES);
 
-        flatBlockItem(MSFBlocks.CORRUPTED_SAPLING, "corrupted_sapling1");
+        basicItem(MSFBlocks.CORRUPTED_LEAVES_BUSH);
+
+        flatBlockItem(MSFBlocks.CORRUPTED_SAPLING, "corrupted_sapling_1");
         flatBlockItem(MSFBlocks.VIVICUS_SAPLING);
 
         basicItems(BLOCK_PATTERN_PIPES, BLOCK_PATTERN_BRICKS, BLOCK_PATTERN_FOCUS, BLOCK_PATTERN_BUBBLES, BLOCK_PATTERN_CLOUDS, BLOCK_PATTERN_DEEPSLATE,
@@ -118,9 +122,9 @@ public class MSFItemModelProvider extends ItemModelProvider {
     }
 
     @SafeVarargs
-    public final void blockItems(Supplier<Block>... blocks) {
-        for (Supplier<Block> block : blocks) {
-            simpleBlockItem(block);
+    public final void blockItems(Supplier<? extends Block>... blocks) {
+        for (Supplier<? extends Block> block : blocks) {
+            simpleBlockItem(block.get());
         }
     }
 

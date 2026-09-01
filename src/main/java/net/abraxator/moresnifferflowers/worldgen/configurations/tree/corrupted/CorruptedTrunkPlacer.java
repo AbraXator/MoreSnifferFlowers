@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.worldgen.configurations.tree.corrupted;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.abraxator.moresnifferflowers.init.MSFWood;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -184,6 +184,6 @@ public class CorruptedTrunkPlacer extends TrunkPlacer {
     
     @Override
     protected boolean validTreePos(LevelSimulatedReader level, BlockPos pos) {
-        return ModServerConfig.CORRUPTED_TREE_GROW_THROUGH.get() || super.validTreePos(level, pos);
+        return MSFServerConfig.CORRUPTED_TREE_GROW_THROUGH.get() || super.validTreePos(level, pos);
     }
 }

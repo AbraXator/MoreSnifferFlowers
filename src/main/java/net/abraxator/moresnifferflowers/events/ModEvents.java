@@ -4,8 +4,8 @@ import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.init.MSFDataMaps;
 import net.abraxator.moresnifferflowers.entities.BoblingEntity;
 import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
-import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFClientConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
@@ -45,13 +45,13 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onConfigLoad(ModConfigEvent.Loading event){
-        if (ModServerConfig.SERVER_CONFIG.isLoaded()) {
+        if (MSFServerConfig.SERVER_CONFIG.isLoaded()) {
             List<ResourceLocation> locations = new ArrayList<>();
 
-            locations.add(MoreSnifferFlowers.ofLoc(ModServerConfig.REBREWING_AMPLIFIER.get()));
-            locations.add(MoreSnifferFlowers.ofLoc(ModServerConfig.REBREWING_LENGTH.get()));
-            locations.add(MoreSnifferFlowers.ofLoc(ModServerConfig.REBREWING_SPLASH.get()));
-            locations.add(MoreSnifferFlowers.ofLoc(ModServerConfig.REBREWING_LINGERING.get()));
+            locations.add(MoreSnifferFlowers.separatorLoc(MSFServerConfig.REBREWING_AMPLIFIER.get()));
+            locations.add(MoreSnifferFlowers.separatorLoc(MSFServerConfig.REBREWING_LENGTH.get()));
+            locations.add(MoreSnifferFlowers.separatorLoc(MSFServerConfig.REBREWING_SPLASH.get()));
+            locations.add(MoreSnifferFlowers.separatorLoc(MSFServerConfig.REBREWING_LINGERING.get()));
 
             for (ResourceLocation location : locations) {
                 if (!BuiltInRegistries.ITEM.containsKey(location)) {
@@ -61,13 +61,13 @@ public class ModEvents {
             }
         }
 
-        if (ModClientConfig.CLIENT_CONFIG.isLoaded()){
-            int hardenedMouthX = ModClientConfig.HARDENED_MOUTH_X.get();
+        if (MSFClientConfig.CLIENT_CONFIG.isLoaded()){
+            int hardenedMouthX = MSFClientConfig.HARDENED_MOUTH_X.get();
             if (hardenedMouthX > -5 && hardenedMouthX < 132){
                 MoreSnifferFlowers.LOGGER.error("Error in Hardened Mouth Client Config, the following X value would overlap vanilla slots " + hardenedMouthX + " ... Resetting to default value");
 
-                ModClientConfig.HARDENED_MOUTH_X.set(ModClientConfig.HARDENED_MOUTH_X.getDefault());
-                ModClientConfig.HARDENED_MOUTH_X.save();
+                MSFClientConfig.HARDENED_MOUTH_X.set(MSFClientConfig.HARDENED_MOUTH_X.getDefault());
+                MSFClientConfig.HARDENED_MOUTH_X.save();
             }
         }
     }

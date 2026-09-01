@@ -26,7 +26,7 @@ public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IM
     public static final int MAX_BUBBLE_COUNT = 5;
     public int fullBubbleTicks = 0;
 
-    public static final int PROBABLY_STUCK_TICKS = 1200;
+    public static final int PROBABLY_STUCK_TICKS = 7200;
 
 
     @Override
@@ -66,7 +66,7 @@ public class SaltemoneBlockEntity extends AbstractMultiBlockEntity implements IM
     private boolean canSpawnBubble(BlockState state, RandomSource random, SaltemoneBlock saltemoneBlock) {
         if (state.getValue(MSFStateProperties.SHEARED)) return false;
         if (bubbleCount >= MAX_BUBBLE_COUNT) return false;
-        if (!(getLevel().getGameTime() % 160 == 0 && random.nextFloat() < 0.20f)) return false;
+        if (!(getLevel().getGameTime() % 320 == 0 && random.nextFloat() < 0.20f)) return false;
         if (!isCenter()) return false;
         return saltemoneBlock.isMaxAge(state);
     }

@@ -7,7 +7,9 @@ import net.minecraft.data.BlockFamily;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static net.abraxator.moresnifferflowers.init.MSFBlocks.*;
@@ -93,4 +95,36 @@ public class MSFBlockFamilies {
     public static Stream<BlockFamily> getAllFamilies() {
         return MAP.values().stream();
     }
+
+    public static Set<Block> getModelDatagenBlacklist(){
+        Set<Block> set = new HashSet<>();
+        set.add(AMBER_BLOCK.get());
+        set.add(GARNET_BLOCK.get());
+        return set;
+    }
+
+    public static Set<Block> getAllTranslucent(){
+        Set<Block> set = new HashSet<>();
+        set.add(AMBER.getBaseBlock());
+        set.addAll(AMBER.getVariants().values());
+        set.addAll(AMBER_MOSAICS.getVariants().values());
+        set.addAll(AMBER_CHISELED.getVariants().values());
+
+        set.add(GARNET.getBaseBlock());
+        set.addAll(GARNET.getVariants().values());
+        set.addAll(GARNET_MOSAICS.getVariants().values());
+        set.addAll(GARNET_CHISELED.getVariants().values());
+        return set;
+    }
+
+    public static Set<Block> getCutout(){
+        Set<Block> set = new HashSet<>();
+
+        MAP.values().forEach(family -> {
+            set.add(family.get(BlockFamily.Variant.DOOR));
+            set.add(family.get(BlockFamily.Variant.TRAPDOOR));
+        });
+        return set;
+    }
+
 }

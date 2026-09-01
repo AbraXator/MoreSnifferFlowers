@@ -1,6 +1,6 @@
 package net.abraxator.moresnifferflowers.blocks.corrupted;
 
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -25,7 +25,7 @@ public class CorruptedSaplingBlock extends SaplingBlock {
         if (state.getValue(STAGE) == 0) {
             level.setBlock(pos, state.cycle(STAGE), 4);
         } else {
-            if (wasBoneMealed || !ModServerConfig.CORRUPTED_TREE_BONE_MEAL.get())
+            if (wasBoneMealed || !MSFServerConfig.CORRUPTED_TREE_BONE_MEAL.get())
                 this.treeGrower.growTree(level, level.getChunkSource().getGenerator(), pos, state, random);
         }
     }

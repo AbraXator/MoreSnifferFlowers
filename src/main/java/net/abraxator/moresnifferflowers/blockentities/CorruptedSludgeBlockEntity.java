@@ -6,7 +6,7 @@ import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
 import net.abraxator.moresnifferflowers.init.MSFTags;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.abraxator.moresnifferflowers.networking.toClient.CorruptedSludgeParticlePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -55,7 +55,7 @@ public class CorruptedSludgeBlockEntity extends BlockEntity implements IMSFBlock
         }
 
         if(this.usesLeft <= 0) {
-            if (ModServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) CorruptedSludgeListener.shootProjectiles(this.getBlockPos().getCenter(), this.level.random.nextIntBetweenInclusive(8, 16), this.level);
+            if (MSFServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) CorruptedSludgeListener.shootProjectiles(this.getBlockPos().getCenter(), this.level.random.nextIntBetweenInclusive(8, 16), this.level);
             super.setRemoved();
             this.level.setBlockAndUpdate(this.getBlockPos(), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState());
         }
@@ -144,7 +144,7 @@ public class CorruptedSludgeBlockEntity extends BlockEntity implements IMSFBlock
                 return false;
             }
 
-            if (ModServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) {
+            if (MSFServerConfig.CORRUPTED_SLUDGE_GRIEFING.get()) {
                 if (gameEvent.is(GameEvent.BLOCK_DESTROY) && context.affectedState().is(MSFTags.BlockTags.CORRUPTED_SLUDGE) && !pos.equals(this.positionSource.getPosition(level).get()) && context.sourceEntity() instanceof Player player) {
                     var projectileNumber = context.affectedState().is(MSFBlocks.CORRUPTED_LEAVES) || context.affectedState().is(MSFBlocks.CORRUPTED_LEAVES_BUSH) ? level.random.nextInt(1) + 1 : level.random.nextInt(5) + 1;
                     shootProjectiles(this.positionSource.getPosition(level).get(), projectileNumber, level);

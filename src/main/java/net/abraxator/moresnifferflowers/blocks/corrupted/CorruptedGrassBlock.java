@@ -5,7 +5,7 @@ import net.abraxator.moresnifferflowers.capability.CorruptionCapability;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.abraxator.moresnifferflowers.networking.toClient.CorruptionParticlePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -161,7 +161,7 @@ public class CorruptedGrassBlock extends SpreadingSnowyDirtBlock implements Bone
         } else {
             if (!level.isAreaLoaded(pos, 3)) return;
             if (state.getValue(MSFStateProperties.CROWDED)) return;
-            if (level.getMaxLocalRawBrightness(pos.above()) <=6 && random.nextDouble() < 0.2D *  ModServerConfig.CORRUPTION_SPREAD_SPEED.get()) {
+            if (level.getMaxLocalRawBrightness(pos.above()) <=6 && random.nextDouble() < 0.2D *  MSFServerConfig.CORRUPTION_SPREAD_SPEED.get()) {
                 BlockState blockstate = this.defaultBlockState();
                 boolean spreadSuccess = false;
 

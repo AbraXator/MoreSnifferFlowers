@@ -2,7 +2,6 @@
   "required": true,
   "minVersion": "0.8.2",
   "package": "net.abraxator.moresnifferflowers.mixins",
-  "refmap": "moresnifferflowers.mixins.refmap.json",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AgeableMobMixin",

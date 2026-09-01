@@ -3,12 +3,9 @@ package net.abraxator.moresnifferflowers.datagen.model;
 import com.google.common.collect.ImmutableMap;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.blocks.BonmeeliaBlock;
-import net.abraxator.moresnifferflowers.blocks.ModEntityDoubleTallBlock;
 import net.abraxator.moresnifferflowers.blocks.ModLayeredCauldronBlock;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFStateProperties;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
@@ -16,10 +13,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.AttachFace;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
@@ -30,7 +24,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -48,7 +41,7 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         //prevents duplicates
-        Set<Block> processedParentBlocks = new HashSet<>();
+        Set<Block> processedParentBlocks = new HashSet<>(MSFBlockFamilies.getModelDatagenBlacklist());
 
         MSFBlockFamilies.getAllFamilies().forEach(family -> {
             if (family == MSFBlockFamilies.VIVICUS) return;
@@ -70,9 +63,10 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
                 processedParentBlocks.add(block);
             });
         });
+        simpleState(AMBER_BLOCK, GARNET_BLOCK);
 
         simpleBlock(MSFBlocks.POTTED_DYESPRIA.get(), models().withExistingParent(MSFBlocks.POTTED_DYESPRIA.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(MSFBlocks.DYESPRIA_PLANT.get())));
-        simpleBlock(MSFBlocks.POTTED_CORRUPTED_SAPLING.get(), models().withExistingParent(MSFBlocks.POTTED_CORRUPTED_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(MSFBlocks.CORRUPTED_SAPLING.get())));
+        simpleBlock(MSFBlocks.POTTED_CORRUPTED_SAPLING.get(), models().withExistingParent(MSFBlocks.POTTED_CORRUPTED_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(MSFBlocks.CORRUPTED_SAPLING.get()).withSuffix("_1")));
         simpleBlock(MSFBlocks.POTTED_VIVICUS_SAPLING.get(), models().withExistingParent(MSFBlocks.POTTED_VIVICUS_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType("cutout").texture("plant", blockTexture(MSFBlocks.VIVICUS_SAPLING.get())));
 
         multipleVariantsForStates((state, block) -> {
@@ -113,9 +107,8 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
             return rebrewingStandModel(modelCode);
         });
 
-        multipleVariantsForStates((state, block) -> modelFile(block, "_level" + state.getValue(ModLayeredCauldronBlock.LEVEL)),
-                MSFBlocks.ACID_FILLED_CAULDRON, MSFBlocks.BONMEEL_FILLED_CAULDRON);
-
+        variantForStates(MSFBlocks.BONMEEL_FILLED_CAULDRON, state -> cauldronModel(state::getBlock, state.getValue(ModLayeredCauldronBlock.LEVEL), "moresnifferflowers:block/bonmeel_still"));
+        variantForStates(MSFBlocks.ACID_FILLED_CAULDRON, state -> cauldronModel(state::getBlock, state.getValue(ModLayeredCauldronBlock.LEVEL), "moresnifferflowers:block/acid_still"));
 
         particleOnly(MSFBlocks.BEROOT_CAULDRON);
         empty(MSFBlocks.GIANT_BEETROOT, MSFBlocks.GIANT_CABBAGE, MSFBlocks.GIANT_CARROT,
@@ -126,11 +119,30 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
         simpleBlock(CORRUPTED_LEAVES.get());
         simpleState(CORRUPTED_WART, CORRUPTED_LEAVES_BUSH, TORCHFLAME, REBREWING_STAND_TOP);
         simpleBlock(CORRUPTED_GRASS.get(), models().cross(name(CORRUPTED_GRASS), blockTexture(CORRUPTED_GRASS.get())).renderType("cutout"));
+        variantForStates(CORRUPTED_TALL_GRASS, this::crossModel);
 
         hangingSignBlock((CeilingHangingSignBlock) CORRUPTED_HANGING_SIGN.get(), (WallHangingSignBlock) CORRUPTED_WALL_HANGING_SIGN.get(), key(CORRUPTED_PLANKS.get()).withPrefix("block/"));
         hangingSignBlock((CeilingHangingSignBlock) VIVICUS_HANGING_SIGN.get(), (WallHangingSignBlock) VIVICUS_WALL_HANGING_SIGN.get(), key(VIVICUS_PLANKS.get()).withPrefix("block/"));
         signBlock((StandingSignBlock) VIVICUS_SIGN.get(), (WallSignBlock) VIVICUS_WALL_SIGN.get(), key(VIVICUS_PLANKS.get()).withPrefix("block/") );
 
+        simpleVariantForStates(TORCHFLOWER_AFLAME, state -> "" + (state.getValue(MSFStateProperties.AGE_2)));
+        simpleVariantForStates(TORCHEWFLOWER, state -> "" + (state.getValue(MSFStateProperties.AGE_3)));
+
+        variantForStates(CORRUPTED_SAPLING, state -> farmlandCrossModel(state::getBlock, "_" + (state.getValue(SaplingBlock.STAGE))));
+        logAndWood(CORRUPTED_LOG, CORRUPTED_WOOD);
+        logAndWood(STRIPPED_CORRUPTED_LOG, STRIPPED_CORRUPTED_WOOD);
+
+        logBlock(DECAYED_LOG.get());
+    }
+
+    private void logAndWood(Holder<Block> log, Holder<Block> wood){
+        logBlock((RotatedPillarBlock) log.value());
+        ResourceLocation loc = log.getKey().location().withPrefix("block/");
+        axisBlock((RotatedPillarBlock) wood.value(), loc, loc);
+    }
+
+    private @NotNull BlockModelBuilder crossModel(BlockState state) {
+        return models().cross(name(state.getBlock()), key(state.getBlock()).withPrefix("block/").withSuffix(state.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER ? "_top" : "_bottom")).renderType("cutout");
     }
 
     public BlockModelBuilder particleOnlyModel(String name, ResourceLocation texture) {
@@ -148,7 +160,7 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
     @SafeVarargs
     public final void empty(Supplier<Block>... blocks) {
         for (Supplier<Block> block : blocks) {
-            simpleBlock(block.get(), models().getBuilder(name(block.get())));
+            simpleBlock(block.get(), models().getBuilder(name(block.get())).texture("particle", blockTexture(block.get())));
         }
     }
 
@@ -172,6 +184,11 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
         getVariantBuilder(block.get()).forAllStates(state -> ConfiguredModel.builder().modelFile(modelFunction.apply(state)).build());
     }
 
+    public void simpleVariantForStates(Supplier<Block> block, Function<BlockState, String> suffixFunction) {
+        variantForStates(block, state -> modelFile(block, suffixFunction.apply(state)));
+    }
+
+
     public void variantForConfiguredStates(Supplier<Block> block, Function<BlockState, ConfiguredModel[]> modelFunction) {
         getVariantBuilder(block.get()).forAllStates(modelFunction);
     }
@@ -192,9 +209,21 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
     }
     
     private ModelFile rebrewingStandModel(String index) {
-        return models().getExistingFile(MoreSnifferFlowers.loc("block/rebrewing_stand_" + index));
+        return models().withExistingParent("rebrewing_stand_" + index, modLoc("block/rebrewing_stand_base"))
+                .texture("2", index.charAt(0) == '0' ?  "block/rebrewing_stand_empty" : "block/rebrewing_stand_full")
+                .texture("3", index.charAt(1) == '0' ?  "block/rebrewing_stand_empty" : "block/rebrewing_stand_full")
+                .texture("4", index.charAt(2) == '0' ?  "block/rebrewing_stand_empty" : "block/rebrewing_stand_full");
+
     }
-    
+
+    private ModelFile cauldronModel(Supplier<Block> block, int level, String contentTexture) {
+        String index = level == 3 ? "full" : "level" + level;
+        return models().withExistingParent(name(block) + "_" + index, mcLoc("block/template_cauldron_" + index))
+                .texture("content", contentTexture);
+
+    }
+
+
     private ResourceLocation prefix(String path) {
         return MoreSnifferFlowers.loc("textures/" + path);
     }
@@ -217,8 +246,6 @@ public class MSFBlockStateGenerator extends BlockStateProvider {
     final Map<BlockFamily.Variant, TriConsumer<BlockFamily, Block, ResourceLocation>> FAMILLY_MAP = ImmutableMap.<BlockFamily.Variant, TriConsumer<BlockFamily, Block, ResourceLocation>>builder()
             .put(BlockFamily.Variant.BUTTON, (f,b, r) -> buttonBlock((ButtonBlock) b, r))
             .put(BlockFamily.Variant.DOOR, (f,b, r) -> doorBlock((DoorBlock) b, r.withSuffix("_bottom"), r.withSuffix("_top")))
-            .put(BlockFamily.Variant.CHISELED, (f,b, r) -> cubeAll(b))
-            .put(BlockFamily.Variant.CRACKED, (f,b, r) -> cubeAll(b))
             .put(BlockFamily.Variant.FENCE,  (f,b, r) -> fenceBlock((FenceBlock) b, r))
             .put(BlockFamily.Variant.FENCE_GATE, (f,b, r) -> fenceGateBlock((FenceGateBlock) b, r))
             .put(BlockFamily.Variant.SIGN, (f,b, r) -> signBlock((StandingSignBlock) f.get(BlockFamily.Variant.SIGN), (WallSignBlock) f.get(BlockFamily.Variant.WALL_SIGN), r))

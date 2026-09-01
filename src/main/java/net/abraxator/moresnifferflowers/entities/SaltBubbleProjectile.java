@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.entities;
 import net.abraxator.moresnifferflowers.blockentities.SaltemoneBlockEntity;
 import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
 import net.abraxator.moresnifferflowers.init.MSFItems;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.abraxator.moresnifferflowers.networking.toClient.SaltemoneParticlePacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -107,7 +107,7 @@ public class SaltBubbleProjectile extends ThrowableItemProjectile {
     public void pop(boolean natural) {
         int projectiles;
         if (natural){
-            projectiles = (ModServerConfig.SALTEMONE_GRIEFING.get() && random.nextFloat() < 0.40f) ? 1 : 0;
+            projectiles = (MSFServerConfig.SALTEMONE_GRIEFING.get() && random.nextFloat() < 0.40f) ? 1 : 0;
         } else {
             projectiles = random.nextFloat() < 0.25f ? 2 : 1;
         }

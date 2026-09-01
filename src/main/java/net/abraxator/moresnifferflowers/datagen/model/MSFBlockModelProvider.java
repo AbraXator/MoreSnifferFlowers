@@ -24,8 +24,14 @@ public class MSFBlockModelProvider extends BlockModelProvider {
         for (int i = 1; i <= 4; i++) {
             this.cubeAll(MSFBlocks.CORRUPTED_SLUDGE.getRegisteredName() + "_stage_" + i, MoreSnifferFlowers.loc("block/corrupted_sludge_stage_" + i));
         }
-    }
 
+        this.cubeAll("corrupted_slime_block", MoreSnifferFlowers.loc("block/corrupted_slime_layer")).renderType("translucent");
+
+        for (int i = 0; i <= 8; i++) {
+            withExistingParent("cropressor_bar" + i, modLoc("block/cropressor_bar_base")).texture("0", modLoc("block/cropressor_bar" + i));
+        }
+
+    }
 /*
     final Set<BlockFamily.Variant> CUSTOM_TEXTURE_VARIANTS = Set.of(BlockFamily.Variant.DOOR, BlockFamily.Variant.CHISELED,BlockFamily.Variant.CRACKED, BlockFamily.Variant.TRAPDOOR);
 

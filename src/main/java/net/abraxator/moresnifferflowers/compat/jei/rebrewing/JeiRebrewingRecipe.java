@@ -1,7 +1,7 @@
 package net.abraxator.moresnifferflowers.compat.jei.rebrewing;
 
 import net.abraxator.moresnifferflowers.init.MSFItems;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,16 +18,16 @@ public record JeiRebrewingRecipe(ItemStack extractedPotion, ItemStack rebrewedPo
     public static List<JeiRebrewingRecipe> createRecipes() {
         List<JeiRebrewingRecipe> ret = new ArrayList<>();
         List<ItemStack> ingredients = List.of(
-                ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_AMPLIFIER.get()).getDefaultInstance(),
-                ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LENGTH.get()).getDefaultInstance(),
-                ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_SPLASH.get()).getDefaultInstance(),
-                ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LINGERING.get()).getDefaultInstance()
+                MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_AMPLIFIER.get()).getDefaultInstance(),
+                MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LENGTH.get()).getDefaultInstance(),
+                MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_SPLASH.get()).getDefaultInstance(),
+                MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LINGERING.get()).getDefaultInstance()
         );
 
         for (ItemStack item : ingredients) {
             BuiltInRegistries.MOB_EFFECT.stream().forEach(effect -> {
-                int duration = item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LENGTH.get())) ? 12000 : 6000;
-                int amplifier = item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_AMPLIFIER.get())) ? 2 : 1;
+                int duration = item.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LENGTH.get())) ? 12000 : 6000;
+                int amplifier = item.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_AMPLIFIER.get())) ? 2 : 1;
 
                 List<MobEffectInstance> extractedEffect = List.of(new MobEffectInstance(Holder.direct(effect), 1200, 0));
                 List<MobEffectInstance> rebrewedEffect = List.of(new MobEffectInstance(Holder.direct(effect), 1200 + duration, amplifier));
@@ -35,8 +35,8 @@ public record JeiRebrewingRecipe(ItemStack extractedPotion, ItemStack rebrewedPo
                 PotionContents rebrewedPotionContents = new PotionContents(Optional.of(Potions.WATER), Optional.of(PotionContents.getColor(rebrewedEffect)), rebrewedEffect);
 
                 ItemStack extractedPotion = MSFItems.EXTRACTED_BOTTLE.get().getDefaultInstance();
-                var rebrewedPotion = item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_SPLASH.get())) ? MSFItems.REBREWED_SPLASH_POTION.get().getDefaultInstance() :
-                        item.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LINGERING.get())) ? MSFItems.REBREWED_LINGERING_POTION.get().getDefaultInstance() :
+                var rebrewedPotion = item.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_SPLASH.get())) ? MSFItems.REBREWED_SPLASH_POTION.get().getDefaultInstance() :
+                        item.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LINGERING.get())) ? MSFItems.REBREWED_LINGERING_POTION.get().getDefaultInstance() :
                                 MSFItems.REBREWED_POTION.get().getDefaultInstance();
 
                 extractedPotion.set(DataComponents.POTION_CONTENTS, extractedPotionContents);

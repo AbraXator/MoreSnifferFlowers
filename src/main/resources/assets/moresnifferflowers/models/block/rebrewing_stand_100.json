@@ -1,8 +1,0 @@
-{
-    "parent": "moresnifferflowers:block/rebrewing_stand_base",
-    "textures": {
-        "2": "moresnifferflowers:block/rebrewing_stand_full",
-        "3": "moresnifferflowers:block/rebrewing_stand_empty",
-        "4": "moresnifferflowers:block/rebrewing_stand_empty"
-    }
-}

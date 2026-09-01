@@ -7,7 +7,7 @@ import net.abraxator.moresnifferflowers.init.MSFAdvancementCritters;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFEntityTypes;
 import net.abraxator.moresnifferflowers.init.MSFItems;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -155,7 +155,7 @@ public class BoblingEntity extends PathfinderMob {
                 MSFAdvancementCritters.BOBLING_ATTACK.get().trigger(serverPlayer);
             }
 
-            if (ModServerConfig.CORRUPTED_BOBLING_GRIEFING.get()) {
+            if (MSFServerConfig.CORRUPTED_BOBLING_GRIEFING.get()) {
                 for (double theta = 0; theta <= Mth.TWO_PI; theta += Mth.TWO_PI / random.nextIntBetweenInclusive(2, 5)) {
                     generateProjectile(set, r, theta + this.level().random.nextDouble(), checkR);
                 }
@@ -217,7 +217,7 @@ public class BoblingEntity extends PathfinderMob {
             var blockPos = BlockPos.containing(this.position()).relative(this.getDirection());
             if (!level().isClientSide) {
 
-                boolean config = ModServerConfig.CORRUPTED_BOBLING_GRIEFING.get();
+                boolean config = MSFServerConfig.CORRUPTED_BOBLING_GRIEFING.get();
                 boolean isReplaceable = level().getBlockState(blockPos).canBeReplaced();
 
                 if (config || isReplaceable) {

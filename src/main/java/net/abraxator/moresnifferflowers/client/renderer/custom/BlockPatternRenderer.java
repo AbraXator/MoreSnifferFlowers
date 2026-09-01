@@ -6,7 +6,7 @@ import com.mojang.math.Axis;
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
 import net.abraxator.moresnifferflowers.capability.BlockPatternCapability;
 import net.abraxator.moresnifferflowers.components.BlockPattern;
-import net.abraxator.moresnifferflowers.init.config.ModClientConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFClientConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
@@ -30,7 +30,7 @@ import java.util.*;
 
 public class BlockPatternRenderer {
     public static void renderAll(AddSectionGeometryEvent.@NotNull SectionRenderingContext context, Set<BlockPatternQuad> quads) {
-        boolean isTransparent = ModClientConfig.CLIENT_CONFIG.isLoaded() && ModClientConfig.BLOCK_PATTERN_TRANSPARENCY.get();
+        boolean isTransparent = MSFClientConfig.CLIENT_CONFIG.isLoaded() && MSFClientConfig.BLOCK_PATTERN_TRANSPARENCY.get();
 
         PoseStack poseStack = context.getPoseStack();
 
@@ -77,7 +77,7 @@ public class BlockPatternRenderer {
 
                 float[] brightness = new float[]{1,1,1,1};
                 int[] lightmap;
-                boolean smoothLighting = ModClientConfig.BLOCK_PATTERN_SMOOTH_LIGHTING.get();
+                boolean smoothLighting = MSFClientConfig.BLOCK_PATTERN_SMOOTH_LIGHTING.get();
 
                 if (smoothLighting) {
                     ModelBlockRenderer.AmbientOcclusionFace aoFace = new ModelBlockRenderer.AmbientOcclusionFace();

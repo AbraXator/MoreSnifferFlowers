@@ -6,7 +6,7 @@ import net.abraxator.moresnifferflowers.client.gui.menu.RebrewingStandMenu;
 import net.abraxator.moresnifferflowers.init.MSFBlockEntities;
 import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.abraxator.moresnifferflowers.init.MSFItems;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -137,9 +137,9 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
                 if (!itemStack.is(ItemStack.EMPTY.getItem())) {
                     ItemStack outputPotion = MSFItems.REBREWED_POTION.get().getDefaultInstance();
 
-                    if(ingredientStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_SPLASH.get()))) {
+                    if(ingredientStack.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_SPLASH.get()))) {
                         outputPotion = MSFItems.REBREWED_SPLASH_POTION.get().getDefaultInstance();
-                    } else if (ingredientStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LINGERING.get()))) {
+                    } else if (ingredientStack.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LINGERING.get()))) {
                         outputPotion = MSFItems.REBREWED_LINGERING_POTION.get().getDefaultInstance();
                     }
 
@@ -212,8 +212,8 @@ public class RebrewingStandBlockEntity extends BaseContainerBlockEntity {
         }
 
         potionContents.forEachEffect(mobEffectInstance -> {
-            var dur = mobEffectInstance.getDuration() + (ingredient.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_AMPLIFIER.get())) ? 12000 : defaultDur);
-            var amp = mobEffectInstance.getAmplifier() + (ingredient.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LENGTH.get())) ? 2 : defaultAmp);
+            var dur = mobEffectInstance.getDuration() + (ingredient.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_AMPLIFIER.get())) ? 12000 : defaultDur);
+            var amp = mobEffectInstance.getAmplifier() + (ingredient.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LENGTH.get())) ? 2 : defaultAmp);
             durList.add(dur);
             ret.add(new MobEffectInstance(mobEffectInstance.getEffect(), dur, amp));
         });

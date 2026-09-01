@@ -3,7 +3,7 @@ package net.abraxator.moresnifferflowers.client.gui.menu;
 import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.init.MSFMenuTypes;
 import net.abraxator.moresnifferflowers.init.MSFTags;
-import net.abraxator.moresnifferflowers.init.config.ModServerConfig;
+import net.abraxator.moresnifferflowers.init.config.MSFServerConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
@@ -176,10 +176,10 @@ public class RebrewingStandMenu extends AbstractContainerMenu {
         }
 
         public static boolean mayPlaceItem(ItemStack itemStack) {
-            return itemStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_AMPLIFIER.get()))
-                    || itemStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LENGTH.get()))
-                    || itemStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_SPLASH.get()))
-                    || itemStack.is(ModServerConfig.itemFromLoc(ModServerConfig.REBREWING_LINGERING.get()));
+            return itemStack.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_AMPLIFIER.get()))
+                    || itemStack.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LENGTH.get()))
+                    || itemStack.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_SPLASH.get()))
+                    || itemStack.is(MSFServerConfig.itemFromLoc(MSFServerConfig.REBREWING_LINGERING.get()));
         }
 
         @Override

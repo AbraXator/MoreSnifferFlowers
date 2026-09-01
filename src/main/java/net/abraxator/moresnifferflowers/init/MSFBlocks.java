@@ -96,10 +96,10 @@ public interface MSFBlocks {
     DeferredBlock<Block> DYESPRIA_PLANT = register("dyespria_plant", DyespriaPlantBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
     DeferredBlock<Block> DYESCRAPIA_PLANT = register("dyescrapia_plant", DyescrapiaPlantBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(DYESPRIA_PLANT.get()));
 
-    DeferredBlock<Block> CORRUPTED_LOG = registerWithItem("corrupted_log", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_STEM));
-    DeferredBlock<Block> CORRUPTED_WOOD = registerWithItem("corrupted_wood", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_HYPHAE));
-    DeferredBlock<Block> STRIPPED_CORRUPTED_LOG = registerWithItem("stripped_corrupted_log", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_WARPED_STEM));
-    DeferredBlock<Block> STRIPPED_CORRUPTED_WOOD = registerWithItem("stripped_corrupted_wood", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_WARPED_HYPHAE));
+    DeferredBlock<RotatedPillarBlock> CORRUPTED_LOG = registerWithItem("corrupted_log", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_STEM));
+    DeferredBlock<RotatedPillarBlock> CORRUPTED_WOOD = registerWithItem("corrupted_wood", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_HYPHAE));
+    DeferredBlock<RotatedPillarBlock> STRIPPED_CORRUPTED_LOG = registerWithItem("stripped_corrupted_log", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_WARPED_STEM));
+    DeferredBlock<RotatedPillarBlock> STRIPPED_CORRUPTED_WOOD = registerWithItem("stripped_corrupted_wood", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_WARPED_HYPHAE));
     DeferredBlock<Block> CORRUPTED_PLANKS = registerWithItem("corrupted_planks", Block::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_PLANKS));
     DeferredBlock<Block> CORRUPTED_STAIRS = registerWithItem("corrupted_stairs", properties -> new StairBlock(CORRUPTED_PLANKS.get().defaultBlockState(), properties), () -> BlockBehaviour.Properties.ofFullCopy(CORRUPTED_PLANKS.get()));
     DeferredBlock<Block> CORRUPTED_SLAB = registerWithItem("corrupted_slab", SlabBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_SLAB));
@@ -121,15 +121,15 @@ public interface MSFBlocks {
 
     DeferredBlock<Block> CORRUPTED_GRASS = registerWithItem("corrupted_grass", TallGrassBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).ignitedByLava().pushReaction(PushReaction.DESTROY));
     DeferredBlock<Block> CORRUPTED_TALL_GRASS = registerWithItem("corrupted_tall_grass", DoublePlantBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).replaceable().noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ).ignitedByLava().pushReaction(PushReaction.DESTROY));
-    DeferredBlock<Block> DECAYED_LOG = registerWithItem("decayed_log", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG));
+    DeferredBlock<RotatedPillarBlock> DECAYED_LOG = registerWithItem("decayed_log", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG));
     DeferredBlock<Block> CORRUPTED_GRASS_BLOCK = registerWithItem("corrupted_grass_block", CorruptedGrassBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).randomTicks().strength(0.6F).sound(SoundType.WET_GRASS));
     DeferredBlock<Block> CURED_GRASS_BLOCK = registerWithItem("cured_grass_block", CuredGrassBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).randomTicks().strength(0.6F).sound(SoundType.WET_GRASS));
     DeferredBlock<Block> CORRUPTED_WART = registerWithItem("corrupted_wart", CorruptedWartBlock::new, () -> BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).replaceable().instabreak().dynamicShape().sound(SoundType.WET_GRASS).offsetType(BlockBehaviour.OffsetType.XYZ).pushReaction(PushReaction.DESTROY));
 
-    DeferredBlock<Block> VIVICUS_LOG = registerWithItem("vivicus_log", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LOG));
-    DeferredBlock<Block> VIVICUS_WOOD = registerWithItem("vivicus_wood", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WOOD));
-    DeferredBlock<Block> STRIPPED_VIVICUS_LOG = registerWithItem("stripped_vivicus_log", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_CHERRY_LOG));
-    DeferredBlock<Block> STRIPPED_VIVICUS_WOOD = registerWithItem("stripped_vivicus_wood", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_CHERRY_WOOD));
+    DeferredBlock<RotatedPillarBlock> VIVICUS_LOG = registerWithItem("vivicus_log", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LOG));
+    DeferredBlock<RotatedPillarBlock> VIVICUS_WOOD = registerWithItem("vivicus_wood", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_WOOD));
+    DeferredBlock<RotatedPillarBlock> STRIPPED_VIVICUS_LOG = registerWithItem("stripped_vivicus_log", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_CHERRY_LOG));
+    DeferredBlock<RotatedPillarBlock> STRIPPED_VIVICUS_WOOD = registerWithItem("stripped_vivicus_wood", VivicusRotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_CHERRY_WOOD));
     DeferredBlock<Block> VIVICUS_PLANKS = registerWithItem("vivicus_planks", VivicusBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_PLANKS));
     DeferredBlock<Block> VIVICUS_STAIRS = registerWithItem("vivicus_stairs", properties -> new VivicusStairBlock(VIVICUS_PLANKS.get().defaultBlockState(), properties), () -> BlockBehaviour.Properties.ofFullCopy(VIVICUS_PLANKS.get()));
     DeferredBlock<Block> VIVICUS_SLAB = registerWithItem("vivicus_slab", VivicusSlabBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_SLAB));
