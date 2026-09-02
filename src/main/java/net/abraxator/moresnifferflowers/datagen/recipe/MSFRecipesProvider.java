@@ -1,15 +1,20 @@
 package net.abraxator.moresnifferflowers.datagen.recipe;
 
 import net.abraxator.moresnifferflowers.MoreSnifferFlowers;
+import net.abraxator.moresnifferflowers.datagen.model.MSFBlockFamilies;
 import net.abraxator.moresnifferflowers.datagen.recipe.builder.CropressingRecipeBuilder;
 import net.abraxator.moresnifferflowers.init.MSFBlocks;
 import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.init.MSFTags;
 import net.abraxator.moresnifferflowers.recipes.RebrewedTippedArrowRecipe;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.BlockFamilies;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -24,6 +29,7 @@ public class MSFRecipesProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
+        generateMsfBlockFamilies(recipeOutput);
         trimSmithing(recipeOutput, MSFItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get(), MoreSnifferFlowers.loc(getItemName(MSFItems.AROMA_ARMOR_TRIM_SMITHING_TEMPLATE.get())));
         trimSmithing(recipeOutput, MSFItems.CARNAGE_ARMOR_TRIM_SMITHING_TEMPLATE.get(), MoreSnifferFlowers.loc(getItemName(MSFItems.CARNAGE_ARMOR_TRIM_SMITHING_TEMPLATE.get())));
         trimSmithing(recipeOutput, MSFItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get(), MoreSnifferFlowers.loc(getItemName(MSFItems.NETHER_WART_ARMOR_TRIM_SMITHING_TEMPLATE.get())));
@@ -49,32 +55,8 @@ public class MSFRecipesProvider extends RecipeProvider {
                 .unlockedBy("has_amethyst", has(net.minecraft.world.item.Items.AMETHYST_SHARD))
                 .save(recipeOutput);
 
-        //threeByThreePacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.AMBER_BLOCK.get(), ModItems.AMBER_SHARD.get());
         twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.AMBER_MOSAIC.get(), MSFItems.AMBER_SHARD.get());
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.AMBER_MOSAIC_SLAB.get(), MSFBlocks.AMBER_MOSAIC.get());
-        stairBuilder(MSFBlocks.AMBER_MOSAIC_STAIRS, Ingredient.of(MSFBlocks.AMBER_MOSAIC))
-                .unlockedBy("has_amber_mosaic", has(MSFBlocks.AMBER_MOSAIC))
-                .save(recipeOutput);
-        wall(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.AMBER_MOSAIC_WALL.get(), MSFBlocks.AMBER_MOSAIC.get());
-        chiseled(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.CHISELED_AMBER.get(), MSFBlocks.AMBER_MOSAIC_SLAB.get());
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.CHISELED_AMBER_SLAB.get(), MSFBlocks.CHISELED_AMBER.get());
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(MSFBlocks.AMBER_MOSAIC.get()), RecipeCategory.BUILDING_BLOCKS, MSFBlocks.CRACKED_AMBER.get().asItem(), 0.1F, 200)
-                .unlockedBy("has_amber_mosaic", has(MSFBlocks.AMBER_MOSAIC))
-                .save(recipeOutput);
-
-        //threeByThreePacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.GARNET_BLOCK.get(), ModItems.GARNET_SHARD.get());
         twoByTwoPacker(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.GARNET_MOSAIC.get(), MSFItems.GARNET_SHARD.get());
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.GARNET_MOSAIC_SLAB.get(), MSFBlocks.GARNET_MOSAIC.get());
-        stairBuilder(MSFBlocks.GARNET_MOSAIC_STAIRS, Ingredient.of(MSFBlocks.GARNET_MOSAIC))
-                .unlockedBy("has_garnet_mosaic", has(MSFBlocks.GARNET_MOSAIC))
-                .save(recipeOutput);
-        wall(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.GARNET_MOSAIC_WALL.get(), MSFBlocks.GARNET_MOSAIC.get());
-        chiseled(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.CHISELED_GARNET.get(), MSFBlocks.GARNET_MOSAIC_SLAB.get());
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.CHISELED_GARNET_SLAB.get(), MSFBlocks.CHISELED_GARNET.get());
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(MSFBlocks.GARNET_MOSAIC.get()), RecipeCategory.BUILDING_BLOCKS, MSFBlocks.CRACKED_GARNET.get().asItem(), 0.1F, 200)
-                .unlockedBy("has_garnet_mosaic", has(MSFBlocks.GARNET_MOSAIC))
-                .save(recipeOutput);
-
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MSFItems.CROPRESSOR.get())
                 .requires(MSFItems.TUBE_PIECE.get())
@@ -109,65 +91,18 @@ public class MSFRecipesProvider extends RecipeProvider {
         partsRecycling(recipeOutput, MSFItems.CROPRESSED_NETHERWART.get(), net.minecraft.world.item.Items.NETHER_WART, 16);
 
 
-
         planksFromLogs(recipeOutput, MSFBlocks.CORRUPTED_PLANKS, MSFTags.ItemTags.CORRUPTED_LOGS, 4);
         woodFromLogs(recipeOutput, MSFBlocks.CORRUPTED_WOOD, MSFBlocks.CORRUPTED_LOG);
         woodFromLogs(recipeOutput, MSFBlocks.STRIPPED_CORRUPTED_WOOD, MSFBlocks.STRIPPED_CORRUPTED_LOG);
-        stairBuilder(MSFBlocks.CORRUPTED_STAIRS, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
-                .unlockedBy("has_corrupted_planks", has(MSFBlocks.CORRUPTED_PLANKS))
-                .save(recipeOutput);
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.CORRUPTED_SLAB, MSFBlocks.CORRUPTED_PLANKS);
-        fenceBuilder(MSFBlocks.CORRUPTED_FENCE, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
-                .unlockedBy("has_corrupted_planks", has(MSFBlocks.CORRUPTED_PLANKS))
-                .save(recipeOutput);
-        fenceGateBuilder(MSFBlocks.CORRUPTED_FENCE_GATE, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
-                .unlockedBy("has_corrupted_planks", has(MSFBlocks.CORRUPTED_PLANKS))
-                .save(recipeOutput);
-        doorBuilder(MSFBlocks.CORRUPTED_DOOR, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
-                .unlockedBy("has_corrupted_planks", has(MSFBlocks.CORRUPTED_PLANKS))
-                .save(recipeOutput);
-        trapdoorBuilder(MSFBlocks.CORRUPTED_TRAPDOOR, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
-                .unlockedBy("has_corrupted_planks", has(MSFBlocks.CORRUPTED_PLANKS))
-                .save(recipeOutput);
-        pressurePlate(recipeOutput, MSFBlocks.CORRUPTED_PRESSURE_PLATE, MSFBlocks.CORRUPTED_PLANKS);
-        buttonBuilder(MSFBlocks.CORRUPTED_BUTTON, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
-                .unlockedBy("has_corrupted_planks", has(MSFBlocks.CORRUPTED_PLANKS))
-                .save(recipeOutput);
         woodenBoat(recipeOutput, MSFItems.CORRUPTED_BOAT.get(), MSFBlocks.CORRUPTED_PLANKS.get());
         chestBoat(recipeOutput, MSFItems.CORRUPTED_CHEST_BOAT.get(), MSFItems.CORRUPTED_BOAT.get());
-        signBuilder(MSFBlocks.CORRUPTED_SIGN, Ingredient.of(MSFBlocks.CORRUPTED_PLANKS))
-                .unlockedBy("has_corrupted_planks", has(MSFBlocks.CORRUPTED_PLANKS))
-                .save(recipeOutput);
         hangingSign(recipeOutput, MSFItems.CORRUPTED_HANGING_SIGN.get(), MSFBlocks.CORRUPTED_PLANKS.get());
 
         planksFromLogs(recipeOutput, MSFBlocks.VIVICUS_PLANKS, MSFTags.ItemTags.VIVICUS_LOGS, 4);
         woodFromLogs(recipeOutput, MSFBlocks.VIVICUS_WOOD, MSFBlocks.VIVICUS_LOG);
         woodFromLogs(recipeOutput, MSFBlocks.STRIPPED_VIVICUS_WOOD, MSFBlocks.STRIPPED_VIVICUS_LOG);
-        stairBuilder(MSFBlocks.VIVICUS_STAIRS, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
-                .unlockedBy("has_VIVICUS_planks", has(MSFBlocks.VIVICUS_PLANKS))
-                .save(recipeOutput);
-        slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, MSFBlocks.VIVICUS_SLAB, MSFBlocks.VIVICUS_PLANKS);
-        fenceBuilder(MSFBlocks.VIVICUS_FENCE, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
-                .unlockedBy("has_VIVICUS_planks", has(MSFBlocks.VIVICUS_PLANKS))
-                .save(recipeOutput);
-        fenceGateBuilder(MSFBlocks.VIVICUS_FENCE_GATE, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
-                .unlockedBy("has_VIVICUS_planks", has(MSFBlocks.VIVICUS_PLANKS))
-                .save(recipeOutput);
-        doorBuilder(MSFBlocks.VIVICUS_DOOR, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
-                .unlockedBy("has_VIVICUS_planks", has(MSFBlocks.VIVICUS_PLANKS))
-                .save(recipeOutput);
-        trapdoorBuilder(MSFBlocks.VIVICUS_TRAPDOOR, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
-                .unlockedBy("has_VIVICUS_planks", has(MSFBlocks.VIVICUS_PLANKS))
-                .save(recipeOutput);
-        pressurePlate(recipeOutput, MSFBlocks.VIVICUS_PRESSURE_PLATE, MSFBlocks.VIVICUS_PLANKS);
-        buttonBuilder(MSFBlocks.VIVICUS_BUTTON, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
-                .unlockedBy("has_VIVICUS_planks", has(MSFBlocks.VIVICUS_PLANKS))
-                .save(recipeOutput);
         woodenBoat(recipeOutput, MSFItems.VIVICUS_BOAT.get(), MSFBlocks.VIVICUS_PLANKS.get());
         chestBoat(recipeOutput, MSFItems.VIVICUS_CHEST_BOAT.get(), MSFItems.VIVICUS_BOAT.get());
-        signBuilder(MSFBlocks.VIVICUS_SIGN, Ingredient.of(MSFBlocks.VIVICUS_PLANKS))
-                .unlockedBy("has_vivicus_planks", has(MSFBlocks.VIVICUS_PLANKS))
-                .save(recipeOutput);
         hangingSign(recipeOutput, MSFItems.VIVICUS_HANGING_SIGN.get(), MSFBlocks.VIVICUS_PLANKS.get());
         
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, MSFItems.VIVICUS_ANTIDOTE, 1)
@@ -244,6 +179,11 @@ public class MSFRecipesProvider extends RecipeProvider {
         createCropressing(recipeOutput, MSFItems.CROPRESSED_BEETROOT.get(), net.minecraft.world.item.Items.BEETROOT);
         createCropressing(recipeOutput, MSFItems.CROPRESSED_WHEAT.get(), net.minecraft.world.item.Items.WHEAT);
     }
+
+    protected void generateMsfBlockFamilies(RecipeOutput enabledFeatures) {
+        MSFBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateRecipe).forEach(family -> generateRecipes(enabledFeatures, family, FeatureFlags.DEFAULT_FLAGS));
+    }
+
 
     private void trimCrafting(RecipeOutput recipeOutput, ItemLike trim, TagKey<Item> ingredient) {
         trimCrafting(recipeOutput, trim, Ingredient.of(ingredient));

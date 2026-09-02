@@ -44,12 +44,11 @@ public class MSFBlockFamilies {
             .getFamily();
 
     public static final BlockFamily AMBER = familyBuilder(AMBER_BLOCK.get())
-            .mosaic(AMBER_MOSAIC.get())
-            .chiseled(CHISELED_AMBER.get())
             .cracked(CRACKED_AMBER.get())
             .getFamily();
 
     public static final BlockFamily AMBER_MOSAICS = familyBuilder(AMBER_MOSAIC.get())
+            .chiseled(CHISELED_AMBER.get())
             .slab(AMBER_MOSAIC_SLAB.get())
             .stairs(AMBER_MOSAIC_STAIRS.get())
             .wall(AMBER_MOSAIC_WALL.get())
@@ -60,12 +59,11 @@ public class MSFBlockFamilies {
             .getFamily();
 
     public static final BlockFamily GARNET = familyBuilder(GARNET_BLOCK.get())
-            .mosaic(GARNET_MOSAIC.get())
-            .chiseled(CHISELED_GARNET.get())
             .cracked(CRACKED_GARNET.get())
             .getFamily();
 
     public static final BlockFamily GARNET_MOSAICS = familyBuilder(GARNET_MOSAIC.get())
+            .chiseled(CHISELED_GARNET.get())
             .slab(GARNET_MOSAIC_SLAB.get())
             .stairs(GARNET_MOSAIC_STAIRS.get())
             .wall(GARNET_MOSAIC_WALL.get())

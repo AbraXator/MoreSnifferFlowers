@@ -29,6 +29,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -53,6 +54,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 @EventBusSubscriber(modid = MoreSnifferFlowers.MOD_ID)
 public class ForgeEvents {
@@ -183,7 +185,7 @@ public class ForgeEvents {
                 player.addItem(retStack);
 
                 itemEntity.setItem(stack);
-               event.setCanPickup(TriState.FALSE);
+                event.setCanPickup(TriState.FALSE);
            }
 
         }
@@ -195,7 +197,7 @@ public class ForgeEvents {
         Level level = livingEntity.level();
         Vec3 loc = livingEntity.position();
         BlockPos blockPos = BlockPos.containing(loc);
-        
+
         if(level.getBlockState(blockPos).is(MSFBlocks.CORRUPTED_SLIME_LAYER) || level.getBlockState(blockPos.below()).is(MSFBlocks.CORRUPTED_SLIME_LAYER)) {
             livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().multiply(1, 0.3, 1));
         }
@@ -255,74 +257,54 @@ public class ForgeEvents {
     @SubscribeEvent
     public static void onPlayerInteractRightClickItem(UseItemOnBlockEvent event) {
         Player player = event.getPlayer();
+        assert player != null;
         InteractionHand hand = event.getHand();
-        ItemStack itemStack = event.getItemStack();
+        ItemStack stack = event.getItemStack();
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = level.getBlockState(pos);
-        ItemStack item = player.getItemInHand(hand).getItem().getDefaultInstance();
+        Consumer<ItemInteractionResult> cancellation = (result) -> {
+            event.setCancellationResult(result);
+            event.setCanceled(true);
+        };
 
         if (event.isCanceled()) return;
 
-        if((item.is(MSFItems.REBREWED_POTION.get()) || item.is(MSFItems.EXTRACTED_BOTTLE.get())) && state.is(net.minecraft.world.level.block.Blocks.DIRT)) {
-            event.setCancellationResult(ItemInteractionResult.FAIL);
-            event.setCanceled(true);
-
+        if((stack.is(MSFItems.REBREWED_POTION.get()) || stack.is(MSFItems.EXTRACTED_BOTTLE.get())) && state.is(Blocks.DIRT)) {
+            cancellation.accept(ItemInteractionResult.FAIL);
         }
 
-        if(item.is(net.minecraft.tags.ItemTags.AXES) && (state.is(MSFBlocks.VIVICUS_LOG.get()) || state.is(MSFBlocks.VIVICUS_WOOD.get()))) {
-            var strippedState = AxeItem.getAxeStrippingState(state);
-            if (strippedState == null) return;
-
-            strippedState = strippedState.setValue(MSFStateProperties.COLOR, state.getValue(MSFStateProperties.COLOR));
-
-            if (player instanceof ServerPlayer serverPlayer) {
-                CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, item);
-            }
-            level.playSound(player, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-            level.setBlock(pos, strippedState, 3);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, strippedState));
-            itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
-
-            event.setCancellationResult(ItemInteractionResult.SUCCESS);
-            event.setCanceled(true);
-
-        }
-
-        if ((item.is(MSFItems.JAR_OF_BONMEEL.get()) || item.is(MSFItems.JAR_OF_ACID.get())) && state.getBlock() instanceof AbstractCauldronBlock cauldronBlock) {
+        if ((stack.is(MSFItems.JAR_OF_BONMEEL.get()) || stack.is(MSFItems.JAR_OF_ACID.get())) && state.getBlock() instanceof AbstractCauldronBlock cauldronBlock) {
             if (cauldronBlock.isFull(state) || state.hasProperty(LayeredCauldronBlock.LEVEL)) return;
 
-            var cauldronType = item.is(MSFItems.JAR_OF_BONMEEL.get()) ? MSFBlocks.BONMEEL_FILLED_CAULDRON.get() :  MSFBlocks.ACID_FILLED_CAULDRON.get();
+            var cauldronType = stack.is(MSFItems.JAR_OF_BONMEEL.get()) ? MSFBlocks.BONMEEL_FILLED_CAULDRON.get() :  MSFBlocks.ACID_FILLED_CAULDRON.get();
             var state1 = cauldronType.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3);
             level.setBlock(pos, state1, 3);
             level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 
-            if (!player.isCreative()) player.setItemInHand(hand, ItemUtils.createFilledResult(itemStack, player, new ItemStack(net.minecraft.world.item.Items.GLASS_BOTTLE)));
+            if (!player.isCreative()) player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, Items.GLASS_BOTTLE.getDefaultInstance()));
 
-            event.setCancellationResult(ItemInteractionResult.SUCCESS);
-            event.setCanceled(true);
-
+            cancellation.accept(ItemInteractionResult.SUCCESS);
         }
 
-        if (BlockPatternCapability.hasPattern(pos, level) && itemStack.is(net.minecraft.world.item.Items.GLOW_INK_SAC)){
+        if (BlockPatternCapability.hasPattern(pos, level) && stack.is(Items.GLOW_INK_SAC)){
             BlockPatternCapability.PatternData data = BlockPatternCapability.getPattern(pos, level);
             if (!data.isGlowing()){
                 BlockPatternCapability.enableGlowing(level, pos);
-                if (!player.isCreative()) itemStack.shrink(1);
-                event.setCancellationResult(ItemInteractionResult.SUCCESS);
-                event.setCanceled(true);
+                if (!player.isCreative()) stack.shrink(1);
+
+                cancellation.accept(ItemInteractionResult.SUCCESS);
             }
 
         }
 
-        if (itemStack.is(net.minecraft.world.item.Items.FLINT_AND_STEEL) && state.is(net.minecraft.world.level.block.Blocks.TORCHFLOWER)){
-            itemStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
-            player.setItemInHand(hand, itemStack);
+        if (stack.is(Items.FLINT_AND_STEEL) && state.is(Blocks.TORCHFLOWER)){
+            stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+            player.setItemInHand(hand, stack);
             level.setBlock(pos, MSFBlocks.TORCHFLOWER_AFLAME.get().defaultBlockState().setValue(MSFStateProperties.AGE_2, 1), 3);
-            event.setCancellationResult(ItemInteractionResult.SUCCESS);
-            event.setCanceled(true);
 
+            cancellation.accept(ItemInteractionResult.SUCCESS);
         }
 
 

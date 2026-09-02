@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_garnet_mosaic": {
+    "has_garnet_block": {
       "conditions": {
         "items": [
           {
-            "items": "moresnifferflowers:garnet_mosaic"
+            "items": "moresnifferflowers:garnet_block"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_garnet_mosaic"
+      "has_garnet_block"
     ]
   ],
   "rewards": {

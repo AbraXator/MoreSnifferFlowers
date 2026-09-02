@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.phys.AABB;
+import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.client.IMultiblockRenderHelper;
 import net.nikdo53.tinymultiblocklib.components.PreviewMode;
 import org.joml.Matrix3f;
@@ -53,7 +54,7 @@ public class BerootCauldronRenderer<T extends BerootCauldronBlockEntity> impleme
         final RandomSource randomSource = blockEntity.getLevel().getRandom();
         final Direction direction = blockEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 
-        if(blockEntity.isCenter()) {
+        if(IMultiBlock.isCenter(blockEntity.getBlockState())) {
             //CAULDRON
             poseStack.pushPose();
             poseStack.translate(1, 1.5, 0);

@@ -12,8 +12,6 @@ import java.util.function.Supplier;
 public interface MSFParticles {
     DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, MoreSnifferFlowers.MOD_ID);
 
-    Supplier<SimpleParticleType> FLY = PARTICLES.register("fly", () -> new SimpleParticleType(false));
-    Supplier<SimpleParticleType> CARROT = PARTICLES.register("carrot", () -> new SimpleParticleType(false));
     Supplier<SimpleParticleType> AMBUSH = PARTICLES.register("ambush", () -> new SimpleParticleType(false));
     Supplier<SimpleParticleType> GIANT_CROP = PARTICLES.register("giant_crop", () -> new SimpleParticleType(false));
     Supplier<SimpleParticleType> GARBUSH = PARTICLES.register("garbush", () -> new SimpleParticleType(false));

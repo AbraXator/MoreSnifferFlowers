@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.phys.AABB;
+import net.nikdo53.tinymultiblocklib.block.IMultiBlock;
 import net.nikdo53.tinymultiblocklib.client.IMultiblockRenderHelper;
 import net.nikdo53.tinymultiblocklib.components.PreviewMode;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,7 @@ public class BondripiaBlockEntityRenderer<T extends BondripiaBlockEntity> implem
 
     @Override
     public void render(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        if(blockEntity.isCenter() && blockEntity.getBlockState().getValue(MSFStateProperties.AGE_2) >= 2) {
+        if(IMultiBlock.isCenter(blockEntity.getBlockState()) && blockEntity.getBlockState().getValue(MSFStateProperties.AGE_2) >= 2) {
             poseStack.translate(0.5, 1.5, 0.5);
             poseStack.mulPose(Axis.XP.rotationDegrees(180));
 

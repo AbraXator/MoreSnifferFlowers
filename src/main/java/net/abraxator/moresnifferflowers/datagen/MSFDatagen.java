@@ -26,7 +26,7 @@ public class MSFDatagen {
         var packOutput = generator.getPackOutput();
         var datapackProvider = new RegistryDataGenerator(packOutput, event.getLookupProvider());
         var registryProvider = datapackProvider.getRegistryProvider();
-        
+
         //BLOCKMODELS
         generator.addProvider(event.includeClient(), new MSFBlockModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new MSFBlockStateGenerator(packOutput, existingFileHelper));
@@ -53,14 +53,10 @@ public class MSFDatagen {
         generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, registryProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new ModEffectTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
-
         //ADVANCEMENTS
         generator.addProvider(event.includeServer(), new AdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new MSFAdvancementGenerator())));
 
         //RECIPES
         generator.addProvider(event.includeServer(), new MSFRecipesProvider(packOutput, lookupProvider));
-        
-        //LANG
-        //generator.addProvider(event.includeClient(), new ModLangProvider(packOutput));
     }
 }

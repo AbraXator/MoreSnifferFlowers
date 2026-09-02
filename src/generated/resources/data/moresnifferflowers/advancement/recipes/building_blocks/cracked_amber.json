@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_amber_mosaic": {
+    "has_amber_block": {
       "conditions": {
         "items": [
           {
-            "items": "moresnifferflowers:amber_mosaic"
+            "items": "moresnifferflowers:amber_block"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_amber_mosaic"
+      "has_amber_block"
     ]
   ],
   "rewards": {

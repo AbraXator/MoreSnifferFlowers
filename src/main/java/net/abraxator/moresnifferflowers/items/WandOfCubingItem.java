@@ -88,23 +88,4 @@ public class WandOfCubingItem extends Item {
 
         return false;
     }
-
-    private void generateParticle(UseOnContext context, Set<Vec3> set, double xo, double yo, double zo, double r, double theta, double checkR) {
-        var x = xo + r * Mth.cos((float) theta);
-        var yx = yo + r * Mth.sin((float) theta);
-        var yz = yo + r * Mth.cos((float) theta);
-        var z = zo + r * Mth.sin((float) theta);
-
-        createAndAddParticle(context, set, checkR, new Vec3(x, yo, z));
-        createAndAddParticle(context, set, checkR, new Vec3(x, yx, zo));
-        createAndAddParticle(context, set, checkR, new Vec3(xo, yz, z));
-    }
-
-    private void createAndAddParticle(UseOnContext context, Set<Vec3> set, double checkR, Vec3 vec3) {
-        AABB aabb = AABB.ofSize(vec3, checkR, checkR, checkR);
-        if (set.stream().noneMatch(aabb::contains)) {
-            context.getLevel().addParticle(MSFParticles.CARROT.get(), vec3.x, vec3.y, vec3.z, 0, 0, 0);
-            set.add(vec3);
-        }
-    }
 }

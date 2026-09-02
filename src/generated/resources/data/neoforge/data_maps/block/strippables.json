@@ -1,0 +1,16 @@
+{
+  "values": {
+    "moresnifferflowers:corrupted_log": {
+      "stripped_block": "moresnifferflowers:stripped_corrupted_log"
+    },
+    "moresnifferflowers:corrupted_wood": {
+      "stripped_block": "moresnifferflowers:stripped_corrupted_wood"
+    },
+    "moresnifferflowers:vivicus_log": {
+      "stripped_block": "moresnifferflowers:stripped_vivicus_log"
+    },
+    "moresnifferflowers:vivicus_wood": {
+      "stripped_block": "moresnifferflowers:stripped_vivicus_wood"
+    }
+  }
+}

@@ -19,6 +19,7 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
+import net.neoforged.neoforge.registries.datamaps.builtin.Strippable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -51,6 +52,12 @@ public class MSFDataMapsProvider extends DataMapProvider {
                 .add(MSFBlocks.VIVICUS_SAPLING.getId(), new Compostable(1.0F), false)
                 .add(MSFBlocks.CORRUPTED_LEAVES.getId(), new Compostable(1.0F), false)
                 .add(MSFBlocks.VIVICUS_LEAVES.getId(), new Compostable(1.0F), false);
+
+        this.builder(NeoForgeDataMaps.STRIPPABLES)
+                .add(MSFBlocks.CORRUPTED_LOG, new Strippable(MSFBlocks.STRIPPED_CORRUPTED_LOG.get()), false)
+                .add(MSFBlocks.CORRUPTED_WOOD, new Strippable(MSFBlocks.STRIPPED_CORRUPTED_WOOD.get()), false)
+                .add(MSFBlocks.VIVICUS_LOG, new Strippable(MSFBlocks.STRIPPED_VIVICUS_LOG.get()), false)
+                .add(MSFBlocks.VIVICUS_WOOD, new Strippable(MSFBlocks.STRIPPED_VIVICUS_WOOD.get()), false);
         
         this.builder(MSFDataMaps.CORRUPTABLE)
                 .add(holder(Blocks.GRASS_BLOCK), new Corruptable( List.of(

@@ -10,8 +10,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-public class ModPacketHandler {
-    public ModPacketHandler(IEventBus modEventBus, int version) {
+public class MSFNetworking {
+    public MSFNetworking(IEventBus modEventBus, int version) {
         modEventBus.addListener(RegisterPayloadHandlersEvent.class, event -> {
             PayloadRegistrar registrar = event.registrar(String.valueOf(version));
             registerClientToServer(new ModPacketRegistrar(registrar, true));
@@ -35,8 +35,8 @@ public class ModPacketHandler {
 
     }
 
-    public static ModPacketHandler register(IEventBus iEventBus, int version) {
-        return new ModPacketHandler(iEventBus, version);
+    public static MSFNetworking register(IEventBus iEventBus, int version) {
+        return new MSFNetworking(iEventBus, version);
     } 
     
     protected record ModPacketRegistrar(PayloadRegistrar registrar, boolean toServer) {

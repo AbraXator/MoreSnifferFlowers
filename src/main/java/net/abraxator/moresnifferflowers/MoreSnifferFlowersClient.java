@@ -147,8 +147,6 @@ public class MoreSnifferFlowersClient {
 
     @SubscribeEvent
     public static void onRegisterParticles(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(MSFParticles.FLY.get(), FlyParticle.Provider::new);
-        event.registerSpriteSet(MSFParticles.CARROT.get(), CarrotParticle.Provider::new);
         event.registerSpriteSet(MSFParticles.AMBUSH.get(), AmbushParticle.Provider::new);
         event.registerSpriteSet(MSFParticles.GARBUSH.get(), AmbushParticle.Provider::new);
         event.registerSpriteSet(MSFParticles.GIANT_CROP.get(), GiantCropParticle.Provider::new);
