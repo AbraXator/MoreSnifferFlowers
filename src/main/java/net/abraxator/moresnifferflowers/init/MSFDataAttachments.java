@@ -69,5 +69,8 @@ public interface MSFDataAttachments {
                     .copyOnDeath()
                     .build());
 
-
+    Supplier<AttachmentType<Integer>> EXTRACTED_TICKS_REMAINING = ATTACHMENT_TYPES.register("extracted_ticks_remaining",
+            () -> AttachmentType.builder(() -> 0)
+                    .serialize(Codec.INT)
+                    .build());
 }

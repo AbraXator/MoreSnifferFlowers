@@ -67,7 +67,6 @@ public class VivicusSignRenderer extends SignRenderer {
         if(state.getBlock() instanceof ColorableVivicusBlock colorableVivicusBlock) {
             var dyeColor = state.getValue(MSFStateProperties.COLOR);
             color = colorableVivicusBlock.colorValues().get(dyeColor);
-            vertexconsumer.setColor(color);
         }
         this.renderSignModel(poseStack, packedLight, packedOverlay, model, vertexconsumer, color);
         poseStack.popPose();

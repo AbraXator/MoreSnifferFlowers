@@ -1,5 +1,6 @@
 package net.abraxator.moresnifferflowers.items;
 
+import net.abraxator.moresnifferflowers.init.MSFDataAttachments;
 import net.abraxator.moresnifferflowers.init.MSFItems;
 import net.abraxator.moresnifferflowers.init.MSFEffects;
 import net.abraxator.moresnifferflowers.init.MSFTags;
@@ -40,9 +41,11 @@ public class BottleOfExtractionItem extends Item {
                 serverplayer.awardStat(Stats.ITEM_USED.get(this));
             }
 
-            if (player.hasEffect(MSFEffects.EXTRACTED)) {
+            if ((player.hasEffect(MSFEffects.EXTRACTED) || player.getData(MSFDataAttachments.EXTRACTED_TICKS_REMAINING) > 10) && !player.isCreative()) {
                 doCheaterEasterEgg(level, player);
-                return new ItemStack(Items.POISONOUS_POTATO);
+                ItemStack itemStack = new ItemStack(Items.POISONOUS_POTATO);
+                itemStack.set(DataComponents.CUSTOM_NAME, Component.literal("Cheater Potato"));
+                return itemStack;
             }
 
             List<MobEffectInstance> activeEffects = new ArrayList<>(player.getActiveEffects());
@@ -85,13 +88,15 @@ public class BottleOfExtractionItem extends Item {
         List<MobEffectInstance> activeEffects = new ArrayList<>(player.getActiveEffects());
         activeEffects = activeEffects.stream().filter(mobEffectInstance -> !mobEffectInstance.getEffect().is(MSFTags.EffectTags.EXTRACTION_BLACKLIST)).toList();
 
-        return !level.isClientSide && !activeEffects.isEmpty() && !player.hasEffect(MSFEffects.EXTRACTED);
+        return !level.isClientSide() && !activeEffects.isEmpty() && !player.hasEffect(MSFEffects.EXTRACTED);
     }
 
     private static void doCheaterEasterEgg(Level level, Player player) {
+        player.removeAllEffects();
+        player.setData(MSFDataAttachments.EXTRACTED_TICKS_REMAINING, 0);
         player.setAbsorptionAmount(0);
         player.setHealth(0.1F);
-        player.addEffect(new MobEffectInstance(MobEffects.POISON, 800, 2));
+        player.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 2));
         player.setSwimming(true);
         player.setJumping(true);
         player.setXRot(0F);

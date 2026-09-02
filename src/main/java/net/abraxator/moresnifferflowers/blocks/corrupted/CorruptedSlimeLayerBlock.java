@@ -109,7 +109,7 @@ public class CorruptedSlimeLayerBlock extends SnowLayerBlock {
     }
     
     private void showParticles(Entity entity, int pParticleCount) {
-        if (entity.level().isClientSide) {
+        if (entity.level().isClientSide()) {
             for (int i = 0; i < pParticleCount; i++) {
                 entity.level()
                         .addParticle(new BlockParticleOption(ParticleTypes.BLOCK, this.defaultBlockState()), entity.getX(), entity.getY(), entity.getZ(), 0.0, 0.0, 0.0);

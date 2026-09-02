@@ -19,6 +19,7 @@
     "ThrownPotionMixin"
   ],
   "client": [
+    "SignEditScreenMixin",
     "client.BiomeColorsMixin",
     "client.CreativeInventoryScreenMixin",
     "client.InventoryScreenMixin",
